@@ -371,7 +371,9 @@ static const struct WindowTemplate sSampleUiWindowTemplates[] =
          * to see what happens.
          */
         .baseBlock = 1 + (16 * 6),
-    }
+    },
+    // Mark the end of the templates so the `InitWindow' library function doesn't run past the end
+    DUMMY_WIN_TEMPLATE
 };
 
 
