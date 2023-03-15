@@ -30,7 +30,7 @@ static const u32 sConditionGraphData_Gfx[] = INCBIN_U32("graphics/pokenav/condit
 static const u32 sConditionGraphData_Tilemap[] = INCBIN_U32("graphics/pokenav/condition/graph_data.bin.lz");
 static const u16 sMonMarkings_Pal[] = INCBIN_U16("graphics/pokenav/condition/mon_markings.gbapal");
 
-static const struct BgTemplate sMenuBgTemplates[3] =
+static const struct BgTemplate sSampleUiBgTemplates[3] =
 {
     {
         .bg = 1,
@@ -197,7 +197,7 @@ static u32 LoopedTask_OpenConditionGraphMenu(s32 state)
             return LT_PAUSE;
         return LT_INC_AND_PAUSE;
     case 1:
-        InitBgTemplates(sMenuBgTemplates, ARRAY_COUNT(sMenuBgTemplates));
+        InitBgTemplates(sSampleUiBgTemplates, ARRAY_COUNT(sSampleUiBgTemplates));
         ChangeBgX(1, 0, BG_COORD_SET);
         ChangeBgY(1, 0, BG_COORD_SET);
         ChangeBgX(2, 0, BG_COORD_SET);
