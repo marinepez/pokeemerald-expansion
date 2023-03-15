@@ -50,24 +50,26 @@
 /*
  * The meat of the menu code lives in this file. The tutorial comments assume the following:
  *
- * 1) You understand the basics of GBA graphics i.e. the multiple BG layers and how they are controlled,
- *    the various GBA graphics modes, the basics of hardware sprites, etc
+ * 1) You understand the basics of GBA graphics i.e. the multiple BG layers and how they are
+ *    controlled, the various GBA graphics modes, the basics of hardware sprites, etc
  *
- * 2) You are familiar with the concept of tiles (tilesets) vs tilemaps. These are two distinct concepts
- *    and you need to understand them to understand any UI code.
- * 
- * 3) You are familiar with the concept of a charblock and a screenblock, which are crucial to proper VRAM
- *    layout.
- * 
- * 4) You understand the basics of the pokeemerald Callback and Task systems, which structure the menu's
- *    control flow.
- * 
- * 5) You have a basic grasp of the GBA memory layout -- you know the difference between VRAM, EWRAM, IWRAM, etc.
+ * 2) You are familiar with the concept of tiles (tilesets) vs tilemaps. These are two distinct
+ *    concepts and you need to understand them to understand any UI code.
  *
- * 6) Some of the UI code makes use of DMA (Direct Memory Access). This assumes you are familiar with what DMA
- *    is and how it works on the GBA. Also note that a lot of the GF library code does not perform DMA directly, rather
- *    it schedules a DMA copy to occur during the next VBlank using a circle buffer of DMA transfer request objects.
- *    See the code in `gflib/dma3_manager.{h,c} for more details.
+ * 3) You are familiar with the concept of a charblock and a screenblock, which are crucial to
+ *    proper VRAM layout.
+ *
+ * 4) You understand the basics of the pokeemerald Callback and Task systems, which structure the
+ *    menu's control flow.
+ *
+ * 5) You have a basic grasp of the GBA memory layout -- you know the difference between VRAM,
+ *    EWRAM, IWRAM, etc.
+ *
+ * 6) Some of the UI code makes use of DMA (Direct Memory Access). This assumes you are familiar
+ *    with what DMA is and how it works on the GBA. Also note that a lot of the GF library code
+ *    does not perform DMA directly, rather it schedules a DMA copy to occur during the next VBlank
+ *    using a circle buffer of DMA transfer request objects. See the code in
+ *    `gflib/dma3_manager.{h,c} for more details.
  *
  * If you are unsure about any of these concepts, please check the following resources:
  *
@@ -83,11 +85,11 @@
  * Callbacks and Tasks:
  *     + https://github.com/pret/pokeemerald/wiki/Overview%E2%88%B6-The-Game-Loop
  *     + https://github.com/pret/pokeemerald/wiki/Overview%E2%88%B6-The-Task-System
- * 
+ *
  * GBA Memory Layout:
  *     + https://www.coranac.com/tonc/text/hardware.htm#sec-memory
  *     + https://problemkaputt.de/gbatek.htm#gbamemorymap
- * 
+ *
  * DMA:
  *     + https://www.coranac.com/tonc/text/dma.htm
  *     + https://ianfinlayson.net/class/cpsc305/notes/14-memory
@@ -95,27 +97,33 @@
 
 /*
  * Basic Code Flow
- * A summary of the basic control flow path for this code. This may help aid in understanding which functions get called, and when.
+ * A summary of the basic control flow path for this code. This may help aid in understanding which
+ * functions get called, and when.
  *
- * 1) Any code that would like to launch this menu must include `sample_ui.h' so it has the right hook-in, specifically `Task_OpenSampleUi'.
- *    It must then setup the transition (however is relevant based on its context) and set the active task to `Task_OpenSampleUi'.
- *    In our case, `start_menu.c' is the caller of this task.
+ * 1) Any code that would like to launch this menu must include `sample_ui.h' so it has the right
+ *    hook-in, specifically `Task_OpenSampleUi'. It must then setup the transition (however is
+ *    relevant based on its context) and set the active task to `Task_OpenSampleUi'. In our case,
+ *    `start_menu.c' is the caller of this task.
  *
- * 2) `Task_OpenSampleUi' waits for any active fades to finish, then it calls our init code in `SampleUi_Init' which changes the
- *     gMainCallback2 to our `SampleUi_SetupCB'.
+ * 2) `Task_OpenSampleUi' waits for any active fades to finish, then it calls our init code in
+ *     `SampleUi_Init' which changes the gMainCallback2 to our `SampleUi_SetupCB'.
  *
- * 3) `SampleUi_SetupCB' runs each frame, bit-by-bit getting our menu initialized. Once initialization has finished, this callback:
- *     1) Sets up a new task `Task_SampleUiWaitFadeIn' which waits until we fade back in before hotswapping itself for `Task_SampleUiMain'
- *        which reads input and updates the menu state.
- *     2) Starts a palette fade to bring the screen from black back to regular colors
- *     3) Sets our VBlank callback to `SampleUi_VBlankCB' (which is called every VBlank as part of the VBlank interrupt service routine). This
- *        callback transfers our OAM and palette buffers into VRAM, among other things
- *     4) Sets gMainCallback2 to our menu's main callback `SampleUi_MainCB', which does the standard processing of tasks,
- *        animating of sprites, etc.
+ * 3) `SampleUi_SetupCB' runs each frame, bit-by-bit getting our menu initialized. Once
+ *     initialization has finished, this callback:
+ *       1) Sets up a new task `Task_SampleUiWaitFadeIn' which waits until we fade back in before
+ *          hotswapping itself for `Task_SampleUiMain' which reads input and updates the menu state.
+ *       2) Starts a palette fade to bring the screen from black back to regular colors
+ *       3) Sets our VBlank callback to `SampleUi_VBlankCB' (which is called every VBlank as part of
+ *          the VBlank interrupt service routine). This callback transfers our OAM and palette
+ *          buffers into VRAM, among other things
+ *       4) Sets gMainCallback2 to our menu's main callback `SampleUi_MainCB', which does the
+ *          standard processing of tasks, animating of sprites, etc.
  *
- * 4) We have reached our standard menu state. Every frame `SampleUi_MainCB' runs, which calls `Task_SampleUiMain` to get input from the user
- *    and update menu state and backing graphics buffers. `SampleUi_MainCB' also updates other important gamestate. Then, when VBlank occurs,
- *    our `SampleUi_VBlankCB' copies palettes and OAM into VRAM before pending DMA transfers fire and copy any screen graphics updates into VRAM.
+ * 4) We have reached our standard menu state. Every frame `SampleUi_MainCB' runs, which calls
+ *    `Task_SampleUiMain` to get input from the user and update menu state and backing graphics
+ *    buffers. `SampleUi_MainCB' also updates other important gamestate. Then, when VBlank occurs,
+ *    our `SampleUi_VBlankCB' copies palettes and OAM into VRAM before pending DMA transfers fire
+ *    and copy any screen graphics updates into VRAM.
  */
 
 /*
@@ -142,9 +150,9 @@ enum WindowIds
 };
 
 /*
- * We'll need this data in order to access the Pokedex descriptions. We have declared it `extern' because
- * the actual data is defined in pokedex.c (which becomes pokedex.o) as .rodata, so if we tried to include
- * the array directly here we'd get duplicate definition errors.
+ * We'll need this data in order to access the Pokedex descriptions. We have declared it `extern'
+ * because the actual data is defined in pokedex.c (which becomes pokedex.o) as .rodata, so if we
+ * tried to include the array directly here we'd get duplicate definition errors.
  */
 extern const struct PokedexEntry gPokedexEntries[];
 
@@ -200,8 +208,9 @@ static const u8 *const sModeNames[7] = {
 };
 /*
  * Define some colors for the main bg, we will use the palette loading function to hotswap them when
- * the user changes modes. These colors are encoded using BGR555 encoding. If you'd like to change these
- * colors, you may find this online BGR555 color picker helpful (make sure to use Big Endian mode):
+ * the user changes modes. These colors are encoded using BGR555 encoding. If you'd like to change
+ * these colors, you may find this online BGR555 color picker helpful.
+ * Make sure to use Big Endian mode:
  * https://orangeglo.github.io/BGR555/
  */
 static const u16 sModeBgColors[] = {
@@ -235,7 +244,7 @@ static const struct BgTemplate sSampleUiBgTemplates[] =
         .mapBaseIndex = 31,
         // Draw this BG on top
         .priority = 1
-    }, 
+    },
     {
         // We will use BG1 for the menu graphics
         .bg = 1,
@@ -262,79 +271,88 @@ static const struct BgTemplate sSampleUiBgTemplates[] =
  * One big thing to note is that GF windows use a technique called tile rendering to draw text.
  * With normal BG rendering, you have a pre-drawn tileset, and then you dynamically update the
  * tilemap, based on gamestate, to change what's shown on screen. With tile rendering, this process
- * is basically flipped on its head. GF tile-rendered windows instead write a preset increasing sequence
- * of tile indexes into the parts of the BG tilemap that represent a given window. Then, to draw text, it
- * dynamically draws to a backing pixel buffer (the `u8 *tileData' in the Window struct) that is copied
- * into VRAM as if it were tile data. This effectively allows the text rendering code to treat the window
- * BG as a pseudo-framebuffer, as if we were in a simple bitmap mode like Mode 3. This technique is advantageous
- * because it allows for maximum flexibility with font sizing and spacing. You aren't locked into 8x8 tiles for
- * each character.
- * 
- * For more information about tile rendering and text rendering sytems in general, check out the TTE TONC tutorial
- * and the tile rendering section specifically. You can also consult Game Freak's code in `gflib/window.c' and `gflib/text.c'.
+ * is basically flipped on its head. GF tile-rendered windows instead write a preset increasing
+ * sequence of tile indexes into the parts of the BG tilemap that represent a given window. Then,
+ * to draw text, it dynamically draws to a backing pixel buffer (the `u8 *tileData' in the Window
+ * struct) that is copied into VRAM as if it were tile data. This effectively allows the text
+ * rendering code to treat the window BG as a pseudo-framebuffer, as if we were in a simple bitmap
+ * mode like Mode 3. This technique is advantageous because it allows for maximum flexibility with
+ * font sizing and spacing. You aren't locked into 8x8 tiles for each character.
+ *
+ * For more information about tile rendering and text rendering sytems in general, check out the
+ * TTE TONC tutorial and the tile rendering section specifically. You can also consult Game Freak's
+ * code in `gflib/window.c' and `gflib/text.c'.
  * https://www.coranac.com/tonc/text/tte.htm#sec-chr
  */
-static const struct WindowTemplate sSampleUiWindowTemplates[] = 
+static const struct WindowTemplate sSampleUiWindowTemplates[] =
 {
-    [WIN_UI_HINTS] = 
+    [WIN_UI_HINTS] =
     {
         // This window will print on BG0
         .bg = 0,
         /*
          * The tilemap position for this window, if we imagine the tilemap as a 2D matrix.
-         * These positions refer to tiles, so to get the actual pixel position you should multiply by 8.
+         * These positions refer to tiles, so to get the actual pixel position you should
+         * multiply by 8.
          */
         .tilemapLeft = 14,
         .tilemapTop = 0,
         /*
          * The tilemap dimensions for this window, if we imagine the tilemap as a 2D matrix.
-         * These dimensions refer to tiles, so to get the actual pixel dimensions you should multiply by 8.
+         * These dimensions refer to tiles, so to get the actual pixel dimensions you should
+         * multiply by 8.
          */
         .width = 16,
         .height = 6,
         /*
-         * Use BG palette 15 for all tilemap entries that fall within this window. Tilemap entries store the
-         * palette for the given tile in bits F, E, D, C (top four) of the entry. We'll need to load the right
-         * palette into BG palette slot 15.
+         * Use BG palette 15 for all tilemap entries that fall within this window. Tilemap entries
+         * store the palette for the given tile in bits F, E, D, C (top four) of the entry. We'll
+         * need to load the right palette into BG palette slot 15.
          */
         .paletteNum = 15,
 
         /*
-         * This next parameter is where things get interesting. The window base block is the offset, relative to
-         * the window BG's charblock, where the window's graphics live in VRAM. Since we might be cramming multiple windows
-         * into the same BG, we need to tell the engine where exactly to place each window's graphics, lest they overlap.
+         * This next parameter is where things get interesting. The window base block is the offset,
+         * relative to the window BG's charblock, where the window's graphics live in VRAM. Since we
+         * might be cramming multiple windows into the same BG, we need to tell the engine where
+         * exactly to place each window's graphics, lest they overlap.
          *
          * Typically, you want each subsequent window's baseBlock to be at least:
-         * previousBaseBlock + (prevWindowWidth * prevWindowHeight)
-         * which makes sense if you think about it. (Try changing the second window's baseBlock to see
-         * how important this parameter is!)
+         *     previousBaseBlock + (prevWindowWidth * prevWindowHeight)
+         * which makes sense if you think about it. (Try changing the second window's baseBlock
+         * to see how important this parameter is!)
          *
-         * And another thing -- why is this value set to 1 and not 0? You will understand this better once you finish
-         * going through the tutorial code, but I will put the explanation here:
+         * And another thing -- why is this value set to 1 and not 0? You will understand this
+         * better once you finish going through the tutorial code, but I will put the explanation
+         * here:
          *
-         * It's because this window lives on BG0. If we set the baseBlock to 0, then the text writing code will draw the
-         * first section of window text into tile 0 of charblock 0 (because baseBlock=0 and BG0_charblock=0).
-         * When we init our window, BG0's tilemap buffer is zeroed out (because it gets AllocZeroed'd by the window init code).
-         * But since the tilemap buffer ultimately gets copied into BG0's screenblock, it is effectively telling the hardware to
-         * draw tile 0 across the entire screen. And since we put some text in tile 0, you are going to end up seeing a small bit
-         * of text drawn across the screen, which looks really bad.
+         * It's because this window lives on BG0. If we set the baseBlock to 0, then the text
+         * writing code will draw the first section of window text into tile 0 of charblock 0
+         * (because baseBlock=0 and BG0_charblock=0). When we init our window, BG0's tilemap buffer
+         * is zeroed out (because it gets AllocZeroed'd by the window init code). But since the
+         * tilemap buffer ultimately gets copied into BG0's screenblock, it is effectively telling
+         * the hardware to draw tile 0 across the entire screen. And since we put some text in
+         * tile 0, you are going to end up seeing a small bit of text drawn across the screen, which
+         * looks really bad.
          *
-         * We obviously don't want that, so we offset the window text by one so that tile 0 of charblock 0 is empty.
-         * And as a result our zeroed BG tilemap draws transparent tiles instead of the text fragment.
-         * (Recall that the value in each tilemap buffer entry is basically a pointer into our charblock, so
-         * `tilemapBuffer[i] == 0' means draw `tile 0' onto wherever `tilemap position i' maps on the LCD.
-         * (The various LCD register settings will define where on the LCD that `tilemap position i' is actually drawn.)
+         * We obviously don't want that, so we offset the window text by one so that tile 0 of
+         * charblock 0 is empty. And as a result our zeroed BG tilemap draws transparent tiles
+         * instead of the text fragment. (Recall that the value in each tilemap buffer entry is
+         * basically a pointer into our charblock, so `tilemapBuffer[i] == 0' means draw `tile 0'
+         * onto wherever `tilemap position i' maps on the LCD. (The various LCD register settings
+         * will define where on the LCD that `tilemap position i' is actually drawn.)
          *
-         * If this is confusing, try changing this value to 0, rebuild and see what the menu does. Looking at the
-         * mGBA tile viewer will illuminate what is happening.
+         * If this is confusing, try changing this value to 0, rebuild and see what the menu does.
+         * Looking at the mGBA tile viewer will illuminate what is happening.
          */
         .baseBlock = 1,
         /*
-         * Just like with the BgTemplates, I encourage you to open the mGBA Tools/Game State Views/View Tiles
-         * menu to see how this above code gets translated into an actual VRAM layout. In this case, try changing
-         * the baseBlock value for this window and see where in VRAM the text gets drawn. If you want to really work your
-         * brain, change the charblock base for BG0 *and* the baseBlock for this window and try to guess where in VRAM your
-         * window text will show up.
+         * Just like with the BgTemplates, I encourage you to open:
+         *     "mGBA Tools/Game State Views/View Tiles"
+         * to see how this above code gets translated into an actual VRAM layout. In this case,
+         * try changing the baseBlock value for this window and see where in VRAM the text gets
+         * drawn. If you want to really work your brain, change the charblock base for BG0 *and* the
+         * baseBlock for this window and try to guess where in VRAM your window text will show up.
          */
     },
     [WIN_MON_INFO] =
@@ -348,8 +366,9 @@ static const struct WindowTemplate sSampleUiWindowTemplates[] =
         // We will use the same palette for this window, since it's also just regular text
         .paletteNum = 15,
         /*
-         * Here we will set the baseBlock to the previous window's baseblock + the width*height in tiles
-         * of the previous window. Try changing this value around and use the mGBA tile viewer to see what happens.
+         * Here we will set the baseBlock to the previous window's baseblock + the width*height in
+         * tiles of the previous window. Try changing this value around and use the mGBA tile viewer
+         * to see what happens.
          */
         .baseBlock = 1 + (16 * 6),
     }
@@ -364,15 +383,16 @@ static const struct WindowTemplate sSampleUiWindowTemplates[] =
  */
 static const u32 sSampleUiTiles[] = INCBIN_U32("graphics/sample_ui/tiles.4bpp.lz");
 /*
- * I created this tilemap in TilemapStudio using the above tile PNG. I highly recommend TilemapStudio
- * for exporting maps like this.
+ * I created this tilemap in TilemapStudio using the above tile PNG. I highly recommend
+ * TilemapStudio for exporting maps like this.
  */
 static const u32 sSampleUiTilemap[] = INCBIN_U32("graphics/sample_ui/tilemap.bin.lz");
 /*
- * This palette is built from a JASC palette file that you can export using GraphicsGale or Aseprite. Please note:
- * the palette conversion tool REQUIRES that JASC palette files end in CRLF, the standard Windows line ending. If you
- * are using Aseprite or another Mac/Linux program, you may get errors complaining that your lines end in LF and not CRLF.
- * To remedy this, run your JASC palette file through a tool like unix2dos and you shouldn't have any more problems.
+ * This palette is built from a JASC palette file that you can export using GraphicsGale or
+ * Aseprite. Please note: the palette conversion tool REQUIRES that JASC palette files end in CRLF,
+ * the standard Windows line ending. If you are using Aseprite or another Mac/Linux program, you may
+ * get errors complaining that your lines end in LF and not CRLF. To remedy this, run your JASC
+ * palette file through a tool like unix2dos and you shouldn't have any more problems.
  */
 static const u16 sSampleUiPalette[] = INCBIN_U16("graphics/sample_ui/00.gbapal");
 
@@ -383,12 +403,13 @@ enum FontColor
     FONT_RED,
     FONT_BLUE,
 };
-static const u8 sSampleUiWindowFontColors[][3] = 
+static const u8 sSampleUiWindowFontColors[][3] =
 {
     /*
-     * The TEXT_COLOR_X macros here are just palette indexes. Specifically, these indexes match the colors in gMessageBox_Pal,
-     * so we will need to make sure that palette is loaded. Since our window is set to use palette 15, we'll load it into BG
-     * palette slot 15 in the menu loading code.
+     * The TEXT_COLOR_X macros here are just palette indexes. Specifically, these indexes match the
+     * colors in gMessageBox_Pal, so we will need to make sure that palette is loaded. Since our
+     * window is set to use palette 15, we'll load it into BG palette slot 15 in the menu loading
+     * code.
      */
     [FONT_BLACK]  = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY,  TEXT_COLOR_LIGHT_GRAY},
     [FONT_WHITE]  = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_WHITE,      TEXT_COLOR_DARK_GRAY},
@@ -430,8 +451,9 @@ void Task_OpenSampleUi(u8 taskId)
     if (!gPaletteFade.active)
     {
         /*
-         * Free overworld related heap stuff -- if you are entering this menu from somewhere else you
-         * may want to do other cleanup. We're entering from overworld start menu so this works for us.
+         * Free overworld related heap stuff -- if you are entering this menu from somewhere else
+         * you may want to do other cleanup. We're entering from overworld start menu so this works
+         * for us.
          */
         CleanupOverworldWindowsAndTilemaps();
         // Allocate heap space for menu state and set up callbacks
@@ -485,16 +507,16 @@ static void SampleUi_SetupCB(void)
         break;
     case 1:
         /*
-         * Unclear on what this does, I think it is related to some of the screen transition effects.
-         * In any case, we don't want any of those since this is a menu, dammit
+         * Unclear on what this does, I think it is related to some of the screen transition
+         * effects. In any case, we don't want any of those since this is a menu, dammit
          */
         ScanlineEffect_Stop();
         // Clear all sprite palette tags in the sprite system
         FreeAllSpritePalettes();
         /*
-         * Reset palette fade settings -- we are currently in a fade-to-black initiated by whatever code opened
-         * this menu screen. Since we don't know what they were doing with the palettes, just reset everything so
-         * we can do a simple fade-in when we're done loading.
+         * Reset palette fade settings -- we are currently in a fade-to-black initiated by whatever
+         * code opened this menu screen. Since we don't know what they were doing with the palettes,
+         * just reset everything so we can do a simple fade-in when we're done loading.
          */
         ResetPaletteFade();
         // Completely clear all sprite buffers and settings
@@ -553,10 +575,11 @@ static void SampleUi_SetupCB(void)
         FreeMonIconPalettes();
 
         /*
-         * Since this is a small demo without many sprites, we can just load all 6 default mon icon palettes at once.
-         * If you have a more complex UI with lots of unique-palette sprites in addition to mon icons, you may instead
-         * want to manage mon icon palettes dynamically based on which mon icons are currently on screen. You can do
-         * this with the more granular `LoadMonIconPalette(u16 species)' and `FreeMonIconPalette(u16 species)' functions.
+         * Since this is a small demo without many sprites, we can just load all 6 default mon icon
+         * palettes at once. If you have a more complex UI with lots of unique-palette sprites in
+         * addition to mon icons, you may instead want to manage mon icon palettes dynamically based
+         * on which mon icons are currently on screen. You can do this with the more granular
+         * `LoadMonIconPalette(u16 species)' and `FreeMonIconPalette(u16 species)' functions.
          */
         LoadMonIconPalettes();
 
@@ -601,15 +624,16 @@ static void SampleUi_MainCB(void)
     /*
      * After all sprite state is updated, we need to sort their information into the OAM buffer
      * which will be copied into actual OAM during VBlank. This makes sure sprites are drawn at the
-     * correct positions and in the correct order (recall sprite draw order determines which sprites appear
-     * on top of each other).
+     * correct positions and in the correct order (recall sprite draw order determines which sprites
+     * appear on top of each other).
      */
     BuildOamBuffer();
     /*
-     * This one is a little confusing because there are actually two layers of scheduling. Regular game code
-     * can call `ScheduleBgCopyTilemapToVram(u8 bgId)' which will simply mark the tilemap for `bgId' as "ready to be copied".
-     * Then, calling `DoScheduledBgTilemapCopiesToVram' here does not actually perform the copy. Rather it simply adds a DMA
-     * transfer request to the DMA manager for this buffer copy. Only during VBlank when DMA transfers are processed does the
+     * This one is a little confusing because there are actually two layers of scheduling. Regular
+     * game code can call `ScheduleBgCopyTilemapToVram(u8 bgId)' which will simply mark the tilemap
+     * for `bgId' as "ready to be copied". Then, calling `DoScheduledBgTilemapCopiesToVram' here
+     * does not actually perform the copy. Rather it simply adds a DMA transfer request to the DMA
+     * manager for this buffer copy. Only during VBlank when DMA transfers are processed does the
      * copy into VRAM actually occur.
      */
     DoScheduledBgTilemapCopiesToVram();
@@ -627,8 +651,8 @@ static void SampleUi_VBlankCB(void)
     // Transfer OAM buffer into VRAM OAM area
     LoadOam();
     /*
-     * Sprite animation code may have updated frame image for sprites, so copy all these updated frames
-     * into the correct VRAM location.
+     * Sprite animation code may have updated frame image for sprites, so copy all these updated
+     * frames into the correct VRAM location.
      */
     ProcessSpriteCopyRequests();
     // Transfer the processed palette buffer into VRAM palette area
@@ -738,9 +762,9 @@ static void Task_SampleUiWaitFadeAndBail(u8 taskId)
 static void Task_SampleUiWaitFadeAndExitGracefully(u8 taskId)
 {
     /*
-     * This function is basically the same as Task_SampleUiWaitFadeAndBail. However, for this sample we broke it out
-     * because typically you might want to do something different if the user gracefully exits a menu vs if you got
-     * booted from a menu due to heap allocation failure.
+     * This function is basically the same as Task_SampleUiWaitFadeAndBail. However, for this sample
+     * we broke it out because typically you might want to do something different if the user
+     * gracefully exits a menu vs if you got booted from a menu due to heap allocation failure.
      */
 
     // E.g. you could do some other processing here
@@ -758,7 +782,8 @@ static void Task_SampleUiWaitFadeAndExitGracefully(u8 taskId)
  * 1 screenblock is 2 KiB, so that should be a good size for our tilemap buffer. We don't need
  * more than one screenblock since BG1's size setting is 0, which tells the GBA we are using a 32x32
  * tile background. (32 tile * 32 tile * 2 bytes/tile = 2048)
- * For more info on tilemap entries and how they work: https://www.coranac.com/tonc/text/regbg.htm#sec-map
+ * For more info on tilemap entries and how they work:
+ * https://www.coranac.com/tonc/text/regbg.htm#sec-map
  */
 #define TILEMAP_BUFFER_SIZE (1024 * 2)
 static bool8 SampleUi_InitBgs(void)
@@ -797,10 +822,10 @@ static bool8 SampleUi_InitBgs(void)
     // Set the BG manager to use our newly allocated tilemap buffer for BG1's tilemap
     SetBgTilemapBuffer(1, sBg1TilemapBuffer);
 
-    /* 
-     * Schedule to copy the tilemap buffer contents (remember we zeroed it out earlier) for the next VBlank.
-     * So right now, BG1 will just use Tile 0 for every tile. We will change this once we load in our true
-     * tilemap values from sSampleUiTilemap.
+    /*
+     * Schedule to copy the tilemap buffer contents (remember we zeroed it out earlier) for the next
+     * VBlank. So right now, BG1 will just use Tile 0 for every tile. We will change this once we
+     * load in our true tilemap values from sSampleUiTilemap.
      */
     ScheduleBgCopyTilemapToVram(1);
 
@@ -819,7 +844,8 @@ static void SampleUi_FadeAndBail(void)
 
     /*
      * Set callbacks to ours while we wait for the fade to finish, then our above task will
-     * cleanup and swap the callbacks back to the one we saved earlier (which should re-load the overworld)
+     * cleanup and swap the callbacks back to the one we saved earlier (which should re-load the
+     * overworld)
      */
     SetVBlankCallback(SampleUi_VBlankCB);
     SetMainCallback2(SampleUi_MainCB);
@@ -831,10 +857,10 @@ static bool8 SampleUi_LoadGraphics(void)
     {
     case 0:
         /*
-         * Reset leftover temp buffers from any previous code that used them to load graphics. The loading
-         * code in `menu.c' basically saves pointers to the decompression buffers after it copies to VRAM.
-         * Here, we just reset all the pointers to NULL and set the tracking index to 0. This obviously
-         * assumes the previous screen freed the buffers for us.
+         * Reset leftover temp buffers from any previous code that used them to load graphics. The
+         * loading code in `menu.c' basically saves pointers to the decompression buffers after it
+         * copies to VRAM. Here, we just reset all the pointers to NULL and set the tracking index
+         * to 0. This obviously assumes the previous screen freed the buffers for us.
          */
         ResetTempTileDataBuffers();
 
@@ -842,29 +868,32 @@ static bool8 SampleUi_LoadGraphics(void)
          * Decompress our tileset and copy it into VRAM using the parameters we set in the
          * BgTemplates at the top -- we are using BG1 here. Size, offset, mode set to 0. Size is
          * 0 because that tells the function to set the size dynamically based on the decompressed
-         * data. Offset is 0 because we want to tiles loaded right at whatever screenblock we set in the
-         * BgTemplate. And mode is 0 because we are copying tiles and not a tilemap.
-         * 
-         * `menu.c' also has a alternative function `DecompressAndLoadBgGfxUsingHeap', which does the same thing
-         * but automatically frees the decompression buffer for you. If you want, you can use that here instead
-         * and remove the `ResetTempTileDataBuffers' call above, since it doesn't use the temp tile data buffers.
+         * data. Offset is 0 because we want to tiles loaded right at whatever charblock we set in
+         * the BgTemplate. And mode is 0 because we are copying tiles and not a tilemap.
+         *
+         * `menu.c' also has a alternative function `DecompressAndLoadBgGfxUsingHeap', which does
+         * the same thing but automatically frees the decompression buffer for you. If you want, you
+         * can use that here instead and remove the `ResetTempTileDataBuffers' call above, since it
+         * doesn't use the temp tile data buffers.
          */
         DecompressAndCopyTileDataToVram(1, sSampleUiTiles, 0, 0, 0);
         sSampleUiSavedState->loadState++;
         break;
     case 1:
         /*
-         * Each frame, keep trying to free the temp data buffer we used last frame to copy the tile data into
-         * VRAM. We have to do a poll here because we don't want to free the buffer out from underneath an active
-         * DMA transfer. If instead you chose to load graphics using the alternative `DecompressAndLoadBgGfxUsingHeap',
-         * you can remove this call and wrapping if statement since the polling/freeing is handled for you under the hood.
+         * Each frame, keep trying to free the temp data buffer we used last frame to copy the tile
+         * data into VRAM. We have to do a poll here because this free may not occur depending on
+         * the state of the DMA manager. If instead you chose to load graphics using the alternative
+         * `DecompressAndLoadBgGfxUsingHeap', you can remove this call and wrapping if statement
+         * since the polling/freeing is handled for you under the hood.
          */
         if (FreeTempTileDataBuffersIfPossible() != TRUE)
         {
             /*
-             * This basically just wraps the LZ77UnCompWram system call. It reads and decompresses whatever data
-             * is provided in the `src' (argument 1), and writes the decompressed data to a WRAM location given
-             * in `dest' (argument 2). In our case `dest' is just the tilemap buffer we heap-allocated earlier.
+             * This basically just wraps the LZ77UnCompWram system call. It reads and decompresses
+             * whatever data is provided in the `src' (argument 1), and writes the decompressed data
+             * to a WRAM location given in `dest' (argument 2). In our case `dest' is just the
+             * tilemap buffer we heap-allocated earlier.
              */
             LZDecompressWram(sSampleUiTilemap, sBg1TilemapBuffer);
             sSampleUiSavedState->loadState++;
@@ -872,19 +901,22 @@ static bool8 SampleUi_LoadGraphics(void)
         break;
     case 2:
         /*
-         * Copy our palette into the game's BG palette buffer, slot 0 -- this step does not directly get the palette
-         * into VRAM. That only happens during VBlank if the current callback specifies a buffer transfer.
+         * Copy our palette into the game's BG palette buffer, slot 0 -- this step does not directly
+         * get the palette into VRAM. That only happens during VBlank if the current callback
+         * specifies a buffer transfer.
          */
         LoadPalette(sSampleUiPalette, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
         /*
-         * We are going to dynamically change the BG color depending on the mode. We set up our tiles so that the UI BG color
-         * is stored in Palette 0, slot 2. So we hot swap that to our saved color for Kanto, since the UI starts in Kanto mode.
-         * We will need to perform this mini-swap each time the user changes modes.
+         * We are going to dynamically change the BG color depending on the mode. We set up our
+         * tiles so that the UI BG color is stored in Palette 0, slot 2. So we hot swap that to our
+         * saved color for Kanto, since the UI starts in Kanto mode. We will need to perform this
+         * mini-swap each time the user changes modes.
          */
         LoadPalette(&sModeBgColors[MODE_KANTO], BG_PLTT_ID(0) + 2, 2);
         /*
-         * Copy the message box palette into BG palette buffer, slot 15. Our window is set to use palette 15 and our
-         * text color constants are defined assuming we are indexing in this palette.
+         * Copy the message box palette into BG palette buffer, slot 15. Our window is set to use
+         * palette 15 and our text color constants are defined assuming we are indexing in this
+         * palette.
          */
         LoadPalette(gMessageBox_Pal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
         sSampleUiSavedState->loadState++;
@@ -901,19 +933,21 @@ static void SampleUi_InitWindows(void)
      * Initialize windows from the window templates we specified above. This makes two important
      * allocations:
      *
-     * 1) It allocates a tilemap buffer for the window tilemap, the size of which is based on the screen
-     *    size setting specified in the BgTemplate. See BGXCNT register documentation for more details here.
-     *    For this UI, the size setting is 0 which just means use a single screen. We only allocate a single tilemap
-     *    for the entire BG layer. So if you have multiple windows on the same BG, they will all share the same
-     *    tilemap buffer.
+     * 1) It allocates a tilemap buffer for the window tilemap, the size of which is based on the
+     *    screen size setting specified in the BgTemplate. See BGXCNT register documentation for
+     *    more details here. For this UI, the size setting is 0 which just means use a single
+     *    screen. We only allocate a single tilemap for the entire BG layer. So if you have multiple
+     *    windows on the same BG, they will all share the same tilemap buffer.
      *
-     * 2) It allocates the `tileData' buffer (often also called the pixel buffer in the code) for each window. Each
-     *    window has its own pixel buffer. This is the buffer into which we actually draw text, and it gets copied
-     *    upon request to the tile area of VRAM based on the BG charblock and window baseblock.
+     * 2) It allocates the `tileData' buffer (often also called the pixel buffer in the code) for
+     *    each window. Each window has its own pixel buffer. This is the buffer into which we
+     *    actually draw text, and it gets copied upon request to the tile area of VRAM based on the
+     *    BG charblock and window baseblock.
      *
-     * It's also worth noting that the window API allows you to allocate and set your own tilemap buffer for the window BG
-     * layer, just like we did earlier for BG1. However, it's better to just let the window API do the allocation and setup for
-     * you through `InitWindows()' -- just make sure to call `FreeAllWindowBuffers()' before closing up shop to return your memory.
+     * It's also worth noting that the window API allows you to allocate and set your own tilemap
+     * buffer for the window BG layer, just like we did earlier for BG1. However, it's better to
+     * just let the window API do the allocation and setup for you through `InitWindows()' -- just
+     * make sure to call `FreeAllWindowBuffers()' before closing up shop to return your memory.
      */
     InitWindows(sSampleUiWindowTemplates);
 
@@ -928,25 +962,28 @@ static void SampleUi_InitWindows(void)
     ScheduleBgCopyTilemapToVram(0);
 
     /*
-     * Fill each entire window pixel buffer (i.e. window.tileData) with the given value. In this case, fill it with 0s
-     * to make the window completely transparent. We will draw text into the window pixel buffer later.
+     * Fill each entire window pixel buffer (i.e. window.tileData) with the given value. In this
+     * case, fill it with 0s to make the window completely transparent. We will draw text into the
+     * window pixel buffer later.
      */
     FillWindowPixelBuffer(WIN_UI_HINTS, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
     FillWindowPixelBuffer(WIN_MON_INFO, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
 
     /*
-     * Write a sequence into each window's tilemap buffer. Why? Because the window text will be drawn onto the tiles
-     * themselves. So we just want each subsequent tilemap entry to point to the next tile in VRAM. That way, we can
-     * treat the tiles as a pseudo-framebuffer and render our text however we want.
+     * Write a sequence into each window's tilemap buffer. Why? Because the window text will be
+     * drawn onto the tiles themselves. So we just want each subsequent tilemap entry to point to
+     * the next tile in VRAM. That way, we can treat the tiles as a pseudo-framebuffer and render
+     * our text however we want.
      */
     PutWindowTilemap(WIN_UI_HINTS);
     PutWindowTilemap(WIN_MON_INFO);
 
     /*
-     * Copy (well, schedule to copy) each window into VRAM using DMA3 under the hood. The mode=3 argument means we
-     * copy BOTH the tilemap buffer (which recall is just an incrementing sequence of references into our tile canvas)
-     * and the tiles themselves. Typically when updating text on a window, you only need to copy the tile canvas since
-     * the tilemap should never change. But to init the window we need to get both into VRAM.
+     * Copy (well, schedule to copy) each window into VRAM using DMA3 under the hood. The mode=3
+     * argument means we copy BOTH the tilemap buffer (which recall is just an incrementing sequence
+     * of references into our tile canvas) and the tiles themselves. Typically when updating text on
+     * a window, you only need to copy the tile canvas since the tilemap should never change. But to
+     * init the window we need to get both into VRAM.
      */
     CopyWindowToVram(WIN_UI_HINTS, 3);
     CopyWindowToVram(WIN_MON_INFO, 3);
@@ -961,9 +998,11 @@ static void SampleUi_PrintUiButtonHints(u8 windowId, u8 colorIdx)
     // Copy the current mode name into a temp string variable
     StringCopy(gStringVar1, sModeNames[sSampleUiSavedState->sMode]);
     /*
-     * `StringExpandPlaceholders' takes the src string, expands all placeholders (i.e. those bits in braces that look like {FOO}),
-     * then copies the expanded string into dest. The {STR_VAR_1} placeholder will expand to the current contents of temp string gStringVar1,
-     * which is very useful for constructing dynamic strings. Note that above we saved the mode name into gStringVar1.
+     * `StringExpandPlaceholders' takes the src string, expands all placeholders (i.e. those bits in
+     * braces that look like {FOO}), then copies the expanded string into dest. The {STR_VAR_1}
+     * placeholder will expand to the current contents of temp string gStringVar1, which is very
+     * useful for constructing dynamic strings. Note that above we saved the mode name into
+     * gStringVar1.
      */
     StringExpandPlaceholders(gStringVar2, sText_SampleUiButtonHint2);
 
@@ -975,19 +1014,25 @@ static void SampleUi_PrintUiButtonHints(u8 windowId, u8 colorIdx)
     FillWindowPixelBuffer(windowId, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
 
     /*
-     * Use the text printing system to add text to this window. We set the speed value to TEXT_SKIP_DRAW to tell the printer to draw
-     * into the pixel buffer but skip the actual VRAM copy. Why? Because we want to wait until all the text is rendered before we actually
-     * copy to VRAM and make the text visible. This prevents flickering from occuring (because drawing text is relatively slow).
-     * Try changing the speed parameter TEXT_SKIP_DRAW to 0 (which tells the text printer to copy to VRAM on the next VBlank) and observe the
-     * slight flicker that occurs.
+     * Use the text printing system to add text to this window. We set the speed value to
+     * TEXT_SKIP_DRAW to tell the printer to draw into the pixel buffer but skip the actual VRAM
+     * copy. Why? Because we want to wait until all the text is rendered before we actually copy to
+     * VRAM and make the text visible. This prevents flickering from occuring (because drawing text
+     * is relatively slow). Try changing the speed parameter TEXT_SKIP_DRAW to 0 (which tells the
+     * text printer to copy to VRAM on the next VBlank) and observe the slight flicker that occurs.
      */
-    AddTextPrinterParameterized4(windowId, FONT_NORMAL, 0, 3, 0, 0, sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sText_SampleUiDex);
-    AddTextPrinterParameterized4(windowId, FONT_SMALL, 47, 0, 0, 0, sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sText_SampleUiButtonHint1);
-    AddTextPrinterParameterized4(windowId, FONT_SMALL, 47, 10, 0, 0, sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, gStringVar2);
-    AddTextPrinterParameterized4(windowId, FONT_SMALL, 47, 20, 0, 0, sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sText_SampleUiButtonHint3);
+    AddTextPrinterParameterized4(windowId, FONT_NORMAL, 0, 3, 0, 0,
+        sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sText_SampleUiDex);
+    AddTextPrinterParameterized4(windowId, FONT_SMALL, 47, 0, 0, 0,
+        sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sText_SampleUiButtonHint1);
+    AddTextPrinterParameterized4(windowId, FONT_SMALL, 47, 10, 0, 0,
+        sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, gStringVar2);
+    AddTextPrinterParameterized4(windowId, FONT_SMALL, 47, 20, 0, 0,
+        sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sText_SampleUiButtonHint3);
     /*
-     * Explicitly copy to VRAM now that all text is draw into the window pixel buffer. We use COPYWIN_GFX here since no changes
-     * were made to the BG tilemap, so no need to copy it again (recall that GF windows use tile rendering).
+     * Explicitly copy to VRAM now that all text is draw into the window pixel buffer. We use
+     * COPYWIN_GFX here since no changes were made to the BG tilemap, so no need to copy it again
+     * (recall that GF windows use tile rendering).
      */
     CopyWindowToVram(windowId, COPYWIN_GFX);
 }
@@ -998,18 +1043,21 @@ static void SampleUi_PrintUiMonInfo(u8 windowId, u8 colorIdx)
     u16 speciesId = NationalPokedexNumToSpecies(sSampleUiSavedState->sMonIconDexNum);
 
     /*
-     * Use the string manipulation library to get the National Dex num, species name, and dex description into
-     * strings, ready to be drawn.
+     * Use the string manipulation library to get the National Dex num, species name, and dex
+     * description into strings, ready to be drawn.
      */
-    ConvertIntToDecimalStringN(gStringVar1, sSampleUiSavedState->sMonIconDexNum, STR_CONV_MODE_LEADING_ZEROS, 3);
+    ConvertIntToDecimalStringN(gStringVar1, sSampleUiSavedState->sMonIconDexNum,
+        STR_CONV_MODE_LEADING_ZEROS, 3);
     StringCopy(gStringVar2, gSpeciesNames[speciesId]);
     StringExpandPlaceholders(gStringVar3, sText_SampleUiMonInfoSpecies);
     StringCopy(gStringVar4, gPokedexEntries[sSampleUiSavedState->sMonIconDexNum].description);
 
     // The window drawing code here works just like in `SampleUi_PrintUiButtonHints'
     FillWindowPixelBuffer(windowId, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
-    AddTextPrinterParameterized4(windowId, FONT_SHORT, 5, 3, 0, 0, sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, gStringVar3);
-    AddTextPrinterParameterized4(windowId, FONT_SMALL, 5, 25, 0, 0, sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, gStringVar4);
+    AddTextPrinterParameterized4(windowId, FONT_SHORT, 5, 3, 0, 0,
+        sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, gStringVar3);
+    AddTextPrinterParameterized4(windowId, FONT_SMALL, 5, 25, 0, 0,
+        sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, gStringVar4);
     CopyWindowToVram(windowId, COPYWIN_GFX);
 }
 
@@ -1019,12 +1067,14 @@ static void SampleUi_DrawMonIcon(u16 dexNum)
     u16 speciesId = NationalPokedexNumToSpecies(dexNum);
 
     /*
-     * Create a new mon icon sprite and save off its sprite ID so we can easily free it when we need to update
-     * which icon is displayed. We set the sprite callback to a preset supplied by the GF's mon icon code. This call
-     * back updates the little bounce animation of the icon. `CreateMonIcon' handles all the details of sprite initialization
-     * for us. Feel free to dive into the implementation to see the gory details.
+     * Create a new mon icon sprite and save off its sprite ID so we can easily free it when we need
+     * to update which icon is displayed. We set the sprite callback to a preset supplied by the
+     * GF's mon icon code. This call back updates the little bounce animation of the icon.
+     * `CreateMonIcon' handles all the details of sprite initialization for us. Feel free to dive
+     * into the implementation to see the gory details.
      */
-    sSampleUiSavedState->sMonIconSpriteId = CreateMonIcon(speciesId, SpriteCB_MonIcon, MON_ICON_X, MON_ICON_Y, 4, 0);
+    sSampleUiSavedState->sMonIconSpriteId =
+            CreateMonIcon(speciesId, SpriteCB_MonIcon, MON_ICON_X, MON_ICON_Y, 4, 0);
     // Set prio to 0 so the icon sprite draws on top of everything
     gSprites[sSampleUiSavedState->sMonIconSpriteId].oam.priority = 0;
 }

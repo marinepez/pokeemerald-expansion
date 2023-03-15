@@ -101,7 +101,7 @@ static const struct BgTemplate sSampleUiBgTemplates[] =
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .priority = 1
-    }, 
+    },
     {
         .bg = 1,
         .charBaseIndex = 3,
@@ -110,9 +110,9 @@ static const struct BgTemplate sSampleUiBgTemplates[] =
     },
 };
 
-static const struct WindowTemplate sSampleUiWindowTemplates[] = 
+static const struct WindowTemplate sSampleUiWindowTemplates[] =
 {
-    [WIN_UI_HINTS] = 
+    [WIN_UI_HINTS] =
     {
         .bg = 0,
         .tilemapLeft = 14,
@@ -145,7 +145,7 @@ enum FontColor
     FONT_RED,
     FONT_BLUE,
 };
-static const u8 sSampleUiWindowFontColors[][3] = 
+static const u8 sSampleUiWindowFontColors[][3] =
 {
     [FONT_BLACK]  = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY,  TEXT_COLOR_LIGHT_GRAY},
     [FONT_WHITE]  = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_WHITE,      TEXT_COLOR_DARK_GRAY},
