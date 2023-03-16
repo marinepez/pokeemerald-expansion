@@ -21,11 +21,13 @@
 #include "decompress.h"
 #include "constants/songs.h"
 #include "sound.h"
+#include "sprite.h"
 #include "string_util.h"
 #include "pokemon_icon.h"
 #include "graphics.h"
 #include "data.h"
 #include "pokedex.h"
+#include "gpu_regs.h"
 
 // This code is based on Ghoulslash's excellent UI tutorial:
 // https://www.pokecommunity.com/showpost.php?p=10441093
@@ -111,7 +113,7 @@
  * 3) `SampleUi_SetupCB' runs each frame, bit-by-bit getting our menu initialized. Once
  *     initialization has finished, this callback:
  *       1) Sets up a new task `Task_SampleUiWaitFadeIn' which waits until we fade back in before
- *          hotswapping itself for `Task_SampleUiMain' which reads input and updates the menu state.
+ *          hotswapping itself for `Task_SampleUiMainInput' which reads input and updates the menu state.
  *       2) Starts a palette fade to bring the screen from black back to regular colors
  *       3) Sets our VBlank callback to `SampleUi_VBlankCB' (which is called every VBlank as part of
  *          the VBlank interrupt service routine). This callback transfers our OAM and palette
@@ -120,14 +122,14 @@
  *          standard processing of tasks, animating of sprites, etc.
  *
  * 4) We have reached our standard menu state. Every frame `SampleUi_MainCB' runs, which calls
- *    `Task_SampleUiMain` to get input from the user and update menu state and backing graphics
+ *    `Task_SampleUiMainInput` to get input from the user and update menu state and backing graphics
  *    buffers. `SampleUi_MainCB' also updates other important gamestate. Then, when VBlank occurs,
  *    our `SampleUi_VBlankCB' copies palettes and OAM into VRAM before pending DMA transfers fire
  *    and copy any screen graphics updates into VRAM.
  */
 
 /*
- * Various save state for the UI -- we'll allocate this on the heap since none of it needs to be
+ * Various state for the UI -- we'll allocate this on the heap since none of it needs to be
  * preserved after we exit the menu.
  */
 struct SampleUiState
@@ -137,9 +139,21 @@ struct SampleUiState
     // We will use this later to track some loading state
     u8 loadState;
     // Use these to track dex state and mon icon info
-    u8 sMode;
-    u8 sMonIconSpriteId;
-    u16 sMonIconDexNum;
+    u8 mode;
+    u8 region;
+    u8 monIconSpriteId;
+    u16 monIconDexNum;
+
+    // Sliding panel state
+    u8 panelY;
+    bool8 panelIsOpen;
+
+    /*
+     * Save the sprite IDs for each button so we can manipulate their positions and change their
+     * attributes through the global sprite table. The array is indexed by the region defines below, so
+     * for e.g. Kanto is index 0, Sinnoh is index 3, etc.
+     */
+    u8 regionButtonSpriteIds[6];
 };
 
 // GF window system passes window IDs around, so define this to avoid using magic numbers everywhere
@@ -163,66 +177,121 @@ extern const struct PokedexEntry gPokedexEntries[];
  * re-loads into the overworld, the heap gets nuked from orbit. However, it is still good practice
  * to clean up after oneself, so we will be sure to free everything before exiting.
  */
-static EWRAM_DATA struct SampleUiState *sSampleUiSavedState = NULL;
+static EWRAM_DATA struct SampleUiState *sSampleUiState = NULL;
 static EWRAM_DATA u8 *sBg1TilemapBuffer = NULL;
+static EWRAM_DATA u8 *sBg2TilemapBuffer = NULL;
 
 /*
  * Defines and read-only data for on-screen dex. These should be self-explanatory.
  */
-#define MON_ICON_X   39
-#define MON_ICON_Y   36
-#define MODE_KANTO   0
-#define MODE_JOHTO   1
-#define MODE_HOENN   2
-#define MODE_SINNOH  3
-#define MODE_UNOVA   4
-#define MODE_KALOS   5
-#define MODE_ALOLA   6
-static const u16 sDexRanges[7][2] = {
+#define MON_ICON_X     39
+#define MON_ICON_Y     36
+#define REGION_NONE    0xFF
+#define REGION_KANTO   0
+#define REGION_JOHTO   1
+#define REGION_HOENN   2
+#define REGION_SINNOH  3
+#define REGION_UNOVA   4
+#define REGION_KALOS   5
+static const u16 sDexRanges[6][2] = {
     // Kanto goes from Bulbasaur to Mew
-    [MODE_KANTO]   = {1, 151},
+    [REGION_KANTO]   = {1, 151},
     // Johto goes from Chikorita to Celebi
-    [MODE_JOHTO]   = {152, 251},
+    [REGION_JOHTO]   = {152, 251},
     // Etc.
-    [MODE_HOENN]   = {252, 386},
-    [MODE_SINNOH]  = {387, 493},
-    [MODE_UNOVA]   = {494, 649},
-    [MODE_KALOS]   = {650, 721},
-    [MODE_ALOLA]   = {722, 809}
+    [REGION_HOENN]   = {252, 386},
+    [REGION_SINNOH]  = {387, 493},
+    [REGION_UNOVA]   = {494, 649},
+    [REGION_KALOS]   = {650, 721}
 };
-static const u8 sModeNameKanto[] =  _("Kanto");
-static const u8 sModeNameJohto[] =  _("Johto");
-static const u8 sModeNameHoenn[] =  _("Hoenn");
-static const u8 sModeNameSinnoh[] = _("Sinnoh");
-static const u8 sModeNameUnova[] =  _("Unova");
-static const u8 sModeNameKalos[] =  _("Kalos");
-static const u8 sModeNameAlola[] =  _("Alola");
-static const u8 *const sModeNames[7] = {
-    [MODE_KANTO]   = sModeNameKanto,
-    [MODE_JOHTO]   = sModeNameJohto,
-    [MODE_HOENN]   = sModeNameHoenn,
-    [MODE_SINNOH]  = sModeNameSinnoh,
-    [MODE_UNOVA]   = sModeNameUnova,
-    [MODE_KALOS]   = sModeNameKalos,
-    [MODE_ALOLA]   = sModeNameAlola
+static const u8 sRegionNameKanto[] =  _("Kanto");
+static const u8 sRegionNameJohto[] =  _("Johto");
+static const u8 sRegionNameHoenn[] =  _("Hoenn");
+static const u8 sRegionNameSinnoh[] = _("Sinnoh");
+static const u8 sRegionNameUnova[] =  _("Unova");
+static const u8 sRegionNameKalos[] =  _("Kalos");
+static const u8 *const sRegionNames[6] = {
+    [REGION_KANTO]   = sRegionNameKanto,
+    [REGION_JOHTO]   = sRegionNameJohto,
+    [REGION_HOENN]   = sRegionNameHoenn,
+    [REGION_SINNOH]  = sRegionNameSinnoh,
+    [REGION_UNOVA]   = sRegionNameUnova,
+    [REGION_KALOS]   = sRegionNameKalos
 };
 /*
  * Define some colors for the main bg, we will use the palette loading function to hotswap them when
- * the user changes modes. These colors are encoded using BGR555 encoding. If you'd like to change
+ * the user changes regions. These colors are encoded using BGR555 encoding. If you'd like to change
  * these colors, you may find this online BGR555 color picker helpful.
  * Make sure to use Big Endian mode:
  * https://orangeglo.github.io/BGR555/
  */
-static const u16 sModeBgColors[] = {
-    [MODE_KANTO]   = 0x6a93,
-    [MODE_JOHTO]   = 0x527a,
-    [MODE_HOENN]   = 0x4f55,
-    [MODE_SINNOH]  = 0x4b7c,
-    [MODE_UNOVA]   = 0x5ef7,
-    [MODE_KALOS]   = 0x76fb,
-    [MODE_ALOLA]   = 0x471f,
+static const u16 sRegionBgColors[] = {
+    [REGION_KANTO]   = 0x6a93,
+    [REGION_JOHTO]   = 0x527a,
+    [REGION_HOENN]   = 0x4f55,
+    [REGION_SINNOH]  = 0x4b7c,
+    [REGION_UNOVA]   = 0x5ef7,
+    [REGION_KALOS]   = 0x76fb
+};
+struct RegionSelection
+{
+    u8 upRegion;
+    u8 downRegion;
+    u8 leftRegion;
+    u8 rightRegion;
 };
 
+static const struct RegionSelection sRegionSelections[] =
+{
+    [REGION_KANTO] = {
+        .upRegion    = REGION_NONE,
+        .downRegion  = REGION_SINNOH,
+        .leftRegion  = REGION_NONE,
+        .rightRegion = REGION_JOHTO
+    },
+    [REGION_JOHTO] = {
+        .upRegion    = REGION_NONE,
+        .downRegion  = REGION_UNOVA,
+        .leftRegion  = REGION_KANTO,
+        .rightRegion = REGION_HOENN
+    },
+    [REGION_HOENN] = {
+        .upRegion    = REGION_NONE,
+        .downRegion  = REGION_KALOS,
+        .leftRegion  = REGION_JOHTO,
+        .rightRegion = REGION_NONE
+    },
+    [REGION_SINNOH] = {
+        .upRegion    = REGION_KANTO,
+        .downRegion  = REGION_NONE,
+        .leftRegion  = REGION_NONE,
+        .rightRegion = REGION_UNOVA
+    },
+    [REGION_UNOVA] = {
+        .upRegion    = REGION_JOHTO,
+        .downRegion  = REGION_NONE,
+        .leftRegion  = REGION_SINNOH,
+        .rightRegion = REGION_KALOS
+    },
+    [REGION_KALOS] = {
+        .upRegion    = REGION_HOENN,
+        .downRegion  = REGION_NONE,
+        .leftRegion  = REGION_UNOVA,
+        .rightRegion = REGION_NONE
+    }
+};
+
+#define MODE_INFO   0
+#define MODE_STATS  1
+#define MODE_OTHER  2
+static const u8 sModeNameInfo[] =  _("Info");
+static const u8 sModeNameStats[] =  _("Stats");
+static const u8 sModeNameOther[] =  _("Other");
+static const u8 *const sModeNames[3] = {
+    [MODE_INFO]   = sModeNameInfo,
+    [MODE_STATS]  = sModeNameStats,
+    [MODE_OTHER]  = sModeNameOther
+};
 
 /*
  * BgTemplates are just a nice way to setup various BG attributes without having to deal with
@@ -242,11 +311,11 @@ static const struct BgTemplate sSampleUiBgTemplates[] =
         // Use screenblock 31 for BG0 tilemap
         // (It has become customary to put tilemaps in the final few screenblocks)
         .mapBaseIndex = 31,
-        // Draw this BG on top
+        // Draw the text windows on top of the main BG
         .priority = 1
     },
     {
-        // We will use BG1 for the menu graphics
+        // The Main BG: we will use BG1 for the menu graphics
         .bg = 1,
         // Use charblock 3 for BG1 tiles
         .charBaseIndex = 3,
@@ -254,6 +323,16 @@ static const struct BgTemplate sSampleUiBgTemplates[] =
         .mapBaseIndex = 30,
         // Draw this BG below BG0, since we want text drawn on top of the menu graphics
         .priority = 2
+    },
+    {
+        // We will use BG2 for the sliding panel
+        .bg = 2,
+        // The sliding panel shares the same tileset as the main BG, so use charblock 3
+        .charBaseIndex = 3,
+        // Sliding panel tilemap will go in screenblock 29
+        .mapBaseIndex = 29,
+        // Draw the sliding panel on top of everything else
+        .priority = 0
     },
     /*
      * I encourage you to open the mGBA Tools/Game State Views/View Tiles menu to see how this
@@ -303,7 +382,7 @@ static const struct WindowTemplate sSampleUiWindowTemplates[] =
          * multiply by 8.
          */
         .width = 16,
-        .height = 6,
+        .height = 7,
         /*
          * Use BG palette 15 for all tilemap entries that fall within this window. Tilemap entries
          * store the palette for the given tile in bits F, E, D, C (top four) of the entry. We'll
@@ -370,7 +449,7 @@ static const struct WindowTemplate sSampleUiWindowTemplates[] =
          * tiles of the previous window. Try changing this value around and use the mGBA tile viewer
          * to see what happens.
          */
-        .baseBlock = 1 + (16 * 6),
+        .baseBlock = 1 + (16 * 7),
     },
     // Mark the end of the templates so the `InitWindow' library function doesn't run past the end
     DUMMY_WIN_TEMPLATE
@@ -378,25 +457,257 @@ static const struct WindowTemplate sSampleUiWindowTemplates[] =
 
 
 /*
- * This file is generated from a properly indexed tile PNG image. You MUST use an indexed PNG with
+ * These files are generated from properly indexed tile PNG images. You MUST use an indexed PNG with
  * 4bpp indexing (you technically can get away with 8bpp indexing as long as each individual index
  * is between 0-15). The easiest way to make indexed PNGs is using Aseprite's Index mode, or using
  * GraphicsGale.
  */
 static const u32 sSampleUiTiles[] = INCBIN_U32("graphics/sample_ui/tiles.4bpp.lz");
+static const u32 sSampleUiKantoButton[] = INCBIN_U32("graphics/sample_ui/kanto.4bpp");
+static const u32 sSampleUiJohtoButton[] = INCBIN_U32("graphics/sample_ui/johto.4bpp");
+static const u32 sSampleUiHoennButton[] = INCBIN_U32("graphics/sample_ui/hoenn.4bpp");
+static const u32 sSampleUiSinnohButton[] = INCBIN_U32("graphics/sample_ui/sinnoh.4bpp");
+static const u32 sSampleUiUnovaButton[] = INCBIN_U32("graphics/sample_ui/unova.4bpp");
+static const u32 sSampleUiKalosButton[] = INCBIN_U32("graphics/sample_ui/kalos.4bpp");
+
 /*
- * I created this tilemap in TilemapStudio using the above tile PNG. I highly recommend
+ * I created these tilemaps in TilemapStudio using the above tile PNG. I highly recommend
  * TilemapStudio for exporting maps like this.
  */
 static const u32 sSampleUiTilemap[] = INCBIN_U32("graphics/sample_ui/tilemap.bin.lz");
+static const u32 sSampleUiPanelTilemap[] = INCBIN_U32("graphics/sample_ui/panel_tilemap.bin.lz");
+
 /*
- * This palette is built from a JASC palette file that you can export using GraphicsGale or
+ * These palettes are built from JASC palette files that you can export using GraphicsGale or
  * Aseprite. Please note: the palette conversion tool REQUIRES that JASC palette files end in CRLF,
- * the standard Windows line ending. If you are using Aseprite or another Mac/Linux program, you may
- * get errors complaining that your lines end in LF and not CRLF. To remedy this, run your JASC
- * palette file through a tool like unix2dos and you shouldn't have any more problems.
+ * the standard Windows line ending. If you are using the Mac/Linux version of a tool like Aseprite,
+ * you may get errors complaining that your lines end in LF and not CRLF. To remedy this, run your
+ * JASC palette file through a tool like unix2dos and you shouldn't have any more problems.
  */
 static const u16 sSampleUiPalette[] = INCBIN_U16("graphics/sample_ui/00.gbapal");
+static const u16 sSampleUi_KantoJohtoHoennPalette[] = INCBIN_U16("graphics/sample_ui/kanto_johto_hoenn.gbapal");
+static const u16 sSampleUi_SinnohUnovaKalosPalette[] = INCBIN_U16("graphics/sample_ui/sinnoh_unova_kalos.gbapal");
+
+#define PALETTE_TAG_KANTO_JOHTO_HOENN 0x1000
+#define PALETTE_TAG_SINNOH_UNOVA_KALOS 0x1001
+const struct SpritePalette sKantoJohtoHoennButtonsSpritePalette =
+{
+    .data = sSampleUi_KantoJohtoHoennPalette,
+    .tag = PALETTE_TAG_KANTO_JOHTO_HOENN
+};
+const struct SpritePalette sSinnohUnovaKalosButtonsSpritePalette =
+{
+    .data = sSampleUi_SinnohUnovaKalosPalette,
+    .tag = PALETTE_TAG_SINNOH_UNOVA_KALOS
+};
+
+#define DEFAULT_ANIM  0
+#define SELECTED_ANIM 0
+static const union AnimCmd sButtonDefaultAnim[] =
+{
+    ANIMCMD_FRAME(0, 30),
+    ANIMCMD_END
+};
+static const union AnimCmd *const sButtonAnims[] =
+{
+    [DEFAULT_ANIM] = sButtonDefaultAnim
+};
+static const union AffineAnimCmd sButtonSelectedAnim[] =
+{
+    AFFINEANIMCMD_FRAME(1, 1, 0, 30),
+    AFFINEANIMCMD_FRAME(-1, -1, 0, 30),
+    AFFINEANIMCMD_JUMP(0)
+};
+static const union AffineAnimCmd * const sButtonAffineAnims[] =
+{
+    [SELECTED_ANIM] = sButtonSelectedAnim
+};
+
+static const struct SpriteFrameImage sKantoButtonPicTable[] =
+{
+    obj_frame_tiles(sSampleUiKantoButton)
+};
+static const struct OamData sKantoButtonOam =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(64x32),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(64x32),
+    .tileNum = 0,
+    .priority = 0,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+const struct SpriteTemplate sKantoButtonSpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_KANTO_JOHTO_HOENN,
+    .oam = &sKantoButtonOam,
+    .anims = sButtonAnims,
+    .images = sKantoButtonPicTable,
+    .affineAnims = sButtonAffineAnims,
+    .callback = SpriteCallbackDummy,
+};
+
+static const struct SpriteFrameImage sJohtoButtonPicTable[] =
+{
+    obj_frame_tiles(sSampleUiJohtoButton)
+};
+static const struct OamData sJohtoButtonOam =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(64x32),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(64x32),
+    .tileNum = 0,
+    .priority = 0,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+const struct SpriteTemplate sJohtoButtonSpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_KANTO_JOHTO_HOENN,
+    .oam = &sJohtoButtonOam,
+    .anims = sButtonAnims,
+    .images = sJohtoButtonPicTable,
+    .affineAnims = sButtonAffineAnims,
+    .callback = SpriteCallbackDummy,
+};
+
+static const struct SpriteFrameImage sHoennButtonPicTable[] =
+{
+    obj_frame_tiles(sSampleUiHoennButton)
+};
+static const struct OamData sHoennButtonOam =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(64x32),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(64x32),
+    .tileNum = 0,
+    .priority = 0,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+const struct SpriteTemplate sHoennButtonSpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_KANTO_JOHTO_HOENN,
+    .oam = &sHoennButtonOam,
+    .anims = sButtonAnims,
+    .images = sHoennButtonPicTable,
+    .affineAnims = sButtonAffineAnims,
+    .callback = SpriteCallbackDummy,
+};
+
+static const struct SpriteFrameImage sSinnohButtonPicTable[] =
+{
+    obj_frame_tiles(sSampleUiSinnohButton)
+};
+static const struct OamData sSinnohButtonOam =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(64x32),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(64x32),
+    .tileNum = 0,
+    .priority = 0,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+const struct SpriteTemplate sSinnohButtonSpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_SINNOH_UNOVA_KALOS,
+    .oam = &sSinnohButtonOam,
+    .anims = sButtonAnims,
+    .images = sSinnohButtonPicTable,
+    .affineAnims = sButtonAffineAnims,
+    .callback = SpriteCallbackDummy,
+};
+
+static const struct SpriteFrameImage sUnovaButtonPicTable[] =
+{
+    obj_frame_tiles(sSampleUiUnovaButton)
+};
+static const struct OamData sUnovaButtonOam =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(64x32),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(64x32),
+    .tileNum = 0,
+    .priority = 0,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+const struct SpriteTemplate sUnovaButtonSpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_SINNOH_UNOVA_KALOS,
+    .oam = &sUnovaButtonOam,
+    .anims = sButtonAnims,
+    .images = sUnovaButtonPicTable,
+    .affineAnims = sButtonAffineAnims,
+    .callback = SpriteCallbackDummy,
+};
+
+static const struct SpriteFrameImage sKalosButtonPicTable[] =
+{
+    obj_frame_tiles(sSampleUiKalosButton)
+};
+static const struct OamData sKalosButtonOam =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(64x32),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(64x32),
+    .tileNum = 0,
+    .priority = 0,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+const struct SpriteTemplate sKalosButtonSpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_SINNOH_UNOVA_KALOS,
+    .oam = &sKalosButtonOam,
+    .anims = sButtonAnims,
+    .images = sKalosButtonPicTable,
+    .affineAnims = sButtonAffineAnims,
+    .callback = SpriteCallbackDummy,
+};
 
 enum FontColor
 {
@@ -426,7 +737,9 @@ static void SampleUi_VBlankCB(void);
 
 // Sample UI tasks
 static void Task_SampleUiWaitFadeIn(u8 taskId);
-static void Task_SampleUiMain(u8 taskId);
+static void Task_SampleUiMainInput(u8 taskId);
+static void Task_SampleUiPanelInput(u8 taskId);
+static void Task_SampleUiPanelSlide(u8 taskId);
 static void Task_SampleUiWaitFadeAndBail(u8 taskId);
 static void Task_SampleUiWaitFadeAndExitGracefully(u8 taskId);
 
@@ -439,6 +752,7 @@ static void SampleUi_InitWindows(void);
 static void SampleUi_PrintUiButtonHints(u8 windowId, u8 colorIdx);
 static void SampleUi_PrintUiMonInfo(u8 windowId, u8 colorIdx);
 static void SampleUi_DrawMonIcon(u16 dexNum);
+static void SampleUi_CreateRegionButtons(void);
 static void SampleUi_FreeResources(void);
 
 // Declared in sample_ui.h
@@ -467,8 +781,8 @@ void Task_OpenSampleUi(u8 taskId)
 
 void SampleUi_Init(MainCallback callback)
 {
-    sSampleUiSavedState = AllocZeroed(sizeof(struct SampleUiState));
-    if (sSampleUiSavedState == NULL)
+    sSampleUiState = AllocZeroed(sizeof(struct SampleUiState));
+    if (sSampleUiState == NULL)
     {
         /*
          * If the heap allocation failed for whatever reason, then set the callback
@@ -480,8 +794,8 @@ void SampleUi_Init(MainCallback callback)
         return;
     }
 
-    sSampleUiSavedState->loadState = 0;
-    sSampleUiSavedState->savedCallback = callback;
+    sSampleUiState->loadState = 0;
+    sSampleUiState->savedCallback = callback;
 
     /*
      * Next frame start running UI setup code. SetMainCallback2 also resets gMain.state
@@ -535,7 +849,7 @@ static void SampleUi_SetupCB(void)
         if (SampleUi_InitBgs())
         {
             // If we successfully init the BGs, we can move on
-            sSampleUiSavedState->loadState = 0;
+            sSampleUiState->loadState = 0;
             gMain.state++;
         }
         else
@@ -566,8 +880,8 @@ static void SampleUi_SetupCB(void)
         break;
     case 5:
         // Setup initial draw of Pokemon icon sprite
-        sSampleUiSavedState->sMode = MODE_KANTO;
-        sSampleUiSavedState->sMonIconDexNum = sDexRanges[sSampleUiSavedState->sMode][0];
+        sSampleUiState->region = REGION_KANTO;
+        sSampleUiState->monIconDexNum = sDexRanges[sSampleUiState->region][0];
 
         /*
          * Free all mon icon palettes just to make sure nothing is left over from previous screen.
@@ -586,13 +900,20 @@ static void SampleUi_SetupCB(void)
         LoadMonIconPalettes();
 
         // Draw the mon icon
-        SampleUi_DrawMonIcon(sSampleUiSavedState->sMonIconDexNum);
+        SampleUi_DrawMonIcon(sSampleUiState->monIconDexNum);
 
         // Print the UI button hints in the top-right
         SampleUi_PrintUiButtonHints(WIN_UI_HINTS, FONT_WHITE);
 
         // Print the mon info in the main text box
         SampleUi_PrintUiMonInfo(WIN_MON_INFO, FONT_BLACK);
+
+        // Set sliding panel initial state
+        sSampleUiState->panelY = 0;
+        sSampleUiState->panelIsOpen = FALSE;
+
+        // LTODO remove this, just here for testing
+        SampleUi_CreateRegionButtons();
 
         /*
          * Create a task that does nothing until the palette fade is done. We will start the palette
@@ -666,11 +987,11 @@ static void Task_SampleUiWaitFadeIn(u8 taskId)
      // Do nothing until the palette fade finishes, then replace ourself with the main menu task.
     if (!gPaletteFade.active)
     {
-        gTasks[taskId].func = Task_SampleUiMain;
+        gTasks[taskId].func = Task_SampleUiMainInput;
     }
 }
 
-static void Task_SampleUiMain(u8 taskId)
+static void Task_SampleUiMainInput(u8 taskId)
 {
     // Exit the menu when the player presses B
     if (JOY_NEW(B_BUTTON))
@@ -686,17 +1007,17 @@ static void Task_SampleUiMain(u8 taskId)
     {
         PlaySE(SE_SELECT);
         // Destroy the old mon sprite, update the selected dex num, and draw the new sprite
-        FreeAndDestroyMonIconSprite(&gSprites[sSampleUiSavedState->sMonIconSpriteId]);
-        if (sSampleUiSavedState->sMonIconDexNum < sDexRanges[sSampleUiSavedState->sMode][1])
+        FreeAndDestroyMonIconSprite(&gSprites[sSampleUiState->monIconSpriteId]);
+        if (sSampleUiState->monIconDexNum < sDexRanges[sSampleUiState->region][1])
         {
-            sSampleUiSavedState->sMonIconDexNum++;
+            sSampleUiState->monIconDexNum++;
         }
         else
         {
             // Wrap dex number around
-            sSampleUiSavedState->sMonIconDexNum = sDexRanges[sSampleUiSavedState->sMode][0];
+            sSampleUiState->monIconDexNum = sDexRanges[sSampleUiState->region][0];
         }
-        SampleUi_DrawMonIcon(sSampleUiSavedState->sMonIconDexNum);
+        SampleUi_DrawMonIcon(sSampleUiState->monIconDexNum);
         SampleUi_PrintUiMonInfo(WIN_MON_INFO, FONT_BLACK);
     }
     // User pressed or held DPAD_UP, scroll up through dex list
@@ -704,50 +1025,118 @@ static void Task_SampleUiMain(u8 taskId)
     {
         PlaySE(SE_SELECT);
         // Destroy the old mon sprite, update the selected dex num, and draw the new sprite
-        FreeAndDestroyMonIconSprite(&gSprites[sSampleUiSavedState->sMonIconSpriteId]);
-        if (sSampleUiSavedState->sMonIconDexNum > sDexRanges[sSampleUiSavedState->sMode][0])
+        FreeAndDestroyMonIconSprite(&gSprites[sSampleUiState->monIconSpriteId]);
+        if (sSampleUiState->monIconDexNum > sDexRanges[sSampleUiState->region][0])
         {
-            sSampleUiSavedState->sMonIconDexNum--;
+            sSampleUiState->monIconDexNum--;
         }
         else
         {
             // Wrap dex number around
-            sSampleUiSavedState->sMonIconDexNum = sDexRanges[sSampleUiSavedState->sMode][1];
+            sSampleUiState->monIconDexNum = sDexRanges[sSampleUiState->region][1];
         }
-        SampleUi_DrawMonIcon(sSampleUiSavedState->sMonIconDexNum);
+        SampleUi_DrawMonIcon(sSampleUiState->monIconDexNum);
         SampleUi_PrintUiMonInfo(WIN_MON_INFO, FONT_BLACK);
     }
     // User pressed A, cycle to next dex mode
     if (JOY_NEW(A_BUTTON))
     {
         PlaySE(SE_SELECT);
-        if (sSampleUiSavedState->sMode == MODE_ALOLA)
+        if (sSampleUiState->mode == MODE_OTHER)
         {
-            // Wrap back around to Kanto after Alola
-            sSampleUiSavedState->sMode = MODE_KANTO;
+            // Wrap back around to Info after the last mode
+            sSampleUiState->mode = MODE_INFO;
         }
         else
         {
-            sSampleUiSavedState->sMode++;
+            sSampleUiState->mode++;
         }
-        // Get lower bound dex num for this mode
-        sSampleUiSavedState->sMonIconDexNum = sDexRanges[sSampleUiSavedState->sMode][0];
-        // Destroy the currently displayed mon icon sprite
-        FreeAndDestroyMonIconSprite(&gSprites[sSampleUiSavedState->sMonIconSpriteId]);
-
-        /*
-         * Draw:
-         * 1) First mon sprite for the new mode
-         * 2) New button hints with updated mode reflected
-         * 3) Mon info for new mon
-         */
-        SampleUi_DrawMonIcon(sSampleUiSavedState->sMonIconDexNum);
         SampleUi_PrintUiButtonHints(WIN_UI_HINTS, FONT_WHITE);
         SampleUi_PrintUiMonInfo(WIN_MON_INFO, FONT_BLACK);
-
-        // Sneakily swap out color 2 in BG1's palette
-        LoadPalette(&sModeBgColors[sSampleUiSavedState->sMode], BG_PLTT_ID(0) + 2, 2);
     }
+    if (JOY_NEW(START_BUTTON))
+    {
+        gTasks[taskId].func = Task_SampleUiPanelSlide;
+        PlaySE(SE_SELECT);
+    }
+}
+
+static void Task_SampleUiPanelInput(u8 taskId)
+{
+    //Exit panel when Start or B is pressed
+    if (JOY_NEW(START_BUTTON | B_BUTTON))
+    {
+        gTasks[taskId].func = Task_SampleUiPanelSlide;
+        PlaySE(SE_SELECT);
+    }
+    if (JOY_NEW(A_BUTTON))
+    {
+        // LTODO fix affine anim
+        gSprites[sSampleUiState->regionButtonSpriteIds[0]].oam.affineMode = ST_OAM_AFFINE_DOUBLE;
+        StartSpriteAffineAnim(&gSprites[sSampleUiState->regionButtonSpriteIds[0]], SELECTED_ANIM);
+        CalcCenterToCornerVec(&gSprites[sSampleUiState->regionButtonSpriteIds[0]], SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), ST_OAM_AFFINE_DOUBLE);
+    }
+    if (JOY_NEW(R_BUTTON))
+    {
+        gSprites[sSampleUiState->regionButtonSpriteIds[0]].oam.affineMode = ST_OAM_AFFINE_OFF;
+        StartSpriteAnim(&gSprites[sSampleUiState->regionButtonSpriteIds[0]], DEFAULT_ANIM);
+        CalcCenterToCornerVec(&gSprites[sSampleUiState->regionButtonSpriteIds[0]], SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), ST_OAM_AFFINE_OFF);
+    }
+    // Sneakily swap out color 2 in BG1's palette
+    // LoadPalette(&sRegionBgColors[sSampleUiState->region], BG_PLTT_ID(0) + 2, 2);
+}
+
+static void Task_SampleUiPanelSlide(u8 taskId)
+{
+    #define PANEL_MAX_Y 95
+    /*
+     * Register BG2VOFS controls the vertical offset of background 2. Our sliding panel lives on
+     * BG2, so by setting the value of this register we can change the starting Y position of the
+     * background. We increase it a bit each frame to make the BG look like it is sliding into view.
+     */
+    SetGpuReg(REG_OFFSET_BG2VOFS, sSampleUiState->panelY);
+
+    // Panel is open, so slide it down out of view
+    if (sSampleUiState->panelIsOpen)
+    {
+        if (sSampleUiState->panelY > 0)
+        {
+            sSampleUiState->panelY -= 5;
+            gSprites[sSampleUiState->regionButtonSpriteIds[REGION_KANTO]].y += 5;
+            gSprites[sSampleUiState->regionButtonSpriteIds[REGION_JOHTO]].y += 5;
+            gSprites[sSampleUiState->regionButtonSpriteIds[REGION_HOENN]].y += 5;
+            gSprites[sSampleUiState->regionButtonSpriteIds[REGION_SINNOH]].y += 5;
+            gSprites[sSampleUiState->regionButtonSpriteIds[REGION_UNOVA]].y += 5;
+            gSprites[sSampleUiState->regionButtonSpriteIds[REGION_KALOS]].y += 5;
+        }
+        else if (sSampleUiState->panelY == 0)
+        {
+            // Panel is done closing, so set state to closed and change task to read main input
+            sSampleUiState->panelIsOpen = FALSE;
+            gTasks[taskId].func = Task_SampleUiMainInput;
+        }
+    }
+    // Panel is closed, so slide it up into view
+    else
+    {
+        if (sSampleUiState->panelY < PANEL_MAX_Y)
+        {
+            sSampleUiState->panelY += 5;
+            gSprites[sSampleUiState->regionButtonSpriteIds[REGION_KANTO]].y -= 5;
+            gSprites[sSampleUiState->regionButtonSpriteIds[REGION_JOHTO]].y -= 5;
+            gSprites[sSampleUiState->regionButtonSpriteIds[REGION_HOENN]].y -= 5;
+            gSprites[sSampleUiState->regionButtonSpriteIds[REGION_SINNOH]].y -= 5;
+            gSprites[sSampleUiState->regionButtonSpriteIds[REGION_UNOVA]].y -= 5;
+            gSprites[sSampleUiState->regionButtonSpriteIds[REGION_KALOS]].y -= 5;
+        }
+        else if (sSampleUiState->panelY == PANEL_MAX_Y)
+        {
+            // Panel is done opening, so set state to open and change task to read panel input
+            sSampleUiState->panelIsOpen = TRUE;
+            gTasks[taskId].func = Task_SampleUiPanelInput;
+        }
+    }
+    #undef PANEL_MAX_Y
 }
 
 static void Task_SampleUiWaitFadeAndBail(u8 taskId)
@@ -755,7 +1144,7 @@ static void Task_SampleUiWaitFadeAndBail(u8 taskId)
     // Wait until the screen fades to black before we start doing cleanup
     if (!gPaletteFade.active)
     {
-        SetMainCallback2(sSampleUiSavedState->savedCallback);
+        SetMainCallback2(sSampleUiState->savedCallback);
         SampleUi_FreeResources();
         DestroyTask(taskId);
     }
@@ -774,7 +1163,7 @@ static void Task_SampleUiWaitFadeAndExitGracefully(u8 taskId)
     // Wait until the screen fades to black before we start doing final cleanup
     if (!gPaletteFade.active)
     {
-        SetMainCallback2(sSampleUiSavedState->savedCallback);
+        SetMainCallback2(sSampleUiState->savedCallback);
         SampleUi_FreeResources();
         DestroyTask(taskId);
     }
@@ -796,16 +1185,23 @@ static bool8 SampleUi_InitBgs(void)
      */
     ResetAllBgsCoordinates();
 
-    // Allocate our tilemap buffer on the heap
+    // Allocate our tilemap buffers on the heap
     sBg1TilemapBuffer = Alloc(TILEMAP_BUFFER_SIZE);
     if (sBg1TilemapBuffer == NULL)
     {
         // Bail if the allocation fails
         return FALSE;
     }
+    sBg2TilemapBuffer = Alloc(TILEMAP_BUFFER_SIZE);
+    if (sBg2TilemapBuffer == NULL)
+    {
+        // Bail if the allocation fails
+        return FALSE;
+    }
 
-    // Clear whatever junk data is in the buffer
+    // Clear whatever junk data is in the buffers
     memset(sBg1TilemapBuffer, 0, TILEMAP_BUFFER_SIZE);
+    memset(sBg2TilemapBuffer, 0, TILEMAP_BUFFER_SIZE);
 
     /*
      * Clear all BG-related data buffers and mark DMAs as ready. Also resets the BG and mode bits of
@@ -821,19 +1217,22 @@ static bool8 SampleUi_InitBgs(void)
      */
     InitBgsFromTemplates(0, sSampleUiBgTemplates, NELEMS(sSampleUiBgTemplates));
 
-    // Set the BG manager to use our newly allocated tilemap buffer for BG1's tilemap
+    // Set the BG manager to use our newly allocated tilemap buffers for BG1 and 2's tilemap
     SetBgTilemapBuffer(1, sBg1TilemapBuffer);
+    SetBgTilemapBuffer(2, sBg2TilemapBuffer);
 
     /*
      * Schedule to copy the tilemap buffer contents (remember we zeroed it out earlier) for the next
-     * VBlank. So right now, BG1 will just use Tile 0 for every tile. We will change this once we
-     * load in our true tilemap values from sSampleUiTilemap.
+     * VBlank. So right now, BG1 and 2 will just use Tile 0 for every tile. We will change this once
+     * we load in our true tilemap values from sSampleUiTilemap and sSampleUiPanelTilemap.
      */
     ScheduleBgCopyTilemapToVram(1);
+    ScheduleBgCopyTilemapToVram(2);
 
-    // Set reg DISPCNT to show BG0 and BG1 only
+    // Set reg DISPCNT to show BG0, BG1, BG2
     ShowBg(0);
     ShowBg(1);
+    ShowBg(2);
 
     return TRUE;
 }
@@ -855,7 +1254,7 @@ static void SampleUi_FadeAndBail(void)
 
 static bool8 SampleUi_LoadGraphics(void)
 {
-    switch (sSampleUiSavedState->loadState)
+    switch (sSampleUiState->loadState)
     {
     case 0:
         /*
@@ -868,10 +1267,14 @@ static bool8 SampleUi_LoadGraphics(void)
 
         /*
          * Decompress our tileset and copy it into VRAM using the parameters we set in the
-         * BgTemplates at the top -- we are using BG1 here. Size, offset, mode set to 0. Size is
-         * 0 because that tells the function to set the size dynamically based on the decompressed
-         * data. Offset is 0 because we want to tiles loaded right at whatever charblock we set in
-         * the BgTemplate. And mode is 0 because we are copying tiles and not a tilemap.
+         * BgTemplates at the top -- we pass 1 for the bgId so it uses the charblock setting from
+         * the BG1 template. Our BG2 panel shares these tiles, but we set BG2 to use the same
+         * charblock so everything should work OK.
+         * Size, offset, mode set to 0:
+         * Size is 0 because that tells the function to set the size dynamically based on the
+         * decompressed data. Offset is 0 because we want to tiles loaded right at whatever
+         * charblock we set in the BgTemplate. And mode is 0 because we are copying tiles and not a
+         * tilemap.
          *
          * `menu.c' also has a alternative function `DecompressAndLoadBgGfxUsingHeap', which does
          * the same thing but automatically frees the decompression buffer for you. If you want, you
@@ -879,7 +1282,7 @@ static bool8 SampleUi_LoadGraphics(void)
          * doesn't use the temp tile data buffers.
          */
         DecompressAndCopyTileDataToVram(1, sSampleUiTiles, 0, 0, 0);
-        sSampleUiSavedState->loadState++;
+        sSampleUiState->loadState++;
         break;
     case 1:
         /*
@@ -894,11 +1297,12 @@ static bool8 SampleUi_LoadGraphics(void)
             /*
              * This basically just wraps the LZ77UnCompWram system call. It reads and decompresses
              * whatever data is provided in the `src' (argument 1), and writes the decompressed data
-             * to a WRAM location given in `dest' (argument 2). In our case `dest' is just the
-             * tilemap buffer we heap-allocated earlier.
+             * to a WRAM location given in `dest' (argument 2). In our case `dest' are just the
+             * tilemap buffers we heap-allocated earlier.
              */
             LZDecompressWram(sSampleUiTilemap, sBg1TilemapBuffer);
-            sSampleUiSavedState->loadState++;
+            LZDecompressWram(sSampleUiPanelTilemap, sBg2TilemapBuffer);
+            sSampleUiState->loadState++;
         }
         break;
     case 2:
@@ -909,21 +1313,21 @@ static bool8 SampleUi_LoadGraphics(void)
          */
         LoadPalette(sSampleUiPalette, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
         /*
-         * We are going to dynamically change the BG color depending on the mode. We set up our
+         * We are going to dynamically change the BG color depending on the region. We set up our
          * tiles so that the UI BG color is stored in Palette 0, slot 2. So we hot swap that to our
-         * saved color for Kanto, since the UI starts in Kanto mode. We will need to perform this
-         * mini-swap each time the user changes modes.
+         * saved color for Kanto, since the UI starts in Kanto region. We will need to perform this
+         * mini-swap each time the user changes regions.
          */
-        LoadPalette(&sModeBgColors[MODE_KANTO], BG_PLTT_ID(0) + 2, 2);
+        LoadPalette(&sRegionBgColors[REGION_KANTO], BG_PLTT_ID(0) + 2, 2);
         /*
          * Copy the message box palette into BG palette buffer, slot 15. Our window is set to use
          * palette 15 and our text color constants are defined assuming we are indexing in this
          * palette.
          */
         LoadPalette(gMessageBox_Pal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-        sSampleUiSavedState->loadState++;
+        sSampleUiState->loadState++;
     default:
-        sSampleUiSavedState->loadState = 0;
+        sSampleUiState->loadState = 0;
         return TRUE;
     }
     return FALSE;
@@ -991,14 +1395,14 @@ static void SampleUi_InitWindows(void)
     CopyWindowToVram(WIN_MON_INFO, 3);
 }
 
-static const u8 sText_SampleUiDex[] = _("DEX");
 static const u8 sText_SampleUiButtonHint1[] = _("{DPAD_UPDOWN}Change POKéMON");
 static const u8 sText_SampleUiButtonHint2[] = _("{A_BUTTON}Mode: {STR_VAR_1}");
-static const u8 sText_SampleUiButtonHint3[] = _("{B_BUTTON}Exit");
+static const u8 sText_SampleUiButtonHint3[] = _("{START_BUTTON}Region");
+static const u8 sText_SampleUiButtonHint4[] = _("{B_BUTTON}Exit");
 static void SampleUi_PrintUiButtonHints(u8 windowId, u8 colorIdx)
 {
     // Copy the current mode name into a temp string variable
-    StringCopy(gStringVar1, sModeNames[sSampleUiSavedState->sMode]);
+    StringCopy(gStringVar1, sModeNames[sSampleUiState->mode]);
     /*
      * `StringExpandPlaceholders' takes the src string, expands all placeholders (i.e. those bits in
      * braces that look like {FOO}), then copies the expanded string into dest. The {STR_VAR_1}
@@ -1024,13 +1428,15 @@ static void SampleUi_PrintUiButtonHints(u8 windowId, u8 colorIdx)
      * text printer to copy to VRAM on the next VBlank) and observe the slight flicker that occurs.
      */
     AddTextPrinterParameterized4(windowId, FONT_NORMAL, 0, 3, 0, 0,
-        sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sText_SampleUiDex);
+        sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sRegionNames[sSampleUiState->region]);
     AddTextPrinterParameterized4(windowId, FONT_SMALL, 47, 0, 0, 0,
         sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sText_SampleUiButtonHint1);
     AddTextPrinterParameterized4(windowId, FONT_SMALL, 47, 10, 0, 0,
         sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, gStringVar2);
     AddTextPrinterParameterized4(windowId, FONT_SMALL, 47, 20, 0, 0,
         sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sText_SampleUiButtonHint3);
+        AddTextPrinterParameterized4(windowId, FONT_SMALL, 47, 30, 0, 0,
+        sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sText_SampleUiButtonHint4);
     /*
      * Explicitly copy to VRAM now that all text is draw into the window pixel buffer. We use
      * COPYWIN_GFX here since no changes were made to the BG tilemap, so no need to copy it again
@@ -1040,26 +1446,46 @@ static void SampleUi_PrintUiButtonHints(u8 windowId, u8 colorIdx)
 }
 
 static const u8 sText_SampleUiMonInfoSpecies[] = _("{NO}{STR_VAR_1} {STR_VAR_2}");
+static const u8 sText_SampleUiMonStats[] = _("Put stats info here");
+static const u8 sText_SampleUiMonOther[] = _("Put other info here");
 static void SampleUi_PrintUiMonInfo(u8 windowId, u8 colorIdx)
 {
-    u16 speciesId = NationalPokedexNumToSpecies(sSampleUiSavedState->sMonIconDexNum);
+    u16 speciesId = NationalPokedexNumToSpecies(sSampleUiState->monIconDexNum);
 
-    /*
-     * Use the string manipulation library to get the National Dex num, species name, and dex
-     * description into strings, ready to be drawn.
-     */
-    ConvertIntToDecimalStringN(gStringVar1, sSampleUiSavedState->sMonIconDexNum,
-        STR_CONV_MODE_LEADING_ZEROS, 3);
-    StringCopy(gStringVar2, gSpeciesNames[speciesId]);
-    StringExpandPlaceholders(gStringVar3, sText_SampleUiMonInfoSpecies);
-    StringCopy(gStringVar4, gPokedexEntries[sSampleUiSavedState->sMonIconDexNum].description);
-
-    // The window drawing code here works just like in `SampleUi_PrintUiButtonHints'
+    // Clear the window before drawing new text
     FillWindowPixelBuffer(windowId, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
-    AddTextPrinterParameterized4(windowId, FONT_SHORT, 5, 3, 0, 0,
-        sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, gStringVar3);
-    AddTextPrinterParameterized4(windowId, FONT_SMALL, 5, 25, 0, 0,
-        sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, gStringVar4);
+    switch (sSampleUiState->mode)
+    {
+    case MODE_INFO:
+        /*
+         * Use the string manipulation library to get the National Dex num, species name, and dex
+         * description into strings, ready to be drawn.
+         */
+        ConvertIntToDecimalStringN(gStringVar1, sSampleUiState->monIconDexNum,
+            STR_CONV_MODE_LEADING_ZEROS, 3);
+        StringCopy(gStringVar2, gSpeciesNames[speciesId]);
+        StringExpandPlaceholders(gStringVar3, sText_SampleUiMonInfoSpecies);
+        StringCopy(gStringVar4, gPokedexEntries[sSampleUiState->monIconDexNum].description);
+
+        // The window drawing code here works just like in `SampleUi_PrintUiButtonHints'
+        AddTextPrinterParameterized4(windowId, FONT_SHORT, 5, 3, 0, 0,
+            sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, gStringVar3);
+        AddTextPrinterParameterized4(windowId, FONT_SMALL, 5, 25, 0, 0,
+            sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, gStringVar4);
+        break;
+    case MODE_STATS:
+        AddTextPrinterParameterized4(windowId, FONT_SHORT, 5, 3, 0, 0,
+            sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sText_SampleUiMonStats);
+        break;
+    case MODE_OTHER:
+        AddTextPrinterParameterized4(windowId, FONT_SHORT, 5, 3, 0, 0,
+            sSampleUiWindowFontColors[colorIdx], TEXT_SKIP_DRAW, sText_SampleUiMonOther);
+        break;
+    default:
+        break;
+    }
+
+    // Copy pixel buffer to VRAM now that we are done drawing text
     CopyWindowToVram(windowId, COPYWIN_GFX);
 }
 
@@ -1075,18 +1501,40 @@ static void SampleUi_DrawMonIcon(u16 dexNum)
      * `CreateMonIcon' handles all the details of sprite initialization for us. Feel free to dive
      * into the implementation to see the gory details.
      */
-    sSampleUiSavedState->sMonIconSpriteId =
+    sSampleUiState->monIconSpriteId =
             CreateMonIcon(speciesId, SpriteCB_MonIcon, MON_ICON_X, MON_ICON_Y, 4, 0);
     // Set prio to 0 so the icon sprite draws on top of everything
-    gSprites[sSampleUiSavedState->sMonIconSpriteId].oam.priority = 0;
+    gSprites[sSampleUiState->monIconSpriteId].oam.priority = 0;
+}
+
+static void SampleUi_CreateRegionButtons(void)
+{
+    #define BUTTON_START_X 50
+    #define BUTTON_START_Y 184
+    LoadSpritePalette(&sKantoJohtoHoennButtonsSpritePalette);
+    LoadSpritePalette(&sSinnohUnovaKalosButtonsSpritePalette);
+    sSampleUiState->regionButtonSpriteIds[REGION_KANTO] =
+        CreateSprite(&sKantoButtonSpriteTemplate, BUTTON_START_X, BUTTON_START_Y, 0);
+    sSampleUiState->regionButtonSpriteIds[REGION_JOHTO] =
+        CreateSprite(&sJohtoButtonSpriteTemplate, BUTTON_START_X + 70, BUTTON_START_Y, 0);
+    sSampleUiState->regionButtonSpriteIds[REGION_HOENN] =
+        CreateSprite(&sHoennButtonSpriteTemplate, BUTTON_START_X + 2*70, BUTTON_START_Y, 0);
+    sSampleUiState->regionButtonSpriteIds[REGION_SINNOH] =
+        CreateSprite(&sSinnohButtonSpriteTemplate, BUTTON_START_X, BUTTON_START_Y + 40, 0);
+    sSampleUiState->regionButtonSpriteIds[REGION_UNOVA] =
+        CreateSprite(&sUnovaButtonSpriteTemplate, BUTTON_START_X + 70, BUTTON_START_Y + 40, 0);
+    sSampleUiState->regionButtonSpriteIds[REGION_KALOS] =
+        CreateSprite(&sKalosButtonSpriteTemplate, BUTTON_START_X + 2*70, BUTTON_START_Y + 40, 0);
+    #undef BUTTON_START_X
+    #undef BUTTON_START_Y
 }
 
 static void SampleUi_FreeResources(void)
 {
     // Free our data struct and our BG1 tilemap buffer
-    if (sSampleUiSavedState != NULL)
+    if (sSampleUiState != NULL)
     {
-        Free(sSampleUiSavedState);
+        Free(sSampleUiState);
     }
     if (sBg1TilemapBuffer != NULL)
     {
