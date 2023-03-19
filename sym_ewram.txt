@@ -149,4 +149,5 @@
 	.include "src/trainer_hill.o"
 	.include "src/rayquaza_scene.o"
 	.include "src/debug.o"
-	.include "src/sample_ui.o"
+	.include "src/sample_ui_start_here.o"
+	.include "src/sample_ui_sliding_panel.o"
