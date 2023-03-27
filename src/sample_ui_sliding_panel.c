@@ -1216,6 +1216,10 @@ static void SampleUi_FreeResources(void)
     {
         Free(sBg1TilemapBuffer);
     }
+    if (sBg2TilemapBuffer != NULL)
+    {
+        Free(sBg2TilemapBuffer);
+    }
     FreeAllWindowBuffers();
     ResetSpriteData();
 }
