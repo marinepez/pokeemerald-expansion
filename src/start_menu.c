@@ -82,6 +82,7 @@ bool8 (*gMenuCallback)(void);
 // EWRAM
 EWRAM_DATA static u8 sSafariBallsWindowId = 0;
 EWRAM_DATA static u8 sBattlePyramidFloorWindowId = 0;
+EWRAM_DATA static u8 sLionCountWindowId = 0;
 EWRAM_DATA static u8 sStartMenuCursorPos = 0;
 EWRAM_DATA static u8 sNumStartMenuActions = 0;
 EWRAM_DATA static u8 sCurrentStartMenuActions[9] = {0};
@@ -141,6 +142,7 @@ static void Task_WaitForBattleTowerLinkSave(u8 taskId);
 static bool8 FieldCB_ReturnToFieldStartMenu(void);
 
 static const struct WindowTemplate sSafariBallsWindowTemplate = {0, 1, 1, 9, 4, 0xF, 8};
+static const struct WindowTemplate sLionCountWindowTemplate = {0, 1, 1, 9, 4, 0xF, 8};
 
 static const u8 *const sPyramidFloorNames[FRONTIER_STAGES_PER_CHALLENGE + 1] =
 {
@@ -158,6 +160,10 @@ static const struct WindowTemplate sPyramidFloorWindowTemplate_2 = {0, 1, 1, 0xA
 static const struct WindowTemplate sPyramidFloorWindowTemplate_1 = {0, 1, 1, 0xC, 4, 0xF, 8};
 
 static const u8 gText_MenuDebug[] = _("DEBUG");
+static const u8 gText_LionCountFull[] =   _("LIONS: \n1,000,000,000");
+static const u8 gText_LionCount9Digit[] = _("LIONS: \n{STR_VAR_1},{STR_VAR_2},{STR_VAR_3}");
+static const u8 gText_LionCount6Digit[] = _("LIONS: \n{STR_VAR_2},{STR_VAR_3}");
+static const u8 gText_LionCount3Digit[] = _("LIONS: \n{STR_VAR_3}");
 
 static const struct MenuAction sStartMenuItems[] =
 {
@@ -244,6 +250,7 @@ static void InitBattlePyramidRetire(void);
 static void VBlankCB_LinkBattleSave(void);
 static bool32 InitSaveWindowAfterLinkBattle(u8 *par1);
 static void CB2_SaveAfterLinkBattle(void);
+static void ShowLionCountWindow(void);
 static void ShowSaveInfoWindow(void);
 static void RemoveSaveInfoWindow(void);
 static void HideStartMenuWindow(void);
@@ -407,6 +414,43 @@ static void BuildMultiPartnerRoomStartMenu(void)
     AddStartMenuAction(MENU_ACTION_EXIT);
 }
 
+static void ShowLionCountWindow(void)
+{
+    u16 Var1, Var2, Var3;
+    Var1 = VarGet(VAR_BIL_DIGITS_0_TO_3);
+    Var2 = VarGet(VAR_BIL_DIGITS_4_TO_6);
+    Var3 = VarGet(VAR_BIL_DIGITS_7_TO_9);
+
+    sLionCountWindowId = AddWindow(&sLionCountWindowTemplate);
+    PutWindowTilemap(sLionCountWindowId);
+    DrawStdWindowFrame(sLionCountWindowId, FALSE);
+
+    if(Var1 > 999) {
+        StringExpandPlaceholders(gStringVar4, gText_LionCountFull);
+    }
+    else if(Var1 == 0 && Var2 == 0)
+    {
+        ConvertIntToDecimalStringN(gStringVar3, Var3, STR_CONV_MODE_LEFT_ALIGN, 3);
+        StringExpandPlaceholders(gStringVar4, gText_LionCount3Digit);
+    }
+    else if(Var1 == 0)
+    {
+        ConvertIntToDecimalStringN(gStringVar2, Var2, STR_CONV_MODE_LEFT_ALIGN, 3);
+        ConvertIntToDecimalStringN(gStringVar3, Var3, STR_CONV_MODE_LEADING_ZEROS, 3);
+        StringExpandPlaceholders(gStringVar4, gText_LionCount6Digit);
+    }
+    else
+    {
+        ConvertIntToDecimalStringN(gStringVar1, Var1, STR_CONV_MODE_LEFT_ALIGN, 3);
+        ConvertIntToDecimalStringN(gStringVar2, Var2, STR_CONV_MODE_LEADING_ZEROS, 3);
+        ConvertIntToDecimalStringN(gStringVar3, Var3, STR_CONV_MODE_LEADING_ZEROS, 3);
+        StringExpandPlaceholders(gStringVar4, gText_LionCount9Digit);
+    }
+
+    AddTextPrinterParameterized(sLionCountWindowId, FONT_NORMAL, gStringVar4, 0, 1, TEXT_SKIP_DRAW, NULL);
+    CopyWindowToVram(sLionCountWindowId, COPYWIN_GFX);
+}
+
 static void ShowSafariBallsWindow(void)
 {
     sSafariBallsWindowId = AddWindow(&sSafariBallsWindowTemplate);
@@ -446,6 +490,8 @@ static void RemoveExtraStartMenuWindows(void)
         ClearStdWindowAndFrameToTransparent(sBattlePyramidFloorWindowId, FALSE);
         RemoveWindow(sBattlePyramidFloorWindowId);
     }
+    ClearStdWindowAndFrameToTransparent(sLionCountWindowId, FALSE);
+    RemoveWindow(sLionCountWindowId);
 }
 
 static bool32 PrintStartMenuActions(s8 *pIndex, u32 count)
@@ -503,6 +549,7 @@ static bool32 InitStartMenuStep(void)
             ShowSafariBallsWindow();
         if (InBattlePyramid())
             ShowPyramidFloorWindow();
+        ShowLionCountWindow();
         sInitStartMenuData[0]++;
         break;
     case 4:

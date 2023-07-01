@@ -70,22 +70,64 @@ Debug_FlagsNotSetBattleConfigMessage_Text:
 	.string "'include/config/battle.h'!$"
 
 Debug_Script_1::
+	message DecrementedLionCounterBy450_Text
+	waitmessage
+	waitbuttonpress
+	releaseall
 	end
 
 Debug_Script_2::
+	message DecrementedLionCounterBy400450_Text
+	waitmessage
+	waitbuttonpress
+	releaseall
 	end
 
 Debug_Script_3::
+	message DecrementedLionCounterBy300400450_Text
+	waitmessage
+	waitbuttonpress
+	releaseall
 	end
 
 Debug_Script_4::
+	message SetCounterTo1Bil_Text
+	waitmessage
+	waitbuttonpress
+	releaseall
 	end
 
 Debug_Script_5::
+	message SetCounterTo123456789_Text
+	waitmessage
+	waitbuttonpress
+	releaseall
 	end
 
 Debug_Script_6::
+	message SetCounterTo600000_Text
+	waitmessage
+	waitbuttonpress
+	releaseall
 	end
+
+DecrementedLionCounterBy450_Text:
+	.string "Decremented counter by 450$"
+
+DecrementedLionCounterBy400450_Text:
+	.string "Decremented counter by 400450$"
+
+DecrementedLionCounterBy300400450_Text:
+	.string "Decremented counter by 300400450$"
+
+SetCounterTo1Bil_Text:
+	.string "Set Counter to 1 bil$"
+
+SetCounterTo123456789_Text:
+	.string "Set Counter to 123456789$"
+
+SetCounterTo600000_Text:
+	.string "Set Counter to 600000$"
 
 Debug_Script_7::
 	end

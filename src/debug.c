@@ -58,6 +58,7 @@
 #include "constants/species.h"
 #include "constants/weather.h"
 #include "save.h"
+#include "lion_counter.h"
 
 #if DEBUG_OVERWORLD_MENU == TRUE
 // *******************************
@@ -1354,36 +1355,42 @@ static void DebugAction_Util_Script_1(u8 taskId)
 {
     Debug_DestroyMenu_Full(taskId);
     LockPlayerFieldControls();
+    LionCounter_DecrementLionCounter(450);
     ScriptContext_SetupScript(Debug_Script_1);
 }
 static void DebugAction_Util_Script_2(u8 taskId)
 {
     Debug_DestroyMenu_Full(taskId);
     LockPlayerFieldControls();
+    LionCounter_DecrementLionCounter(400450);
     ScriptContext_SetupScript(Debug_Script_2);
 }
 static void DebugAction_Util_Script_3(u8 taskId)
 {
     Debug_DestroyMenu_Full(taskId);
     LockPlayerFieldControls();
+    LionCounter_DecrementLionCounter(300400450);
     ScriptContext_SetupScript(Debug_Script_3);
 }
 static void DebugAction_Util_Script_4(u8 taskId)
 {
     Debug_DestroyMenu_Full(taskId);
     LockPlayerFieldControls();
+    LionCounter_SetLionCounter(1000,000,000);
     ScriptContext_SetupScript(Debug_Script_4);
 }
 static void DebugAction_Util_Script_5(u8 taskId)
 {
     Debug_DestroyMenu_Full(taskId);
     LockPlayerFieldControls();
+    LionCounter_SetLionCounter(123,456,789);
     ScriptContext_SetupScript(Debug_Script_5);
 }
 static void DebugAction_Util_Script_6(u8 taskId)
 {
     Debug_DestroyMenu_Full(taskId);
     LockPlayerFieldControls();
+    LionCounter_SetLionCounter(0,600,000);
     ScriptContext_SetupScript(Debug_Script_6);
 }
 static void DebugAction_Util_Script_7(u8 taskId)
