@@ -4018,6 +4018,10 @@ Cry_Enamorus::
 .endif
 
 	.align 2
+Cry_Lion::
+	.incbin "sound/direct_sound_samples/cries/lion.bin"
+
+	.align 2
 Cry_VenusaurMega::
 	.incbin "sound/direct_sound_samples/cries/mega_venusaur.bin"
 

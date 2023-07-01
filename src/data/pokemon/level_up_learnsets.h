@@ -18187,6 +18187,25 @@ static const struct LevelUpMove sEnamorusLevelUpLearnset[] = {
     LEVEL_UP_END
 };
 #endif
+static const struct LevelUpMove sLionLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_MOVE( 1, MOVE_LEER),
+    LEVEL_UP_MOVE( 1, MOVE_WORK_UP),
+    LEVEL_UP_MOVE( 5, MOVE_SCRATCH),
+    LEVEL_UP_MOVE( 8, MOVE_WORK_UP),
+    LEVEL_UP_MOVE(11, MOVE_HEADBUTT),
+    LEVEL_UP_MOVE(15, MOVE_NOBLE_ROAR),
+    LEVEL_UP_MOVE(20, MOVE_TAKE_DOWN),
+    LEVEL_UP_MOVE(23, MOVE_BITE),
+    LEVEL_UP_MOVE(28, MOVE_ENDEAVOR),
+    LEVEL_UP_MOVE(33, MOVE_ROAR),
+    LEVEL_UP_MOVE(38, MOVE_SLASH),
+    LEVEL_UP_MOVE(42, MOVE_CRUNCH),
+    LEVEL_UP_MOVE(48, MOVE_REST),
+    LEVEL_UP_MOVE(51, MOVE_SNORE),
+    LEVEL_UP_MOVE(57, MOVE_HELPING_HAND),
+    LEVEL_UP_END
+};
 
 static const struct LevelUpMove sRattataAlolanLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_TACKLE),

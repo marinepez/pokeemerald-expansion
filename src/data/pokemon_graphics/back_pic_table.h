@@ -915,6 +915,7 @@ const struct CompressedSpriteSheet gMonBackPicTable[] =
     SPECIES_SPRITE(SNEASLER, gMonBackPic_Sneasler),
     SPECIES_SPRITE(OVERQWIL, gMonBackPic_Overqwil),
     SPECIES_SPRITE(ENAMORUS, gMonBackPic_Enamorus),
+    SPECIES_SPRITE(LION, gMonBackPic_Lion),
 #endif
 
     SPECIES_SPRITE(VENUSAUR_MEGA, gMonBackPic_VenusaurMega),
@@ -1361,4 +1362,5 @@ const struct CompressedSpriteSheet gMonBackPicTableFemale[] =
 #if P_GEN_6_POKEMON == TRUE
     SPECIES_SPRITE(PYROAR, gMonBackPic_PyroarF),
 #endif
+    SPECIES_SPRITE(LION, gMonBackPic_LionF),
 };

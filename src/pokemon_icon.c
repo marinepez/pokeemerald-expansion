@@ -941,6 +941,7 @@ const u8 *const gMonIconTable[] =
     [SPECIES_SNEASLER] = gMonIcon_Sneasler,
     [SPECIES_OVERQWIL] = gMonIcon_Overqwil,
     [SPECIES_ENAMORUS] = gMonIcon_Enamorus,
+    [SPECIES_LION] = gMonIcon_Lion,
 #endif
     [SPECIES_VENUSAUR_MEGA] = gMonIcon_VenusaurMega,
     [SPECIES_CHARIZARD_MEGA_X] = gMonIcon_CharizardMegaX,
@@ -1326,6 +1327,7 @@ const u8 *const gMonIconTableFemale[] =
 #if P_GEN_6_POKEMON == TRUE
     [SPECIES_PYROAR] = gMonIcon_PyroarF,
 #endif
+    [SPECIES_LION] = gMonIcon_LionF,
 };
 
 const u8 gMonIconPaletteIndices[] =
@@ -2235,6 +2237,7 @@ const u8 gMonIconPaletteIndices[] =
     [SPECIES_SNEASLER] = 2,
     [SPECIES_OVERQWIL] = 2,
     [SPECIES_ENAMORUS] = 1,
+    [SPECIES_LION] = 2,
     [SPECIES_VENUSAUR_MEGA] = 1,
     [SPECIES_CHARIZARD_MEGA_X] = 0,
     [SPECIES_CHARIZARD_MEGA_Y] = 0,
@@ -2570,6 +2573,7 @@ const u8 gMonIconPaletteIndicesFemale[] =
 #if P_GEN_8_POKEMON == TRUE
     [SPECIES_BASCULEGION] = 0,
 #endif
+    [SPECIES_LION] = 2,
 };
 
 const struct SpritePalette gMonIconPaletteTable[] =

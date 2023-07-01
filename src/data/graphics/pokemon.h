@@ -926,6 +926,8 @@ const u32 gMonFrontPic_Basculegion[] = INCBIN_U32("graphics/pokemon/basculegion/
 const u32 gMonFrontPic_Sneasler[] = INCBIN_U32("graphics/pokemon/sneasler/front.4bpp.lz");
 const u32 gMonFrontPic_Overqwil[] = INCBIN_U32("graphics/pokemon/overqwil/front.4bpp.lz");
 const u32 gMonFrontPic_Enamorus[] = INCBIN_U32("graphics/pokemon/enamorus/front.4bpp.lz");
+const u32 gMonFrontPic_Lion[] = INCBIN_U32("graphics/pokemon/lion/anim_front.4bpp.lz");
+const u32 gMonFrontPic_LionF[] = INCBIN_U32("graphics/pokemon/lion/anim_frontf.4bpp.lz");
 #endif
 const u32 gMonFrontPic_VenusaurMega[] = INCBIN_U32("graphics/pokemon/venusaur/mega/front.4bpp.lz");
 const u32 gMonFrontPic_CharizardMegaX[] = INCBIN_U32("graphics/pokemon/charizard/mega_x/front.4bpp.lz");
@@ -2138,6 +2140,8 @@ const u32 gMonBackPic_Basculegion[] = INCBIN_U32("graphics/pokemon/basculegion/b
 const u32 gMonBackPic_Sneasler[] = INCBIN_U32("graphics/pokemon/sneasler/back.4bpp.lz");
 const u32 gMonBackPic_Overqwil[] = INCBIN_U32("graphics/pokemon/overqwil/back.4bpp.lz");
 const u32 gMonBackPic_Enamorus[] = INCBIN_U32("graphics/pokemon/enamorus/back.4bpp.lz");
+const u32 gMonBackPic_Lion[] = INCBIN_U32("graphics/pokemon/lion/back.4bpp.lz");
+const u32 gMonBackPic_LionF[] = INCBIN_U32("graphics/pokemon/lion/backf.4bpp.lz");
 #endif
 const u32 gMonBackPic_VenusaurMega[] = INCBIN_U32("graphics/pokemon/venusaur/mega/back.4bpp.lz");
 const u32 gMonBackPic_CharizardMegaX[] = INCBIN_U32("graphics/pokemon/charizard/mega_x/back.4bpp.lz");
@@ -3344,6 +3348,7 @@ const u32 gMonPalette_Basculegion[] = INCBIN_U32("graphics/pokemon/basculegion/n
 const u32 gMonPalette_Sneasler[] = INCBIN_U32("graphics/pokemon/sneasler/normal.gbapal.lz");
 const u32 gMonPalette_Overqwil[] = INCBIN_U32("graphics/pokemon/overqwil/normal.gbapal.lz");
 const u32 gMonPalette_Enamorus[] = INCBIN_U32("graphics/pokemon/enamorus/normal.gbapal.lz");
+const u32 gMonPalette_Lion[] = INCBIN_U32("graphics/pokemon/lion/normal.gbapal.lz");
 #endif
 const u32 gMonPalette_VenusaurMega[] = INCBIN_U32("graphics/pokemon/venusaur/mega/normal.gbapal.lz");
 const u32 gMonPalette_CharizardMegaX[] = INCBIN_U32("graphics/pokemon/charizard/mega_x/normal.gbapal.lz");
@@ -4577,6 +4582,7 @@ const u32 gMonShinyPalette_Basculegion[] = INCBIN_U32("graphics/pokemon/basculeg
 const u32 gMonShinyPalette_Sneasler[] = INCBIN_U32("graphics/pokemon/sneasler/shiny.gbapal.lz");
 const u32 gMonShinyPalette_Overqwil[] = INCBIN_U32("graphics/pokemon/overqwil/shiny.gbapal.lz");
 const u32 gMonShinyPalette_Enamorus[] = INCBIN_U32("graphics/pokemon/enamorus/shiny.gbapal.lz");
+const u32 gMonShinyPalette_Lion[] = INCBIN_U32("graphics/pokemon/lion/shiny.gbapal.lz");
 #endif
 const u32 gMonShinyPalette_VenusaurMega[] = INCBIN_U32("graphics/pokemon/venusaur/mega/shiny.gbapal.lz");
 const u32 gMonShinyPalette_CharizardMegaX[] = INCBIN_U32("graphics/pokemon/charizard/mega_x/shiny.gbapal.lz");
@@ -5804,6 +5810,8 @@ const u8 gMonIcon_Basculegion[] = INCBIN_U8("graphics/pokemon/basculegion/icon.4
 const u8 gMonIcon_Sneasler[] = INCBIN_U8("graphics/pokemon/sneasler/icon.4bpp");
 const u8 gMonIcon_Overqwil[] = INCBIN_U8("graphics/pokemon/overqwil/icon.4bpp");
 const u8 gMonIcon_Enamorus[] = INCBIN_U8("graphics/pokemon/enamorus/icon.4bpp");
+const u8 gMonIcon_Lion[] = INCBIN_U8("graphics/pokemon/lion/icon.4bpp");
+const u8 gMonIcon_LionF[] = INCBIN_U8("graphics/pokemon/lion/iconf.4bpp");
 #endif
 const u8 gMonIcon_VenusaurMega[] = INCBIN_U8("graphics/pokemon/venusaur/mega/icon.4bpp");
 const u8 gMonIcon_CharizardMegaX[] = INCBIN_U8("graphics/pokemon/charizard/mega_x/icon.4bpp");
@@ -7017,4 +7025,5 @@ const u8 gMonFootprint_Calyrex[] = INCBIN_U8("graphics/pokemon/calyrex/footprint
 //const u8 gMonFootprint_Sneasler[] = INCBIN_U8("graphics/pokemon/sneasler/footprint.1bpp");
 //const u8 gMonFootprint_Overqwil[] = INCBIN_U8("graphics/pokemon/overqwil/footprint.1bpp");
 //const u8 gMonFootprint_Enamorus[] = INCBIN_U8("graphics/pokemon/enamorus/footprint.1bpp");
+const u8 gMonFootprint_Lion[] = INCBIN_U8("graphics/pokemon/lion/footprint.1bpp");
 #endif

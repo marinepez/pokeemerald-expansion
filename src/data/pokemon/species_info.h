@@ -21045,6 +21045,29 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
         .flags = SPECIES_FLAG_LEGENDARY,
     },
+
+    [SPECIES_LION] =
+    {
+        .baseHP        = 86,
+        .baseAttack    = 68,
+        .baseDefense   = 72,
+        .baseSpeed     = 106,
+        .baseSpAttack  = 20,
+        .baseSpDefense = 66,
+        .types = { TYPE_NORMAL, TYPE_NORMAL},
+        .catchRate = 65,
+        .expYield = 177,
+        .evYield_Attack  = 2,
+        .genderRatio = PERCENT_FEMALE(66),
+        .eggCycles = 20,
+        .friendship = STANDARD_FRIENDSHIP,
+        .growthRate = GROWTH_MEDIUM_SLOW,
+        .eggGroups = { EGG_GROUP_FIELD, EGG_GROUP_FIELD},
+        .abilities = {ABILITY_RIVALRY, ABILITY_UNNERVE, ABILITY_MOXIE},
+        .bodyColor = BODY_COLOR_BROWN,
+        .noFlip = FALSE,
+        .flags = SPECIES_FLAG_GENDER_DIFFERENCE,
+    },
 #endif
 
     [SPECIES_VENUSAUR_MEGA] =

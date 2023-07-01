@@ -915,6 +915,7 @@ const struct CompressedSpriteSheet gMonFrontPicTable[] =
     SPECIES_SPRITE(SNEASLER, gMonFrontPic_Sneasler),
     SPECIES_SPRITE(OVERQWIL, gMonFrontPic_Overqwil),
     SPECIES_SPRITE(ENAMORUS, gMonFrontPic_Enamorus),
+    SPECIES_SPRITE(LION, gMonFrontPic_Lion),
 #endif
     SPECIES_SPRITE(VENUSAUR_MEGA, gMonFrontPic_VenusaurMega),
     SPECIES_SPRITE(CHARIZARD_MEGA_X, gMonFrontPic_CharizardMegaX),
@@ -1360,4 +1361,5 @@ const struct CompressedSpriteSheet gMonFrontPicTableFemale[] =
 #if P_GEN_6_POKEMON == TRUE
     SPECIES_SPRITE(PYROAR, gMonFrontPic_PyroarF),
 #endif
+    SPECIES_SPRITE(LION, gMonFrontPic_LionF),
 };

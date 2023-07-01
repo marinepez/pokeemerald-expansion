@@ -915,6 +915,7 @@ const u16 *const gTeachableLearnsets[NUM_SPECIES] =
     [SPECIES_SNEASLER] = sSneaslerTeachableLearnset,
     [SPECIES_OVERQWIL] = sOverqwilTeachableLearnset,
     [SPECIES_ENAMORUS] = sEnamorusTeachableLearnset,
+    [SPECIES_LION] = sLionTeachableLearnset,
 #endif
     // Megas
     [SPECIES_VENUSAUR_MEGA] = sVenusaurTeachableLearnset,

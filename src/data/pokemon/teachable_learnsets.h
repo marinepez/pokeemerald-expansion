@@ -32097,6 +32097,9 @@ static const u16 sEnamorusTeachableLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #endif
+static const u16 sLionTeachableLearnset[] = {
+    MOVE_UNAVAILABLE,
+};
 
 static const u16 sRattataAlolanTeachableLearnset[] = {
     MOVE_BLIZZARD,

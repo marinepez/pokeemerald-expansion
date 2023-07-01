@@ -993,6 +993,9 @@ extern const u32 gMonFrontPic_Basculegion[];
 extern const u32 gMonFrontPic_Sneasler[];
 extern const u32 gMonFrontPic_Overqwil[];
 extern const u32 gMonFrontPic_Enamorus[];
+extern const u32 gMonFrontPic_Lion[];
+extern const u32 gMonFrontPic_LionF[];
+
 #endif
 extern const u32 gMonFrontPic_VenusaurMega[];
 extern const u32 gMonFrontPic_CharizardMegaX[];
@@ -2207,6 +2210,8 @@ extern const u32 gMonBackPic_Basculegion[];
 extern const u32 gMonBackPic_Sneasler[];
 extern const u32 gMonBackPic_Overqwil[];
 extern const u32 gMonBackPic_Enamorus[];
+extern const u32 gMonBackPic_Lion[];
+extern const u32 gMonBackPic_LionF[];
 #endif
 extern const u32 gMonBackPic_VenusaurMega[];
 extern const u32 gMonBackPic_CharizardMegaX[];
@@ -3413,6 +3418,7 @@ extern const u32 gMonPalette_Basculegion[];
 extern const u32 gMonPalette_Sneasler[];
 extern const u32 gMonPalette_Overqwil[];
 extern const u32 gMonPalette_Enamorus[];
+extern const u32 gMonPalette_Lion[];
 #endif
 extern const u32 gMonPalette_VenusaurMega[];
 extern const u32 gMonPalette_CharizardMegaX[];
@@ -4646,6 +4652,7 @@ extern const u32 gMonShinyPalette_Basculegion[];
 extern const u32 gMonShinyPalette_Sneasler[];
 extern const u32 gMonShinyPalette_Overqwil[];
 extern const u32 gMonShinyPalette_Enamorus[];
+extern const u32 gMonShinyPalette_Lion[];
 #endif
 extern const u32 gMonShinyPalette_VenusaurMega[];
 extern const u32 gMonShinyPalette_CharizardMegaX[];
@@ -5873,6 +5880,8 @@ extern const u8 gMonIcon_Basculegion[];
 extern const u8 gMonIcon_Sneasler[];
 extern const u8 gMonIcon_Overqwil[];
 extern const u8 gMonIcon_Enamorus[];
+extern const u8 gMonIcon_Lion[];
+extern const u8 gMonIcon_LionF[];
 #endif
 extern const u8 gMonIcon_VenusaurMega[];
 extern const u8 gMonIcon_CharizardMegaX[];
@@ -7086,6 +7095,7 @@ extern const u8 gMonFootprint_Calyrex[];
 //extern const u8 gMonFootprint_Sneasler[];
 //extern const u8 gMonFootprint_Overqwil[];
 //extern const u8 gMonFootprint_Enamorus[];
+extern const u8 gMonFootprint_Lion[];
 #endif
 
 // trainer sprites
