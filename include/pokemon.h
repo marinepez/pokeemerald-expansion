@@ -127,12 +127,12 @@ struct PokemonSubstruct2
     /*0x03*/ u8 speedEV;
     /*0x04*/ u8 spAttackEV;
     /*0x05*/ u8 spDefenseEV;
-    /*0x06*/ u8 cool;
-    /*0x07*/ u8 beauty;
-    /*0x08*/ u8 cute;
-    /*0x09*/ u8 smart;
-    /*0x0A*/ u8 tough;
-    /*0x0B*/ u8 sheen;
+    /*0x06*/// u8 cool;
+    /*0x07*/// u8 beauty;
+    /*0x08*/// u8 cute;
+    /*0x09*/// u8 smart;
+    /*0x0A*/// u8 tough;
+    /*0x0B*/// u8 sheen;
 }; /* size = 12 */
 
 struct PokemonSubstruct3
@@ -204,17 +204,17 @@ union PokemonSubstruct
 struct BoxPokemon
 {
     u32 personality;
-    u32 otId;
+    u32 otId; //REMOVE - replace with IsShiny
     u8 nickname[POKEMON_NAME_LENGTH];
-    u8 language;
+    u8 language; //REMOVE
     u8 isBadEgg:1;
     u8 hasSpecies:1;
     u8 isEgg:1;
     u8 unused:5;
-    u8 otName[PLAYER_NAME_LENGTH];
-    u8 markings;
-    u16 checksum;
-    u16 unknown;
+    u8 otName[PLAYER_NAME_LENGTH]; //REMOVE
+    u8 markings; //REMOVE?
+    u16 checksum; //REMOVE
+    u16 unknown;  //REMOVE?
 
     union
     {
