@@ -2810,23 +2810,15 @@ static void DebugAction_Give_FillPC(u8 taskId) //Credit: Sierraffinity
     struct BoxPokemon boxMon;
     u16 species = SPECIES_BULBASAUR;
 
-    personality = Random32();
-
-    CreateBoxMon(&boxMon,
-                 species,
-                 100,
-                 32,
-                 personality,
-                 0,
-                 OT_ID_PLAYER_ID,
-                 0);
-
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
     {
         for (boxPosition = 0; boxPosition < IN_BOX_COUNT; boxPosition++)
         {
             if (!GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SANITY_HAS_SPECIES))
             {
+                CreateBoxMon(&boxMon, species, 100, 31,
+                            0, 0, OT_ID_PLAYER_ID, 0);
+
                 gPokemonStoragePtr->boxes[boxId][boxPosition] = boxMon;
                 SetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SPECIES, &species);
                 GetSetPokedexFlag(species, FLAG_SET_SEEN);
