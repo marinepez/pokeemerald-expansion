@@ -105,51 +105,41 @@ enum {
 struct BoxPokemon
 {
 /*0x00*/ u32 personality;
-/*0x04*/ //u32 otId; //REMOVE
-/*0x08*/ u8 nickname[POKEMON_NAME_LENGTH];
-/*0x12*/ u8 language:3; // 7 languages - REMOVE?
+/*0x04*/ u8 nickname[POKEMON_NAME_LENGTH];
+/*0x0E*/ u8 language:3; // 7 languages - REMOVE?
          u8 pokerus:5;  // REMOVE: 1-0xF is the timer. 0x10 is set when timer runs out
-/*0x13*/ u8 isBadEgg:1;
+/*0x0F*/ u8 isBadEgg:1;
          u8 hasSpecies:1;
          u8 isEgg:1;
          u8 eventLegal:1;   // REMOVE: controls Mew & Deoxys obedience; if set, Pokémon is a fateful encounter in Gen 4+; set for in-game event island legendaries, some distributed events, and Pokémon from XD: Gale of Darkness.
-         u8 markings:4; // 15 combinations as per sAnims_MarkingCombo
-/*0x14*/ u8 otName[PLAYER_NAME_LENGTH]; //REMOVE
-/*0x1B*/ u8 metLocation;    // REMOVE: better to not limit the number of map sections. this is actually used for friendship growth, too
-/*0x1C*/ u32 species:11;    // up to 2047 species. could probably go down to 10 bits...
+         u8 markings:4;     // 15 combinations as per sAnims_MarkingCombo
+/*0x10*/ u8 metLocation;    // REMOVE: better to not limit the number of map sections. this is actually used for friendship growth, too
+/*0x11*/ u32 species:11;    // up to 2047 species. could probably go down to 10 bits...
          u32 heldItem:10;   // up to 1023 items. could probably be 9 bits if hold items are limited to IDs below 511
          u32 metLevel:7;    // REMOVE
          u32 metGame:4;     // REMOVE
-/*0x20*/ u32 experience:21;
-         u32 spAttackIV:5;  //REMOVE
-         u32 spDefenseIV:5; //REMOVE
-         u32 otGender:1;    //REMOVE?
-/*0x24*/ u32 move1:10;  // 1023 moves
-         u32 move2:10;  // bits 11-20
-         u32 move3:10;  // bits 21-30
+/*0x15*/ u32 experience:21;
+         u32 move1:10;
+         u32 unused22:1;    
+/*0x19*/ u32 move2:10;  // 1023 moves
+         u32 move3:10;  // bits 11-20
+         u32 move4:10;  // bits 21-30
          u32 unused24:2;
-/*0x28*/ u16 move4:10;  // bits 31-40
-         u16 hpIV:5;      //REMOVE   // 41-45 
-         u16 unused22:1;    
-/*0x2A*/ u16 attackIV:5;  //REMOVE   // 46-50
-         u16 defenseIV:5; //REMOVE   // 51-55
-         u16 speedIV:5;   //REMOVE   // 56-60
-         u16 unused2A:1;
-/*0x2C*/ u8 ppBonuses;
-/*0x2D*/ u8 friendship;
-/*0x2E*/ u8 pokeball:6; //REDUCE?
+/*0x1D*/ u8 ppBonuses;
+/*0x1E*/ u8 friendship;
+/*0x1F*/ u8 pokeball:6;
          u8 abilityNum:2;
-/*0x2F*/ u8 hpEV;
-/*0x30*/ u8 attackEV;
-/*0x31*/ u8 defenseEV;
-/*0x32*/ u8 speedEV;
-/*0x33*/ u8 spAttackEV;
-/*0x34*/ u8 spDefenseEV; 
-/*0x35*/ u8 pp1:6;
+/*0x20*/ u8 hpEV;
+/*0x21*/ u8 attackEV;
+/*0x22*/ u8 defenseEV;
+/*0x23*/ u8 speedEV;
+/*0x24*/ u8 spAttackEV;
+/*0x25*/ u8 spDefenseEV; 
+/*0x26*/ u8 pp1:6;
          u8 pp2:6;
          u8 pp3:6;
          u8 pp4:6;
-}; /* size = 0x3C (60) bytes */
+}; /* size = 0x2C (44) bytes */
 
 struct Pokemon
 {

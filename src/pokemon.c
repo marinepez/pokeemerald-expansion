@@ -4778,25 +4778,25 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         retVal = boxMon->pokeball;
         break;
     case MON_DATA_OT_GENDER:
-        retVal = boxMon->otGender;
+        retVal = MALE;
         break;
     case MON_DATA_HP_IV:
-        retVal = boxMon->hpIV;
+        retVal = MAX_PER_STAT_IVS;
         break;
     case MON_DATA_ATK_IV:
-        retVal = boxMon->attackIV;
+        retVal = MAX_PER_STAT_IVS;
         break;
     case MON_DATA_DEF_IV:
-        retVal = boxMon->defenseIV;
+        retVal = MAX_PER_STAT_IVS;
         break;
     case MON_DATA_SPEED_IV:
-        retVal = boxMon->speedIV;
+        retVal = MAX_PER_STAT_IVS;
         break;
     case MON_DATA_SPATK_IV:
-        retVal = boxMon->spAttackIV;
+        retVal = MAX_PER_STAT_IVS;
         break;
     case MON_DATA_SPDEF_IV:
-        retVal = boxMon->spDefenseIV;
+        retVal = MAX_PER_STAT_IVS;
         break;
     case MON_DATA_IS_EGG:
         retVal = boxMon->isEgg;
@@ -4867,12 +4867,12 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
             retVal = SPECIES_EGG;
         break;
     case MON_DATA_IVS:
-        retVal = boxMon->hpIV
-              | (boxMon->attackIV << 5)
-              | (boxMon->defenseIV << 10)
-              | (boxMon->speedIV << 15)
-              | (boxMon->spAttackIV << 20)
-              | (boxMon->spDefenseIV << 25);
+        retVal = MAX_PER_STAT_IVS
+              | (MAX_PER_STAT_IVS << 5)
+              | (MAX_PER_STAT_IVS << 10)
+              | (MAX_PER_STAT_IVS << 15)
+              | (MAX_PER_STAT_IVS << 20)
+              | (MAX_PER_STAT_IVS << 25);
         break;
     case MON_DATA_KNOWN_MOVES:
         if (boxMon->species && !boxMon->isEgg)
@@ -4986,9 +4986,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     case MON_DATA_OT_NAME:
     {
-        s32 i;
+        /*s32 i;
         for (i = 0; i < PLAYER_NAME_LENGTH; i++)
-            boxMon->otName[i] = data[i];
+            boxMon->otName[i] = data[i];*/
         break;
     }
     case MON_DATA_MARKINGS:
@@ -5103,25 +5103,25 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     }
     case MON_DATA_OT_GENDER:
-        SET32(boxMon->otGender);
+        //SET32(boxMon->otGender);
         break;
     case MON_DATA_HP_IV:
-        SET32(boxMon->hpIV);
+        //SET32(boxMon->hpIV);
         break;
     case MON_DATA_ATK_IV:
-        SET32(boxMon->attackIV);
+        //SET32(boxMon->attackIV);
         break;
     case MON_DATA_DEF_IV:
-        SET32(boxMon->defenseIV);
+        //SET32(boxMon->defenseIV);
         break;
     case MON_DATA_SPEED_IV:
-        SET32(boxMon->speedIV);
+        //SET32(boxMon->speedIV);
         break;
     case MON_DATA_SPATK_IV:
-        SET32(boxMon->spAttackIV);
+        //SET32(boxMon->spAttackIV);
         break;
     case MON_DATA_SPDEF_IV:
-        SET32(boxMon->spDefenseIV);
+        //SET32(boxMon->spDefenseIV);
         break;
     case MON_DATA_IS_EGG:
         SET8(boxMon->isEgg);
@@ -5192,13 +5192,13 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     case MON_DATA_IVS:
     {
-        u32 ivs = data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
+        /*u32 ivs = data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
         boxMon->hpIV = ivs & MAX_IV_MASK;
         boxMon->attackIV = (ivs >> 5) & MAX_IV_MASK;
         boxMon->defenseIV = (ivs >> 10) & MAX_IV_MASK;
         boxMon->speedIV = (ivs >> 15) & MAX_IV_MASK;
         boxMon->spAttackIV = (ivs >> 20) & MAX_IV_MASK;
-        boxMon->spDefenseIV = (ivs >> 25) & MAX_IV_MASK;
+        boxMon->spDefenseIV = (ivs >> 25) & MAX_IV_MASK;*/
         break;
     }
     default:
