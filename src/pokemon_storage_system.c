@@ -1747,12 +1747,17 @@ void ResetPokemonStorageSystem(void)
     }
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
     {
-        u8 *dest = StringCopy(GetBoxNamePtr(boxId), gText_Box);
-        ConvertIntToDecimalStringN(dest, boxId + 1, STR_CONV_MODE_LEFT_ALIGN, 2);
+        u8 *dest = GetBoxNamePtr(boxId);
+        dest = ConvertIntToDecimalStringN(dest, (boxId * 30) + 1, STR_CONV_MODE_LEFT_ALIGN, 3);
+        dest = StringAppend(dest, gText_Dash);
+        if(boxId < 29)
+            ConvertIntToDecimalStringN(dest, (boxId + 1) * 30, STR_CONV_MODE_LEFT_ALIGN, 3);
+        else
+            ConvertIntToDecimalStringN(dest, SPECIES_CALYREX, STR_CONV_MODE_LEFT_ALIGN, 3);
     }
 
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
-        SetBoxWallpaper(boxId, boxId % (MAX_DEFAULT_WALLPAPER + 1));
+        SetBoxWallpaper(boxId, WALLPAPER_PLAIN);
 
     ResetWaldaWallpaper();
 }
@@ -6411,7 +6416,7 @@ static void SetPlacedMonData(u8 boxId, u8 position)
     }
     else
     {
-        BoxMonRestorePP(&sStorage->movingMon.box);
+        //BoxMonRestorePP(&sStorage->movingMon.box);
         SetBoxMonAt(boxId, position, &sStorage->movingMon.box);
     }
 }

@@ -2824,6 +2824,8 @@ static void DebugAction_Give_FillPC(u8 taskId) //Credit: Sierraffinity
                 GetSetPokedexFlag(species, FLAG_SET_SEEN);
                 GetSetPokedexFlag(species, FLAG_SET_CAUGHT);
                 species++;
+
+                if(species > SPECIES_CALYREX) break;
             }
         }
     }

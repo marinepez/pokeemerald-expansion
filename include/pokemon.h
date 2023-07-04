@@ -105,55 +105,48 @@ enum {
 struct BoxPokemon
 {
 /*0x00*/ u32 personality;
-/*0x04*/ u8 nickname[POKEMON_NAME_LENGTH];
-/*0x0E*/ u8 language:3; // 7 languages - REMOVE?
-         u8 pokerus:5;  // REMOVE: 1-0xF is the timer. 0x10 is set when timer runs out
-/*0x0F*/ u8 isBadEgg:1;
-         u8 hasSpecies:1;
+/*0x04*/ u32 status;        //Does this need to be a u32???
+/*0x08*/ u32 species:11;    // up to 2047 species
+         u32 experience:21;
+/*0x0C*/ u32 heldItem:10;   // up to 1023 items
+         u32 hp:10;
+         u32 maxHP:10;
+         u32 abilityNum:2;
+/*0x10*/ u8 isBadEgg:1;
          u8 isEgg:1;
-         u8 eventLegal:1;   // REMOVE: controls Mew & Deoxys obedience; if set, Pokémon is a fateful encounter in Gen 4+; set for in-game event island legendaries, some distributed events, and Pokémon from XD: Gale of Darkness.
-         u8 markings:4;     // 15 combinations as per sAnims_MarkingCombo
-/*0x10*/ u8 metLocation;    // REMOVE: better to not limit the number of map sections. this is actually used for friendship growth, too
-/*0x11*/ u32 species:11;    // up to 2047 species. could probably go down to 10 bits...
-         u32 heldItem:10;   // up to 1023 items. could probably be 9 bits if hold items are limited to IDs below 511
-         u32 metLevel:7;    // REMOVE
-         u32 metGame:4;     // REMOVE
-/*0x15*/ u32 experience:21;
-         u32 move1:10;
-         u32 unused22:1;    
-/*0x19*/ u32 move2:10;  // 1023 moves
-         u32 move3:10;  // bits 11-20
-         u32 move4:10;  // bits 21-30
-         u32 unused24:2;
-/*0x1D*/ u8 ppBonuses;
-/*0x1E*/ u8 friendship;
-/*0x1F*/ u8 pokeball:6;
-         u8 abilityNum:2;
-/*0x20*/ u8 hpEV;
-/*0x21*/ u8 attackEV;
-/*0x22*/ u8 defenseEV;
-/*0x23*/ u8 speedEV;
-/*0x24*/ u8 spAttackEV;
-/*0x25*/ u8 spDefenseEV; 
-/*0x26*/ u8 pp1:6;
-         u8 pp2:6;
-         u8 pp3:6;
-         u8 pp4:6;
-}; /* size = 0x2C (44) bytes */
+         u8 hasSpecies:1;
+         u8 markings:4;    // 15 combinations as per sAnims_MarkingCombo
+         u8 unused:1;
+/*0x11*/ u8 level;         // Consider moving back to Pokemon struct to save space
+/*0x12*/ u16 move1:10;
+         u16 pp1:6;
+/*0x14*/ u16 move2:10;     // 1023 moves
+         u16 pp2:6;
+/*0x16*/ u16 move3:10;
+         u16 pp3:6;
+/*0x18*/ u16 move4:10;
+         u16 pp4:6;
+/*0x1A*/ u8 ppBonuses;
+/*0x1B*/ u8 friendship;
+/*0x1C*/ u8 hpEV;
+/*0x1D*/ u8 attackEV;
+/*0x1E*/ u8 defenseEV;
+/*0x1F*/ u8 speedEV;
+/*0x20*/ u8 spAttackEV;
+/*0x21*/ u8 spDefenseEV; 
+}; /* size = 0x22 (34) bytes, functionally 36 bytes. Can safely go up to 40 */
 
 struct Pokemon
 {
     struct BoxPokemon box;
-    u32 status;
-    u8 level;
     u8 mail;
-    u16 hp;
-    u16 maxHP;
-    u16 attack;
-    u16 defense;
-    u16 speed;
-    u16 spAttack;
-    u16 spDefense;
+    u32 attack:10;
+    u32 defense:10;
+    u32 speed:10;
+    u32 unused:2;
+    u16 spAttack:10;
+    u16 spDefense:10;
+
 };
 
 struct MonSpritesGfxManager

@@ -4156,10 +4156,13 @@ void CalculateMonStats(struct Pokemon *mon)
 void BoxMonToMon(const struct BoxPokemon *src, struct Pokemon *dest)
 {
     u32 value = 0;
+    u32 status = src->status;
+    u32 hp = src->hp;
+    u32 maxHP = src->maxHP;
     dest->box = *src;
-    SetMonData(dest, MON_DATA_STATUS, &value);
-    SetMonData(dest, MON_DATA_HP, &value);
-    SetMonData(dest, MON_DATA_MAX_HP, &value);
+    SetMonData(dest, MON_DATA_STATUS, &status);
+    SetMonData(dest, MON_DATA_HP, &hp);
+    SetMonData(dest, MON_DATA_MAX_HP, &maxHP);
     value = MAIL_NONE;
     SetMonData(dest, MON_DATA_MAIL, &value);
     CalculateMonStats(dest);
@@ -4550,18 +4553,6 @@ u32 GetMonData(struct Pokemon *mon, s32 field, u8 *data)
 
     switch (field)
     {
-    case MON_DATA_STATUS:
-        ret = mon->status;
-        break;
-    case MON_DATA_LEVEL:
-        ret = mon->level;
-        break;
-    case MON_DATA_HP:
-        ret = mon->hp;
-        break;
-    case MON_DATA_MAX_HP:
-        ret = mon->maxHP;
-        break;
     case MON_DATA_ATK:
         ret = mon->attack;
         break;
@@ -4609,6 +4600,18 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
 
     switch (field)
     {
+    case MON_DATA_STATUS:
+        retVal = boxMon->status;
+        break;
+    case MON_DATA_LEVEL:
+        retVal = boxMon->level;
+        break;
+    case MON_DATA_HP:
+        retVal = boxMon->hp;
+        break;
+    case MON_DATA_MAX_HP:
+        retVal = boxMon->maxHP;
+        break;
     case MON_DATA_PERSONALITY:
         retVal = boxMon->personality;
         break;
@@ -4630,7 +4633,7 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
             StringCopy(data, gText_EggNickname);
             retVal = StringLength(data);
         }
-        else if (boxMon->language == LANGUAGE_JAPANESE)
+        /*else if (boxMon->language == LANGUAGE_JAPANESE)
         {
             data[0] = EXT_CTRL_CODE_BEGIN;
             data[1] = EXT_CTRL_CODE_JPN;
@@ -4642,19 +4645,19 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
             data[retVal++] = EXT_CTRL_CODE_BEGIN;
             data[retVal++] = EXT_CTRL_CODE_ENG;
             data[retVal] = EOS;
-        }
+        }*/
         else
         {
             for (retVal = 0;
                 retVal < POKEMON_NAME_LENGTH;
-                data[retVal] = boxMon->nickname[retVal], retVal++){}
+                data[retVal] = gSpeciesNames[boxMon->species][retVal], retVal++){}
 
             data[retVal] = EOS;
         }
         break;
     }
     case MON_DATA_LANGUAGE:
-        retVal = boxMon->language;
+        retVal = LANGUAGE_ENGLISH;
         break;
     case MON_DATA_SANITY_IS_BAD_EGG:
         retVal = boxMon->isBadEgg;
@@ -4763,19 +4766,19 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         retVal = 0;
         break;
     case MON_DATA_POKERUS:
-        retVal = boxMon->pokerus;
+        retVal = 0;
         break;
     case MON_DATA_MET_LOCATION:
-        retVal = boxMon->metLocation;
+        retVal = 0;
         break;
     case MON_DATA_MET_LEVEL:
-        retVal = boxMon->metLevel;
+        retVal = 100;
         break;
     case MON_DATA_MET_GAME:
-        retVal = boxMon->metGame;
+        retVal = VERSION_EMERALD;
         break;
     case MON_DATA_POKEBALL:
-        retVal = boxMon->pokeball;
+        retVal = ITEM_PREMIER_BALL;
         break;
     case MON_DATA_OT_GENDER:
         retVal = MALE;
@@ -4915,18 +4918,6 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
 
     switch (field)
     {
-    case MON_DATA_STATUS:
-        SET32(mon->status);
-        break;
-    case MON_DATA_LEVEL:
-        SET8(mon->level);
-        break;
-    case MON_DATA_HP:
-        SET16(mon->hp);
-        break;
-    case MON_DATA_MAX_HP:
-        SET16(mon->maxHP);
-        break;
     case MON_DATA_ATK:
         SET16(mon->attack);
         break;
@@ -4959,6 +4950,18 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
 
     switch (field)
     {
+    case MON_DATA_STATUS:
+        SET32(boxMon->status);
+        break;
+    case MON_DATA_LEVEL:
+        SET8(boxMon->level);
+        break;
+    case MON_DATA_HP:
+        SET32(boxMon->hp);
+        break;
+    case MON_DATA_MAX_HP:
+        SET32(boxMon->maxHP);
+        break;
     case MON_DATA_PERSONALITY:
         SET32(boxMon->personality);
         break;
@@ -4967,13 +4970,13 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     case MON_DATA_NICKNAME:
     {
-        s32 i;
+        /*s32 i;
         for (i = 0; i < POKEMON_NAME_LENGTH; i++)
-            boxMon->nickname[i] = data[i];
+            boxMon->nickname[i] = data[i];*/
         break;
     }
     case MON_DATA_LANGUAGE:
-        SET8(boxMon->language);
+        //SET8(boxMon->language);
         break;
     case MON_DATA_SANITY_IS_BAD_EGG:
         SET8(boxMon->isBadEgg);
@@ -5082,24 +5085,24 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         //SET8(substruct2->sheen);
         break;
     case MON_DATA_POKERUS:
-        SET8(boxMon->pokerus);
+        //SET8(boxMon->pokerus);
         break;
     case MON_DATA_MET_LOCATION:
-        SET8(boxMon->metLocation);
+        //SET8(boxMon->metLocation);
         break;
     case MON_DATA_MET_LEVEL:
     {
-        u32 metLevel = *data;
-        boxMon->metLevel = metLevel;
+        /*u32 metLevel = *data;
+        boxMon->metLevel = metLevel;*/
         break;
     }
     case MON_DATA_MET_GAME:
-        SET8(boxMon->metGame);
+        //SET8(boxMon->metGame);
         break;
     case MON_DATA_POKEBALL:
     {
-        u8 pokeball = *data;
-        boxMon->pokeball = pokeball;
+        /*u8 pokeball = *data;
+        boxMon->pokeball = pokeball;*/
         break;
     }
     case MON_DATA_OT_GENDER:
