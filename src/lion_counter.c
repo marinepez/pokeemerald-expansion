@@ -6,6 +6,31 @@ static void HandleHundreds(u16 count);
 static void HandleLarger(u32 count);
 static u32 GetCurrentLionCount(void);
 
+s8 Lion_isMonEnabled(u16 species)
+{
+    u32 index, bit, mask;
+
+    if(SPECIES_UNOWN_B <= species && species <= SPECIES_UNOWN_QMARK)
+        species = SPECIES_UNOWN;
+
+    index = species / 8;
+    bit = species % 8;
+    mask = 1 << bit;
+
+    return ((gSaveBlock1Ptr->monEnabled[index] & mask) != 0);
+}
+
+void Lion_SetMonEnabled(u16 species)
+{
+    u32 index, bit, mask;
+    u16 i;
+    index = species / 8;
+    bit = species % 8;
+    mask = 1 << bit;
+
+    gSaveBlock1Ptr->monEnabled[index] |= mask;
+}
+
 static void HandleHundreds(u16 count)
 {
     u16 val1, val2, val3;

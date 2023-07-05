@@ -15,6 +15,7 @@
 #include "item.h"
 #include "item_icon.h"
 #include "item_menu.h"
+#include "lion_counter.h"
 #include "mail.h"
 #include "main.h"
 #include "menu.h"
@@ -23,6 +24,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "pc_screen_effect.h"
+#include "pokedex.h"
 #include "pokemon.h"
 #include "pokemon_icon.h"
 #include "pokemon_summary_screen.h"
@@ -5179,16 +5181,24 @@ static struct Sprite *CreateMonIconSprite(u16 species, u32 personality, s16 x, s
 {
     u16 tileNum;
     u8 spriteId;
+    u8 monIsEnabled = Lion_isMonEnabled(species);
     struct SpriteTemplate template = sSpriteTemplate_MonIcon;
 
     species = GetIconSpecies(species, personality);
-    if (ShouldShowFemaleDifferences(species, personality))
+    if(monIsEnabled != FALSE)
     {
-        template.paletteTag = PALTAG_MON_ICON_0 + gMonIconPaletteIndicesFemale[species];
+        if (ShouldShowFemaleDifferences(species, personality))
+        {
+            template.paletteTag = PALTAG_MON_ICON_0 + gMonIconPaletteIndicesFemale[species];
+        }
+        else
+        {
+            template.paletteTag = PALTAG_MON_ICON_0 + gMonIconPaletteIndices[species];
+        }
     }
     else
     {
-        template.paletteTag = PALTAG_MON_ICON_0 + gMonIconPaletteIndices[species];
+        template.paletteTag = PALTAG_4; //Repurposed this to an all-black palette
     }
 
     tileNum = TryLoadMonIconTiles(species, personality);
@@ -6865,6 +6875,7 @@ static void TryRefreshDisplayMon(void)
     // If a Pokémon is currently being moved, don't start
     // mosaic or update display. Keep displaying the
     // currently held Pokémon.
+    u16 species;
     sStorage->setMosaic = (sIsMonBeingMoved == FALSE);
     if (!sIsMonBeingMoved)
     {
@@ -6883,7 +6894,13 @@ static void TryRefreshDisplayMon(void)
             SetDisplayMonData(NULL, MODE_MOVE);
             break;
         case CURSOR_AREA_IN_BOX:
-            SetDisplayMonData(GetBoxedMonPtr(StorageGetCurrentBox(), sCursorPosition), MODE_BOX);
+            species = GetBoxedMonPtr(StorageGetCurrentBox(), sCursorPosition)->species;
+            if(Lion_isMonEnabled(species)) {
+                SetDisplayMonData(GetBoxedMonPtr(StorageGetCurrentBox(), sCursorPosition), MODE_BOX);
+            }
+            else {
+                SetDisplayMonData(NULL, MODE_MOVE);
+            }
             break;
         }
     }
@@ -7145,7 +7162,8 @@ static u8 InBoxInput_Normal(void)
             break;
         }
 
-        if ((JOY_NEW(A_BUTTON)) && SetSelectionMenuTexts())
+        if ((JOY_NEW(A_BUTTON)) && SetSelectionMenuTexts() 
+            && (Lion_isMonEnabled(GetBoxedMonPtr(StorageGetCurrentBox(), sCursorPosition)->species)))
         {
             if (!sAutoActionOn)
                 return INPUT_IN_MENU;
@@ -7702,8 +7720,9 @@ static bool8 SetMenuTexts_Mon(void)
         }
         else
         {
-            if (species != SPECIES_NONE)
-                SetMenuText(MENU_MOVE);
+            if (species != SPECIES_NONE) {
+                //SetMenuText(MENU_MOVE);
+            }
             else
                 return FALSE;
         }
@@ -7718,12 +7737,12 @@ static bool8 SetMenuTexts_Mon(void)
     {
         if (sCursorArea == CURSOR_AREA_IN_BOX)
             SetMenuText(MENU_WITHDRAW);
-        else
-            SetMenuText(MENU_STORE);
+        else {}
+            //SetMenuText(MENU_STORE);
     }
 
     SetMenuText(MENU_MARK);
-    SetMenuText(MENU_RELEASE);
+    //SetMenuText(MENU_RELEASE);
     SetMenuText(MENU_CANCEL);
     return TRUE;
 }

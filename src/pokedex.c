@@ -1521,6 +1521,7 @@ void ResetPokedex(void)
     {
         gSaveBlock1Ptr->dexCaught[i] = 0;
         gSaveBlock1Ptr->dexSeen[i] = 0;
+        gSaveBlock1Ptr->monEnabled[i] = 0;
     }
 }
 

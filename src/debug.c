@@ -1507,6 +1507,7 @@ static void DebugAction_Flags_SetPokedexFlags(u8 taskId)
     {
         GetSetPokedexFlag(i + 1, FLAG_SET_CAUGHT);
         GetSetPokedexFlag(i + 1, FLAG_SET_SEEN);
+        Lion_SetMonEnabled(i + 1);
     }
     Debug_DestroyMenu_Full(taskId);
     ScriptContext_Enable();

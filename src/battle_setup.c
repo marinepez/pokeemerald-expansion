@@ -1369,6 +1369,7 @@ static void CB2_EndTrainerBattle(void)
         {
             RegisterTrainerInMatchCall();
             SetBattledTrainersFlags();
+            //DECREASE LION COUNT HERE?
         }
     }
 }

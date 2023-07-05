@@ -4901,6 +4901,9 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_RIBBONS:
         retVal = 0;
         break;
+    case MON_DATA_ENABLED:
+        retVal = boxMon->isEnabled;
+        break;
     default:
         break;
     }
@@ -5204,6 +5207,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         boxMon->spDefenseIV = (ivs >> 25) & MAX_IV_MASK;*/
         break;
     }
+    case MON_DATA_ENABLED:
+        SET8(boxMon->isEnabled);
+        break;
     default:
         break;
     }

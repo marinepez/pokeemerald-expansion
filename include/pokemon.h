@@ -100,6 +100,7 @@ enum {
     MON_DATA_SPEED2,
     MON_DATA_SPATK2,
     MON_DATA_SPDEF2,
+    MON_DATA_ENABLED,
 };
 
 struct BoxPokemon
@@ -114,9 +115,9 @@ struct BoxPokemon
          u32 abilityNum:2;
 /*0x10*/ u8 isBadEgg:1;
          u8 isEgg:1;
+         u8 isEnabled:1;
          u8 hasSpecies:1;
          u8 markings:4;    // 15 combinations as per sAnims_MarkingCombo
-         u8 unused:1;
 /*0x11*/ u8 level;         // Consider moving back to Pokemon struct to save space
 /*0x12*/ u16 move1:10;
          u16 pp1:6;
