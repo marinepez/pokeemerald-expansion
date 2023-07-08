@@ -2808,7 +2808,7 @@ static void DebugAction_Give_FillPC(u8 taskId) //Credit: Sierraffinity
 {
     int boxId, boxPosition;
     u32 personality;
-    struct BoxPokemon boxMon;
+    struct Pokemon mon;
     u16 species = SPECIES_BULBASAUR;
 
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
@@ -2817,11 +2817,10 @@ static void DebugAction_Give_FillPC(u8 taskId) //Credit: Sierraffinity
         {
             if (!GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SANITY_HAS_SPECIES))
             {
-                CreateBoxMon(&boxMon, species, 100, 31,
+                CreateMon(&mon, species, 100, 31,
                             0, 0, OT_ID_PLAYER_ID, 0);
 
-                gPokemonStoragePtr->boxes[boxId][boxPosition] = boxMon;
-                SetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SPECIES, &species);
+                CopyMon(GetBoxedMonPtr(boxId, boxPosition), &(mon.box), sizeof(mon.box));
                 GetSetPokedexFlag(species, FLAG_SET_SEEN);
                 GetSetPokedexFlag(species, FLAG_SET_CAUGHT);
                 species++;

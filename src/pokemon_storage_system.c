@@ -1,5 +1,6 @@
 #include "global.h"
 #include "malloc.h"
+#include "battle.h"
 #include "bg.h"
 #include "data.h"
 #include "decompress.h"
@@ -426,11 +427,8 @@ struct PokemonStorageSystemData
     s16 scrollSpeed;
     u16 scrollTimer;
     u8 wallpaperOffset;
-    u8 scrollUnused1; // Never read
     u8 scrollToBoxIdUnused; // Never read
-    u16 scrollUnused2; // Never read
     s16 scrollDirectionUnused; // Never read.
-    u16 scrollUnused3; // Never read
     u16 scrollUnused4; // Never read
     u16 scrollUnused5; // Never read
     u16 scrollUnused6; // Never read
@@ -508,6 +506,9 @@ struct PokemonStorageSystemData
     u8 displayMonMarkings;
     u8 displayMonLevel;
     bool8 displayMonIsEgg;
+    u16 displayMonMaxHP;
+    u16 displayMonCurrHP;
+    u8 displayMonAilment;
     u8 displayMonName[POKEMON_NAME_LENGTH + 1];
     u8 displayMonNameText[36];
     u8 displayMonSpeciesName[36];
@@ -666,7 +667,7 @@ static void SetMovingMonData(u8, u8);
 static void SetPlacedMonData(u8, u8);
 static void PurgeMonOrBoxMon(u8, u8);
 static void SetShiftedMonData(u8, u8);
-static bool8 TryStorePartyMonInBox(u8);
+static bool8 TryStorePartyMonInBox(u16);
 static void ResetSelectionAfterDeposit(void);
 static void InitReleaseMon(void);
 static bool8 TryHideReleaseMon(void);
@@ -882,6 +883,20 @@ static void UnkUtil_DmaRun(struct UnkUtilData *);
 // Form changing
 void SetMonFormPSS(struct BoxPokemon *boxMon);
 void UpdateSpeciesSpritePSS(struct BoxPokemon *boxmon);
+
+//Lions
+static u8 GetAilmentFromStatus(u32 status);
+static u8 GetMonAilment(struct Pokemon *mon);
+
+#define AILMENT_NONE  0
+#define AILMENT_PSN   1
+#define AILMENT_PRZ   2
+#define AILMENT_SLP   3
+#define AILMENT_FRZ   4
+#define AILMENT_BRN   5
+#define AILMENT_PKRS  6
+#define AILMENT_FNT   7
+#define AILMENT_FSB   8
 
 struct {
     const u8 *text;
@@ -2867,13 +2882,14 @@ static void Task_DepositMenu(u8 taskId)
     switch (sStorage->state)
     {
     case 0:
-        PrintMessage(MSG_DEPOSIT_IN_WHICH_BOX);
-        LoadChooseBoxMenuGfx(&sStorage->chooseBoxMenu, GFXTAG_CHOOSE_BOX_MENU, PALTAG_MISC_1, 3, FALSE);
-        CreateChooseBoxMenuSprites(sDepositBoxId);
+        //PrintMessage(MSG_DEPOSIT_IN_WHICH_BOX);
+        //LoadChooseBoxMenuGfx(&sStorage->chooseBoxMenu, GFXTAG_CHOOSE_BOX_MENU, PALTAG_MISC_1, 3, FALSE);
+        //CreateChooseBoxMenuSprites(sDepositBoxId);
         sStorage->state++;
         break;
     case 1:
-        boxId = HandleChooseBoxMenuInput();
+        //boxId = HandleChooseBoxMenuInput();
+        boxId = 0;
         switch (boxId)
         {
         case BOXID_NONE_CHOSEN:
@@ -2885,7 +2901,7 @@ static void Task_DepositMenu(u8 taskId)
             SetPokeStorageTask(Task_PokeStorageMain);
             break;
         default:
-            if (TryStorePartyMonInBox(boxId))
+            if (TryStorePartyMonInBox(sStorage->displayMonSpecies))
             {
                 sDepositBoxId = boxId;
                 ClearBottomWindow();
@@ -5298,13 +5314,13 @@ static void SetUpScrollToBox(u8 boxId)
     s8 direction = DetermineBoxScrollDirection(boxId);
 
     sStorage->scrollSpeed = (direction > 0) ? 6 : -6;
-    sStorage->scrollUnused1 = (direction > 0) ? 1 : 2;
+    //sStorage->scrollUnused1 = (direction > 0) ? 1 : 2;
     sStorage->scrollTimer = 32;
     sStorage->scrollToBoxIdUnused = boxId;
-    sStorage->scrollUnused2 = (direction <= 0) ? 5 : 0;
+    //sStorage->scrollUnused2 = (direction <= 0) ? 5 : 0;
     sStorage->scrollDirectionUnused = direction;
 
-    sStorage->scrollUnused3 = (direction > 0) ? 264 : 56;
+    //sStorage->scrollUnused3 = (direction > 0) ? 264 : 56;
     sStorage->scrollUnused4 = (direction <= 0) ? 5 : 0;
     sStorage->scrollUnused5 = 0;
     sStorage->scrollUnused6 = 2;
@@ -6453,9 +6469,10 @@ static void SetShiftedMonData(u8 boxId, u8 position)
     sMovingMonOrigBoxPos = position;
 }
 
-static bool8 TryStorePartyMonInBox(u8 boxId)
+static bool8 TryStorePartyMonInBox(u16 species)
 {
-    s16 boxPosition = GetFirstFreeBoxSpot(boxId);
+    u8 boxId = (species-1) / TOTAL_BOXES_COUNT;
+    s16 boxPosition = (species-1) % TOTAL_BOXES_COUNT;
     if (boxPosition == -1)
         return FALSE;
 
@@ -6954,6 +6971,9 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
             sStorage->displayMonPalette = GetMonFrontSpritePal(mon);
             gender = GetMonGender(mon);
             sStorage->displayMonItemId = GetMonData(mon, MON_DATA_HELD_ITEM);
+            sStorage->displayMonMaxHP = GetMonData(mon, MON_DATA_MAX_HP);
+            sStorage->displayMonCurrHP = GetMonData(mon, MON_DATA_HP);
+            sStorage->displayMonAilment = GetMonAilment(mon);
         }
     }
     else if (mode == MODE_BOX)
@@ -6979,6 +6999,10 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
             sStorage->displayMonPalette = GetMonSpritePalFromSpeciesAndPersonality(sStorage->displayMonSpecies, otId, sStorage->displayMonPersonality);
             gender = GetGenderFromSpeciesAndPersonality(sStorage->displayMonSpecies, sStorage->displayMonPersonality);
             sStorage->displayMonItemId = GetBoxMonData(boxMon, MON_DATA_HELD_ITEM);
+            sStorage->displayMonMaxHP = GetBoxMonData(boxMon, MON_DATA_MAX_HP);
+            sStorage->displayMonCurrHP = GetBoxMonData(boxMon, MON_DATA_HP);
+            sStorage->displayMonAilment = GetBoxMonData(boxMon, MON_DATA_STATUS);
+
         }
     }
     else
@@ -7013,9 +7037,9 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
 
         StringCopyPadded(sStorage->displayMonNameText, sStorage->displayMonName, CHAR_SPACE, 5);
 
-        txtPtr = sStorage->displayMonSpeciesName;
+        txtPtr = ConvertIntToDecimalStringN(sStorage->displayMonSpeciesName, sStorage->displayMonCurrHP, STR_CONV_MODE_LEFT_ALIGN, 3);
         *(txtPtr)++ = CHAR_SLASH;
-        StringCopyPadded(txtPtr, gSpeciesNames[sStorage->displayMonSpecies], CHAR_SPACE, 5);
+        ConvertIntToDecimalStringN(txtPtr, sStorage->displayMonMaxHP, STR_CONV_MODE_LEFT_ALIGN, 3);
 
         txtPtr = sStorage->displayMonGenderLvlText;
         *(txtPtr)++ = EXT_CTRL_CODE_BEGIN;
@@ -7210,7 +7234,7 @@ static u8 InBoxInput_Normal(void)
 
         if (JOY_NEW(SELECT_BUTTON))
         {
-            ToggleCursorAutoAction();
+            //ToggleCursorAutoAction();
             return INPUT_NONE;
         }
 
@@ -7489,7 +7513,7 @@ static u8 HandleInput_InParty(void)
         }
         else if (JOY_NEW(SELECT_BUTTON))
         {
-            ToggleCursorAutoAction();
+            //ToggleCursorAutoAction();
             return INPUT_NONE;
         }
 
@@ -7557,7 +7581,7 @@ static u8 HandleInput_OnBox(void)
 
         if (JOY_NEW(SELECT_BUTTON))
         {
-            ToggleCursorAutoAction();
+            //ToggleCursorAutoAction();
             return INPUT_NONE;
         }
 
@@ -7635,7 +7659,7 @@ static u8 HandleInput_OnButtons(void)
 
         if (JOY_NEW(SELECT_BUTTON))
         {
-            ToggleCursorAutoAction();
+            //ToggleCursorAutoAction();
             return INPUT_NONE;
         }
 
@@ -7737,8 +7761,8 @@ static bool8 SetMenuTexts_Mon(void)
     {
         if (sCursorArea == CURSOR_AREA_IN_BOX)
             SetMenuText(MENU_WITHDRAW);
-        else {}
-            //SetMenuText(MENU_STORE);
+        else
+            SetMenuText(MENU_STORE);
     }
 
     SetMenuText(MENU_MARK);
@@ -10178,4 +10202,33 @@ void UpdateSpeciesSpritePSS(struct BoxPokemon *boxMon)
         }
     }
     sJustOpenedBag = FALSE;
+}
+
+static u8 GetMonAilment(struct Pokemon *mon)
+{
+    u8 ailment;
+
+    if (GetMonData(mon, MON_DATA_HP) == 0)
+        return AILMENT_FNT;
+    ailment = GetAilmentFromStatus(GetMonData(mon, MON_DATA_STATUS));
+    if (ailment != AILMENT_NONE)
+        return ailment;
+    return AILMENT_NONE;
+}
+
+static u8 GetAilmentFromStatus(u32 status)
+{
+    if (status & STATUS1_PSN_ANY)
+        return AILMENT_PSN;
+    if (status & STATUS1_PARALYSIS)
+        return AILMENT_PRZ;
+    if (status & STATUS1_SLEEP)
+        return AILMENT_SLP;
+    if (status & STATUS1_FREEZE)
+        return AILMENT_FRZ;
+    if (status & STATUS1_BURN)
+        return AILMENT_BRN;
+    if (status & STATUS1_FROSTBITE)
+        return AILMENT_FSB;
+    return AILMENT_NONE;
 }
