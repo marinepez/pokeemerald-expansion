@@ -322,17 +322,18 @@
 #define MOVEEND_MOVE_EFFECTS2                     22
 #define MOVEEND_RECOIL                            23
 #define MOVEEND_MAGICIAN                          24    // Occurs after final multi-hit strike, and after other items/abilities would activate
-#define MOVEEND_EJECT_BUTTON                      25
-#define MOVEEND_RED_CARD                          26
-#define MOVEEND_EJECT_PACK                        27
-#define MOVEEND_LIFEORB_SHELLBELL                 28    // Includes shell bell, throat spray, etc
-#define MOVEEND_CHANGED_ITEMS                     29
-#define MOVEEND_PICKPOCKET                        30
-#define MOVEEND_DANCER                            31
-#define MOVEEND_EMERGENCY_EXIT                    32
-#define MOVEEND_SYMBIOSIS                         33
-#define MOVEEND_CLEAR_BITS                        34
-#define MOVEEND_COUNT                             35
+#define MOVEEND_LIONS_DEFEATED                    25
+#define MOVEEND_EJECT_BUTTON                      26
+#define MOVEEND_RED_CARD                          27
+#define MOVEEND_EJECT_PACK                        28
+#define MOVEEND_LIFEORB_SHELLBELL                 29    // Includes shell bell, throat spray, etc
+#define MOVEEND_CHANGED_ITEMS                     30
+#define MOVEEND_PICKPOCKET                        31
+#define MOVEEND_DANCER                            32
+#define MOVEEND_EMERGENCY_EXIT                    33
+#define MOVEEND_SYMBIOSIS                         34
+#define MOVEEND_CLEAR_BITS                        35
+#define MOVEEND_COUNT                             36
 
 // switch cases
 #define B_SWITCH_NORMAL     0

@@ -46,6 +46,7 @@
 #include "pokenav.h"
 #include "menu_specialized.h"
 #include "data.h"
+#include "lion_counter.h"
 #include "constants/abilities.h"
 #include "constants/battle_anim.h"
 #include "constants/battle_move_effects.h"
@@ -5983,6 +5984,17 @@ static void Cmd_moveend(void)
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_MagicianActivates;
                 effect = TRUE;
+            }
+            gBattleScripting.moveendState++;
+            break;
+        case MOVEEND_LIONS_DEFEATED:
+            if(gBattleMons[gBattlerTarget].species == SPECIES_LION && gBattleMons[gBattlerTarget].hp == 0)
+            {
+                i = gBattleMoveDamage/(double)gBattleMons[gBattlerTarget].maxHP;
+                LionCounter_DecrementLionCounter(i);
+                PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff1, 10, i);
+                PREPARE_STRING_BUFFER(gBattleTextBuff2, STRINGID_S);
+                PrepareStringBattle(STRINGID_DEFEATEDXLIONS, gBattlerTarget);
             }
             gBattleScripting.moveendState++;
             break;

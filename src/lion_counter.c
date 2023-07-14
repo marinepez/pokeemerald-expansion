@@ -87,6 +87,13 @@ static u32 GetCurrentLionCount(void)
     return CurrLions;
 }
 
+void CMD_LionCounter_DecrementCounter(void)
+{
+    u32 amount = VarGet(VAR_DECREMENT_COUNT) + (VarGet(VAR_DECREMENT_THOUSANDS) * 1000);
+    VarSet(VAR_DECREMENT_COUNT, 0);
+    VarSet(VAR_DECREMENT_THOUSANDS, 0);
+    LionCounter_DecrementLionCounter(amount);
+}
 
 void LionCounter_DecrementLionCounter(u32 amount)
 {

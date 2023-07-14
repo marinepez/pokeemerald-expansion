@@ -119,8 +119,8 @@
 #define VAR_BIL_DIGITS_0_TO_3                            0x4064
 #define VAR_BIL_DIGITS_4_TO_6                            0x4065
 #define VAR_BIL_DIGITS_7_TO_9                            0x4066
-#define VAR_ROUTE108_STATE                               0x4067 // Unused Var
-#define VAR_ROUTE109_STATE                               0x4068 // Unused Var
+#define VAR_DECREMENT_COUNT                              0x4067 // Unused Var
+#define VAR_DECREMENT_THOUSANDS                          0x4068 // Unused Var
 #define VAR_ROUTE110_STATE                               0x4069
 #define VAR_ROUTE111_STATE                               0x406A // Unused Var
 #define VAR_ROUTE112_STATE                               0x406B // Unused Var
