@@ -5465,6 +5465,15 @@ static u32 GetNextTarget(u32 moveTarget)
     return i;
 }
 
+static double CalculateAdditionalLionsDefeated(double movedamage, double maxHP)
+{
+    double result;
+    if(movedamage <= maxHP) return 0;
+    result = movedamage / maxHP;
+    result = (result*result) + (Random() % (int)result);
+    return result;
+}
+
 static void Cmd_moveend(void)
 {
     CMD_ARGS(u8 endMode, u8 endState);
@@ -5990,11 +5999,15 @@ static void Cmd_moveend(void)
         case MOVEEND_LIONS_DEFEATED:
             if(gBattleMons[gBattlerTarget].species == SPECIES_LION && gBattleMons[gBattlerTarget].hp == 0)
             {
-                i = gBattleMoveDamage/(double)gBattleMons[gBattlerTarget].maxHP;
-                LionCounter_DecrementLionCounter(i);
-                PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff1, 10, i);
-                PREPARE_STRING_BUFFER(gBattleTextBuff2, STRINGID_S);
-                PrepareStringBattle(STRINGID_DEFEATEDXLIONS, gBattlerTarget);
+                i = (s32)(CalculateAdditionalLionsDefeated((double)gBattleMoveDamage, 
+                         (double)gBattleMons[gBattlerTarget].maxHP));
+                if(i > 0)
+                {
+                    LionCounter_DecrementLionCounter(i);
+                    PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff1, 10, i);
+                    PREPARE_STRING_BUFFER(gBattleTextBuff2, STRINGID_S);
+                    PrepareStringBattle(STRINGID_DEFEATEDXLIONS, gBattlerTarget);
+                }
             }
             gBattleScripting.moveendState++;
             break;
