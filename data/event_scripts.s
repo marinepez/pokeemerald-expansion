@@ -1061,3 +1061,5 @@ Common_EventScript_LegendaryFlewAway::
 	.include "data/text/birch_speech.inc"
 
 	.include "data/maps/Lion_Battlefield/scripts.inc"
+
+	.include "data/maps/HomeBase_TilledLand/scripts.inc"

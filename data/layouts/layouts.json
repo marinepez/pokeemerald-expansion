@@ -4420,6 +4420,16 @@
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/Lion_Battlefield/border.bin",
       "blockdata_filepath": "data/layouts/Lion_Battlefield/map.bin"
+    },
+    {
+      "id": "LAYOUT_HOME_BASE_TILLED_LAND",
+      "name": "HomeBase_TilledLand_Layout",
+      "width": 31,
+      "height": 25,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/HomeBase_TilledLand/border.bin",
+      "blockdata_filepath": "data/layouts/HomeBase_TilledLand/map.bin"
     }
   ]
 }
