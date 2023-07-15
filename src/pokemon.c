@@ -6221,6 +6221,8 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem, s
     u16 partnerHeldItem;
     u8 partnerHoldEffect;
 
+    return SPECIES_NONE; //Disabling evolution for this gamemode entirely
+
     if (tradePartner != NULL)
     {
         partnerSpecies = GetMonData(tradePartner, MON_DATA_SPECIES, 0);

@@ -29,7 +29,7 @@ Lion_Battlefield_EventScript_LionSingleBattle::
 	dowildbattle
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_eq VAR_RESULT, B_OUTCOME_WON, Lion_Battlefield_EventScript_DefeatedSingleLion
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, Lion_Battlefield_EventScript_DefeatedSingleLionEndless
 	release
 	end
 
@@ -39,4 +39,10 @@ Lion_Battlefield_EventScript_DefeatedSingleLion::
 	callnative CMD_LionCounter_DecrementCounter
 	setflag FLAG_DEFEATED_FIRST_LION
 	goto Common_EventScript_RemoveStaticPokemon
+	end
+
+Lion_Battlefield_EventScript_DefeatedSingleLionEndless::
+	setvar VAR_DECREMENT_COUNT, 1
+	setvar VAR_DECREMENT_THOUSANDS, 0
+	callnative CMD_LionCounter_DecrementCounter
 	end
