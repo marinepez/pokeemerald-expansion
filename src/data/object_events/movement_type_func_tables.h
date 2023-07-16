@@ -436,3 +436,11 @@ u8 (*const gMovementTypeFuncs_Invisible[])(struct ObjectEvent *, struct Sprite *
     MovementType_Invisible_Step1,
     MovementType_Invisible_Step2,
 };
+
+u8 (*const gMovementTypeFuncs_WalkSequenceBerry[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementType_WalkSequence_Step0,
+    MovementType_WalkSequenceBerry_Step1,
+    MovementType_WalkSequence_Step2,
+};
+
+const u8 gBerryDirections[] = {DIR_WEST, DIR_SOUTH, DIR_EAST, DIR_NORTH};

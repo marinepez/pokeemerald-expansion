@@ -6005,6 +6005,7 @@ static void Cmd_moveend(void)
                     PREPARE_STRING_BUFFER(gBattleTextBuff2, STRINGID_S);
                     PrepareStringBattle(STRINGID_DEFEATEDXLIONS, gBattlerTarget);
                 }
+                gSaveBlock1Ptr->lionsDefeated[moveType] += i + 1;
             }
             gBattleScripting.moveendState++;
             break;

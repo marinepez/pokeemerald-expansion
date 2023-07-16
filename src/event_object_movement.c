@@ -286,6 +286,7 @@ static void (*const sMovementTypeCallbacks[])(struct Sprite *) =
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_UP] = MovementType_WalkSlowlyInPlace,
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_LEFT] = MovementType_WalkSlowlyInPlace,
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_RIGHT] = MovementType_WalkSlowlyInPlace,
+    [MOVEMENT_TYPE_CIRCLE_BERRIES] = MovementType_WalkSequenceBerry,
 };
 
 static const bool8 sMovementTypeHasRange[NUM_MOVEMENT_TYPES] = {
@@ -414,6 +415,7 @@ const u8 gInitialMovementTypeFacingDirections[] = {
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_UP] = DIR_NORTH,
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_LEFT] = DIR_WEST,
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_RIGHT] = DIR_EAST,
+    [MOVEMENT_TYPE_CIRCLE_BERRIES] = DIR_WEST,
 };
 
 #define OBJ_EVENT_PAL_TAG_BRENDAN                 0x1100
@@ -8971,4 +8973,16 @@ u8 MovementAction_FlyDown_Step1(struct ObjectEvent *objectEvent, struct Sprite *
 u8 MovementAction_Fly_Finish(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     return TRUE;
+}
+
+movement_type_def(MovementType_WalkSequenceBerry, gMovementTypeFuncs_WalkSequenceBerry)
+
+u8 MovementType_WalkSequenceBerry_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    u8 directions[sizeof(gBerryDirections)];
+    memcpy(directions, gBerryDirections, sizeof(gBerryDirections));
+    if (objectEvent->directionSequenceIndex == 2 && objectEvent->initialCoords.x == objectEvent->currentCoords.x)
+        objectEvent->directionSequenceIndex = 3;
+
+    return MoveNextDirectionInSequence(objectEvent, sprite, directions);
 }
