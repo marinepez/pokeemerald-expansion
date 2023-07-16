@@ -65,6 +65,7 @@ enum
     MENU_ACTION_RETIRE_FRONTIER,
     MENU_ACTION_PYRAMID_BAG,
     MENU_ACTION_DEBUG,
+    MENU_ACTION_PC,
 };
 
 // Save status
@@ -107,6 +108,7 @@ static bool8 StartMenuLinkModePlayerNameCallback(void);
 static bool8 StartMenuBattlePyramidRetireCallback(void);
 static bool8 StartMenuBattlePyramidBagCallback(void);
 static bool8 StartMenuDebugCallback(void);
+static bool8 StartMenuPCCallback(void);
 
 // Menu callbacks
 static bool8 SaveStartCallback(void);
@@ -160,6 +162,7 @@ static const struct WindowTemplate sPyramidFloorWindowTemplate_2 = {0, 1, 1, 0xA
 static const struct WindowTemplate sPyramidFloorWindowTemplate_1 = {0, 1, 1, 0xC, 4, 0xF, 8};
 
 static const u8 gText_MenuDebug[] = _("DEBUG");
+static const u8 gText_MenuPC[] = _("PC");
 static const u8 gText_LionCountFull[] =   _("LIONS: \n1,000,000,000");
 static const u8 gText_LionCount9Digit[] = _("LIONS: \n{STR_VAR_1},{STR_VAR_2},{STR_VAR_3}");
 static const u8 gText_LionCount6Digit[] = _("LIONS: \n{STR_VAR_2},{STR_VAR_3}");
@@ -181,6 +184,7 @@ static const struct MenuAction sStartMenuItems[] =
     [MENU_ACTION_RETIRE_FRONTIER] = {gText_MenuRetire,  {.u8_void = StartMenuBattlePyramidRetireCallback}},
     [MENU_ACTION_PYRAMID_BAG]     = {gText_MenuBag,     {.u8_void = StartMenuBattlePyramidBagCallback}},
     [MENU_ACTION_DEBUG]           = {gText_MenuDebug,   {.u8_void = StartMenuDebugCallback}},
+    [MENU_ACTION_PC]              = {gText_MenuPC,      {.u8_void = StartMenuPCCallback}},
 };
 
 static const struct BgTemplate sBgTemplates_LinkBattleSave[] =
@@ -310,8 +314,10 @@ static void BuildNormalStartMenu(void)
 {
     if (FlagGet(FLAG_SYS_POKEDEX_GET) == TRUE)
     {
-        AddStartMenuAction(MENU_ACTION_POKEDEX);
+        //AddStartMenuAction(MENU_ACTION_POKEDEX);
     }
+    AddStartMenuAction(MENU_ACTION_PC);
+
     if (FlagGet(FLAG_SYS_POKEMON_GET) == TRUE)
     {
         AddStartMenuAction(MENU_ACTION_POKEMON);
@@ -668,7 +674,8 @@ static bool8 HandleStartMenuInput(void)
             && gMenuCallback != StartMenuExitCallback
             && gMenuCallback != StartMenuDebugCallback
             && gMenuCallback != StartMenuSafariZoneRetireCallback
-            && gMenuCallback != StartMenuBattlePyramidRetireCallback)
+            && gMenuCallback != StartMenuBattlePyramidRetireCallback
+            && gMenuCallback != StartMenuPCCallback)
         {
            FadeScreen(FADE_TO_BLACK, 0);
         }
@@ -813,6 +820,15 @@ static bool8 StartMenuDebugCallback(void)
 #endif
 
 return TRUE;
+}
+
+static bool8 StartMenuPCCallback(void)
+{
+    RemoveExtraStartMenuWindows();
+    HideStartMenu();
+    ScriptContext_SetupScript(EventScript_PC);
+
+    return TRUE;
 }
 
 static bool8 StartMenuSafariZoneRetireCallback(void)

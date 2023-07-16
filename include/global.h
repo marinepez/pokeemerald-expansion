@@ -1064,6 +1064,7 @@ struct SaveBlock1
     /*0x3???*/ u8 dexSeen[NUM_DEX_FLAG_BYTES];
     /*0x3???*/ u8 dexCaught[NUM_DEX_FLAG_BYTES];
                u8 monEnabled[NUM_DEX_FLAG_BYTES];
+               u32 lionsDefeated[NUMBER_OF_MON_TYPES]; //Number of lions defeated, by type
     /*0x3???*/ u32 trainerHillTimes[NUM_TRAINER_HILL_MODES];
     /*0x3???*/ struct RamScript ramScript;
     /*0x3???*/ struct RecordMixingGift recordMixingGift;

@@ -1,10 +1,56 @@
 #include "global.h"
 #include "event_data.h"
+#include "pokedex.h"
+#include "pokemon_storage_system.h"
+#include "pokemon.h"
+#include "script_pokemon_util.h"
 #include "lion_counter.h"
 
 static void HandleHundreds(u16 count);
 static void HandleLarger(u32 count);
 static u32 GetCurrentLionCount(void);
+
+void ResetUnlockedPokemon(void)
+{
+    s32 i;
+    int boxId, boxPosition;
+    u32 personality;
+    struct Pokemon mon;
+    u16 species = SPECIES_BULBASAUR;
+
+    for (i = 0; i < NUMBER_OF_MON_TYPES; i++)
+        gSaveBlock1Ptr->lionsDefeated[i] = 0;
+
+    for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
+    {
+        for (boxPosition = 0; boxPosition < IN_BOX_COUNT; boxPosition++)
+        {
+            if (!GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SANITY_HAS_SPECIES))
+            {
+                CreateMon(&mon, species, 100, 31,
+                            0, 0, OT_ID_PLAYER_ID, 0);
+
+                CopyMon(GetBoxedMonPtr(boxId, boxPosition), &(mon.box), sizeof(mon.box));
+                GetSetPokedexFlag(species, FLAG_SET_SEEN);
+                GetSetPokedexFlag(species, FLAG_SET_CAUGHT);
+                species++;
+
+                if(species > SPECIES_CALYREX) break;
+            }
+        }
+    }
+
+    LionCounter_SetLionCounter(1000,000,000);
+    Lion_SetMonEnabled(SPECIES_BULBASAUR);
+    Lion_SetMonEnabled(SPECIES_CHARMANDER);
+    Lion_SetMonEnabled(SPECIES_SQUIRTLE);
+
+    ScriptGiveMon(SPECIES_BULBASAUR, 20, ITEM_NONE, 0, 0, 0);
+    ScriptGiveMon(SPECIES_CHARMANDER, 20, ITEM_NONE, 0, 0, 0);
+    ScriptGiveMon(SPECIES_SQUIRTLE, 20, ITEM_NONE, 0, 0, 0);
+
+    FlagSet(FLAG_SYS_POKEMON_GET);
+}
 
 s8 Lion_isMonEnabled(u16 species)
 {

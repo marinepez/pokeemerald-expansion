@@ -2804,7 +2804,7 @@ static void DebugAction_Give_DayCareEgg(u8 taskId)
     TriggerPendingDaycareEgg();
 }
 
-static void DebugAction_Give_FillPC(u8 taskId) //Credit: Sierraffinity
+static void DebugAction_Give_FillPC(u8 taskId) //Modified. Original Credit: Sierraffinity
 {
     int boxId, boxPosition;
     u32 personality;
