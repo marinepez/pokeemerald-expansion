@@ -7475,7 +7475,9 @@ static void GetGroundEffectFlags_LongGrassOnBeginStep(struct ObjectEvent *objEve
 
 static void GetGroundEffectFlags_Tracks(struct ObjectEvent *objEvent, u32 *flags)
 {
-    if (MetatileBehavior_IsDeepSand(objEvent->previousMetatileBehavior))
+    if(objEvent->mapNum == MAP_MAGM_BEACH_SHORE && (!FlagGet(FLAG_SYS_B_DASH) || objEvent->localId == 1))
+        return;
+    else if (MetatileBehavior_IsDeepSand(objEvent->previousMetatileBehavior))
         *flags |= GROUND_EFFECT_FLAG_DEEP_SAND;
     else if (MetatileBehavior_IsSandOrDeepSand(objEvent->previousMetatileBehavior)
              || MetatileBehavior_IsFootprints(objEvent->previousMetatileBehavior))
@@ -7502,7 +7504,11 @@ static void GetGroundEffectFlags_SandHeap(struct ObjectEvent *objEvent, u32 *fla
 
 static void GetGroundEffectFlags_ShallowFlowingWater(struct ObjectEvent *objEvent, u32 *flags)
 {
-    if ((MetatileBehavior_IsShallowFlowingWater(objEvent->currentMetatileBehavior)
+    if(objEvent->mapNum == MAP_MAGM_BEACH_SHORE && (!FlagGet(FLAG_SYS_B_DASH) || objEvent->localId == 1))
+    {
+        objEvent->inShallowFlowingWater = FALSE;
+    }
+    else if ((MetatileBehavior_IsShallowFlowingWater(objEvent->currentMetatileBehavior)
          && MetatileBehavior_IsShallowFlowingWater(objEvent->previousMetatileBehavior))
         || (MetatileBehavior_IsPacifidlogLog(objEvent->currentMetatileBehavior)
             && MetatileBehavior_IsPacifidlogLog(objEvent->previousMetatileBehavior)))
