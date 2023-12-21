@@ -34,6 +34,9 @@ MAGM_BeachShore_EventScript_DropMail::
 	applymovement LOCALID_WINGULL, MAGM_BeachShore_Movement_Wingull
 	waitmovement 0
 	removeobject LOCALID_WINGULL
+	additem ITEM_FRIEND_LETTER
+	additem ITEM_LEAGUE_LETTER
+	additem ITEM_MASTER_BALL
 	setvar VAR_BEACH_INTRO_STATE 1
 	setflag FLAG_SYS_B_DASH
 	msgbox MAGM_BeachShore_MapScripts_Text_LeftALetter, MSGBOX_YESNO
@@ -45,6 +48,8 @@ MAGM_BeachShore_EventScript_DropMail::
 
 MAGM_BeachShore_MapScripts_EventScript_ReadLetter::
 	closemessage
+	setvar VAR_0x8004, 0 //Letter from friend
+	special CheckSpecialMail
 	end
 
 MAGM_BeachShore_MapScripts_EventScript_PutLetterAway::

@@ -9814,4 +9814,26 @@ const struct Item gItems[] =
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
+
+    [ITEM_FRIEND_LETTER] =
+    {
+        .name = _("K.B.'s Letter"),
+        .price = 0,
+        .importance = 1,
+        .description = sFriendLetterDesc,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_SpecialMail,
+    },
+
+    [ITEM_LEAGUE_LETTER] =
+    {
+        .name = _("OfficialLettr"),
+        .price = 0,
+        .importance = 1,
+        .description = sOfficialLetterDesc,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_SpecialMail,
+    },
 };

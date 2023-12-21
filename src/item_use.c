@@ -203,6 +203,13 @@ void ItemUseOutOfBattle_Mail(u8 taskId)
     Task_FadeAndCloseBagMenu(taskId);
 }
 
+void ItemUseOutOfBattle_SpecialMail(u8 taskId)
+{
+    gSpecialVar_0x8004 = gSpecialVar_ItemId - ITEM_FRIEND_LETTER;
+    gBagMenu->newScreenCallback = CheckSpecialMail;
+    Task_FadeAndCloseBagMenu(taskId);
+}
+
 STATIC_ASSERT(I_EXP_SHARE_ITEM < GEN_6 || I_EXP_SHARE_FLAG > TEMP_FLAGS_END, YouNeedToSetAFlagToUseGen6ExpShare);
 
 void ItemUseOutOfBattle_ExpShare(u8 taskId)

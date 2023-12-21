@@ -3993,3 +3993,13 @@ static const u8 sGlimmeringCharmDesc[] = _(
     "A charm that will\n"
     "raise the shards\n"
     "from Tera Raids.");
+
+static const u8 sFriendLetterDesc[] = _(
+    "A letter from a\n"
+    "good friend back\n"
+    "home.");
+
+static const u8 sOfficialLetterDesc[] = _(
+    "A letter bearing\n"
+    "the official\n"
+    "League insignia.");

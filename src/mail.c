@@ -20,6 +20,7 @@
 #include "easy_chat.h"
 #include "graphics.h"
 #include "constants/rgb.h"
+#include "event_data.h"
 
 // Bead and Dream mail feature an icon of the Pokémon holding it.
 enum {
@@ -232,9 +233,9 @@ static const struct MailGraphics sMailGraphics[] = {
 };
 
 static const struct MailLineLayout sLineLayouts_Wide[] = {
-    { .numEasyChatWords = 3, .xOffset = 0, .height = 16 },
-    { .numEasyChatWords = 3, .xOffset = 0, .height = 16 },
-    { .numEasyChatWords = 3, .xOffset = 0, .height = 16 }
+    { .numEasyChatWords = 2, .xOffset = 0, .height = 16 },
+    { .numEasyChatWords = 2, .xOffset = 0, .height = 16 },
+    { .numEasyChatWords = 1, .xOffset = 0, .height = 16 }
 };
 
 static const struct MailLayout sMailLayouts_Wide[] = {
@@ -337,11 +338,12 @@ static const struct MailLayout sMailLayouts_Wide[] = {
 };
 
 static const struct MailLineLayout sLineLayouts_Tall[] = {
-    { .numEasyChatWords = 2, .xOffset = 0, .height = 16 },
-    { .numEasyChatWords = 2, .xOffset = 0, .height = 16 },
-    { .numEasyChatWords = 2, .xOffset = 0, .height = 16 },
-    { .numEasyChatWords = 2, .xOffset = 0, .height = 16 },
-    { .numEasyChatWords = 1, .xOffset = 0, .height = 16 }
+    { .numEasyChatWords = 1, .xOffset = 0, .height = 12 },
+    { .numEasyChatWords = 1, .xOffset = 0, .height = 12 },
+    { .numEasyChatWords = 1, .xOffset = 0, .height = 12 },
+    { .numEasyChatWords = 1, .xOffset = 0, .height = 12 },
+    { .numEasyChatWords = 1, .xOffset = 0, .height = 12 },
+    { .numEasyChatWords = 1, .xOffset = 0, .height = 12 },
 };
 
 static const struct MailLayout sMailLayouts_Tall[] = {
@@ -350,7 +352,7 @@ static const struct MailLayout sMailLayouts_Tall[] = {
         .signatureYPos = 7,
         .signatureWidth = 88,
         .wordsYPos = 11,
-        .wordsXPos = 30,
+        .wordsXPos = 10,
         .lines = sLineLayouts_Tall,
     },
     [ITEM_TO_MAIL(ITEM_HARBOR_MAIL)] = {
@@ -358,7 +360,7 @@ static const struct MailLayout sMailLayouts_Tall[] = {
         .signatureYPos = 10,
         .signatureWidth = 96,
         .wordsYPos = 9,
-        .wordsXPos = 30,
+        .wordsXPos = 10,
         .lines = sLineLayouts_Tall,
     },
     [ITEM_TO_MAIL(ITEM_GLITTER_MAIL)] = {
@@ -366,7 +368,7 @@ static const struct MailLayout sMailLayouts_Tall[] = {
         .signatureYPos = 12,
         .signatureWidth = 104,
         .wordsYPos = 5,
-        .wordsXPos = 30,
+        .wordsXPos = 10,
         .lines = sLineLayouts_Tall,
     },
     [ITEM_TO_MAIL(ITEM_MECH_MAIL)] = {
@@ -374,7 +376,7 @@ static const struct MailLayout sMailLayouts_Tall[] = {
         .signatureYPos = 5,
         .signatureWidth = 96,
         .wordsYPos = 8,
-        .wordsXPos = 30,
+        .wordsXPos = 10,
         .lines = sLineLayouts_Tall,
     },
     [ITEM_TO_MAIL(ITEM_WOOD_MAIL)] = {
@@ -382,7 +384,7 @@ static const struct MailLayout sMailLayouts_Tall[] = {
         .signatureYPos = 10,
         .signatureWidth = 96,
         .wordsYPos = 9,
-        .wordsXPos = 30,
+        .wordsXPos = 10,
         .lines = sLineLayouts_Tall,
     },
     [ITEM_TO_MAIL(ITEM_WAVE_MAIL)] = {
@@ -390,7 +392,7 @@ static const struct MailLayout sMailLayouts_Tall[] = {
         .signatureYPos = 9,
         .signatureWidth = 112,
         .wordsYPos = 5,
-        .wordsXPos = 30,
+        .wordsXPos = 10,
         .lines = sLineLayouts_Tall,
     },
     [ITEM_TO_MAIL(ITEM_BEAD_MAIL)] = {
@@ -398,7 +400,7 @@ static const struct MailLayout sMailLayouts_Tall[] = {
         .signatureYPos = 12,
         .signatureWidth = 104,
         .wordsYPos = 9,
-        .wordsXPos = 30,
+        .wordsXPos = 10,
         .lines = sLineLayouts_Tall,
     },
     [ITEM_TO_MAIL(ITEM_SHADOW_MAIL)] = {
@@ -406,7 +408,7 @@ static const struct MailLayout sMailLayouts_Tall[] = {
         .signatureYPos = 13,
         .signatureWidth = 104,
         .wordsYPos = 13,
-        .wordsXPos = 30,
+        .wordsXPos = 10,
         .lines = sLineLayouts_Tall,
     },
     [ITEM_TO_MAIL(ITEM_TROPIC_MAIL)] = {
@@ -414,7 +416,7 @@ static const struct MailLayout sMailLayouts_Tall[] = {
         .signatureYPos = 9,
         .signatureWidth = 96,
         .wordsYPos = 9,
-        .wordsXPos = 30,
+        .wordsXPos = 10,
         .lines = sLineLayouts_Tall,
     },
     [ITEM_TO_MAIL(ITEM_DREAM_MAIL)] = {
@@ -422,7 +424,7 @@ static const struct MailLayout sMailLayouts_Tall[] = {
         .signatureYPos = 9,
         .signatureWidth = 96,
         .wordsYPos = 9,
-        .wordsXPos = 30,
+        .wordsXPos = 10,
         .lines = sLineLayouts_Tall,
     },
     [ITEM_TO_MAIL(ITEM_FAB_MAIL)] = {
@@ -430,7 +432,7 @@ static const struct MailLayout sMailLayouts_Tall[] = {
         .signatureYPos = 17,
         .signatureWidth = 104,
         .wordsYPos = 15,
-        .wordsXPos = 30,
+        .wordsXPos = 10,
         .lines = sLineLayouts_Tall,
     },
     [ITEM_TO_MAIL(ITEM_RETRO_MAIL)] = {
@@ -438,7 +440,7 @@ static const struct MailLayout sMailLayouts_Tall[] = {
         .signatureYPos = 9,
         .signatureWidth = 96,
         .wordsYPos = 5,
-        .wordsXPos = 30,
+        .wordsXPos = 10,
         .lines = sLineLayouts_Tall,
     },
 };
@@ -685,7 +687,7 @@ static void PrintMailText(void)
         if (sMailRead->message[i][0] == EOS || sMailRead->message[i][0] == CHAR_SPACE)
             continue;
 
-        AddTextPrinterParameterized3(0, FONT_NORMAL, sMailRead->layout->lines[i].xOffset + sMailRead->layout->wordsXPos, y + sMailRead->layout->wordsYPos, sTextColors, 0, sMailRead->message[i]);
+        AddTextPrinterParameterized3(0, FONT_SMALL, sMailRead->layout->lines[i].xOffset + sMailRead->layout->wordsXPos, y + sMailRead->layout->wordsYPos, sTextColors, 0, sMailRead->message[i]);
         y += sMailRead->layout->lines[i].height;
     }
     bufptr = StringCopy(signature, gText_FromSpace);
@@ -751,4 +753,35 @@ static void CB2_ExitMailReadFreeVars(void)
         FreeAllWindowBuffers();
         FREE_AND_SET_NULL(sMailRead);
     }
+}
+
+struct Mail SpecialMail;
+void CheckSpecialMail(void)
+{
+    switch(gSpecialVar_0x8004) {
+        case 0:
+            SpecialMail = (struct Mail) { //Letter from the Friend
+                .words = {EC_WORD_INTIMIDATE, EC_WORD_ROCK_HEAD, EC_WORD_COLOR, 
+                EC_WORD_ALT_COLOR, EC_WORD_ROCK, EC_WORD_BEAUTIFUL,
+                EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+                .itemId = ITEM_HARBOR_MAIL,
+                .trainerId = {0, 0, 0, 0},
+                .species = SPECIES_WINGULL,
+                .playerName = {CHAR_K, CHAR_B, EOS}
+            };
+            break;
+        default:
+        case 1:
+            SpecialMail = (struct Mail) { //Pokemon League Mail
+                .words = {EC_WORD_DARK, EC_WORD_STENCH, EC_WORD_THICK_FAT, 
+                EC_WORD_RAIN_DISH, EC_WORD_DRIZZLE, EC_WORD_ARENA_TRAP,
+                EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+                .itemId = ITEM_RETRO_MAIL,
+                .trainerId = {0, 0, 0, 0},
+                .species = SPECIES_PIKACHU,
+                .playerName = {CHAR_PK, CHAR_MN, CHAR_L, CHAR_E, CHAR_A, CHAR_G, CHAR_PERIOD, EOS}
+            };
+            break;
+    }
+    ReadMail(&SpecialMail, CB2_ReturnToField, TRUE);
 }

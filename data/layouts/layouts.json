@@ -4420,6 +4420,16 @@
       "secondary_tileset": "gTileset_Fortree",
       "border_filepath": "data/layouts/MAGM_BeachShore/border.bin",
       "blockdata_filepath": "data/layouts/MAGM_BeachShore/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM_MAIN_AREA",
+      "name": "MAGM_MainArea_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Fortree",
+      "border_filepath": "data/layouts/MAGM_MainArea/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM_MainArea/map.bin"
     }
   ]
 }

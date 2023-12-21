@@ -16,6 +16,7 @@
 
 // mail.h
 void ReadMail(struct Mail *mail, void (*exitCallback)(void), bool8 hasText);
+void CheckSpecialMail(void);
 
 // mail_data.h
 void ClearAllMail(void);
