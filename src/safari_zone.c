@@ -99,11 +99,9 @@ void CB2_EndSafariBattle(void)
     sSafariZonePkblkUses += gBattleResults.pokeblockThrows;
     if (gBattleOutcome == B_OUTCOME_CAUGHT)
         sSafariZoneCaughtMons++;
-    if (gNumSafariBalls != 0)
-    {
-        SetMainCallback2(CB2_ReturnToField);
-    }
-    else if (gBattleOutcome == B_OUTCOME_NO_SAFARI_BALLS)
+    SetMainCallback2(CB2_ReturnToField);
+
+    /*else if (gBattleOutcome == B_OUTCOME_NO_SAFARI_BALLS)
     {
         RunScriptImmediately(SafariZone_EventScript_OutOfBallsMidBattle);
         WarpIntoMap();
@@ -115,7 +113,7 @@ void CB2_EndSafariBattle(void)
         ScriptContext_SetupScript(SafariZone_EventScript_OutOfBalls);
         ScriptContext_Stop();
         SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
-    }
+    }*/
 }
 
 static void ClearPokeblockFeeder(u8 index)

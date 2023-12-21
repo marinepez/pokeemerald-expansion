@@ -364,11 +364,12 @@ static void BuildDebugStartMenu(void)
 
 static void BuildSafariZoneStartMenu(void)
 {
-    AddStartMenuAction(MENU_ACTION_RETIRE_SAFARI);
-    AddStartMenuAction(MENU_ACTION_POKEDEX);
-    AddStartMenuAction(MENU_ACTION_POKEMON);
+//    AddStartMenuAction(MENU_ACTION_RETIRE_SAFARI);
+//    AddStartMenuAction(MENU_ACTION_POKEDEX);
+//    AddStartMenuAction(MENU_ACTION_POKEMON);
     AddStartMenuAction(MENU_ACTION_BAG);
     AddStartMenuAction(MENU_ACTION_PLAYER);
+    AddStartMenuAction(MENU_ACTION_SAVE);
     AddStartMenuAction(MENU_ACTION_OPTION);
     AddStartMenuAction(MENU_ACTION_EXIT);
 }
@@ -431,7 +432,7 @@ static void BuildMultiPartnerRoomStartMenu(void)
     AddStartMenuAction(MENU_ACTION_EXIT);
 }
 
-static void ShowSafariBallsWindow(void)
+UNUSED static void ShowSafariBallsWindow(void)
 {
     sSafariBallsWindowId = AddWindow(&sWindowTemplate_SafariBalls);
     PutWindowTilemap(sSafariBallsWindowId);
@@ -524,7 +525,7 @@ static bool32 InitStartMenuStep(void)
         break;
     case 3:
         if (GetSafariZoneFlag())
-            ShowSafariBallsWindow();
+            //ShowSafariBallsWindow();
         if (InBattlePyramid())
             ShowPyramidFloorWindow();
         sInitStartMenuData[0]++;

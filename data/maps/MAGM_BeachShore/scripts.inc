@@ -39,6 +39,7 @@ MAGM_BeachShore_EventScript_DropMail::
 	additem ITEM_MASTER_BALL
 	setvar VAR_BEACH_INTRO_STATE 1
 	setflag FLAG_SYS_B_DASH
+	setflag FLAG_SYS_SAFARI_MODE
 	msgbox MAGM_BeachShore_MapScripts_Text_LeftALetter, MSGBOX_YESNO
 	switch VAR_RESULT
 	case YES, MAGM_BeachShore_MapScripts_EventScript_ReadLetter
@@ -48,6 +49,7 @@ MAGM_BeachShore_EventScript_DropMail::
 
 MAGM_BeachShore_MapScripts_EventScript_ReadLetter::
 	closemessage
+	fadescreen FADE_TO_BLACK
 	setvar VAR_0x8004, 0 //Letter from friend
 	special CheckSpecialMail
 	end

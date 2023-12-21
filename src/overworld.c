@@ -372,7 +372,6 @@ void Overworld_ResetStateAfterFly(void)
     ResetInitialPlayerAvatarState();
     FlagClear(FLAG_SYS_CYCLING_ROAD);
     FlagClear(FLAG_SYS_CRUISE_MODE);
-    FlagClear(FLAG_SYS_SAFARI_MODE);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_USE_FLASH);
 }
@@ -382,7 +381,6 @@ void Overworld_ResetStateAfterTeleport(void)
     ResetInitialPlayerAvatarState();
     FlagClear(FLAG_SYS_CYCLING_ROAD);
     FlagClear(FLAG_SYS_CRUISE_MODE);
-    FlagClear(FLAG_SYS_SAFARI_MODE);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_USE_FLASH);
     RunScriptImmediately(EventScript_ResetMrBriney);
@@ -393,7 +391,6 @@ void Overworld_ResetStateAfterDigEscRope(void)
     ResetInitialPlayerAvatarState();
     FlagClear(FLAG_SYS_CYCLING_ROAD);
     FlagClear(FLAG_SYS_CRUISE_MODE);
-    FlagClear(FLAG_SYS_SAFARI_MODE);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_USE_FLASH);
 }
@@ -422,7 +419,6 @@ static void Overworld_ResetStateAfterWhiteOut(void)
     ResetInitialPlayerAvatarState();
     FlagClear(FLAG_SYS_CYCLING_ROAD);
     FlagClear(FLAG_SYS_CRUISE_MODE);
-    FlagClear(FLAG_SYS_SAFARI_MODE);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_USE_FLASH);
     if (B_RESET_FLAGS_VARS_AFTER_WHITEOUT == TRUE)
@@ -438,7 +434,6 @@ static void Overworld_ResetStateAfterWhiteOut(void)
 
 static void UpdateMiscOverworldStates(void)
 {
-    FlagClear(FLAG_SYS_SAFARI_MODE);
     ChooseAmbientCrySpecies();
     ResetCyclingRoadChallengeData();
     UpdateLocationHistoryForRoamer();
@@ -1450,9 +1445,14 @@ void CleanupOverworldWindowsAndTilemaps(void)
     TRY_FREE_AND_SET_NULL(gOverworldTilemapBuffer_Bg1);
 }
 
-static void ResetSafariZoneFlag_(void)
+UNUSED static void ResetSafariZoneFlag_(void)
 {
     ResetSafariZoneFlag();
+}
+
+static void SetSafariZoneFlag_(void)
+{
+    SetSafariZoneFlag();
 }
 
 bool32 IsOverworldLinkActive(void)
@@ -1561,7 +1561,7 @@ void CB2_NewGame(void)
 {
     FieldClearVBlankHBlankCallbacks();
     StopMapMusic();
-    ResetSafariZoneFlag_();
+    SetSafariZoneFlag_();
     NewGameInitData();
     ResetInitialPlayerAvatarState();
     PlayTimeCounter_Start();
@@ -1583,7 +1583,7 @@ void CB2_WhiteOut(void)
     {
         FieldClearVBlankHBlankCallbacks();
         StopMapMusic();
-        ResetSafariZoneFlag_();
+        SetSafariZoneFlag_();
         DoWhiteOut();
         ResetInitialPlayerAvatarState();
         ScriptContext_Init();
@@ -1736,7 +1736,7 @@ void CB2_ContinueSavedGame(void)
 
     FieldClearVBlankHBlankCallbacks();
     StopMapMusic();
-    ResetSafariZoneFlag_();
+    SetSafariZoneFlag_();
     if (gSaveFileStatus == SAVE_STATUS_ERROR)
         ResetWinStreaks();
 
