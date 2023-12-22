@@ -17,6 +17,11 @@
       "map": "MAP_MAGM_MAIN_AREA",
       "offset": 5,
       "direction": "up"
+    },
+    {
+      "map": "MAP_MAGM_DANCE_ROOM",
+      "offset": -21,
+      "direction": "right"
     }
   ],
   "object_events": [

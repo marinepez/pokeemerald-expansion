@@ -1,12 +1,12 @@
 {
-  "id": "MAP_MAGM_MAIN_AREA",
-  "name": "MAGM_MainArea",
-  "layout": "LAYOUT_MAGM_MAIN_AREA",
+  "id": "MAP_MAGM_DANCE_ROOM",
+  "name": "MAGM_DanceRoom",
+  "layout": "LAYOUT_MAGM_DANCE_ROOM",
   "music": "MUS_SAFARI_ZONE",
   "region_map_section": "MAPSEC_SAFARI_ZONE",
   "requires_flash": false,
-  "weather": "WEATHER_SUNNY",
-  "map_type": "MAP_TYPE_ROUTE",
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_UNKNOWN",
   "allow_cycling": true,
   "allow_escaping": false,
   "allow_running": true,
@@ -14,14 +14,14 @@
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
     {
-      "map": "MAP_MAGM_BEACH_SHORE",
-      "offset": -5,
-      "direction": "down"
+      "map": "MAP_MAGM_MAIN_AREA",
+      "offset": 11,
+      "direction": "left"
     },
     {
-      "map": "MAP_MAGM_DANCE_ROOM",
-      "offset": -11,
-      "direction": "right"
+      "map": "MAP_MAGM_BEACH_SHORE",
+      "offset": 21,
+      "direction": "left"
     }
   ],
   "object_events": [
