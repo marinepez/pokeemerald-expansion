@@ -270,6 +270,7 @@ static void (*const sMovementTypeCallbacks[])(struct Sprite *) =
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_UP] = MovementType_WalkSlowlyInPlace,
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_LEFT] = MovementType_WalkSlowlyInPlace,
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_RIGHT] = MovementType_WalkSlowlyInPlace,
+    [MOVEMENT_TYPE_DANCE] = MovementType_Dance,
 };
 
 static const bool8 sMovementTypeHasRange[NUM_MOVEMENT_TYPES] = {
@@ -398,6 +399,7 @@ const u8 gInitialMovementTypeFacingDirections[] = {
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_UP] = DIR_NORTH,
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_LEFT] = DIR_WEST,
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_RIGHT] = DIR_EAST,
+    [MOVEMENT_TYPE_DANCE] = DIR_SOUTH,
 };
 
 #define OBJ_EVENT_PAL_TAG_BRENDAN                 0x1100
@@ -436,6 +438,9 @@ const u8 gInitialMovementTypeFacingDirections[] = {
 #define OBJ_EVENT_PAL_TAG_LUGIA                   0x1121
 #define OBJ_EVENT_PAL_TAG_RS_BRENDAN              0x1122
 #define OBJ_EVENT_PAL_TAG_RS_MAY                  0x1123
+#define OBJ_EVENT_PAL_TAG_GLOOM                   0x1124
+#define OBJ_EVENT_PAL_TAG_LOMBRE                  0x1125
+#define OBJ_EVENT_PAL_TAG_GROOKEY                 0x1126
 #define OBJ_EVENT_PAL_TAG_NONE                    0x11FF
 
 #include "data/field_effects/field_effect_object_template_pointers.h"
@@ -482,6 +487,9 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_Lugia,                 OBJ_EVENT_PAL_TAG_LUGIA},
     {gObjectEventPal_RubySapphireBrendan,   OBJ_EVENT_PAL_TAG_RS_BRENDAN},
     {gObjectEventPal_RubySapphireMay,       OBJ_EVENT_PAL_TAG_RS_MAY},
+    {gObjectEventPal_Gloom,                 OBJ_EVENT_PAL_TAG_GLOOM},
+    {gObjectEventPal_Lombre,                OBJ_EVENT_PAL_TAG_LOMBRE},
+    {gObjectEventPal_Grookey,               OBJ_EVENT_PAL_TAG_GROOKEY},
 #ifdef BUGFIX
     {NULL,                                  OBJ_EVENT_PAL_TAG_NONE},
 #else
@@ -4139,6 +4147,23 @@ bool8 MovementType_WalkSlowlyInPlace_Step0(struct ObjectEvent *objectEvent, stru
     ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkInPlaceSlowMovementAction(objectEvent->facingDirection));
     sprite->sTypeFuncId = 1;
     return TRUE;
+}
+
+movement_type_def(MovementType_Dance, gMovementTypeFuncs_Dance)
+
+bool8 MovementType_Dance_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    if (ObjectEventExecSingleMovementAction(objectEvent, sprite))
+    {
+        if(Random() % 4 == 0)
+        {
+            SetMovementDelay(sprite, 1);
+            sprite->sTypeFuncId = 2;
+        }
+        else
+            sprite->sTypeFuncId = 0;
+    }
+    return FALSE;
 }
 
 movement_type_def(MovementType_JogInPlace, gMovementTypeFuncs_JogInPlace)

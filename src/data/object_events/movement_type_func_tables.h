@@ -436,3 +436,10 @@ u8 (*const gMovementTypeFuncs_Invisible[])(struct ObjectEvent *, struct Sprite *
     MovementType_Invisible_Step1,
     MovementType_Invisible_Step2,
 };
+
+u8 (*const gMovementTypeFuncs_Dance[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementType_WalkInPlace_Step0,
+    MovementType_Dance_Step1,
+    MovementType_RotateCounterclockwise_Step2,
+    MovementType_RotateCounterclockwise_Step3,
+};
