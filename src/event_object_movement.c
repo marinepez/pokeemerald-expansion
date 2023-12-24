@@ -441,6 +441,8 @@ const u8 gInitialMovementTypeFacingDirections[] = {
 #define OBJ_EVENT_PAL_TAG_GLOOM                   0x1124
 #define OBJ_EVENT_PAL_TAG_LOMBRE                  0x1125
 #define OBJ_EVENT_PAL_TAG_GROOKEY                 0x1126
+#define OBJ_EVENT_PAL_TAG_ORIPOM                  0x1127
+#define OBJ_EVENT_PAL_TAG_MAROWAK                 0x1128
 #define OBJ_EVENT_PAL_TAG_NONE                    0x11FF
 
 #include "data/field_effects/field_effect_object_template_pointers.h"
@@ -490,6 +492,8 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_Gloom,                 OBJ_EVENT_PAL_TAG_GLOOM},
     {gObjectEventPal_Lombre,                OBJ_EVENT_PAL_TAG_LOMBRE},
     {gObjectEventPal_Grookey,               OBJ_EVENT_PAL_TAG_GROOKEY},
+    {gObjectEventPal_OriPom,                OBJ_EVENT_PAL_TAG_ORIPOM},
+    {gObjectEventPal_AlolanMarowak,         OBJ_EVENT_PAL_TAG_MAROWAK},
 #ifdef BUGFIX
     {NULL,                                  OBJ_EVENT_PAL_TAG_NONE},
 #else
