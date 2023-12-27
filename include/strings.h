@@ -3049,19 +3049,6 @@ extern const u8 gText_BoxName[];
 extern const u8 gText_PkmnsNickname[];
 extern const u8 gText_TellHimTheWords[];
 
-//Learnable Moves for Dancing Mons
-extern const u8 gText_WeatherBallDance[];
-extern const u8 gText_SunnyDayDance[];
-extern const u8 gText_RainDanceDance[];
-extern const u8 gText_FakeOutDance[];
-extern const u8 gText_GrassyGlideDance[];
-extern const u8 gText_TeeterDanceDance[];
-extern const u8 gText_SwordsDanceDance[];
-extern const u8 gText_AfterYouDance[];
-extern const u8 gText_PetalDanceDance[];
-extern const u8 gText_MimicDance[];
-extern const u8 gText_CaptivateDance[];
-
 // Exp. Share
 extern const u8 gText_ExpShareOn[];
 extern const u8 gText_ExpShareOff[];
