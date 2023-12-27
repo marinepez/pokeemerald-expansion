@@ -130,31 +130,37 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_End::
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachSunnyDay::
 	setvar VAR_0x8000, 241
+	msgbox MAGM_DanceRoom_Text_SunnyDayFlavor, MSGBOX_DEFAULT
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachAfterYou::
 	setvar VAR_0x8000, 495
+	msgbox MAGM_DanceRoom_Text_AfterYouFlavor, MSGBOX_DEFAULT
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachPetalDance::
 	setvar VAR_0x8000, 80
+	msgbox MAGM_DanceRoom_Text_PetalDanceFlavor, MSGBOX_DEFAULT
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMimic::
 	setvar VAR_0x8000, 102
+	msgbox MAGM_DanceRoom_Text_MimicFlavor, MSGBOX_DEFAULT
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachCaptivate::
 	setvar VAR_0x8000, 445
+	msgbox MAGM_DanceRoom_Text_CaptivateFlavor, MSGBOX_DEFAULT
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachTeeterDance::
 	setvar VAR_0x8000, 298
+	msgbox MAGM_DanceRoom_Text_TeeterDanceFlavor, MSGBOX_DEFAULT
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
@@ -311,31 +317,37 @@ MAGM_DanceRoom_EventScript_DanceWithLombre_End::
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachRainDance::
 	setvar VAR_0x8000, 240
+	msgbox MAGM_DanceRoom_Text_RainDanceFlavor, MSGBOX_DEFAULT
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachWeatherBall::
 	setvar VAR_0x8000, 311
+	msgbox MAGM_DanceRoom_Text_WeatherBallFlavor, MSGBOX_DEFAULT
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachFakeOut::
 	setvar VAR_0x8000, 252
+	msgbox MAGM_DanceRoom_Text_FakeOutFlavor, MSGBOX_DEFAULT
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachGrassyGlide::
 	setvar VAR_0x8000, 731
+	msgbox MAGM_DanceRoom_Text_GrassyGlideFlavor, MSGBOX_DEFAULT
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachSwordsDance::
 	setvar VAR_0x8000, 14
+	msgbox MAGM_DanceRoom_Text_SwordsDanceFlavor, MSGBOX_DEFAULT
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachTeeterDance::
 	setvar VAR_0x8000, 298
+	msgbox MAGM_DanceRoom_Text_TeeterDanceFlavor, MSGBOX_DEFAULT
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
@@ -396,35 +408,76 @@ MAGM_DanceRoom_EventScript_PlayerDance::
 	release
 	end
 
+MAGM_DanceRoom_Text_WeatherBallFlavor:
+	.string "You move freely, changing\n"
+	.string "steps like changing weather.$"
+
 MAGM_DanceRoom_Text_WeatherBallDance:
 	.string "Improvise$"
+
+MAGM_DanceRoom_Text_RainDanceFlavor:
+	.string "Your steps fall like\n"
+	.string "raindrops.$"
 
 MAGM_DanceRoom_Text_RainDanceDance:
 	.string "Stormy$"
 
+MAGM_DanceRoom_Text_FakeOutFlavor:
+	.string "You bust a quick set of moves.$"
+
 MAGM_DanceRoom_Text_FakeOutDance:
 	.string "Breakdance$"
+
+MAGM_DanceRoom_Text_GrassyGlideFlavor:
+	.string "You slide your feet like\n"
+	.string "there's no friction.$"
 
 MAGM_DanceRoom_Text_GrassyGlideDance:
 	.string "Smooth$"
 
+MAGM_DanceRoom_Text_SwordsDanceFlavor:
+	.string "You slash and thrust with an\n"
+	.string "imaginary blade.$"
+
 MAGM_DanceRoom_Text_SwordsDanceDance:
 	.string "Frenzied$"
+
+MAGM_DanceRoom_Text_TeeterDanceFlavor:
+	.string "You spin and wave your hands with\n"
+	.string "little rhyme or reason.$"
 
 MAGM_DanceRoom_Text_TeeterDanceDance:
 	.string "Silly$"
 
+MAGM_DanceRoom_Text_SunnyDayFlavor:
+	.string "You praise the sun$"
+
 MAGM_DanceRoom_Text_SunnyDayDance:
 	.string "Radiant$"
+
+MAGM_DanceRoom_Text_AfterYouFlavor:
+	.string "You extend a hand and lead\n"
+	.string "Gloom in a classic box step$"
 
 MAGM_DanceRoom_Text_AfterYouDance:
 	.string "Ballroom$"
 
+MAGM_DanceRoom_Text_PetalDanceFlavor:
+	.string "You twirl with the grace\n"
+	.string "of falling petals.$"
+
 MAGM_DanceRoom_Text_PetalDanceDance:
 	.string "Flowery$"
 
+MAGM_DanceRoom_Text_MimicFlavor:
+	.string "You do the Macarena.$"
+
 MAGM_DanceRoom_Text_MimicDance:
 	.string "Simple$"
+
+MAGM_DanceRoom_Text_CaptivateFlavor:
+	.string "You release your inner\n"
+	.string "flamenco.$"
 
 MAGM_DanceRoom_Text_CaptivateDance:
 	.string "Tango$"
