@@ -96,7 +96,8 @@
     "MAGM_BeachShore",
     "MAGM_MainArea",
     "MAGM_DanceRoom",
-    "MAGM_Indoor_Hut"
+    "MAGM_Indoor_Hut",
+    "MAGM_Wrestling_Area"
   ],
   "gMapGroup_IndoorLittleroot": [
     "LittlerootTown_BrendansHouse_1F",

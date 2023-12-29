@@ -4425,7 +4425,7 @@
       "id": "LAYOUT_MAGM_MAIN_AREA",
       "name": "MAGM_MainArea_Layout",
       "width": 30,
-      "height": 25,
+      "height": 28,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Fortree",
       "border_filepath": "data/layouts/MAGM_MainArea/border.bin",
@@ -4450,6 +4450,16 @@
       "secondary_tileset": "gTileset_GenericBuilding",
       "border_filepath": "data/layouts/MAGM_Indoor_Hut/border.bin",
       "blockdata_filepath": "data/layouts/MAGM_Indoor_Hut/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM_WRESTLING_AREA",
+      "name": "MAGM_Wrestling_Area_Layout",
+      "width": 25,
+      "height": 22,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Fortree",
+      "border_filepath": "data/layouts/MAGM_Wrestling_Area/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM_Wrestling_Area/map.bin"
     }
   ]
 }
