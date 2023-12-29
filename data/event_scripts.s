@@ -1073,3 +1073,5 @@ EventScript_VsSeekerChargingDone::
 	.include "data/maps/MAGM_MainArea/scripts.inc"
 
 	.include "data/maps/MAGM_DanceRoom/scripts.inc"
+
+	.include "data/maps/MAGM_Indoor_Hut/scripts.inc"

@@ -4424,8 +4424,8 @@
     {
       "id": "LAYOUT_MAGM_MAIN_AREA",
       "name": "MAGM_MainArea_Layout",
-      "width": 25,
-      "height": 10,
+      "width": 30,
+      "height": 25,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Fortree",
       "border_filepath": "data/layouts/MAGM_MainArea/border.bin",
@@ -4440,6 +4440,16 @@
       "secondary_tileset": "gTileset_Fortree",
       "border_filepath": "data/layouts/MAGM_DanceRoom/border.bin",
       "blockdata_filepath": "data/layouts/MAGM_DanceRoom/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM_INDOOR_HUT",
+      "name": "MAGM_Indoor_Hut_Layout",
+      "width": 5,
+      "height": 6,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_GenericBuilding",
+      "border_filepath": "data/layouts/MAGM_Indoor_Hut/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM_Indoor_Hut/map.bin"
     }
   ]
 }

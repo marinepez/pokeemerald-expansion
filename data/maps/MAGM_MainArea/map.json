@@ -15,12 +15,12 @@
   "connections": [
     {
       "map": "MAP_MAGM_BEACH_SHORE",
-      "offset": -5,
+      "offset": 0,
       "direction": "down"
     },
     {
       "map": "MAP_MAGM_DANCE_ROOM",
-      "offset": -11,
+      "offset": 4,
       "direction": "right"
     }
   ],
@@ -28,7 +28,13 @@
 
   ],
   "warp_events": [
-
+    {
+      "x": 14,
+      "y": 13,
+      "elevation": 0,
+      "dest_map": "MAP_MAGM_INDOOR_HUT",
+      "dest_warp_id": "0"
+    }
   ],
   "coord_events": [
 
@@ -36,8 +42,8 @@
   "bg_events": [
     {
       "type": "sign",
-      "x": 1,
-      "y": 7,
+      "x": 7,
+      "y": 19,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "BattleFrontier_MAGM_MainArea_Sign_BanIncineraor"

@@ -15,7 +15,7 @@
   "connections": [
     {
       "map": "MAP_MAGM_MAIN_AREA",
-      "offset": 11,
+      "offset": -4,
       "direction": "left"
     },
     {

@@ -95,7 +95,8 @@
     "Underwater_Route125",
     "MAGM_BeachShore",
     "MAGM_MainArea",
-    "MAGM_DanceRoom"
+    "MAGM_DanceRoom",
+    "MAGM_Indoor_Hut"
   ],
   "gMapGroup_IndoorLittleroot": [
     "LittlerootTown_BrendansHouse_1F",
