@@ -327,6 +327,7 @@ static void SafariHandleFaintingCry(u32 battler)
 
 static void SafariHandleIntroTrainerBallThrow(u32 battler)
 {
+    //CHANGE THESE TO STUDYING PROGESS: XX%
     UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], &gPlayerParty[gBattlerPartyIndexes[battler]], HEALTHBOX_SAFARI_ALL_TEXT);
     StartHealthboxSlideIn(battler);
     SetHealthboxSpriteVisible(gHealthboxSpriteIds[battler]);

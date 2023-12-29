@@ -833,6 +833,9 @@ static const u8 sText_HurtByTheSeaOfFire[] = _("{B_ATK_TEAM1} {B_ATK_NAME_WITH_P
 static const u8 sText_TheSeaOfFireDisappeared[] = _("The sea of fire around {B_ATK_TEAM2}\nteam disappeared!");
 static const u8 sText_SwampEnvelopedSide[] = _("A swamp enveloped\n{B_DEF_TEAM2} team!");
 static const u8 sText_TheSwampDisappeared[] = _("The swamp around {B_ATK_TEAM2}\nteam disappeared!");
+static const u8 sText_YouStudiedThePokemon[] = _("You took notes on\n{B_OPPONENT_MON1_NAME}'s behavior.");
+static const u8 sText_SuccessfullyStudiedPokemon[] = _("Got it!\nLogged {B_OPPONENT_MON1_NAME}'s data!{WAIT_SE}{PLAY_BGM MUS_CAUGHT}");
+static const u8 sText_AlreadyStudiedPokemon[] = _("You've already\nstudied {B_OPPONENT_MON1_NAME}!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
@@ -1521,6 +1524,9 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_ULTRABURSTCOMPLETED - BATTLESTRINGS_TABLE_START] = sText_UltraBurstCompleted,
     [STRINGID_TEAMGAINEDEXP - BATTLESTRINGS_TABLE_START] = sText_TeamGainedEXP,
     [STRINGID_TARGETCOVEREDINSTICKYCANDYSYRUP - BATTLESTRINGS_TABLE_START] = sText_TargetCoveredInStickyCandySyrup,
+    [STRINGID_STUDIEDPKMN - BATTLESTRINGS_TABLE_START] = sText_YouStudiedThePokemon,
+    [STRINGID_SUCCESSFULSTUDY - BATTLESTRINGS_TABLE_START] = sText_SuccessfullyStudiedPokemon,
+    [STRINGID_ALREADYSTUDIED - BATTLESTRINGS_TABLE_START] = sText_AlreadyStudiedPokemon,
 };
 
 const u16 gTrainerUsedItemStringIds[] =
@@ -2037,7 +2043,7 @@ const u8 gText_WhatWillPkmnDo2[] = _("What will\n{B_PLAYER_NAME} do?");
 const u8 gText_WhatWillWallyDo[] = _("What will\nWALLY do?");
 const u8 gText_LinkStandby[] = _("{PAUSE 16}Link standby…");
 const u8 gText_BattleMenu[] = _("FIGHT{CLEAR_TO 56}BAG\nPOKéMON{CLEAR_TO 56}RUN");
-const u8 gText_SafariZoneMenu[] = _("BALL{CLEAR_TO 56}{POKEBLOCK}\nGO NEAR{CLEAR_TO 56}RUN");
+const u8 gText_SafariZoneMenu[] = _("STUDY{CLEAR_TO 56}{POKEBLOCK}\nGO NEAR{CLEAR_TO 56}RUN");
 const u8 gText_MoveInterfacePP[] = _("PP ");
 const u8 gText_MoveInterfaceType[] = _("TYPE/");
 const u8 gText_MoveInterfacePpType[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}PP\nTYPE/");

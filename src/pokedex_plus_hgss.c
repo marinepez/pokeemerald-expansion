@@ -4229,7 +4229,7 @@ static void Task_HandleCaughtMonPageInput(u8 taskId)
         BeginNormalPaletteFade(PALETTES_BG, 0, 0, 16, RGB_BLACK);
         SetSpriteInvisibility(0, TRUE);
         SetSpriteInvisibility(1, TRUE);
-        gSprites[gTasks[taskId].tMonSpriteId].callback = SpriteCB_SlideCaughtMonToCenter;
+        //gSprites[gTasks[taskId].tMonSpriteId].callback = SpriteCB_SlideCaughtMonToCenter;
         gTasks[taskId].func = Task_ExitCaughtMonPage;
     }
     // Flicker caught screen color
@@ -4279,7 +4279,7 @@ static void Task_ExitCaughtMonPage(u8 taskId)
     }
 }
 
-static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite)
+UNUSED static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite)
 {
     if (sprite->x < 0x78)
         sprite->x += 2;

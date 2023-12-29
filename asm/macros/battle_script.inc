@@ -362,6 +362,10 @@
 	.byte 0x3f
 	.endm
 
+	.macro handlestudyattempt
+	.byte 0x40
+	.endm
+
 	.macro call instr:req
 	.byte 0x41
 	.4byte \instr

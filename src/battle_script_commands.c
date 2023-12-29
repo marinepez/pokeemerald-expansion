@@ -418,7 +418,7 @@ static void Cmd_return(void);
 static void Cmd_end(void);
 static void Cmd_end2(void);
 static void Cmd_end3(void);
-static void Cmd_unused5(void);
+static void Cmd_handlestudyattempt(void);
 static void Cmd_call(void);
 static void Cmd_setroost(void);
 static void Cmd_jumpifabilitypresent(void);
@@ -677,7 +677,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_end,                                     //0x3D
     Cmd_end2,                                    //0x3E
     Cmd_end3,                                    //0x3F
-    Cmd_unused5,                 //0x40
+    Cmd_handlestudyattempt,                      //0x40
     Cmd_call,                                    //0x41
     Cmd_setroost,                                //0x42
     Cmd_jumpifabilitypresent,                    //0x43
@@ -1507,20 +1507,28 @@ static bool32 JumpIfMoveFailed(u8 adder, u16 move)
     return FALSE;
 }
 
-static void Cmd_unused5(void)
+//Me during final exams
+static void Cmd_handlestudyattempt(void)
 {
-    CMD_ARGS(const u8 *failInstr);
+    CMD_ARGS();
+    u32 rand = Random() % 100;
+    u32 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]], MON_DATA_SPECIES, NULL);
 
-    if (IsBattlerProtected(gBattlerTarget, gCurrentMove))
+    if(GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
     {
-        gMoveResultFlags |= MOVE_RESULT_MISSED;
-        JumpIfMoveFailed(sizeof(*cmd), MOVE_NONE);
-        gBattleCommunication[MISS_TYPE] = B_MSG_PROTECTED;
+        //Already studied this pokemon
+        gBattlescriptCurrInstr = BattleScript_AlreadyStudied;
+    }
+    else if((rand + gBattleStruct->safariCatchFactor * 5) >= 65)
+    {
+        gBattlescriptCurrInstr = BattleScript_SuccessfulStudy;
     }
     else
     {
-        gBattlescriptCurrInstr = cmd->nextInstr;
+        gBattleStruct->safariCatchFactor += 2; //Better luck next time buddy
+        gBattlescriptCurrInstr = BattleScript_StudyPokemon;
     }
+
 }
 
 static bool8 JumpIfMoveAffectedByProtect(u16 move)
@@ -15140,24 +15148,25 @@ static void Cmd_displaydexinfo(void)
             && gMain.callback2 == BattleMainCB2
             && !gTasks[gBattleCommunication[TASK_ID]].isActive)
         {
-            SetVBlankCallback(VBlankCB_Battle);
+            //SetVBlankCallback(VBlankCB_Battle);
             gBattleCommunication[0]++;
         }
         break;
     case 3:
-        InitBattleBgsVideo();
-        LoadBattleTextboxAndBackground();
-        gBattle_BG3_X = 256;
+        //InitBattleBgsVideo();
+        //LoadBattleTextboxAndBackground();
+        //gBattle_BG3_X = 256;
         gBattleCommunication[0]++;
         break;
     case 4:
-        if (!IsDma3ManagerBusyWithBgCopy())
+        /*if (!IsDma3ManagerBusyWithBgCopy())
         {
             BeginNormalPaletteFade(PALETTES_BG, 0, 16, 0, RGB_BLACK);
             ShowBg(0);
             ShowBg(3);
             gBattleCommunication[0]++;
-        }
+        }*/
+        gBattleCommunication[0]++;
         break;
     case 5:
         if (!gPaletteFade.active)

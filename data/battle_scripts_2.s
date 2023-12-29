@@ -139,9 +139,31 @@ BattleScript_BallThrowByWally::
     handleballthrow
 
 BattleScript_SafariBallThrow::
-    printstring STRINGID_PLAYERUSEDITEM
-    updatestatusicon BS_ATTACKER
-    handleballthrow
+    handlestudyattempt
+
+BattleScript_AlreadyStudied::
+    printstring STRINGID_ALREADYSTUDIED
+    waitmessage B_WAIT_TIME_MED
+    finishturn
+
+BattleScript_SuccessfulStudy::
+    setbyte sMON_CAUGHT, TRUE
+    incrementgamestat GAME_STAT_POKEMON_CAPTURES
+    printstring STRINGID_SUCCESSFULSTUDY
+    waitmessage B_WAIT_TIME_MED
+    waitstate
+    setbyte gBattleCommunication, 0
+    trysetcaughtmondexflags BattleScript_SuccessfulStudy_End
+    waitstate
+    displaydexinfo
+BattleScript_SuccessfulStudy_End::
+    setbyte gBattleOutcome, B_OUTCOME_CAUGHT
+    finishturn
+
+BattleScript_StudyPokemon::
+    printstring STRINGID_STUDIEDPKMN
+    waitmessage B_WAIT_TIME_MED
+    finishaction
 
 BattleScript_SuccessBallThrow::
     setbyte sMON_CAUGHT, TRUE
