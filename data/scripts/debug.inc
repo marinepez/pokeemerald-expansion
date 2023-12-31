@@ -96,9 +96,14 @@ Debug_BoxFilledMessage_Text:
 	.string "Storage boxes filled!$"
 
 Debug_EventScript_Script_1::
+	getplayerxy VAR_TEMP_2, VAR_TEMP_3
+	createvobject OBJ_EVENT_GFX_ARTIST, 1, VAR_TEMP_2, VAR_TEMP_3
 	end
 
 Debug_EventScript_Script_2::
+	getplayerxy VAR_TEMP_2, VAR_TEMP_3
+	createvobject OBJ_EVENT_GFX_ARTIST, 1, VAR_TEMP_2, VAR_TEMP_3
+	special DrawWholeMapView
 	end
 
 Debug_EventScript_Script_3::

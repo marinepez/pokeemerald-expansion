@@ -443,6 +443,11 @@ const u8 gInitialMovementTypeFacingDirections[] = {
 #define OBJ_EVENT_PAL_TAG_GROOKEY                 0x1126
 #define OBJ_EVENT_PAL_TAG_ORIPOM                  0x1127
 #define OBJ_EVENT_PAL_TAG_MAROWAK                 0x1128
+#define OBJ_EVENT_PAL_TAG_BLUEBLACK               0x1129
+#define OBJ_EVENT_PAL_TAG_REDTEAL                 0x1130
+#define OBJ_EVENT_PAL_TAG_ORANGEGREY              0x1131
+#define OBJ_EVENT_PAL_TAG_PURPLE                  0x1132
+#define OBJ_EVENT_PAL_TAG_GREEN                   0x1133
 #define OBJ_EVENT_PAL_TAG_NONE                    0x11FF
 
 #include "data/field_effects/field_effect_object_template_pointers.h"
@@ -494,6 +499,11 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_Grookey,               OBJ_EVENT_PAL_TAG_GROOKEY},
     {gObjectEventPal_OriPom,                OBJ_EVENT_PAL_TAG_ORIPOM},
     {gObjectEventPal_AlolanMarowak,         OBJ_EVENT_PAL_TAG_MAROWAK},
+    {gObjectEventPal_BlueBlack,             OBJ_EVENT_PAL_TAG_BLUEBLACK},
+    {gObjectEventPal_RedTeal,               OBJ_EVENT_PAL_TAG_REDTEAL},
+    {gObjectEventPal_OrangeGrey,            OBJ_EVENT_PAL_TAG_ORANGEGREY},
+    {gObjectEventPal_Purple,                OBJ_EVENT_PAL_TAG_PURPLE},
+    {gObjectEventPal_Green,                 OBJ_EVENT_PAL_TAG_GREEN},
 #ifdef BUGFIX
     {NULL,                                  OBJ_EVENT_PAL_TAG_NONE},
 #else

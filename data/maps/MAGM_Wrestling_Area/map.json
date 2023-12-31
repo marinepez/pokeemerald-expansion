@@ -15,12 +15,12 @@
   "connections": [
     {
       "map": "MAP_MAGM_MAIN_AREA",
-      "offset": 8,
+      "offset": 6,
       "direction": "right"
     },
     {
       "map": "MAP_MAGM_MAIN_AREA",
-      "offset": 8,
+      "offset": 6,
       "direction": "right"
     }
   ],
