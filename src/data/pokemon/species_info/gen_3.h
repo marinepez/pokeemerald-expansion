@@ -7999,8 +7999,6 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .categoryName = _("Sky High"),                                  \
         .footprint = gMonFootprint_Rayquaza,                            \
         LEARNSETS(Rayquaza),                                            \
-        .formSpeciesIdTable = sRayquazaFormSpeciesIdTable,              \
-        .formChangeTable = sRayquazaFormChangeTable,                    \
         .isLegendary = TRUE
 
     [SPECIES_RAYQUAZA] =

@@ -378,13 +378,6 @@ static const struct FormChange sGroudonFormChangeTable[] = {
 };
 #endif //P_FAMILY_GROUDON
 
-#if P_FAMILY_RAYQUAZA
-static const struct FormChange sRayquazaFormChangeTable[] = {
-    {FORM_CHANGE_BATTLE_MEGA_EVOLUTION_MOVE,    SPECIES_RAYQUAZA_MEGA, MOVE_DRAGON_ASCENT},
-    {FORM_CHANGE_TERMINATOR},
-};
-#endif //P_FAMILY_RAYQUAZA
-
 #if P_FAMILY_BURMY
 static const struct FormChange sBurmyFormChangeTable[] = {
     {FORM_CHANGE_END_BATTLE_TERRAIN, SPECIES_BURMY_PLANT_CLOAK, BATTLE_TERRAIN_GRASS},

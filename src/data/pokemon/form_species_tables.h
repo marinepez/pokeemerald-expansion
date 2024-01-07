@@ -771,14 +771,6 @@ static const u16 sGroudonFormSpeciesIdTable[] = {
 };
 #endif //P_FAMILY_GROUDON
 
-#if P_FAMILY_RAYQUAZA
-static const u16 sRayquazaFormSpeciesIdTable[] = {
-    SPECIES_RAYQUAZA,
-    SPECIES_RAYQUAZA_MEGA,
-    FORM_SPECIES_END,
-};
-#endif //P_FAMILY_RAYQUAZA
-
 #if P_FAMILY_DEOXYS
 static const u16 sDeoxysFormSpeciesIdTable[] = {
     SPECIES_DEOXYS_NORMAL,
