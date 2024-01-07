@@ -8365,12 +8365,12 @@ static int GetVirtualObjectSpriteId(u8 virtualObjId)
     return MAX_SPRITES;
 }
 
-void TurnVirtualObject(u8 virtualObjId, u8 direction)
+void TurnVirtualObject(u8 virtualObjId, u8 anim)
 {
     u8 spriteId = GetVirtualObjectSpriteId(virtualObjId);
 
-    if (spriteId != MAX_SPRITES)
-        StartSpriteAnim(&gSprites[spriteId], GetFaceDirectionAnimNum(direction));
+    if (spriteId != MAX_SPRITES && !gSprites[spriteId].animBeginning)
+        StartSpriteAnim(&gSprites[spriteId], anim);
 }
 
 void SetVirtualObjectGraphics(u8 virtualObjId, u8 graphicsId)

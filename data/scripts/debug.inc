@@ -96,8 +96,7 @@ Debug_BoxFilledMessage_Text:
 	.string "Storage boxes filled!$"
 
 Debug_EventScript_Script_1::
-	getplayerxy VAR_TEMP_2, VAR_TEMP_3
-	createvobject OBJ_EVENT_GFX_ARTIST, 1, VAR_TEMP_2, VAR_TEMP_3
+	call MAGM_Wrestling_Area_EventScript_AllAudienceCheer
 	end
 
 Debug_EventScript_Script_2::
@@ -107,6 +106,7 @@ Debug_EventScript_Script_2::
 	end
 
 Debug_EventScript_Script_3::
+	call MAGM_Wrestling_Area_EventScript_StaggeredAudienceLookAround
 	end
 
 Debug_EventScript_Script_4::

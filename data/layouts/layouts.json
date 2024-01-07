@@ -4454,12 +4454,22 @@
     {
       "id": "LAYOUT_MAGM_WRESTLING_AREA",
       "name": "MAGM_Wrestling_Area_Layout",
-      "width": 25,
+      "width": 28,
       "height": 22,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Fortree",
       "border_filepath": "data/layouts/MAGM_Wrestling_Area/border.bin",
       "blockdata_filepath": "data/layouts/MAGM_Wrestling_Area/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM_HAWLUCHA_CAVE",
+      "name": "MAGM_HawluchaCave_Layout",
+      "width": 9,
+      "height": 8,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/MAGM_HawluchaCave/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM_HawluchaCave/map.bin"
     }
   ]
 }
