@@ -1,5 +1,11 @@
 MAGM_Indoor_Hut_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, MAGM_Hut_OnTransition
 	.byte 0
+
+MAGM_Hut_OnTransition:
+	clearflag FLAG_SYS_SAFARI_MODE
+	special ZeroPlayerPartyMons
+	end
 
 MAGM_IndoorHut_ItemMachete::
 	finditem ITEM_MACHETE

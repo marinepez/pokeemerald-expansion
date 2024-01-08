@@ -46,6 +46,7 @@
 #include "pokenav.h"
 #include "menu_specialized.h"
 #include "data.h"
+#include "safari_zone.h"
 #include "constants/abilities.h"
 #include "constants/battle_anim.h"
 #include "constants/battle_move_effects.h"
@@ -1521,6 +1522,7 @@ static void Cmd_handlestudyattempt(void)
     }
     else if((rand + gBattleStruct->safariCatchFactor * 5) >= 65)
     {
+        gNumSafariBalls++;
         gBattlescriptCurrInstr = BattleScript_SuccessfulStudy;
     }
     else

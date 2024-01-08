@@ -5,43 +5,22 @@
 
 MAGM_Wrestling_Area_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, MAGM_Wrestling_Area_OnResume
+	map_script MAP_SCRIPT_ON_TRANSITION, MAGM_Wrestling_Area_OnTransition
 	.byte 0
+
+MAGM_Wrestling_Area_OnTransition:
+	clearflag FLAG_SYS_SAFARI_MODE
+	end
 
 MAGM_Wrestling_Area_OnResume:
 	call_if_eq VAR_TEMP_9, 0, MAGM_Wrestling_Area_EventScript_AddAudience
 	end
 
 MAGM_Wrestling_Area_EventScript_AddAudience::
-	setvar VAR_TEMP_9, 1
-	createvobject OBJ_EVENT_GFX_EXPERT_F			 0, 11, 3
-	createvobject OBJ_EVENT_GFX_LINK_RECEPTIONIST	 1, 12, 3
-	createvobject OBJ_EVENT_GFX_HIKER				 2, 13, 3
-	createvobject OBJ_EVENT_GFX_FAT_MAN				 3, 14, 3
-	createvobject OBJ_EVENT_GFX_CAMPER				 4, 15, 3
-	createvobject OBJ_EVENT_GFX_GENTLEMAN			 5, 16, 3
-	createvobject OBJ_EVENT_GFX_MAN_2				 6, 17, 3
-	createvobject OBJ_EVENT_GFX_MANIAC				 7, 18, 3
-	createvobject OBJ_EVENT_GFX_HEX_MANIAC			 8, 19, 3
-	createvobject OBJ_EVENT_GFX_MAN_3				 9, 10, 4
-	createvobject OBJ_EVENT_GFX_FISHERMAN			10, 11, 4
-	createvobject OBJ_EVENT_GFX_ARTIST				11, 12, 4
-	createvobject OBJ_EVENT_GFX_BEAUTY				12, 13, 4
-	createvobject OBJ_EVENT_GFX_GIRL_2				13, 14, 4
-	createvobject OBJ_EVENT_GFX_BOY_3				14, 15, 4
-	createvobject OBJ_EVENT_GFX_LASS				15, 16, 4
-	createvobject OBJ_EVENT_GFX_MOM					16, 17, 4
-	createvobject OBJ_EVENT_GFX_LEAF				17, 18, 4
-	createvobject OBJ_EVENT_GFX_CONTEST_JUDGE		18, 20, 4
-	createvobject OBJ_EVENT_GFX_GIRL_3				19,  9, 5, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_EXPERT_M			20,  9, 6, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_BUG_CATCHER			21,  9, 7, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_CAMERAMAN			22,  9, 8, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_BOY_2				23,  9, 9, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_DEVON_EMPLOYEE		24, 21, 6, 3, DIR_WEST
-	createvobject OBJ_EVENT_GFX_MAN_4				25, 21, 7, 3, DIR_WEST
-	createvobject OBJ_EVENT_GFX_MAN_5				26, 21, 9, 3, DIR_WEST
-	createvobject OBJ_EVENT_GFX_MART_EMPLOYEE		27, 21, 10, 3, DIR_WEST
-	return
+	getplayerxy VAR_TEMP_2, VAR_TEMP_3
+	goto_if_ne VAR_TEMP_2, 28, MAGM_Wrestling_Area_EventScript_AddAudienceLeft
+	goto MAGM_Wrestling_Area_EventScript_AddAudienceRight
+	end
 
 MAGM_Wrestling_Area_EventScript_SmeargleNoticePlayer::
 	setvar VAR_WRESTLING_AREA_STATE 1
@@ -210,6 +189,68 @@ MAGM_Wrestling_Area_Movement_SmeargleWalk3::
 	walk_left
 	walk_up
 	step_end
+
+MAGM_Wrestling_Area_EventScript_AddAudienceRight::
+	createvobject OBJ_EVENT_GFX_EXPERT_F			 0, 11, 3
+	createvobject OBJ_EVENT_GFX_LINK_RECEPTIONIST	 1, 12, 3
+	createvobject OBJ_EVENT_GFX_HIKER				 2, 13, 3
+	createvobject OBJ_EVENT_GFX_FAT_MAN				 3, 14, 3
+	createvobject OBJ_EVENT_GFX_CAMPER				 4, 15, 3
+	createvobject OBJ_EVENT_GFX_GENTLEMAN			 5, 16, 3
+	createvobject OBJ_EVENT_GFX_MAN_2				 6, 17, 3
+	createvobject OBJ_EVENT_GFX_MANIAC				 7, 18, 3
+	createvobject OBJ_EVENT_GFX_HEX_MANIAC			 8, 19, 3
+	createvobject OBJ_EVENT_GFX_MAN_3				 9, 10, 4
+	createvobject OBJ_EVENT_GFX_FISHERMAN			10, 11, 4
+	createvobject OBJ_EVENT_GFX_ARTIST				11, 12, 4
+	createvobject OBJ_EVENT_GFX_BEAUTY				12, 13, 4
+	createvobject OBJ_EVENT_GFX_GIRL_2				13, 14, 4
+	createvobject OBJ_EVENT_GFX_BOY_3				14, 15, 4
+	createvobject OBJ_EVENT_GFX_LASS				15, 16, 4
+	createvobject OBJ_EVENT_GFX_MOM					16, 17, 4
+	createvobject OBJ_EVENT_GFX_LEAF				17, 18, 4
+	createvobject OBJ_EVENT_GFX_CONTEST_JUDGE		18, 20, 4
+	createvobject OBJ_EVENT_GFX_GIRL_3				19,  9, 5, 3, DIR_EAST
+	createvobject OBJ_EVENT_GFX_EXPERT_M			20,  9, 6, 3, DIR_EAST
+	createvobject OBJ_EVENT_GFX_BUG_CATCHER			21,  9, 7, 3, DIR_EAST
+	createvobject OBJ_EVENT_GFX_CAMERAMAN			22,  9, 8, 3, DIR_EAST
+	createvobject OBJ_EVENT_GFX_BOY_2				23,  9, 9, 3, DIR_EAST
+	createvobject OBJ_EVENT_GFX_DEVON_EMPLOYEE		24, 21, 6, 3, DIR_WEST
+	createvobject OBJ_EVENT_GFX_MAN_4				25, 21, 7, 3, DIR_WEST
+	createvobject OBJ_EVENT_GFX_MAN_5				26, 21, 9, 3, DIR_WEST
+	createvobject OBJ_EVENT_GFX_MART_EMPLOYEE		27, 21, 10, 3, DIR_WEST
+	end
+
+MAGM_Wrestling_Area_EventScript_AddAudienceLeft::
+	createvobject OBJ_EVENT_GFX_EXPERT_F			 0, 10, 3
+	createvobject OBJ_EVENT_GFX_LINK_RECEPTIONIST	 1, 11, 3
+	createvobject OBJ_EVENT_GFX_HIKER				 2, 12, 3
+	createvobject OBJ_EVENT_GFX_FAT_MAN				 3, 13, 3
+	createvobject OBJ_EVENT_GFX_CAMPER				 4, 14, 3
+	createvobject OBJ_EVENT_GFX_GENTLEMAN			 5, 15, 3
+	createvobject OBJ_EVENT_GFX_MAN_2				 6, 16, 3
+	createvobject OBJ_EVENT_GFX_MANIAC				 7, 17, 3
+	createvobject OBJ_EVENT_GFX_HEX_MANIAC			 8, 18, 3
+	createvobject OBJ_EVENT_GFX_MAN_3				 9,  9, 4
+	createvobject OBJ_EVENT_GFX_FISHERMAN			10, 10, 4
+	createvobject OBJ_EVENT_GFX_ARTIST				11, 11, 4
+	createvobject OBJ_EVENT_GFX_BEAUTY				12, 12, 4
+	createvobject OBJ_EVENT_GFX_GIRL_2				13, 13, 4
+	createvobject OBJ_EVENT_GFX_BOY_3				14, 14, 4
+	createvobject OBJ_EVENT_GFX_LASS				15, 15, 4
+	createvobject OBJ_EVENT_GFX_MOM					16, 16, 4
+	createvobject OBJ_EVENT_GFX_LEAF				17, 17, 4
+	createvobject OBJ_EVENT_GFX_CONTEST_JUDGE		18, 19, 4
+	createvobject OBJ_EVENT_GFX_GIRL_3				19,  8, 5, 3, DIR_EAST
+	createvobject OBJ_EVENT_GFX_EXPERT_M			20,  8, 6, 3, DIR_EAST
+	createvobject OBJ_EVENT_GFX_BUG_CATCHER			21,  8, 7, 3, DIR_EAST
+	createvobject OBJ_EVENT_GFX_CAMERAMAN			22,  8, 8, 3, DIR_EAST
+	createvobject OBJ_EVENT_GFX_BOY_2				23,  8, 9, 3, DIR_EAST
+	createvobject OBJ_EVENT_GFX_DEVON_EMPLOYEE		24, 20, 6, 3, DIR_WEST
+	createvobject OBJ_EVENT_GFX_MAN_4				25, 20, 7, 3, DIR_WEST
+	createvobject OBJ_EVENT_GFX_MAN_5				26, 20, 9, 3, DIR_WEST
+	createvobject OBJ_EVENT_GFX_MART_EMPLOYEE		27, 20, 10, 3, DIR_WEST
+	end
 
 MAGM_Wrestling_Area_EventScript_DoAudienceLookAround::
 	gettime

@@ -4,7 +4,18 @@
 .set LOCALID_MAROWAK, 5
 
 MAGM_DanceRoom_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, MAGM_DanceRoom_OnTransition
 	.byte 0
+
+MAGM_DanceRoom_OnTransition:
+	clearflag FLAG_SYS_SAFARI_MODE
+	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_MoveDancersToHigherStage
+	end
+
+MAGM_DanceRoom_MoveDancersToHigherStage::
+	setobjectxyperm LOCALID_GLOOM, 12, 8
+	setobjectxyperm LOCALID_LOMBRE, 14, 8
+	return
 
 MAGM_DanceRoom_EventScript_Marowak::
 	playmoncry SPECIES_MAROWAK_ALOLAN, CRY_MODE_NORMAL
@@ -30,10 +41,13 @@ MAGM_DanceRoom_EventScript_Thwackey::
 	end
 
 MAGM_DanceRoom_EventScript_DanceChallengeMonsAskForHelp::
+	applymovement LOCALID_GLOOM, MAGM_DanceRoom_Movement_GloomDanceShort
+	applymovement LOCALID_LOMBRE, MAGM_DanceRoom_Movement_LombreDanceShort
+	waitmovement 0
 	msgbox MAGM_DanceRoom_Text_ThisIsADanceBattle, MSGBOX_DEFAULT
 	waitmessage
-	applymovement LOCALID_GLOOM, Common_Movement_FacePlayer
-	applymovement LOCALID_LOMBRE, Common_Movement_FacePlayer
+	applymovement LOCALID_GLOOM, Common_Movement_FaceDown
+	applymovement LOCALID_LOMBRE, Common_Movement_FaceDown
 	delay 16
 	playmoncry SPECIES_GLOOM, CRY_MODE_NORMAL
 	waitmoncry
@@ -45,15 +59,23 @@ MAGM_DanceRoom_EventScript_DanceChallengeMonsAskForHelp::
 	releaseall
 	end
 
+MAGM_DanceRoom_EventScript_SecondTimeMonsAskForHelp::
+	msgbox MAGM_DanceRoom_Text_HelpThemDance, MSGBOX_YESNO
+	waitmessage
+	goto_if_eq VAR_RESULT, YES, MAGM_DanceRoom_DoDanceBattle
+	return
+
 MAGM_DanceRoom_DoDanceBattle::
-	givecustommon SPECIES_GLOOM, 35, ITEM_NONE, ITEM_POKE_BALL, NATURE_BASHFUL, 0, 1, 1, 1, 1, 1, 1, 31, 31, 31, 31, 31, 31, VAR_GLOOM_MOVE1, VAR_GLOOM_MOVE2, VAR_GLOOM_MOVE3, VAR_GLOOM_MOVE4, 0
-	givecustommon SPECIES_LOMBRE, 35, ITEM_NONE, ITEM_POKE_BALL, NATURE_JOLLY, 0, 1, 1, 1, 1, 1, 1, 31, 31, 31, 31, 31, 31, VAR_LOMBRE_MOVE1, VAR_LOMBRE_MOVE2, VAR_LOMBRE_MOVE3, VAR_LOMBRE_MOVE4, 0
-	trainerbattle_double TRAINER_GABBY_AND_TY_1, GabbyAndTy_Text_TyIntro, GabbyAndTy_Text_TyDefeat, GabbyAndTy_Text_TyNotEnoughMons, MAGM_DanceRoom_AfterDanceBattle
-	//No whiteout
-	//Remove both pokemon from party
+	givecustommon SPECIES_GLOOM, 35, ITEM_NONE, ITEM_GREAT_BALL, NATURE_BASHFUL, 0, 1, 1, 1, 1, 1, 1, 31, 31, 31, 31, 31, 31, VAR_GLOOM_MOVE1, VAR_GLOOM_MOVE2, VAR_GLOOM_MOVE3, VAR_GLOOM_MOVE4, 0
+	givecustommon SPECIES_LOMBRE, 35, ITEM_NONE, ITEM_GREAT_BALL, NATURE_QUIRKY, 0, 1, 1, 1, 1, 1, 1, 31, 31, 31, 31, 31, 31, VAR_LOMBRE_MOVE1, VAR_LOMBRE_MOVE2, VAR_LOMBRE_MOVE3, VAR_LOMBRE_MOVE4, 0
+	clearflag FLAG_SYS_SAFARI_MODE
+	trainerbattle_double TRAINER_DANCERS, GabbyAndTy_Text_TyIntro, GabbyAndTy_Text_TyDefeat, GabbyAndTy_Text_TyNotEnoughMons, MAGM_DanceRoom_AfterDanceBattle
 	end
 
 MAGM_DanceRoom_AfterDanceBattle::
+	special ZeroPlayerPartyMons
+	setvar VAR_MAGM_DANCE_AREA_STATE, 2
+	releaseall
 	end
 
 MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene::
@@ -102,6 +124,7 @@ MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End::
 	end
 
 MAGM_DanceRoom_EventScript_Gloom::
+	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_EventScript_SecondTimeMonsAskForHelp
 	bufferspeciesname 0, SPECIES_GLOOM
 	goto_if_set FLAG_DANCED_WITH_GLOOM, MAGM_DanceRoom_EventScript_Gloom_SkipToTeachMove
 	playmoncry SPECIES_GLOOM, CRY_MODE_NORMAL
@@ -159,24 +182,24 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_CheckPetalDance::
 	dynmultipush MAGM_DanceRoom_Text_PetalDanceDance, 2
 MAGM_DanceRoom_EventScript_DanceWithGloom_CheckMimic::
 	compare VAR_GLOOM_MOVE1, 102
-	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCaptivate
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCharm
 	compare VAR_GLOOM_MOVE2, 102
-	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCaptivate
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCharm
 	compare VAR_GLOOM_MOVE3, 102
-	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCaptivate
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCharm
 	compare VAR_GLOOM_MOVE4, 102
-	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCaptivate
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCharm
 	dynmultipush MAGM_DanceRoom_Text_MimicDance, 3
-MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCaptivate::
-	compare VAR_GLOOM_MOVE1, 445
+MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCharm::
+	compare VAR_GLOOM_MOVE1, 204
 	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckTeeterDance
-	compare VAR_GLOOM_MOVE2, 445
+	compare VAR_GLOOM_MOVE2, 204
 	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckTeeterDance
-	compare VAR_GLOOM_MOVE3, 445
+	compare VAR_GLOOM_MOVE3, 204
 	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckTeeterDance
-	compare VAR_GLOOM_MOVE4, 445
+	compare VAR_GLOOM_MOVE4, 204
 	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckTeeterDance
-	dynmultipush MAGM_DanceRoom_Text_CaptivateDance, 4
+	dynmultipush MAGM_DanceRoom_Text_CharmDance, 4
 MAGM_DanceRoom_EventScript_DanceWithGloom_CheckTeeterDance::
 	compare VAR_GLOOM_MOVE1, 298
 	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCheckMoves
@@ -198,7 +221,7 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_CreateMultichoiceList::
 	case 1, MAGM_DanceRoom_EventScript_DanceWithGloom_TeachAfterYou
 	case 2, MAGM_DanceRoom_EventScript_DanceWithGloom_TeachPetalDance
 	case 3, MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMimic
-	case 4, MAGM_DanceRoom_EventScript_DanceWithGloom_TeachCaptivate
+	case 4, MAGM_DanceRoom_EventScript_DanceWithGloom_TeachCharm
 	case 5, MAGM_DanceRoom_EventScript_DanceWithGloom_TeachTeeterDance
 	case 6, MAGM_DanceRoom_EventScript_DanceWithGloom_ShowMoves
 	case MULTI_B_PRESSED MAGM_DanceRoom_EventScript_DanceWithGloom_End
@@ -272,10 +295,10 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMimic::
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
-MAGM_DanceRoom_EventScript_DanceWithGloom_TeachCaptivate::
+MAGM_DanceRoom_EventScript_DanceWithGloom_TeachCharm::
 	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepSides
-	setvar VAR_0x8000, 445
-	msgbox MAGM_DanceRoom_Text_CaptivateFlavor, MSGBOX_DEFAULT
+	setvar VAR_0x8000, 204
+	msgbox MAGM_DanceRoom_Text_CharmFlavor, MSGBOX_DEFAULT
 	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
@@ -339,6 +362,7 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonLearnedMove::
 	end
 
 MAGM_DanceRoom_EventScript_Lombre::
+	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_EventScript_SecondTimeMonsAskForHelp
 	bufferspeciesname 0, SPECIES_LOMBRE
 	goto_if_set FLAG_DANCED_WITH_LOMBRE, MAGM_DanceRoom_EventScript_Lombre_SkipToTeachMove
 	playmoncry SPECIES_LOMBRE, CRY_MODE_NORMAL
@@ -590,16 +614,16 @@ MAGM_DanceRoom_EventScript_PlayerDance::
 	end
 
 MAGM_DanceRoom_Text_ThisIsADanceBattle:
-	.string "Is this .{PAUSE 30} .{PAUSE 30} .{PAUSE 30} a dance battle?$"
+	.string "Is this a dance battle?$"
 
 MAGM_DanceRoom_Text_HelpThemDance:
-	.string "Looks like they want your help\p"
+	.string "Looks like they want your\n"
+	.string "help.\p"
 	.string "Lead the dance battle?$"
 
 MAGM_DanceRoom_Text_TheyWillWait:
 	.string "Seems like they'll wait for\n"
-	.string "you. You can speak with one\l"
-	.string "of the opponents to start$"
+	.string "you.$"
 
 MAGM_DanceRoom_Text_MonHasMoves:
 	.string "{STR_VAR_1} has the following\n"
@@ -691,11 +715,11 @@ MAGM_DanceRoom_Text_MimicFlavor:
 MAGM_DanceRoom_Text_MimicDance:
 	.string "Simple$"
 
-MAGM_DanceRoom_Text_CaptivateFlavor:
+MAGM_DanceRoom_Text_CharmFlavor:
 	.string "You release your inner\n"
 	.string "flamenco.$"
 
-MAGM_DanceRoom_Text_CaptivateDance:
+MAGM_DanceRoom_Text_CharmDance:
 	.string "Tango$"
 
 MAGM_DanceRoom_Text_MonIsDancingWithYou:
@@ -877,6 +901,29 @@ MAGM_DanceRoom_Movement_GloomDance:
 	face_player
 	step_end
 
+MAGM_DanceRoom_Movement_GloomDanceShort:
+	walk_in_place_fast_down
+	walk_in_place_fast_left
+	walk_in_place_fast_up
+	walk_in_place_fast_right
+	walk_in_place_slow_down
+	walk_in_place_fast_left
+	walk_in_place_fast_left
+	walk_in_place_slow_left
+	walk_in_place_fast_right
+	walk_in_place_fast_right
+	walk_in_place_slow_right
+	walk_in_place_fast_left
+	walk_in_place_fast_left
+	walk_in_place_slow_left
+	walk_in_place_fast_down
+	walk_in_place_fast_left
+	walk_in_place_fast_up
+	walk_in_place_fast_right
+	walk_in_place_slow_down
+	face_player
+	step_end
+
 MAGM_DanceRoom_Movement_LombreDance:
 	face_player
 	delay_16
@@ -894,6 +941,27 @@ MAGM_DanceRoom_Movement_LombreDance:
 	delay_16
 	delay_16
 	delay_16
+	walk_in_place_left
+	lock_facing_direction
+	walk_slow_right
+	unlock_facing_direction
+	walk_in_place_left
+	delay_8
+	walk_in_place_right
+	lock_facing_direction
+	walk_slow_left
+	unlock_facing_direction
+	walk_in_place_right
+	delay_8
+	walk_in_place_down
+	walk_in_place_left
+	walk_in_place_up
+	walk_in_place_right
+	walk_in_place_slow_down
+	step_end
+
+
+MAGM_DanceRoom_Movement_LombreDanceShort:
 	walk_in_place_left
 	lock_facing_direction
 	walk_slow_right

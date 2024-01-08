@@ -2809,28 +2809,22 @@ GabbyAndTy_Text_TyPreFirstBattle:
 	.string "Camera's rolling!$"
 
 GabbyAndTy_Text_TyIntro:
-	.string "TY: Hey, lookie here!\n"
-	.string "I remember you!\p"
-	.string "I'll get this battle all on this\n"
-	.string "here camera!$"
+	.string "Let's do this!$"
 
 GabbyAndTy_Text_TyPostBattle:
-	.string "TY: You're a natural!\n"
-	.string "Got me some prime footage right here!$"
+	.string "You won the\n"
+	.string "dance battle!"
 
 GabbyAndTy_Text_TyNotEnoughMons:
-	.string "TY: Do you only have the one POKéMON\n"
-	.string "and that's it?\p"
-	.string "If you had more POKéMON, it'd make for\n"
-	.string "better footage, but…$"
+	.string "Not enough mons.$"
 
 GabbyAndTy_Text_TyDefeatFirstTime:
 	.string "TY: Yep, we sure spotted a hot TRAINER.\n"
 	.string "This is a huge scoop for us!$"
 
 GabbyAndTy_Text_TyDefeat:
-	.string "TY: Yep, I got it all.\n"
-	.string "That whole battle's on camera.$"
+	.string "You won the\n"
+	.string "dance battle!"
 
 gTVInSearchOfTrainersText00::
 	.string "IN SEARCH OF TRAINERS…\p"

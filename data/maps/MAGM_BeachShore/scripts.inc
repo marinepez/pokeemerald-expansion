@@ -3,14 +3,19 @@
 
 MAGM_BeachShore_MapScripts::
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, MAGM_BeachShore_OnFrame
-	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, BattleFrontier_MAGM_BeachShore_OnWarp
+	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, MAGM_BeachShore_OnWarp
+	map_script MAP_SCRIPT_ON_TRANSITION, MAGM_BeachShore_OnTransition
 	.byte 0
+
+MAGM_BeachShore_OnTransition:
+	clearflag FLAG_SYS_SAFARI_MODE
+	end
 
 MAGM_BeachShore_OnFrame:
 	map_script_2 VAR_BEACH_INTRO_STATE, 0, MAGM_BeachShore_EventScript_DropMail
 	.2byte 0
 
-BattleFrontier_MAGM_BeachShore_OnWarp:
+MAGM_BeachShore_OnWarp:
 	map_script_2 VAR_BEACH_INTRO_STATE, 0, MAGM_BeachShore_EventScript_SetUpRoomObjects
 	.2byte 0
 
@@ -37,9 +42,19 @@ MAGM_BeachShore_EventScript_DropMail::
 	additem ITEM_FRIEND_LETTER
 	additem ITEM_LEAGUE_LETTER
 	additem ITEM_MASTER_BALL
+	setrespawn HEAL_LOCATION_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F
 	setvar VAR_BEACH_INTRO_STATE 1
+	setflag FLAG_HIDE_MAP_NAME_POPUP
 	setflag FLAG_SYS_B_DASH
 	setflag FLAG_SYS_SAFARI_MODE
+	setflag FLAG_BADGE01_GET
+	setflag FLAG_BADGE02_GET
+	setflag FLAG_BADGE03_GET
+	setflag FLAG_BADGE04_GET
+	setflag FLAG_BADGE05_GET
+	setflag FLAG_BADGE06_GET
+	setflag FLAG_BADGE07_GET
+	setflag FLAG_BADGE08_GET
 	msgbox MAGM_BeachShore_MapScripts_Text_LeftALetter, MSGBOX_YESNO
 	switch VAR_RESULT
 	case YES, MAGM_BeachShore_MapScripts_EventScript_ReadLetter

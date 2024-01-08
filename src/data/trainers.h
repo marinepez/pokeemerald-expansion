@@ -612,7 +612,7 @@ const struct Trainer gTrainers[] = {
         .party = TRAINER_PARTY(sParty_Dusty5),
     },
 
-    [TRAINER_GABBY_AND_TY_1] =
+    [TRAINER_DANCERS] =
     {
         .trainerClass = TRAINER_CLASS_INTERVIEWER,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_COOL,
