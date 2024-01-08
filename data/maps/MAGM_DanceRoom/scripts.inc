@@ -1,5 +1,7 @@
 .set LOCALID_GLOOM, 1
 .set LOCALID_LOMBRE, 2
+.set LOCALID_ORICORIO, 4
+.set LOCALID_MAROWAK, 5
 
 MAGM_DanceRoom_MapScripts::
 	.byte 0
@@ -25,6 +27,78 @@ MAGM_DanceRoom_EventScript_Oricorio::
 MAGM_DanceRoom_EventScript_Thwackey::
 	playmoncry SPECIES_THWACKEY, CRY_MODE_NORMAL
 	waitmoncry
+	end
+
+MAGM_DanceRoom_EventScript_DanceChallengeMonsAskForHelp::
+	msgbox MAGM_DanceRoom_Text_ThisIsADanceBattle, MSGBOX_DEFAULT
+	waitmessage
+	applymovement LOCALID_GLOOM, Common_Movement_FacePlayer
+	applymovement LOCALID_LOMBRE, Common_Movement_FacePlayer
+	delay 16
+	playmoncry SPECIES_GLOOM, CRY_MODE_NORMAL
+	waitmoncry
+	msgbox MAGM_DanceRoom_Text_HelpThemDance, MSGBOX_YESNO
+	waitmessage
+	goto_if_eq VAR_RESULT, YES, MAGM_DanceRoom_DoDanceBattle
+	msgbox MAGM_DanceRoom_Text_TheyWillWait, MSGBOX_DEFAULT
+	closemessage
+	releaseall
+	end
+
+MAGM_DanceRoom_DoDanceBattle::
+	givemon SPECIES_GLOOM, 35
+	givemon SPECIES_LOMBRE, 35
+	trainerbattle_double TRAINER_GABBY_AND_TY_1, GabbyAndTy_Text_TyIntro, GabbyAndTy_Text_TyDefeat, GabbyAndTy_Text_TyNotEnoughMons, MAGM_DanceRoom_AfterDanceBattle
+	//No whiteout
+	//Remove both pokemon from party
+	end
+
+MAGM_DanceRoom_AfterDanceBattle::
+	end
+
+MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene::
+	goto_if_eq VAR_GLOOM_MOVE1,  0, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
+	goto_if_eq VAR_GLOOM_MOVE2,  0, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
+	goto_if_eq VAR_GLOOM_MOVE3,  0, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
+	goto_if_eq VAR_GLOOM_MOVE4,  0, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
+	goto_if_eq VAR_LOMBRE_MOVE1, 0, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
+	goto_if_eq VAR_LOMBRE_MOVE2, 0, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
+	goto_if_eq VAR_LOMBRE_MOVE3, 0, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
+	goto_if_eq VAR_LOMBRE_MOVE4, 0, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
+	goto_if_eq VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
+	setvar VAR_MAGM_DANCE_AREA_STATE, 1
+	applymovement LOCALID_GLOOM, Common_Movement_FacePlayer
+	applymovement LOCALID_LOMBRE, Common_Movement_FacePlayer
+	playmoncry SPECIES_GLOOM, CRY_MODE_NORMAL
+	waitmoncry
+	delay 16
+	playmoncry SPECIES_LOMBRE, CRY_MODE_NORMAL
+	waitmoncry
+	delay 16
+	//Start moving towards the ladder
+	getplayerxy VAR_TEMP_2, VAR_TEMP_3
+MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_CheckIfGloomMoves::
+	goto_if_ne VAR_TEMP_2,  9, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_CheckIfLombreMoves
+	goto_if_ne VAR_TEMP_3, 12, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_CheckIfLombreMoves
+	applymovement LOCALID_GLOOM, MAGM_DanceRoom_Movement_WalkRightUpAlt
+	goto MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_DoLombreNormalMovement
+MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_CheckIfLombreMoves::
+	applymovement LOCALID_GLOOM, MAGM_DanceRoom_Movement_WalkRightUpNormal
+	goto_if_ne VAR_TEMP_2, 11, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_DoLombreNormalMovement
+	goto_if_ne VAR_TEMP_3, 12, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_DoLombreNormalMovement
+	applymovement LOCALID_LOMBRE, MAGM_DanceRoom_Movement_WalkRightUpAlt
+	goto MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_MonsGoToLadder
+MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_DoLombreNormalMovement::
+	applymovement LOCALID_LOMBRE, MAGM_DanceRoom_Movement_WalkRightUpNormal
+MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_MonsGoToLadder::
+	waitmovement 0
+	applymovement LOCALID_LOMBRE, MAGM_DanceRoom_Movement_LombreWalkToLadder
+	applymovement LOCALID_GLOOM, MAGM_DanceRoom_Movement_GloomWalkToLadder
+	waitmovement 0
+	setobjectxyperm LOCALID_GLOOM, 12, 8
+	setobjectxyperm LOCALID_LOMBRE, 14, 8
+MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End::
+	releaseall
 	end
 
 MAGM_DanceRoom_EventScript_Gloom::
@@ -251,7 +325,7 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonReplacedMove::
 	msgbox MAGM_DanceRoom_Text_MonReplacedMove, MSGBOX_DEFAULT
 	waitse
 	closemessage
-	release
+	goto MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonLearnedMove::
@@ -261,7 +335,7 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonLearnedMove::
 	msgbox MAGM_DanceRoom_Text_MonLearnedMove, MSGBOX_DEFAULT
 	waitse
 	closemessage
-	release
+	goto MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene
 	end
 
 MAGM_DanceRoom_EventScript_Lombre::
@@ -283,6 +357,13 @@ MAGM_DanceRoom_EventScript_Lombre_SkipToTeachMove::
 
 MAGM_DanceRoom_EventScript_DanceWithLombre::
 	setflag FLAG_DANCED_WITH_LOMBRE
+	getplayerxy VAR_TEMP_2, VAR_TEMP_3
+	//Forcing the player to walk down if in the way
+	goto_if_ne VAR_TEMP_2, 10, MAGM_DanceRoom_EventScript_DanceWithLombre_Normal_Dance
+	goto_if_ne VAR_TEMP_3, 13, MAGM_DanceRoom_EventScript_DanceWithLombre_Normal_Dance
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_WalkDown
+	waitmovement 0
+MAGM_DanceRoom_EventScript_DanceWithLombre_Normal_Dance::
 	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerDance1
 	applymovement LOCALID_LOMBRE, MAGM_DanceRoom_Movement_LombreDance
 	waitmovement 0
@@ -488,7 +569,7 @@ MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonReplacedMove::
 	msgbox MAGM_DanceRoom_Text_MonReplacedMove, MSGBOX_DEFAULT
 	waitse
 	closemessage
-	release
+	goto MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonLearnedMove::
@@ -498,7 +579,7 @@ MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonLearnedMove::
 	msgbox MAGM_DanceRoom_Text_MonLearnedMove, MSGBOX_DEFAULT
 	waitse
 	closemessage
-	release
+	goto MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene
 	end
 
 
@@ -507,6 +588,18 @@ MAGM_DanceRoom_EventScript_PlayerDance::
 	waitmovement 0
 	release
 	end
+
+MAGM_DanceRoom_Text_ThisIsADanceBattle:
+	.string "Is this .{PAUSE 30} .{PAUSE 30} .{PAUSE 30} a dance battle?$"
+
+MAGM_DanceRoom_Text_HelpThemDance:
+	.string "Looks like they want your help\p"
+	.string "Lead the dance battle?$"
+
+MAGM_DanceRoom_Text_TheyWillWait:
+	.string "Seems like they'll wait for\n"
+	.string "you. You can speak with one\l"
+	.string "of the opponents to start$"
 
 MAGM_DanceRoom_Text_MonHasMoves:
 	.string "{STR_VAR_1} has the following\n"
@@ -580,7 +673,7 @@ MAGM_DanceRoom_Text_SunnyDayDance:
 
 MAGM_DanceRoom_Text_AfterYouFlavor:
 	.string "You lead Gloom in a\n"
-	.string "classic box step$"
+	.string "classic box step.$"
 
 MAGM_DanceRoom_Text_AfterYouDance:
 	.string "Ballroom$"
@@ -622,6 +715,26 @@ MAGM_DanceRoom_Text_MonLearnedMove:
 MAGM_DanceRoom_Text_MonReplacedMove:
 	.string "{STR_VAR_1} forgot {STR_VAR_3} and\n"
 	.string "learned {STR_VAR_2}!$"
+
+MAGM_DanceRoom_Movement_WalkDown:
+	walk_down
+	step_end
+
+MAGM_DanceRoom_Movement_WalkRightUpAlt:
+	walk_right
+	walk_up
+	walk_up
+	step_end
+
+MAGM_DanceRoom_Movement_WalkRightUpNormal:
+	walk_up
+	walk_up
+	walk_right
+	step_end
+
+MAGM_DanceRoom_Movement_WalkRight:
+	walk_right
+	step_end
 
 MAGM_DanceRoom_Movement_PlayerSpin:
 	walk_in_place_down
@@ -798,4 +911,24 @@ MAGM_DanceRoom_Movement_LombreDance:
 	walk_in_place_up
 	walk_in_place_right
 	walk_in_place_slow_down
+	step_end
+
+MAGM_DanceRoom_Movement_GloomWalkToLadder:
+	walk_right
+	walk_right
+	walk_right
+	walk_up
+	walk_up
+	walk_up
+	walk_left
+	face_up
+	step_end
+
+MAGM_DanceRoom_Movement_LombreWalkToLadder:
+	walk_right
+	walk_up
+	walk_up
+	walk_up
+	walk_right
+	face_up
 	step_end

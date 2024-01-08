@@ -540,14 +540,17 @@ static const struct TrainerMon sParty_Dusty5[] = {
 
 static const struct TrainerMon sParty_GabbyAndTy1[] = {
     {
-    .iv = TRAINER_PARTY_IVS(6, 6, 6, 6, 6, 6),
-    .lvl = 17,
-    .species = SPECIES_MAGNEMITE,
+    .iv = TRAINER_PARTY_IVS(25, 25, 25, 25, 25, 25),
+    .lvl = 35,
+    .species = SPECIES_ORICORIO_POM_POM,
+    .moves = {MOVE_REVELATION_DANCE, MOVE_HELPING_HAND, MOVE_ROOST, MOVE_ACROBATICS},
+    .heldItem = ITEM_LUM_BERRY,
     },
     {
-    .iv = TRAINER_PARTY_IVS(6, 6, 6, 6, 6, 6),
-    .lvl = 17,
-    .species = SPECIES_WHISMUR,
+    .iv = TRAINER_PARTY_IVS(25, 25, 25, 25, 25, 25),
+    .lvl = 35,
+    .species = SPECIES_MAROWAK_ALOLAN,
+    .moves = {MOVE_SUNNY_DAY, MOVE_FLAME_WHEEL, MOVE_SHADOW_BONE, MOVE_FIRE_SPIN},
     }
 };
 
