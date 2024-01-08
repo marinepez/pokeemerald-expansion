@@ -339,12 +339,12 @@
 #define FLAG_RECEIVED_AURORA_TICKET          0x13A
 #define FLAG_RECEIVED_MYSTIC_TICKET          0x13B
 #define FLAG_RECEIVED_OLD_SEA_MAP            0x13C
-#define FLAG_WONDER_CARD_UNUSED_1            0x13D // These Wonder Card flags are referenced but never set
-#define FLAG_WONDER_CARD_UNUSED_2            0x13E
-#define FLAG_WONDER_CARD_UNUSED_3            0x13F
-#define FLAG_WONDER_CARD_UNUSED_4            0x140
-#define FLAG_WONDER_CARD_UNUSED_5            0x141
-#define FLAG_WONDER_CARD_UNUSED_6            0x142
+#define FLAG_CUT_TREE_1                      0x13D // These Wonder Card flags are referenced but never set
+#define FLAG_CUT_TREE_2                      0x13E
+#define FLAG_CUT_TREE_3                      0x13F
+#define FLAG_CUT_TREE_4                      0x140
+#define FLAG_CUT_TREE_5                      0x141
+#define FLAG_CUT_TREE_6                      0x142
 #define FLAG_WONDER_CARD_UNUSED_7            0x143
 #define FLAG_WONDER_CARD_UNUSED_8            0x144
 #define FLAG_WONDER_CARD_UNUSED_9            0x145

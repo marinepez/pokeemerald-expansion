@@ -4003,3 +4003,8 @@ static const u8 sOfficialLetterDesc[] = _(
     "A letter bearing\n"
     "the official\n"
     "League insignia.");
+
+static const u8 sMacheteDesc[] = _(
+    "It's still sharp.\n"
+    "This can CUT\n"
+    "small trees.");

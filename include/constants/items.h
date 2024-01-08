@@ -988,8 +988,9 @@
 #define ITEM_GLIMMERING_CHARM 813
 #define ITEM_FRIEND_LETTER 814
 #define ITEM_LEAGUE_LETTER 815
+#define ITEM_MACHETE 816
 
-#define ITEMS_COUNT 816
+#define ITEMS_COUNT 817
 #define ITEM_FIELD_ARROW ITEMS_COUNT
 
 // A special item id associated with "Cancel"/"Exit" etc. in a list of items or decorations

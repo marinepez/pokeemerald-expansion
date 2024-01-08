@@ -1,32 +1,22 @@
 @ Interact with cuttable tree
 EventScript_CutTree::
 	lockall
-	goto_if_unset FLAG_BADGE01_GET, EventScript_CheckTreeCantCut
-	checkpartymove MOVE_CUT
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CheckTreeCantCut
-	setfieldeffectargument 0, VAR_RESULT
-	bufferpartymonnick STR_VAR_1, VAR_RESULT
-	buffermovename STR_VAR_2, MOVE_CUT
-	msgbox Text_WantToCut, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, EventScript_CancelCut
-	msgbox Text_MonUsedFieldMove, MSGBOX_DEFAULT
-	closemessage
-	dofieldeffect FLDEFF_USE_CUT_ON_TREE
-	waitstate
+	checkitem ITEM_MACHETE, 1
+	goto_if_eq VAR_RESULT, FALSE, EventScript_CheckTreeCantCut
 	goto EventScript_CutTreeDown
 	end
 
 @ Use cut from party menu
 EventScript_UseCut::
 	lockall
-	dofieldeffect FLDEFF_USE_CUT_ON_TREE
-	waitstate
 	goto EventScript_CutTreeDown
 	end
 
 EventScript_CutTreeDown::
+	playse SE_M_CUT
 	applymovement VAR_LAST_TALKED, Movement_CutTreeDown
 	waitmovement 0
+	waitse
 	removeobject VAR_LAST_TALKED
 	releaseall
 	end
@@ -203,6 +193,9 @@ EventScript_CantWaterfall::
 EventScript_EndWaterfall::
 	releaseall
 	end
+
+Text_PlayerUsedMachete:
+	.string "{PLAYER} cut the tree!$"
 
 Text_CantWaterfall:
 	.string "A wall of water is crashing down with\n"

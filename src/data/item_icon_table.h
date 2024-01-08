@@ -861,6 +861,7 @@ const u32 *const gItemIconTable[ITEMS_COUNT + 1][2] =
     [ITEM_GLIMMERING_CHARM] = {gItemIcon_GlimmeringCharm, gItemIconPalette_GlimmeringCharm},
     [ITEM_LEAGUE_LETTER] = {gItemIcon_RetroMail, gItemIconPalette_RetroMail},
     [ITEM_FRIEND_LETTER] = {gItemIcon_HarborMail, gItemIconPalette_HarborMail},
+    [ITEM_MACHETE] = {gItemIcon_Machete, gItemIconPalette_Machete},
     // Return to field arrow
     [ITEMS_COUNT] = {gItemIcon_ReturnToFieldArrow, gItemIconPalette_ReturnToFieldArrow},
 };

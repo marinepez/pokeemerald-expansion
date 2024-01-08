@@ -1895,6 +1895,9 @@ const u32 gItemIconPalette_DevonScope[] = INCBIN_U32("graphics/items/icon_palett
 const u32 gItemIcon_BasementKey[] = INCBIN_U32("graphics/items/icons/basement_key.4bpp.lz");
 const u32 gItemIconPalette_OldKey[] = INCBIN_U32("graphics/items/icon_palettes/old_key.gbapal.lz");
 
+const u32 gItemIcon_Machete[] = INCBIN_U32("graphics/items/icons/machete.4bpp.lz");
+const u32 gItemIconPalette_Machete[] = INCBIN_U32("graphics/items/icon_palettes/machete.gbapal.lz");
+
 const u32 gItemIcon_Scanner[] = INCBIN_U32("graphics/items/icons/scanner.4bpp.lz");
 const u32 gItemIconPalette_Scanner[] = INCBIN_U32("graphics/items/icon_palettes/scanner.gbapal.lz");
 

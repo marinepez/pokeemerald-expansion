@@ -9836,4 +9836,15 @@ const struct Item gItems[] =
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_SpecialMail,
     },
+
+    [ITEM_MACHETE] =
+    {
+        .name = _("Machete"),
+        .price = 0,
+        .importance = 1,
+        .description = sMacheteDesc,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+    },
 };
