@@ -40,7 +40,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "BattleFrontier_MAGM_MainArea_EventScript_CutTree1",
+      "script": "MAGM_MainArea_EventScript_CutTree1",
       "flag": "FLAG_CUT_TREE_1"
     },
     {
@@ -53,7 +53,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "BattleFrontier_MAGM_MainArea_EventScript_CutTree2",
+      "script": "MAGM_MainArea_EventScript_CutTree2",
       "flag": "FLAG_CUT_TREE_2"
     },
     {
@@ -66,7 +66,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "BattleFrontier_MAGM_MainArea_EventScript_CutTree3",
+      "script": "MAGM_MainArea_EventScript_CutTree3",
       "flag": "FLAG_CUT_TREE_3"
     },
     {
@@ -79,7 +79,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "BattleFrontier_MAGM_MainArea_EventScript_CutTree4",
+      "script": "MAGM_MainArea_EventScript_CutTree4",
       "flag": "FLAG_CUT_TREE_4"
     },
     {
@@ -92,7 +92,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "BattleFrontier_MAGM_MainArea_EventScript_CutTree5",
+      "script": "MAGM_MainArea_EventScript_CutTree5",
       "flag": "FLAG_CUT_TREE_5"
     },
     {
@@ -105,7 +105,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "BattleFrontier_MAGM_MainArea_EventScript_CutTree6",
+      "script": "MAGM_MainArea_EventScript_CutTree6",
       "flag": "FLAG_CUT_TREE_6"
     }
   ],

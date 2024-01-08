@@ -105,14 +105,18 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCaptivate::
 	dynmultipush MAGM_DanceRoom_Text_CaptivateDance, 4
 MAGM_DanceRoom_EventScript_DanceWithGloom_CheckTeeterDance::
 	compare VAR_GLOOM_MOVE1, 298
-	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CreateMultichoiceList
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCheckMoves
 	compare VAR_GLOOM_MOVE2, 298
-	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CreateMultichoiceList
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCheckMoves
 	compare VAR_GLOOM_MOVE3, 298
-	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CreateMultichoiceList
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCheckMoves
 	compare VAR_GLOOM_MOVE4, 298
-	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CreateMultichoiceList
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCheckMoves
 	dynmultipush MAGM_DanceRoom_Text_TeeterDanceDance, 5
+MAGM_DanceRoom_EventScript_DanceWithGloom_CheckCheckMoves::
+	compare VAR_GLOOM_MOVE1, 0
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_CreateMultichoiceList
+	dynmultipush MAGM_DanceRoom_Text_CheckMoves, 6
 MAGM_DanceRoom_EventScript_DanceWithGloom_CreateMultichoiceList::
 	dynmultistack 0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	switch VAR_RESULT
@@ -122,45 +126,91 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_CreateMultichoiceList::
 	case 3, MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMimic
 	case 4, MAGM_DanceRoom_EventScript_DanceWithGloom_TeachCaptivate
 	case 5, MAGM_DanceRoom_EventScript_DanceWithGloom_TeachTeeterDance
+	case 6, MAGM_DanceRoom_EventScript_DanceWithGloom_ShowMoves
 	case MULTI_B_PRESSED MAGM_DanceRoom_EventScript_DanceWithGloom_End
 MAGM_DanceRoom_EventScript_DanceWithGloom_End::
 	closemessage
 	release
 	end
 
+MAGM_DanceRoom_EventScript_DanceWithGloom_ShowMoves::
+	bufferspeciesname STR_VAR_1, SPECIES_GLOOM
+	msgbox MAGM_DanceRoom_Text_MonHasMoves, MSGBOX_DEFAULT
+	waitmessage
+	playse SE_SELECT
+	buffermovename STR_VAR_2, VAR_GLOOM_MOVE1
+	bufferstring STR_VAR_3, MAGM_DanceRoom_Text_Move1
+	msgbox MAGM_DanceRoom_Text_ListMove, MSGBOX_DEFAULT
+	waitmessage
+	compare VAR_GLOOM_MOVE2, 0
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_ShowMoves_End
+	playse SE_SELECT
+	buffermovename STR_VAR_2, VAR_GLOOM_MOVE2
+	bufferstring STR_VAR_3, MAGM_DanceRoom_Text_Move2
+	msgbox MAGM_DanceRoom_Text_ListMove, MSGBOX_DEFAULT
+	waitmessage
+	compare VAR_GLOOM_MOVE3, 0
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_ShowMoves_End
+	playse SE_SELECT
+	buffermovename STR_VAR_2, VAR_GLOOM_MOVE3
+	bufferstring STR_VAR_3, MAGM_DanceRoom_Text_Move3
+	msgbox MAGM_DanceRoom_Text_ListMove, MSGBOX_DEFAULT
+	waitmessage
+	compare VAR_GLOOM_MOVE4, 0
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithGloom_ShowMoves_End
+	playse SE_SELECT
+	buffermovename STR_VAR_2, VAR_GLOOM_MOVE4
+	bufferstring STR_VAR_3, MAGM_DanceRoom_Text_Move4
+	msgbox MAGM_DanceRoom_Text_ListMove, MSGBOX_DEFAULT
+MAGM_DanceRoom_EventScript_DanceWithGloom_ShowMoves_End::
+	closemessage
+	end
+
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachSunnyDay::
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepDown
 	setvar VAR_0x8000, 241
 	msgbox MAGM_DanceRoom_Text_SunnyDayFlavor, MSGBOX_DEFAULT
+	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachAfterYou::
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepSides
 	setvar VAR_0x8000, 495
 	msgbox MAGM_DanceRoom_Text_AfterYouFlavor, MSGBOX_DEFAULT
+	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachPetalDance::
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerSpin
 	setvar VAR_0x8000, 80
 	msgbox MAGM_DanceRoom_Text_PetalDanceFlavor, MSGBOX_DEFAULT
+	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMimic::
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepDown
 	setvar VAR_0x8000, 102
 	msgbox MAGM_DanceRoom_Text_MimicFlavor, MSGBOX_DEFAULT
+	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachCaptivate::
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepSides
 	setvar VAR_0x8000, 445
 	msgbox MAGM_DanceRoom_Text_CaptivateFlavor, MSGBOX_DEFAULT
+	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachTeeterDance::
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerSpin
 	setvar VAR_0x8000, 298
 	msgbox MAGM_DanceRoom_Text_TeeterDanceFlavor, MSGBOX_DEFAULT
+	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove
 	end
 
@@ -292,14 +342,18 @@ MAGM_DanceRoom_EventScript_DanceWithLombre_CheckSwordsDance::
 	dynmultipush MAGM_DanceRoom_Text_SwordsDanceDance, 4
 MAGM_DanceRoom_EventScript_DanceWithLombre_CheckTeeterDance::
 	compare VAR_LOMBRE_MOVE1, 298
-	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithLombre_CreateMultichoiceList
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithLombre_CheckCheckMoves
 	compare VAR_LOMBRE_MOVE2, 298
-	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithLombre_CreateMultichoiceList
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithLombre_CheckCheckMoves
 	compare VAR_LOMBRE_MOVE3, 298
-	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithLombre_CreateMultichoiceList
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithLombre_CheckCheckMoves
 	compare VAR_LOMBRE_MOVE4, 298
-	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithLombre_CreateMultichoiceList
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithLombre_CheckCheckMoves
 	dynmultipush MAGM_DanceRoom_Text_TeeterDanceDance, 5
+MAGM_DanceRoom_EventScript_DanceWithLombre_CheckCheckMoves::
+	compare VAR_LOMBRE_MOVE1, 0
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithLombre_CreateMultichoiceList
+	dynmultipush MAGM_DanceRoom_Text_CheckMoves, 6
 MAGM_DanceRoom_EventScript_DanceWithLombre_CreateMultichoiceList::
 	dynmultistack 0, 0, FALSE, 6, FALSE, 0, DYN_MULTICHOICE_CB_NONE
 	switch VAR_RESULT
@@ -309,45 +363,91 @@ MAGM_DanceRoom_EventScript_DanceWithLombre_CreateMultichoiceList::
 	case 3, MAGM_DanceRoom_EventScript_DanceWithLombre_TeachGrassyGlide
 	case 4, MAGM_DanceRoom_EventScript_DanceWithLombre_TeachSwordsDance
 	case 5, MAGM_DanceRoom_EventScript_DanceWithLombre_TeachTeeterDance
+	case 6, MAGM_DanceRoom_EventScript_DanceWithLombre_ShowMoves
 	case MULTI_B_PRESSED MAGM_DanceRoom_EventScript_DanceWithLombre_End
 MAGM_DanceRoom_EventScript_DanceWithLombre_End::
 	closemessage
 	release
 	end
 
+MAGM_DanceRoom_EventScript_DanceWithLombre_ShowMoves::
+	bufferspeciesname STR_VAR_1, SPECIES_LOMBRE
+	msgbox MAGM_DanceRoom_Text_MonHasMoves, MSGBOX_DEFAULT
+	waitmessage
+	playse SE_SELECT
+	buffermovename STR_VAR_2, VAR_LOMBRE_MOVE1
+	bufferstring STR_VAR_3, MAGM_DanceRoom_Text_Move1
+	msgbox MAGM_DanceRoom_Text_ListMove, MSGBOX_DEFAULT
+	waitmessage
+	compare VAR_LOMBRE_MOVE2, 0
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithLombre_ShowMoves_End
+	playse SE_SELECT
+	buffermovename STR_VAR_2, VAR_LOMBRE_MOVE2
+	bufferstring STR_VAR_3, MAGM_DanceRoom_Text_Move2
+	msgbox MAGM_DanceRoom_Text_ListMove, MSGBOX_DEFAULT
+	waitmessage
+	compare VAR_LOMBRE_MOVE3, 0
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithLombre_ShowMoves_End
+	playse SE_SELECT
+	buffermovename STR_VAR_2, VAR_LOMBRE_MOVE3
+	bufferstring STR_VAR_3, MAGM_DanceRoom_Text_Move3
+	msgbox MAGM_DanceRoom_Text_ListMove, MSGBOX_DEFAULT
+	waitmessage
+	compare VAR_LOMBRE_MOVE4, 0
+	goto_if_eq MAGM_DanceRoom_EventScript_DanceWithLombre_ShowMoves_End
+	playse SE_SELECT
+	buffermovename STR_VAR_2, VAR_LOMBRE_MOVE4
+	bufferstring STR_VAR_3, MAGM_DanceRoom_Text_Move4
+	msgbox MAGM_DanceRoom_Text_ListMove, MSGBOX_DEFAULT
+MAGM_DanceRoom_EventScript_DanceWithLombre_ShowMoves_End::
+	closemessage
+	end
+
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachRainDance::
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerSpin
 	setvar VAR_0x8000, 240
 	msgbox MAGM_DanceRoom_Text_RainDanceFlavor, MSGBOX_DEFAULT
+	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachWeatherBall::
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepSides
 	setvar VAR_0x8000, 311
 	msgbox MAGM_DanceRoom_Text_WeatherBallFlavor, MSGBOX_DEFAULT
+	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachFakeOut::
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepDown
 	setvar VAR_0x8000, 252
 	msgbox MAGM_DanceRoom_Text_FakeOutFlavor, MSGBOX_DEFAULT
+	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachGrassyGlide::
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepSides
 	setvar VAR_0x8000, 731
 	msgbox MAGM_DanceRoom_Text_GrassyGlideFlavor, MSGBOX_DEFAULT
+	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachSwordsDance::
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepDown
 	setvar VAR_0x8000, 14
 	msgbox MAGM_DanceRoom_Text_SwordsDanceFlavor, MSGBOX_DEFAULT
+	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachTeeterDance::
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerSpin
 	setvar VAR_0x8000, 298
 	msgbox MAGM_DanceRoom_Text_TeeterDanceFlavor, MSGBOX_DEFAULT
+	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
@@ -408,6 +508,25 @@ MAGM_DanceRoom_EventScript_PlayerDance::
 	release
 	end
 
+MAGM_DanceRoom_Text_MonHasMoves:
+	.string "{STR_VAR_1} has the following\n"
+	.string "moves:$"
+
+MAGM_DanceRoom_Text_ListMove:
+	.string "{STR_VAR_3} {STR_VAR_2}$"
+
+MAGM_DanceRoom_Text_Move1:
+	.string "1: $"
+
+MAGM_DanceRoom_Text_Move2:
+	.string "2: $"
+
+MAGM_DanceRoom_Text_Move3:
+	.string "3: $"
+
+MAGM_DanceRoom_Text_Move4:
+	.string "4: $"
+
 MAGM_DanceRoom_Text_WeatherBallFlavor:
 	.string "You move freely, changing\n"
 	.string "steps like changing weather.$"
@@ -446,18 +565,22 @@ MAGM_DanceRoom_Text_TeeterDanceFlavor:
 	.string "You spin and wave your hands with\n"
 	.string "little rhyme or reason.$"
 
+MAGM_DanceRoom_Text_CheckMoves:
+	.string "Check Moves$"
+
 MAGM_DanceRoom_Text_TeeterDanceDance:
 	.string "Silly$"
 
 MAGM_DanceRoom_Text_SunnyDayFlavor:
-	.string "You praise the sun$"
+	.string "You raise your arms\n"
+	.string "and praise the sun.$"
 
 MAGM_DanceRoom_Text_SunnyDayDance:
 	.string "Radiant$"
 
 MAGM_DanceRoom_Text_AfterYouFlavor:
-	.string "You extend a hand and lead\n"
-	.string "Gloom in a classic box step$"
+	.string "You lead Gloom in a\n"
+	.string "classic box step$"
 
 MAGM_DanceRoom_Text_AfterYouDance:
 	.string "Ballroom$"
@@ -470,7 +593,7 @@ MAGM_DanceRoom_Text_PetalDanceDance:
 	.string "Flowery$"
 
 MAGM_DanceRoom_Text_MimicFlavor:
-	.string "You do the Macarena.$"
+	.string "You do the Macarena!$"
 
 MAGM_DanceRoom_Text_MimicDance:
 	.string "Simple$"
@@ -499,6 +622,29 @@ MAGM_DanceRoom_Text_MonLearnedMove:
 MAGM_DanceRoom_Text_MonReplacedMove:
 	.string "{STR_VAR_1} forgot {STR_VAR_3} and\n"
 	.string "learned {STR_VAR_2}!$"
+
+MAGM_DanceRoom_Movement_PlayerSpin:
+	walk_in_place_down
+	walk_in_place_left
+	walk_in_place_up
+	walk_in_place_right
+	walk_in_place_slow_down
+	step_end
+
+MAGM_DanceRoom_Movement_PlayerStepSides:
+	walk_in_place_left
+	walk_in_place_left
+	walk_in_place_right
+	walk_in_place_right
+	walk_in_place_down
+	step_end
+
+MAGM_DanceRoom_Movement_PlayerStepDown:
+	walk_in_place_fast_down
+	walk_in_place_fast_down
+	walk_in_place_fast_down
+	walk_in_place_fast_down
+	step_end
 
 MAGM_DanceRoom_Movement_PlayerDanceShort:
 	walk_in_place_fast_left
