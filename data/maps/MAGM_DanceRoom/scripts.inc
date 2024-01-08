@@ -46,8 +46,8 @@ MAGM_DanceRoom_EventScript_DanceChallengeMonsAskForHelp::
 	end
 
 MAGM_DanceRoom_DoDanceBattle::
-	givemon SPECIES_GLOOM, 35
-	givemon SPECIES_LOMBRE, 35
+	givecustommon SPECIES_GLOOM, 35, ITEM_NONE, ITEM_POKE_BALL, NATURE_BASHFUL, 0, 1, 1, 1, 1, 1, 1, 31, 31, 31, 31, 31, 31, VAR_GLOOM_MOVE1, VAR_GLOOM_MOVE2, VAR_GLOOM_MOVE3, VAR_GLOOM_MOVE4, 0
+	givecustommon SPECIES_LOMBRE, 35, ITEM_NONE, ITEM_POKE_BALL, NATURE_JOLLY, 0, 1, 1, 1, 1, 1, 1, 31, 31, 31, 31, 31, 31, VAR_LOMBRE_MOVE1, VAR_LOMBRE_MOVE2, VAR_LOMBRE_MOVE3, VAR_LOMBRE_MOVE4, 0
 	trainerbattle_double TRAINER_GABBY_AND_TY_1, GabbyAndTy_Text_TyIntro, GabbyAndTy_Text_TyDefeat, GabbyAndTy_Text_TyNotEnoughMons, MAGM_DanceRoom_AfterDanceBattle
 	//No whiteout
 	//Remove both pokemon from party
