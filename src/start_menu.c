@@ -434,10 +434,11 @@ static void BuildMultiPartnerRoomStartMenu(void)
 
 UNUSED static void ShowSafariBallsWindow(void)
 {
+    u8 monsStudied = GetGameStat(GAME_STAT_POKEMON_CAPTURES);
     sSafariBallsWindowId = AddWindow(&sWindowTemplate_SafariBalls);
     PutWindowTilemap(sSafariBallsWindowId);
     DrawStdWindowFrame(sSafariBallsWindowId, FALSE);
-    ConvertIntToDecimalStringN(gStringVar1, gNumSafariBalls, STR_CONV_MODE_RIGHT_ALIGN, 2);
+    ConvertIntToDecimalStringN(gStringVar1, monsStudied, STR_CONV_MODE_RIGHT_ALIGN, 2);
     StringExpandPlaceholders(gStringVar4, gText_SafariBallStock);
     AddTextPrinterParameterized(sSafariBallsWindowId, FONT_NORMAL, gStringVar4, 0, 1, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(sSafariBallsWindowId, COPYWIN_GFX);
@@ -525,7 +526,7 @@ static bool32 InitStartMenuStep(void)
         break;
     case 3:
         if (GetSafariZoneFlag())
-            //ShowSafariBallsWindow();
+            ShowSafariBallsWindow();
         if (InBattlePyramid())
             ShowPyramidFloorWindow();
         sInitStartMenuData[0]++;

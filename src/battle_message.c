@@ -2064,7 +2064,7 @@ static const u8 *const sStatNamesTable2[] =
 };
 
 const u8 gText_SafariBalls[] = _("{HIGHLIGHT DARK_GRAY}Total POKéMON");
-const u8 gText_SafariBallLeft[] = _("{HIGHLIGHT DARK_GRAY}Studied: $" "{HIGHLIGHT DARK_GRAY}");
+const u8 gText_SafariBallLeft[] = _("{HIGHLIGHT DARK_GRAY}Logged:$" "{HIGHLIGHT DARK_GRAY}");
 const u8 gText_Sleep[] = _("sleep");
 const u8 gText_Poison[] = _("poison");
 const u8 gText_Burn[] = _("burn");

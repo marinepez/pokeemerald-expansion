@@ -146,7 +146,7 @@ BattleScript_AlreadyStudied::
     waitmessage B_WAIT_TIME_MED
     finishturn
 
-BattleScript_SuccessfulStudy::
+BattleScript_SuccessfulStudy::    
     setbyte sMON_CAUGHT, TRUE
     incrementgamestat GAME_STAT_POKEMON_CAPTURES
     printstring STRINGID_SUCCESSFULSTUDY
