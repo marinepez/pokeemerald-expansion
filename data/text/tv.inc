@@ -2813,7 +2813,7 @@ GabbyAndTy_Text_TyIntro:
 
 GabbyAndTy_Text_TyPostBattle:
 	.string "You won the\n"
-	.string "dance battle!"
+	.string "dance battle!$"
 
 GabbyAndTy_Text_TyNotEnoughMons:
 	.string "Not enough mons.$"
@@ -2824,7 +2824,7 @@ GabbyAndTy_Text_TyDefeatFirstTime:
 
 GabbyAndTy_Text_TyDefeat:
 	.string "You won the\n"
-	.string "dance battle!"
+	.string "dance battle!$"
 
 gTVInSearchOfTrainersText00::
 	.string "IN SEARCH OF TRAINERS…\p"

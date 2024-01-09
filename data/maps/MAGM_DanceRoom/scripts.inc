@@ -2,6 +2,8 @@
 .set LOCALID_LOMBRE, 2
 .set LOCALID_ORICORIO, 4
 .set LOCALID_MAROWAK, 5
+.set LOCALID_LUDICOLO, 6
+.set LOCALID_BELLOSSOM, 7
 
 MAGM_DanceRoom_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, MAGM_DanceRoom_OnTransition
@@ -17,6 +19,40 @@ MAGM_DanceRoom_MoveDancersToHigherStage::
 	setobjectxyperm LOCALID_GLOOM, 12, 8
 	setobjectxyperm LOCALID_LOMBRE, 14, 8
 	return
+
+MAGM_DanceRoom_EventScript_Bellossom::
+	playmoncry SPECIES_BELLOSSOM, CRY_MODE_NORMAL
+	waitmoncry
+	goto_if_unset FLAG_BELLOSSOM_GAVE_PAGE, MAGM_BeachShore_EventScript_GiveFirstLetter
+	msgbox MAGM_DanceRoom_Text_BellossomHappy, MSGBOX_YESNO
+	closemessage
+	goto_if_eq VAR_RESULT, YES, MAGM_DanceRoom_EventScript_PlayerDance
+	end
+
+MAGM_DanceRoom_EventScript_Ludicolo::
+	playmoncry SPECIES_LUDICOLO, CRY_MODE_NORMAL
+	waitmoncry
+	goto_if_unset FLAG_LUDICOLO_GAVE_PAGE, MAGM_BeachShore_EventScript_GiveSecondLetter
+	msgbox MAGM_DanceRoom_Text_LudicoloHappy, MSGBOX_YESNO
+	closemessage
+	goto_if_eq VAR_RESULT, YES, MAGM_DanceRoom_EventScript_PlayerDance
+	end
+
+MAGM_BeachShore_EventScript_GiveFirstLetter::
+	setflag FLAG_BELLOSSOM_GAVE_PAGE
+	bufferspeciesname 0, SPECIES_BELLOSSOM
+	msgbox MAGM_DanceRoom_Text_MonWantsToGiveYou, MSGBOX_DEFAULT
+	giveitem ITEM_RARE_CANDY
+	closemessage
+	end
+
+MAGM_BeachShore_EventScript_GiveSecondLetter::
+	setflag FLAG_LUDICOLO_GAVE_PAGE
+	bufferspeciesname 0, SPECIES_LUDICOLO
+	msgbox MAGM_DanceRoom_Text_MonWantsToGiveYou, MSGBOX_DEFAULT
+	giveitem ITEM_RARE_CANDY
+	closemessage
+	end
 
 MAGM_DanceRoom_EventScript_Marowak::
 	playmoncry SPECIES_MAROWAK_ALOLAN, CRY_MODE_NORMAL
@@ -67,6 +103,10 @@ MAGM_DanceRoom_EventScript_SecondTimeMonsAskForHelp::
 	return
 
 MAGM_DanceRoom_DoDanceBattle::
+	applymovement LOCALID_LOMBRE, Common_Movement_FaceUp
+	applymovement LOCALID_GLOOM, Common_Movement_FaceUp
+	applymovement LOCALID_ORICORIO, Common_Movement_FaceDown
+	applymovement LOCALID_MAROWAK, Common_Movement_FaceLeft
 	givecustommon SPECIES_GLOOM, 35, ITEM_NONE, ITEM_GREAT_BALL, NATURE_BASHFUL, 0, 1, 1, 1, 1, 1, 1, 31, 31, 31, 31, 31, 31, VAR_GLOOM_MOVE1, VAR_GLOOM_MOVE2, VAR_GLOOM_MOVE3, VAR_GLOOM_MOVE4, 0
 	givecustommon SPECIES_LOMBRE, 35, ITEM_NONE, ITEM_GREAT_BALL, NATURE_QUIRKY, 0, 1, 1, 1, 1, 1, 1, 31, 31, 31, 31, 31, 31, VAR_LOMBRE_MOVE1, VAR_LOMBRE_MOVE2, VAR_LOMBRE_MOVE3, VAR_LOMBRE_MOVE4, 0
 	clearflag FLAG_SYS_SAFARI_MODE
@@ -76,6 +116,43 @@ MAGM_DanceRoom_DoDanceBattle::
 MAGM_DanceRoom_AfterDanceBattle::
 	special ZeroPlayerPartyMons
 	setvar VAR_MAGM_DANCE_AREA_STATE, 2
+	playmoncry SPECIES_ORICORIO, CRY_MODE_NORMAL
+	waitmoncry
+	playse SE_LEDGE
+	applymovement LOCALID_ORICORIO, MAGM_DanceRoom_Movement_OricorioGiveStones
+	waitmovement 0
+	fadeoutbgm 1
+	delay 30
+	applymovement LOCALID_GLOOM, Common_Movement_WalkInPlaceDown
+	applymovement LOCALID_LOMBRE, Common_Movement_WalkInPlaceDown
+	playse MUS_EVOLUTION_INTRO
+	waitse
+	playbgm MUS_EVOLUTION, FALSE
+	applymovement LOCALID_GLOOM, MAGM_DanceRoom_Movement_EvolutionSpin
+	applymovement LOCALID_LOMBRE, MAGM_DanceRoom_Movement_EvolutionSpin
+	waitmovement 0
+	fadescreen FADE_TO_WHITE
+	fadeoutbgm 1
+	delay 30
+	playmoncry SPECIES_BELLOSSOM, CRY_MODE_NORMAL
+	waitmoncry
+	delay 30
+	playmoncry SPECIES_LUDICOLO, CRY_MODE_NORMAL
+	waitmoncry
+	clearflag FLAG_HIDE_BELLOSSOM
+	clearflag FLAG_HIDE_LUDICOLO
+	removeobject LOCALID_GLOOM, MAP_MAGM_DANCE_ROOM
+	removeobject LOCALID_LOMBRE, MAP_MAGM_DANCE_ROOM
+	addobject LOCALID_BELLOSSOM, MAP_MAGM_DANCE_ROOM
+	addobject LOCALID_LUDICOLO, MAP_MAGM_DANCE_ROOM
+	setobjectxy LOCALID_BELLOSSOM, 12, 8
+	setobjectxy LOCALID_LUDICOLO, 14, 8
+	setobjectxyperm LOCALID_BELLOSSOM, 12, 8
+	setobjectxyperm LOCALID_LUDICOLO, 14, 8
+	fadescreen FADE_FROM_WHITE
+	playse MUS_EVOLVED
+	waitse
+	playbgm MUS_SAFARI_ZONE, FALSE
 	releaseall
 	end
 
@@ -614,6 +691,18 @@ MAGM_DanceRoom_EventScript_PlayerDance::
 	release
 	end
 
+MAGM_DanceRoom_Text_MonWantsToGiveYou:
+	.string "Looks like {STR_VAR_1} wants\n"
+	.string "to give you something.$"
+
+MAGM_DanceRoom_Text_LudicoloHappy:
+	.string "Ludicolo looks really happy!\n"
+	.string "Dance with him?$"
+
+MAGM_DanceRoom_Text_BellossomHappy:
+	.string "Bellossom looks really happy!\n"
+	.string "Dance with her?$"
+
 MAGM_DanceRoom_Text_ThisIsADanceBattle:
 	.string "Is this a dance battle?$"
 
@@ -1000,4 +1089,65 @@ MAGM_DanceRoom_Movement_LombreWalkToLadder:
 	walk_up
 	walk_right
 	face_up
+	step_end
+
+MAGM_DanceRoom_Movement_OricorioGiveStones:
+	jump_in_place_left_right
+	face_down
+	delay_16
+	walk_down
+	delay_16
+	walk_in_place_slow_down
+	walk_right
+	walk_right
+	delay_16
+	walk_in_place_slow_down
+	walk_left
+	walk_left
+	walk_up
+	face_down
+	step_end
+
+MAGM_DanceRoom_Movement_EvolutionSpin:
+	delay_16
+	walk_in_place_left
+	walk_in_place_up
+	walk_in_place_right
+	walk_in_place_down
+	walk_in_place_left
+	walk_in_place_up
+	walk_in_place_right
+	walk_in_place_down
+	walk_in_place_fast_left
+	walk_in_place_fast_up
+	walk_in_place_fast_right
+	walk_in_place_fast_down
+	walk_in_place_fast_left
+	walk_in_place_fast_up
+	walk_in_place_fast_right
+	walk_in_place_fast_down
+	walk_in_place_fast_left
+	walk_in_place_fast_up
+	walk_in_place_fast_right
+	walk_in_place_fast_down
+	walk_in_place_faster_left
+	walk_in_place_faster_up
+	walk_in_place_faster_right
+	walk_in_place_faster_down
+	walk_in_place_faster_left
+	walk_in_place_faster_up
+	walk_in_place_faster_right
+	walk_in_place_faster_down
+	walk_in_place_faster_left
+	walk_in_place_faster_up
+	walk_in_place_faster_right
+	walk_in_place_faster_down
+	walk_in_place_faster_left
+	walk_in_place_faster_up
+	walk_in_place_faster_right
+	walk_in_place_faster_down
+	walk_in_place_faster_left
+	walk_in_place_faster_up
+	walk_in_place_faster_right
+	walk_in_place_faster_down
 	step_end

@@ -56,6 +56,11 @@ MAGM_BeachShore_EventScript_DropMail::
 	setflag FLAG_BADGE06_GET
 	setflag FLAG_BADGE07_GET
 	setflag FLAG_BADGE08_GET
+	//Hiding mons that shouldn't appear at first
+	setflag FLAG_HIDE_BELLOSSOM
+	setflag FLAG_HIDE_LUDICOLO
+	setflag FLAG_HIDE_HAWLUCHA_WRESTLING
+	setflag FLAG_HIDE_PIKACHU
 	msgbox MAGM_BeachShore_MapScripts_Text_LeftALetter, MSGBOX_YESNO
 	switch VAR_RESULT
 	case YES, MAGM_BeachShore_MapScripts_EventScript_ReadLetter
