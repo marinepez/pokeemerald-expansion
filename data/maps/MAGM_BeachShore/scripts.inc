@@ -9,6 +9,7 @@ MAGM_BeachShore_MapScripts::
 
 MAGM_BeachShore_OnTransition:
 	clearflag FLAG_SYS_SAFARI_MODE
+	setflag FLAG_HIDE_MAP_NAME_POPUP
 	end
 
 MAGM_BeachShore_OnFrame:

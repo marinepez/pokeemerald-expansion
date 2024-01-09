@@ -3,6 +3,7 @@ MAGM_MainArea_MapScripts::
 	.byte 0
 
 MAGM_MainArea_OnTransition:
+	setflag FLAG_HIDE_MAP_NAME_POPUP
 	setflag FLAG_SYS_SAFARI_MODE
 	end
 

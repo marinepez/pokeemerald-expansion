@@ -8,6 +8,7 @@ MAGM_DanceRoom_MapScripts::
 	.byte 0
 
 MAGM_DanceRoom_OnTransition:
+	setflag FLAG_HIDE_MAP_NAME_POPUP
 	clearflag FLAG_SYS_SAFARI_MODE
 	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_MoveDancersToHigherStage
 	end

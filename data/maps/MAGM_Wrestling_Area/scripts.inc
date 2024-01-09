@@ -9,6 +9,7 @@ MAGM_Wrestling_Area_MapScripts::
 	.byte 0
 
 MAGM_Wrestling_Area_OnTransition:
+	setflag FLAG_HIDE_MAP_NAME_POPUP
 	clearflag FLAG_SYS_SAFARI_MODE
 	end
 
