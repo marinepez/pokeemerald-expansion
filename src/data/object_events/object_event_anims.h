@@ -780,6 +780,15 @@ static const union AffineAnimCmd sAffineAnim_KyogreGroudon_DipWest[] =
     AFFINEANIMCMD_END,
 };
 
+static const union AnimCmd sAnim_HoOhFlapWingsEast[] =
+{
+    ANIMCMD_FRAME(3, 8, .hFlip = TRUE),
+    ANIMCMD_FRAME(4, 8, .hFlip = TRUE),
+    ANIMCMD_FRAME(3, 8, .hFlip = TRUE),
+    ANIMCMD_FRAME(4, 8, .hFlip = TRUE),
+    ANIMCMD_JUMP(0),
+};
+
 static const union AnimCmd sAnim_HoOhFlapWings[] =
 {
     ANIMCMD_FRAME(3, 8),
@@ -846,14 +855,14 @@ static const union AnimCmd *const sAnimTable_Standard[] = {
 };
 
 static const union AnimCmd *const sAnimTable_HoOh[] = {
-    [ANIM_STD_FACE_SOUTH] = sAnim_FaceSouth,
-    [ANIM_STD_FACE_NORTH] = sAnim_FaceNorth,
-    [ANIM_STD_FACE_WEST] = sAnim_FaceWest,
-    [ANIM_STD_FACE_EAST] = sAnim_FaceEast,
+    [ANIM_STD_FACE_SOUTH] = sAnim_HoOhFlapWings,
+    [ANIM_STD_FACE_NORTH] = sAnim_HoOhFlapWings,
+    [ANIM_STD_FACE_WEST] = sAnim_HoOhFlapWings,
+    [ANIM_STD_FACE_EAST] = sAnim_HoOhFlapWingsEast,
     [ANIM_STD_GO_SOUTH] = sAnim_HoOhFlapWings,
-    [ANIM_STD_GO_NORTH] = sAnim_HoOhStayStill,
-    [ANIM_STD_GO_WEST] = sAnim_GoWest,
-    [ANIM_STD_GO_EAST] = sAnim_GoEast,
+    [ANIM_STD_GO_NORTH] = sAnim_HoOhFlapWings,
+    [ANIM_STD_GO_WEST] = sAnim_HoOhFlapWings,
+    [ANIM_STD_GO_EAST] = sAnim_HoOhFlapWingsEast,
     [ANIM_STD_GO_FAST_SOUTH] = sAnim_GoFastSouth,
     [ANIM_STD_GO_FAST_NORTH] = sAnim_GoFastNorth,
     [ANIM_STD_GO_FAST_WEST] = sAnim_GoFastWest,

@@ -4420,7 +4420,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Deoxys = {
     .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = sAnimTable_Standard,
+    .anims = sAnimTable_HoOh,
     .images = sPicTable_Deoxys,
     .affineAnims = gDummySpriteAffineAnimTable,
 };

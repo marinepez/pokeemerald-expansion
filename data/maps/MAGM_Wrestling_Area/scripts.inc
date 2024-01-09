@@ -57,18 +57,21 @@ MAGM_Wrestling_Area_EventScript_SmeargleShowPlayerRing::
 	applymovement OBJ_EVENT_ID_CAMERA, MAGM_Wrestling_Area_Movement_CameraPanUp
 	waitmovement 0
 	playse SE_APPLAUSE
-	delay 30
+	delay 60
 	applymovement LOCALID_EXEGGUTOR, MAGM_Wrestling_Area_Movement_LeftLunge
 	waitmovement 0
-	delay 45
+	delay 60
 	applymovement LOCALID_HERACROSS, MAGM_Wrestling_Area_Movement_RightJump
 	waitmovement 0
-	delay 35
+	delay 60
 	applymovement LOCALID_EXEGGUTOR, MAGM_Wrestling_Area_Movement_LeftJump
 	waitmovement 0
-	delay 50
+	playse SE_APPLAUSE
+	call MAGM_Wrestling_Area_EventScript_AllAudienceCheerFast
+	delay 60
 	applymovement OBJ_EVENT_ID_CAMERA, MAGM_Wrestling_Area_Movement_CameraPanDown
 	waitmovement 0
+	call MAGM_Wrestling_Area_EventScript_AllAudienceCheer
 	special RemoveCameraObject
 	applymovement LOCALID_SMEARGLE, MAGM_Wrestling_Area_Movement_GoToCave
 	applymovement OBJ_EVENT_ID_PLAYER, MAGM_Wrestling_Area_Movement_GoToCave
@@ -137,9 +140,11 @@ MAGM_Wrestling_Area_Movement_CameraPanUp::
 	walk_slow_up
 	walk_slow_up
 	walk_slow_up
+	walk_slow_up
 	step_end
 
 MAGM_Wrestling_Area_Movement_CameraPanDown::
+	walk_slow_down
 	walk_slow_down
 	walk_slow_down
 	walk_slow_down
@@ -210,15 +215,15 @@ MAGM_Wrestling_Area_EventScript_AddAudienceRight::
 	createvobject OBJ_EVENT_GFX_MOM					16, 17, 4
 	createvobject OBJ_EVENT_GFX_LEAF				17, 18, 4
 	createvobject OBJ_EVENT_GFX_CONTEST_JUDGE		18, 20, 4
-	createvobject OBJ_EVENT_GFX_GIRL_3				19,  9, 5, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_EXPERT_M			20,  9, 6, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_BUG_CATCHER			21,  9, 7, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_CAMERAMAN			22,  9, 8, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_BOY_2				23,  9, 9, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_DEVON_EMPLOYEE		24, 21, 6, 3, DIR_WEST
-	createvobject OBJ_EVENT_GFX_MAN_4				25, 21, 7, 3, DIR_WEST
-	createvobject OBJ_EVENT_GFX_MAN_5				26, 21, 9, 3, DIR_WEST
-	createvobject OBJ_EVENT_GFX_MART_EMPLOYEE		27, 21, 10, 3, DIR_WEST
+	createvobject OBJ_EVENT_GFX_GIRL_3				19,  9, 5, 3, 7
+	createvobject OBJ_EVENT_GFX_EXPERT_M			20,  9, 6, 3, 7
+	createvobject OBJ_EVENT_GFX_BUG_CATCHER			21,  9, 7, 3, 7
+	createvobject OBJ_EVENT_GFX_CAMERAMAN			22,  9, 8, 3, 7
+	createvobject OBJ_EVENT_GFX_BOY_2				23,  9, 9, 3, 7
+	createvobject OBJ_EVENT_GFX_DEVON_EMPLOYEE		24, 21, 6, 3, 6
+	createvobject OBJ_EVENT_GFX_MAN_4				25, 21, 7, 3, 6
+	createvobject OBJ_EVENT_GFX_MAN_5				26, 21, 9, 3, 6
+	createvobject OBJ_EVENT_GFX_MART_EMPLOYEE		27, 21, 10, 3, 6
 	end
 
 MAGM_Wrestling_Area_EventScript_AddAudienceLeft::
@@ -241,15 +246,15 @@ MAGM_Wrestling_Area_EventScript_AddAudienceLeft::
 	createvobject OBJ_EVENT_GFX_MOM					16, 16, 4
 	createvobject OBJ_EVENT_GFX_LEAF				17, 17, 4
 	createvobject OBJ_EVENT_GFX_CONTEST_JUDGE		18, 19, 4
-	createvobject OBJ_EVENT_GFX_GIRL_3				19,  8, 5, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_EXPERT_M			20,  8, 6, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_BUG_CATCHER			21,  8, 7, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_CAMERAMAN			22,  8, 8, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_BOY_2				23,  8, 9, 3, DIR_EAST
-	createvobject OBJ_EVENT_GFX_DEVON_EMPLOYEE		24, 20, 6, 3, DIR_WEST
-	createvobject OBJ_EVENT_GFX_MAN_4				25, 20, 7, 3, DIR_WEST
-	createvobject OBJ_EVENT_GFX_MAN_5				26, 20, 9, 3, DIR_WEST
-	createvobject OBJ_EVENT_GFX_MART_EMPLOYEE		27, 20, 10, 3, DIR_WEST
+	createvobject OBJ_EVENT_GFX_GIRL_3				19,  8, 5, 3, 7
+	createvobject OBJ_EVENT_GFX_EXPERT_M			20,  8, 6, 3, 7
+	createvobject OBJ_EVENT_GFX_BUG_CATCHER			21,  8, 7, 3, 7
+	createvobject OBJ_EVENT_GFX_CAMERAMAN			22,  8, 8, 3, 7
+	createvobject OBJ_EVENT_GFX_BOY_2				23,  8, 9, 3, 7
+	createvobject OBJ_EVENT_GFX_DEVON_EMPLOYEE		24, 20, 6, 3, 6
+	createvobject OBJ_EVENT_GFX_MAN_4				25, 20, 7, 3, 6
+	createvobject OBJ_EVENT_GFX_MAN_5				26, 20, 9, 3, 6
+	createvobject OBJ_EVENT_GFX_MART_EMPLOYEE		27, 20, 10, 3, 6
 	end
 
 MAGM_Wrestling_Area_EventScript_DoAudienceLookAround::
@@ -297,7 +302,41 @@ MAGM_Wrestling_Area_EventScript_AllAudienceCheer::
 	turnvobject 26, 6
 	turnvobject 27, 6
 	release
-	delay 60
+	return
+
+MAGM_Wrestling_Area_EventScript_AllAudienceCheerFast::
+	turnvobject  0, 8
+	turnvobject  1, 8
+	turnvobject  2, 8
+	turnvobject  3, 8
+	turnvobject  4, 8
+	turnvobject  5, 8
+	turnvobject  6, 8
+	turnvobject  7, 8
+	turnvobject  8, 8
+	turnvobject  9, 8
+	turnvobject 10, 8
+	turnvobject 11, 8
+	turnvobject 12, 8
+	turnvobject 13, 8
+	turnvobject 14, 8
+	turnvobject 15, 8
+	turnvobject 16, 8
+	turnvobject 17, 8
+	turnvobject 18, 8
+	turnvobject 19, 11
+	turnvobject 20, 11
+	turnvobject 21, 11
+	turnvobject 22, 11
+	turnvobject 23, 11
+	turnvobject 24, 10
+	turnvobject 25, 10
+	turnvobject 26, 10
+	turnvobject 27, 10
+	release
+	return
+
+MAGM_Wrestling_Area_EventScript_AllAudienceStopCheer::
 	turnvobject  0, 0
 	turnvobject  1, 0
 	turnvobject  2, 0
@@ -327,7 +366,7 @@ MAGM_Wrestling_Area_EventScript_AllAudienceCheer::
 	turnvobject 26, 2
 	turnvobject 27, 2
 	release
-	end
+	return
 
 MAGM_Wrestling_Area_EventScript_StaggeredAudienceLookAround::
 	call MAGM_Wrestling_Area_EventScript_StaggeredAudienceLookAround_ChooseRandomGroup_A
