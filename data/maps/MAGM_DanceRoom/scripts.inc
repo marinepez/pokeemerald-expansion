@@ -16,8 +16,8 @@ MAGM_DanceRoom_OnTransition:
 	end
 
 MAGM_DanceRoom_MoveDancersToHigherStage::
-	setobjectxyperm LOCALID_GLOOM, 12, 8
-	setobjectxyperm LOCALID_LOMBRE, 14, 8
+	setobjectxyperm LOCALID_GLOOM, 12, 9
+	setobjectxyperm LOCALID_LOMBRE, 14, 9
 	return
 
 MAGM_DanceRoom_EventScript_Bellossom::
@@ -107,11 +107,29 @@ MAGM_DanceRoom_DoDanceBattle::
 	applymovement LOCALID_GLOOM, Common_Movement_FaceUp
 	applymovement LOCALID_ORICORIO, Common_Movement_FaceDown
 	applymovement LOCALID_MAROWAK, Common_Movement_FaceLeft
-	givecustommon SPECIES_GLOOM, 35, ITEM_NONE, ITEM_GREAT_BALL, NATURE_BASHFUL, 0, 1, 1, 1, 1, 1, 1, 31, 31, 31, 31, 31, 31, VAR_GLOOM_MOVE1, VAR_GLOOM_MOVE2, VAR_GLOOM_MOVE3, VAR_GLOOM_MOVE4, 0
-	givecustommon SPECIES_LOMBRE, 35, ITEM_NONE, ITEM_GREAT_BALL, NATURE_QUIRKY, 0, 1, 1, 1, 1, 1, 1, 31, 31, 31, 31, 31, 31, VAR_LOMBRE_MOVE1, VAR_LOMBRE_MOVE2, VAR_LOMBRE_MOVE3, VAR_LOMBRE_MOVE4, 0
+	call_if_unset FLAG_GLOOM_SITRUS MAGM_DanceRoom_DoDanceBattle_GiveGloom
+	call_if_unset FLAG_LOMBRE_SITRUS MAGM_DanceRoom_DoDanceBattle_GiveLombre
+	call_if_set FLAG_GLOOM_SITRUS MAGM_DanceRoom_DoDanceBattle_GiveSitrusGloom
+	call_if_set FLAG_LOMBRE_SITRUS MAGM_DanceRoom_DoDanceBattle_GiveSitrusLombre
 	clearflag FLAG_SYS_SAFARI_MODE
 	trainerbattle_double TRAINER_DANCERS, GabbyAndTy_Text_TyIntro, GabbyAndTy_Text_TyDefeat, GabbyAndTy_Text_TyNotEnoughMons, MAGM_DanceRoom_AfterDanceBattle
 	end
+
+MAGM_DanceRoom_DoDanceBattle_GiveGloom:
+	givecustommon SPECIES_GLOOM, 35, ITEM_NONE, ITEM_GREAT_BALL, NATURE_BASHFUL, 0, 10, 01, 50, 01, 120, 1, 31, 31, 31, 31, 31, 31, VAR_GLOOM_MOVE1, VAR_GLOOM_MOVE2, VAR_GLOOM_MOVE3, VAR_GLOOM_MOVE4, 0
+	return
+
+MAGM_DanceRoom_DoDanceBattle_GiveSitrusGloom:
+	givecustommon SPECIES_GLOOM, 35, ITEM_SITRUS_BERRY, ITEM_GREAT_BALL, NATURE_BASHFUL, 0, 10, 01, 50, 01, 120, 1, 31, 31, 31, 31, 31, 31, VAR_GLOOM_MOVE1, VAR_GLOOM_MOVE2, VAR_GLOOM_MOVE3, VAR_GLOOM_MOVE4, 0
+	return
+
+MAGM_DanceRoom_DoDanceBattle_GiveLombre:
+	givecustommon SPECIES_LOMBRE, 35, ITEM_NONE, ITEM_GREAT_BALL, NATURE_QUIRKY, 0, 10, 75, 01, 01, 50, 50, 31, 31, 31, 31, 31, 31, VAR_LOMBRE_MOVE1, VAR_LOMBRE_MOVE2, VAR_LOMBRE_MOVE3, VAR_LOMBRE_MOVE4, 0
+	return
+
+MAGM_DanceRoom_DoDanceBattle_GiveSitrusLombre:
+	givecustommon SPECIES_LOMBRE, 35, ITEM_SITRUS_BERRY, ITEM_GREAT_BALL, NATURE_QUIRKY, 0, 10, 75, 01, 01, 50, 50, 31, 31, 31, 31, 31, 31, VAR_LOMBRE_MOVE1, VAR_LOMBRE_MOVE2, VAR_LOMBRE_MOVE3, VAR_LOMBRE_MOVE4, 0
+	return
 
 MAGM_DanceRoom_AfterDanceBattle::
 	special ZeroPlayerPartyMons
@@ -145,10 +163,10 @@ MAGM_DanceRoom_AfterDanceBattle::
 	removeobject LOCALID_LOMBRE, MAP_MAGM_DANCE_ROOM
 	addobject LOCALID_BELLOSSOM, MAP_MAGM_DANCE_ROOM
 	addobject LOCALID_LUDICOLO, MAP_MAGM_DANCE_ROOM
-	setobjectxy LOCALID_BELLOSSOM, 12, 8
-	setobjectxy LOCALID_LUDICOLO, 14, 8
-	setobjectxyperm LOCALID_BELLOSSOM, 12, 8
-	setobjectxyperm LOCALID_LUDICOLO, 14, 8
+	setobjectxy LOCALID_BELLOSSOM, 12, 9
+	setobjectxy LOCALID_LUDICOLO, 14, 9
+	setobjectxyperm LOCALID_BELLOSSOM, 12, 9
+	setobjectxyperm LOCALID_LUDICOLO, 14, 9
 	fadescreen FADE_FROM_WHITE
 	playse MUS_EVOLVED
 	waitse
@@ -179,13 +197,13 @@ MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene::
 	getplayerxy VAR_TEMP_2, VAR_TEMP_3
 MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_CheckIfGloomMoves::
 	goto_if_ne VAR_TEMP_2,  9, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_CheckIfLombreMoves
-	goto_if_ne VAR_TEMP_3, 12, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_CheckIfLombreMoves
+	goto_if_ne VAR_TEMP_3, 13, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_CheckIfLombreMoves
 	applymovement LOCALID_GLOOM, MAGM_DanceRoom_Movement_WalkRightUpAlt
 	goto MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_DoLombreNormalMovement
 MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_CheckIfLombreMoves::
 	applymovement LOCALID_GLOOM, MAGM_DanceRoom_Movement_WalkRightUpNormal
 	goto_if_ne VAR_TEMP_2, 11, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_DoLombreNormalMovement
-	goto_if_ne VAR_TEMP_3, 12, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_DoLombreNormalMovement
+	goto_if_ne VAR_TEMP_3, 13, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_DoLombreNormalMovement
 	applymovement LOCALID_LOMBRE, MAGM_DanceRoom_Movement_WalkRightUpAlt
 	goto MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_MonsGoToLadder
 MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_DoLombreNormalMovement::
@@ -195,13 +213,49 @@ MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_MonsGoToLadder::
 	applymovement LOCALID_LOMBRE, MAGM_DanceRoom_Movement_LombreWalkToLadder
 	applymovement LOCALID_GLOOM, MAGM_DanceRoom_Movement_GloomWalkToLadder
 	waitmovement 0
-	setobjectxyperm LOCALID_GLOOM, 12, 8
-	setobjectxyperm LOCALID_LOMBRE, 14, 8
+	setobjectxyperm LOCALID_GLOOM, 12, 9
+	setobjectxyperm LOCALID_LOMBRE, 14, 9
 MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End::
 	releaseall
 	end
 
+EventScript_GiveGloomSitrusBerry::
+	goto_if_set FLAG_GLOOM_SITRUS, EventScript_GiveGloomSitrusBerry_End
+	playse SE_BALL
+	applymovement LOCALID_GLOOM Common_Movement_FacePlayer
+	waitmovement 0
+	applymovement LOCALID_GLOOM Common_Movement_QuestionMark
+	applymovement LOCALID_GLOOM Common_Movement_Delay48
+	waitse
+	bufferspeciesname 0, SPECIES_GLOOM
+	msgbox MAGM_DanceRoom_Text_MonNoticedBerry, MSGBOX_DEFAULT
+	setflag FLAG_GLOOM_SITRUS
+	removeitem ITEM_SITRUS_BERRY, 1
+	closemessage
+EventScript_GiveGloomSitrusBerry_End::
+	release
+	return
+
+EventScript_GiveLombreSitrusBerry::
+	goto_if_set FLAG_LOMBRE_SITRUS, EventScript_GiveLombreSitrusBerry_End
+	playse SE_BALL
+	applymovement LOCALID_LOMBRE Common_Movement_FacePlayer
+	waitmovement 0
+	applymovement LOCALID_LOMBRE Common_Movement_QuestionMark
+	applymovement LOCALID_LOMBRE Common_Movement_Delay48
+	waitse
+	bufferspeciesname 0, SPECIES_LOMBRE
+	msgbox MAGM_DanceRoom_Text_MonNoticedBerry, MSGBOX_DEFAULT
+	setflag FLAG_LOMBRE_SITRUS
+	removeitem ITEM_SITRUS_BERRY, 1
+	closemessage
+EventScript_GiveLombreSitrusBerry_End::
+	release
+	return
+
 MAGM_DanceRoom_EventScript_Gloom::
+	checkitem ITEM_SITRUS_BERRY, 1
+	call_if_eq VAR_RESULT, TRUE, EventScript_GiveGloomSitrusBerry
 	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_EventScript_SecondTimeMonsAskForHelp
 	bufferspeciesname 0, SPECIES_GLOOM
 	goto_if_set FLAG_DANCED_WITH_GLOOM, MAGM_DanceRoom_EventScript_Gloom_SkipToTeachMove
@@ -440,6 +494,8 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonLearnedMove::
 	end
 
 MAGM_DanceRoom_EventScript_Lombre::
+	checkitem ITEM_SITRUS_BERRY, 1
+	call_if_eq VAR_RESULT, TRUE, EventScript_GiveLombreSitrusBerry
 	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_EventScript_SecondTimeMonsAskForHelp
 	bufferspeciesname 0, SPECIES_LOMBRE
 	goto_if_set FLAG_DANCED_WITH_LOMBRE, MAGM_DanceRoom_EventScript_Lombre_SkipToTeachMove
@@ -462,7 +518,7 @@ MAGM_DanceRoom_EventScript_DanceWithLombre::
 	getplayerxy VAR_TEMP_2, VAR_TEMP_3
 	//Forcing the player to walk down if in the way
 	goto_if_ne VAR_TEMP_2, 10, MAGM_DanceRoom_EventScript_DanceWithLombre_Normal_Dance
-	goto_if_ne VAR_TEMP_3, 13, MAGM_DanceRoom_EventScript_DanceWithLombre_Normal_Dance
+	goto_if_ne VAR_TEMP_3, 14, MAGM_DanceRoom_EventScript_DanceWithLombre_Normal_Dance
 	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_WalkDown
 	waitmovement 0
 MAGM_DanceRoom_EventScript_DanceWithLombre_Normal_Dance::
@@ -690,6 +746,12 @@ MAGM_DanceRoom_EventScript_PlayerDance::
 	waitmovement 0
 	release
 	end
+
+MAGM_DanceRoom_Text_MonNoticedBerry:
+	.string "{STR_VAR_1} noticed you have\n"
+	.string "a sitrus berry.\p"
+	.string "{PLAY_SE MUS_LEVEL_UP}You gave the berry\n"
+	.string "to {STR_VAR_1}.$"
 
 MAGM_DanceRoom_Text_MonWantsToGiveYou:
 	.string "Looks like {STR_VAR_1} wants\n"

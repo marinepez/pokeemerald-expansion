@@ -4435,7 +4435,7 @@
       "id": "LAYOUT_MAGM_DANCE_ROOM",
       "name": "MAGM_DanceRoom_Layout",
       "width": 20,
-      "height": 26,
+      "height": 27,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Fortree",
       "border_filepath": "data/layouts/MAGM_DanceRoom/border.bin",

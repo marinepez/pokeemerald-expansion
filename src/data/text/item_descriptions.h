@@ -4004,7 +4004,15 @@ static const u8 sOfficialLetterDesc[] = _(
     "the official\n"
     "League insignia.");
 
+static const u8 sOldNoteDesc[] = _(
+    "A crumpled page\n"
+    "from a journal.");
+
 static const u8 sMacheteDesc[] = _(
     "It's still sharp.\n"
     "This can CUT\n"
     "small trees.");
+
+static const u8 sVideoGameDesc[] = _(
+    "The disk is a\n"
+    "little scratched.");

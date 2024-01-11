@@ -770,13 +770,24 @@ void CheckSpecialMail(void)
                 .playerName = {CHAR_K, CHAR_B, EOS}
             };
             break;
-        default:
         case 1:
             SpecialMail = (struct Mail) { //Pokemon League Mail
                 .words = {EC_WORD_DARK, EC_WORD_STENCH, EC_WORD_THICK_FAT, 
                 EC_WORD_RAIN_DISH, EC_WORD_DRIZZLE, EC_WORD_ARENA_TRAP,
                 EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
                 .itemId = ITEM_RETRO_MAIL,
+                .trainerId = {0, 0, 0, 0},
+                .species = SPECIES_PIKACHU,
+                .playerName = {CHAR_PK, CHAR_MN, CHAR_L, CHAR_E, CHAR_A, CHAR_G, CHAR_PERIOD, EOS}
+            };
+            break;
+        default:
+        case 2:
+            SpecialMail = (struct Mail) { //Old note
+                .words = {EC_WORD_BEAUTY, EC_WORD_AIR_LOCK, EC_WORD_PSYCHIC, 
+                EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD,
+                EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+                .itemId = ITEM_HARBOR_MAIL,
                 .trainerId = {0, 0, 0, 0},
                 .species = SPECIES_PIKACHU,
                 .playerName = {CHAR_PK, CHAR_MN, CHAR_L, CHAR_E, CHAR_A, CHAR_G, CHAR_PERIOD, EOS}

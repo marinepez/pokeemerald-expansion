@@ -9837,6 +9837,17 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_SpecialMail,
     },
 
+    [ITEM_LETTER_PLACEHOLDER] =
+    {
+        .name = _("Old Note"),
+        .price = 0,
+        .importance = 1,
+        .description = sOldNoteDesc,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_SpecialMail,
+    },
+
     [ITEM_MACHETE] =
     {
         .name = _("Machete"),
@@ -9844,6 +9855,17 @@ const struct Item gItems[] =
         .importance = 1,
         .description = sMacheteDesc,
         .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+    },
+
+    [ITEM_VIDEO_GAME] =
+    {
+        .name = _("Video Game"),
+        .price = 0,
+        .importance = 1,
+        .description = sVideoGameDesc,
+        .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },

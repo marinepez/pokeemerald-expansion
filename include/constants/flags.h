@@ -345,12 +345,12 @@
 #define FLAG_CUT_TREE_4                      0x140
 #define FLAG_CUT_TREE_5                      0x141
 #define FLAG_CUT_TREE_6                      0x142
-#define FLAG_WONDER_CARD_UNUSED_7            0x143
-#define FLAG_WONDER_CARD_UNUSED_8            0x144
-#define FLAG_WONDER_CARD_UNUSED_9            0x145
-#define FLAG_WONDER_CARD_UNUSED_10           0x146
-#define FLAG_WONDER_CARD_UNUSED_11           0x147
-#define FLAG_WONDER_CARD_UNUSED_12           0x148
+#define FLAG_CUT_TREE_7                      0x143
+#define FLAG_CUT_TREE_8                      0x144
+#define FLAG_CUT_TREE_9                      0x145
+#define FLAG_CUT_TREE_10                     0x146
+#define FLAG_CUT_TREE_11                     0x147
+#define FLAG_CUT_TREE_12                     0x148
 #define FLAG_WONDER_CARD_UNUSED_13           0x149
 #define FLAG_WONDER_CARD_UNUSED_14           0x14A
 #define FLAG_WONDER_CARD_UNUSED_15           0x14B
@@ -512,9 +512,9 @@
 #define FLAG_DEFEATED_HO_OH                  0x1DC
 #define FLAG_DEFEATED_LUGIA                  0x1DD
 
-#define FLAG_UNUSED_0x1DE                    0x1DE // Unused Flag
-#define FLAG_UNUSED_0x1DF                    0x1DF // Unused Flag
-#define FLAG_UNUSED_0x1E0                    0x1E0 // Unused Flag
+#define FLAG_GLOOM_SITRUS                    0x1DE // Gave Gloom Sitrus
+#define FLAG_LOMBRE_SITRUS                   0x1DF // Gave Lombre Sitrus
+#define FLAG_GOT_OLD_NOTE                    0x1E0
 #define FLAG_UNUSED_0x1E1                    0x1E1 // Unused Flag
 #define FLAG_UNUSED_0x1E2                    0x1E2 // Unused Flag
 #define FLAG_UNUSED_0x1E3                    0x1E3 // Unused Flag
@@ -1181,17 +1181,17 @@
 #define FLAG_ITEM_AQUA_HIDEOUT_B1F_NUGGET                           0x46C
 #define FLAG_ITEM_MOSSDEEP_STEVENS_HOUSE_HM08                       0x46D // Unused Flag, leftover from R/S. HM08 is given to the player directly in Emerald
 #define FLAG_ITEM_ROUTE_119_NUGGET                                  0x46E
-#define FLAG_ITEM_MAGMHUT_MACHETE                                  0x46F
-#define FLAG_UNUSED_0x470                                           0x470 // Unused Flag
+#define FLAG_ITEM_MAGMHUT_MACHETE                                   0x46F
+#define FLAG_ITEM_MAINAREA_GAME1                                    0x470
 #define FLAG_ITEM_ROUTE_103_PP_UP                                   0x471
-#define FLAG_UNUSED_0x472                                           0x472 // Unused Flag
+#define FLAG_ITEM_MAINAREA_GAME2                                    0x472
 #define FLAG_ITEM_ROUTE_108_STAR_PIECE                              0x473
 #define FLAG_ITEM_ROUTE_109_POTION                                  0x474
 #define FLAG_ITEM_ROUTE_110_ELIXIR                                  0x475
 #define FLAG_ITEM_ROUTE_111_ELIXIR                                  0x476
 #define FLAG_ITEM_ROUTE_113_HYPER_POTION                            0x477
 #define FLAG_ITEM_ROUTE_115_HEAL_POWDER                             0x478
-#define FLAG_UNUSED_0x479                                           0x479 // Unused Flag
+#define FLAG_ITEM_MAINAREA_GAME3                                    0x479
 #define FLAG_ITEM_ROUTE_116_POTION                                  0x47A
 #define FLAG_ITEM_ROUTE_119_ELIXIR_2                                0x47B
 #define FLAG_ITEM_ROUTE_120_REVIVE                                  0x47C

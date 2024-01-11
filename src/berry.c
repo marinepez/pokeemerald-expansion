@@ -1709,7 +1709,7 @@ static u8 GetNumStagesWateredByBerryTreeId(u8 id)
 //
 // See resulting yields: https://gist.github.com/hondew/2a099dbe54aa91414decdbfaa524327d,
 // and bug fix: https://gist.github.com/hondew/0f0164e5b9dadfd72d24f30f2c049a0b.
-static u8 CalcBerryYieldInternal(u16 max, u16 min, u8 water)
+UNUSED static u8 CalcBerryYieldInternal(u16 max, u16 min, u8 water)
 {
     u32 randMin;
     u32 randMax;
@@ -1735,11 +1735,12 @@ static u8 CalcBerryYieldInternal(u16 max, u16 min, u8 water)
 
 static u8 CalcBerryYield(struct BerryTree *tree)
 {
-    const struct Berry *berry = GetBerryInfo(tree->berry);
+    return 1;
+/*    const struct Berry *berry = GetBerryInfo(tree->berry);
     u8 min = berry->minYield;
     u8 max = berry->maxYield;
 
-    return CalcBerryYieldInternal(max, min, BerryTreeGetNumStagesWatered(tree));
+    return CalcBerryYieldInternal(max, min, BerryTreeGetNumStagesWatered(tree));*/
 }
 
 static u8 GetBerryCountByBerryTreeId(u8 id)
