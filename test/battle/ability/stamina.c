@@ -92,7 +92,7 @@ SINGLE_BATTLE_TEST("Stamina activates for every hit of a multi hit move")
 {
     GIVEN {
         PLAYER(SPECIES_WOBBUFFET);
-        OPPONENT(SPECIES_MUDBRAY) { Ability(ABILITY_STAMINA); }
+        OPPONENT(SPECIES_SAMUS) { Ability(ABILITY_STAMINA); }
     } WHEN {
         TURN { MOVE(player, MOVE_DOUBLE_KICK); }
     } SCENE {
@@ -108,7 +108,7 @@ SINGLE_BATTLE_TEST("Stamina activates for every hit of a multi hit move")
 SINGLE_BATTLE_TEST("Stamina is not activated by users own Substitute")
 {
     GIVEN {
-        PLAYER(SPECIES_MUDBRAY) { Ability(ABILITY_STAMINA); }
+        PLAYER(SPECIES_SAMUS) { Ability(ABILITY_STAMINA); }
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { MOVE(player, MOVE_SUBSTITUTE); }

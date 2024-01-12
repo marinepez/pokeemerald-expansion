@@ -785,10 +785,10 @@
 #define SPECIES_WISHIWASHI_SOLO                         746
 #define SPECIES_MAREANIE                                747
 #define SPECIES_TOXAPEX                                 748
-#define SPECIES_MUDBRAY                                 749
-#define SPECIES_MUDSDALE                                750
-#define SPECIES_DEWPIDER                                751
-#define SPECIES_ARAQUANID                               752
+#define SPECIES_SAMUS                                 749
+#define SPECIES_GAMEWATCH                                750
+#define SPECIES_FALCO                                751
+#define SPECIES_ICLIMBERS                               752
 #define SPECIES_FOMANTIS                                753
 #define SPECIES_LURANTIS                                754
 #define SPECIES_MORELULL                                755
@@ -1726,7 +1726,7 @@
 // Ultra Sun & Ultra Moon
 #define SPECIES_MAROWAK_ALOLAN_TOTEM                    PLACEHOLDER_START + 49
 #define SPECIES_RIBOMBEE_TOTEM                          PLACEHOLDER_START + 50
-#define SPECIES_ARAQUANID_TOTEM                         PLACEHOLDER_START + 51
+#define SPECIES_ICLIMBERS_TOTEM                         PLACEHOLDER_START + 51
 #define SPECIES_TOGEDEMARU_TOTEM                        PLACEHOLDER_START + 52
 // Let's Go Pikachu & Let's Go Eevee
 #define SPECIES_PIKACHU_PARTNER                         PLACEHOLDER_START + 53

@@ -4725,7 +4725,7 @@ const u16 gEggMoves[] = {
 #endif //P_FAMILY_MAREANIE
 
 #if P_FAMILY_MUDBRAY
-    egg_moves(MUDBRAY,
+    egg_moves(SAMUS,
         MOVE_BODY_SLAM,
         MOVE_DOUBLE_EDGE,
         MOVE_MAGNITUDE,
@@ -4734,7 +4734,7 @@ const u16 gEggMoves[] = {
 #endif //P_FAMILY_MUDBRAY
 
 #if P_FAMILY_DEWPIDER
-    egg_moves(DEWPIDER,
+    egg_moves(GAMEWATCH,
         MOVE_POWER_SPLIT,
         MOVE_AURORA_BEAM,
         MOVE_STOCKPILE,
