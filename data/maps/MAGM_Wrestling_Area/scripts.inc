@@ -80,6 +80,7 @@ MAGM_Wrestling_Area_EventScript_SmeargleShowPlayerRing::
 	applymovement LOCALID_SMEARGLE, MAGM_Wrestling_Area_Movement_SmeargleEnterCave
 	applymovement OBJ_EVENT_ID_PLAYER, MAGM_Wrestling_Area_Movement_PlayerEnterCave
 	waitmovement 0
+	setflag FLAG_HIDE_SMEARGLE_WRESTLING
 	warpsilent MAP_MAGM_HAWLUCHA_CAVE, 0
 	waitstate
 	end

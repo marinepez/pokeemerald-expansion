@@ -1737,12 +1737,12 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
 #endif //P_GEN_2_CROSS_EVOS
 
 #define PIKACHU_MISC_INFO                                                       \
-        .baseHP        = 35,                                                    \
-        .baseAttack    = 55,                                                    \
-        .baseDefense   = P_UPDATED_STATS >= GEN_6 ? 40 : 30,                    \
-        .baseSpeed     = 90,                                                    \
-        .baseSpAttack  = 50,                                                    \
-        .baseSpDefense = P_UPDATED_STATS >= GEN_6 ? 50 : 40,                    \
+        .baseHP        = 55,                                                    \
+        .baseAttack    = 100,                                                   \
+        .baseDefense   = 60,                                                    \
+        .baseSpeed     = 120,                                                   \
+        .baseSpAttack  = 95,                                                    \
+        .baseSpDefense = 70,                                                    \
         .types = { TYPE_ELECTRIC, TYPE_ELECTRIC },                              \
         .catchRate = 190,                                                       \
         .expYield = 112,                                                        \
@@ -1882,10 +1882,10 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         FRONT_PIC(PikachuLibre, 48, 48),
         .frontPicYOffset = 9,
         .frontAnimFrames = sAnims_PikachuLibre,
-        //.frontAnimId = ANIM_V_SQUISH_AND_BOUNCE,
+        .frontAnimId = ANIM_SHAKE_FLASH_YELLOW,
         BACK_PIC(PikachuLibre, 64, 56),
         .backPicYOffset = 4,
-        //.backAnimId = BACK_ANIM_NONE,
+        .backAnimId = BACK_ANIM_SHAKE_FLASH_YELLOW,
         PALETTES(PikachuLibre),
         ICON(PikachuLibre, 0),
     },
@@ -3036,12 +3036,12 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
 
     [SPECIES_JIGGLYPUFF] =
     {
-        .baseHP        = 115,
-        .baseAttack    = 45,
-        .baseDefense   = 20,
-        .baseSpeed     = 20,
-        .baseSpAttack  = 45,
-        .baseSpDefense = 25,
+        .baseHP        = 130,
+        .baseAttack    = 80,
+        .baseDefense   = 80,
+        .baseSpeed     = 50,
+        .baseSpAttack  = 55,
+        .baseSpDefense = 105,
         .types = JIGGLYPUFF_FAMILY_TYPES,
         .catchRate = 170,
         .expYield = 95,

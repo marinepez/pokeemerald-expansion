@@ -515,7 +515,7 @@
 #define FLAG_GLOOM_SITRUS                    0x1DE // Gave Gloom Sitrus
 #define FLAG_LOMBRE_SITRUS                   0x1DF // Gave Lombre Sitrus
 #define FLAG_GOT_OLD_NOTE                    0x1E0
-#define FLAG_UNUSED_0x1E1                    0x1E1 // Unused Flag
+#define FLAG_INSERTED_GAME                   0x1E1 // Unused Flag
 #define FLAG_UNUSED_0x1E2                    0x1E2 // Unused Flag
 #define FLAG_UNUSED_0x1E3                    0x1E3 // Unused Flag
 

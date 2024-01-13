@@ -9100,93 +9100,115 @@ static const struct TrainerMon sParty_Deandre[] = {
 
 static const struct TrainerMon sParty_GruntMagmaHideout1[] = {
     {
-    .lvl = 29,
-    .species = SPECIES_ZUBAT,
+    .lvl = 50,
+    .iv = TRAINER_PARTY_IVS(24, 24, 24, 24, 24, 24),
+    .species = SPECIES_SAMUS,
+    .nature = NATURE_QUIET,
+    .moves = {MOVE_ZAP_CANNON, MOVE_FLASH_CANNON, MOVE_RAPID_SPIN, MOVE_GYRO_BALL}
     }
 };
 
 static const struct TrainerMon sParty_GruntMagmaHideout2[] = {
     {
-    .lvl = 29,
-    .species = SPECIES_POOCHYENA,
+    .lvl = 50,
+    .iv = TRAINER_PARTY_IVS(24, 24, 24, 24, 24, 24),
+    .species = SPECIES_GAMEWATCH,
+    .nature = NATURE_HASTY,
+    .moves = {MOVE_MAGNITUDE, MOVE_ORDER_UP, MOVE_OCTAZOOKA, MOVE_HEAL_BELL}
     }
 };
 
 static const struct TrainerMon sParty_GruntMagmaHideout3[] = {
     {
-    .lvl = 29,
-    .species = SPECIES_NUMEL,
+    .lvl = 50,
+    .iv = TRAINER_PARTY_IVS(24, 24, 24, 24, 24, 24),
+    .species = SPECIES_FALCO,
+    .nature = NATURE_ADAMANT,
+    .moves = {MOVE_JUMP_KICK, MOVE_FLAME_CHARGE, MOVE_AERIAL_ACE, MOVE_MIRROR_COAT}
     }
 };
 
 static const struct TrainerMon sParty_GruntMagmaHideout4[] = {
     {
-    .lvl = 28,
-    .species = SPECIES_BALTOY,
-    },
-    {
-    .lvl = 28,
-    .species = SPECIES_ZUBAT,
+    .lvl = 50,
+    .iv = TRAINER_PARTY_IVS(24, 24, 24, 24, 24, 24),
+    .species = SPECIES_ICLIMBERS,
+    .moves = {MOVE_ICICLE_SPEAR, MOVE_FROST_BREATH, MOVE_BOUNCE, MOVE_DOUBLE_HIT}
     }
 };
 
 static const struct TrainerMon sParty_GruntMagmaHideout5[] = {
     {
-    .lvl = 28,
-    .species = SPECIES_BALTOY,
-    },
-    {
-    .lvl = 28,
-    .species = SPECIES_NUMEL,
+    .lvl = 50,
+    .iv = TRAINER_PARTY_IVS(24, 24, 24, 24, 24, 24),
+    .species = SPECIES_JIGGLYPUFF,
+    .moves = {MOVE_REST, MOVE_ROLLOUT, MOVE_SING, MOVE_POUND}
     }
 };
 
 static const struct TrainerMon sParty_GruntMagmaHideout6[] = {
     {
-    .lvl = 29,
-    .species = SPECIES_MIGHTYENA,
+    .lvl = 50,
+    .iv = TRAINER_PARTY_IVS(24, 24, 24, 24, 24, 24),
+    .species = SPECIES_PIKACHU_LIBRE,
+    .moves = {MOVE_QUICK_ATTACK, MOVE_THUNDER, MOVE_SKULL_BASH, MOVE_FLYING_PRESS}
     }
 };
 
 static const struct TrainerMon sParty_GruntMagmaHideout7[] = {
     {
-    .lvl = 29,
-    .species = SPECIES_ZUBAT,
+    .lvl = 50,
+    .iv = TRAINER_PARTY_IVS(24, 24, 24, 24, 24, 24),
+    .species = SPECIES_SAMUS,
+    .nature = NATURE_QUIET,
+    .moves = {MOVE_ZAP_CANNON, MOVE_FLASH_CANNON, MOVE_RAPID_SPIN, MOVE_GYRO_BALL}
     }
 };
 
 static const struct TrainerMon sParty_GruntMagmaHideout8[] = {
     {
-    .lvl = 29,
-    .species = SPECIES_POOCHYENA,
+    .lvl = 50,
+    .iv = TRAINER_PARTY_IVS(24, 24, 24, 24, 24, 24),
+    .species = SPECIES_GAMEWATCH,
+    .nature = NATURE_HASTY,
+    .moves = {MOVE_MAGNITUDE, MOVE_ORDER_UP, MOVE_OCTAZOOKA, MOVE_HEAL_BELL}
     }
 };
 
 static const struct TrainerMon sParty_GruntMagmaHideout9[] = {
     {
-    .lvl = 29,
-    .species = SPECIES_ZUBAT,
+    .lvl = 50,
+    .iv = TRAINER_PARTY_IVS(24, 24, 24, 24, 24, 24),
+    .species = SPECIES_FALCO,
+    .nature = NATURE_ADAMANT,
+    .moves = {MOVE_JUMP_KICK, MOVE_FLAME_CHARGE, MOVE_AERIAL_ACE, MOVE_REFLECT}
     }
 };
 
 static const struct TrainerMon sParty_GruntMagmaHideout10[] = {
     {
-    .lvl = 29,
-    .species = SPECIES_MIGHTYENA,
+    .lvl = 50,
+    .iv = TRAINER_PARTY_IVS(24, 24, 24, 24, 24, 24),
+    .species = SPECIES_ICLIMBERS,
+    .moves = {MOVE_ICICLE_CRASH, MOVE_FROST_BREATH, MOVE_BOUNCE, MOVE_DOUBLE_HIT}
     }
 };
 
 static const struct TrainerMon sParty_GruntMagmaHideout11[] = {
     {
-    .lvl = 29,
-    .species = SPECIES_BALTOY,
+    .lvl = 50,
+    .iv = TRAINER_PARTY_IVS(24, 24, 24, 24, 24, 24),
+    .species = SPECIES_JIGGLYPUFF,
+    .moves = {MOVE_REST, MOVE_ROLLOUT, MOVE_SING, MOVE_POUND}
     }
 };
 
 static const struct TrainerMon sParty_GruntMagmaHideout12[] = {
     {
-    .lvl = 29,
-    .species = SPECIES_NUMEL,
+    .lvl = 50,
+    .iv = TRAINER_PARTY_IVS(24, 24, 24, 24, 24, 24),
+    .species = SPECIES_PIKACHU_LIBRE,
+    .moves = {MOVE_QUICK_ATTACK, MOVE_THUNDER, MOVE_SKULL_BASH, MOVE_FLYING_PRESS}
     }
 };
 

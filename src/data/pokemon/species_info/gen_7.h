@@ -1543,12 +1543,12 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
 #if P_FAMILY_MUDBRAY
     [SPECIES_SAMUS] =
     {
-        .baseHP        = 70,
-        .baseAttack    = 100,
-        .baseDefense   = 70,
-        .baseSpeed     = 45,
-        .baseSpAttack  = 45,
-        .baseSpDefense = 55,
+        .baseHP        = 80,
+        .baseAttack    = 90,
+        .baseDefense   = 80,
+        .baseSpeed     = 60,
+        .baseSpAttack  = 120,
+        .baseSpDefense = 80,
         .types = { TYPE_ELECTRIC, TYPE_STEEL },
         .catchRate = 190,
         .expYield = 77,
@@ -1591,12 +1591,12 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
 
     [SPECIES_GAMEWATCH] =
     {
-        .baseHP        = 100,
-        .baseAttack    = 125,
-        .baseDefense   = 100,
-        .baseSpeed     = 35,
-        .baseSpAttack  = 55,
-        .baseSpDefense = 85,
+        .baseHP        = 60,
+        .baseAttack    = 100,
+        .baseDefense   = 60,
+        .baseSpeed     = 120,
+        .baseSpAttack  = 80,
+        .baseSpDefense = 80,
         .types = { TYPE_DARK, TYPE_DARK },
         .catchRate = 60,
         .expYield = 175,
@@ -1641,12 +1641,12 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
 #if P_FAMILY_DEWPIDER
     [SPECIES_FALCO] =
     {
-        .baseHP        = 38,
-        .baseAttack    = 40,
-        .baseDefense   = 52,
-        .baseSpeed     = 27,
-        .baseSpAttack  = 40,
-        .baseSpDefense = 72,
+        .baseHP        = 70,
+        .baseAttack    = 100,
+        .baseDefense   = 70,
+        .baseSpeed     = 100,
+        .baseSpAttack  = 85,
+        .baseSpDefense = 75,
         .types = { TYPE_FIGHTING, TYPE_FLYING },
         .catchRate = 200,
         .expYield = 54,
@@ -1689,12 +1689,12 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
 
     [SPECIES_ICLIMBERS] =
     {
-        .baseHP        = 68,
-        .baseAttack    = 70,
-        .baseDefense   = 92,
-        .baseSpeed     = 42,
-        .baseSpAttack  = 50,
-        .baseSpDefense = 132,
+        .baseHP        = 90,
+        .baseAttack    = 80,
+        .baseDefense   = 90,
+        .baseSpeed     = 90,
+        .baseSpAttack  = 60,
+        .baseSpDefense = 90,
         .types = { TYPE_ICE, TYPE_ICE },
         .catchRate = 100,
         .expYield = 159,

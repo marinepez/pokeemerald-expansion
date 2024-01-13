@@ -2425,6 +2425,7 @@ bool8 ScrCmd_warpwhitefade(struct ScriptContext *ctx)
 
 bool8 ScrCmd_givecustommon(struct ScriptContext *ctx)
 {
+    u16 move1, move2, move3, move4;
     u16 species = ScriptReadHalfword(ctx);
     u8 level = ScriptReadByte(ctx);
     u16 item = ScriptReadHalfword(ctx);
@@ -2443,10 +2444,21 @@ bool8 ScrCmd_givecustommon(struct ScriptContext *ctx)
     u8 speedIv = ScriptReadByte(ctx);
     u8 spAtkIv = ScriptReadByte(ctx);
     u8 spDefIv = ScriptReadByte(ctx);
-    u16 move1 = VarGet(ScriptReadHalfword(ctx));
-    u16 move2 = VarGet(ScriptReadHalfword(ctx));
-    u16 move3 = VarGet(ScriptReadHalfword(ctx));
-    u16 move4 = VarGet(ScriptReadHalfword(ctx));
+    if(species == SPECIES_GLOOM || species == SPECIES_LOMBRE)
+    {
+        move1 = VarGet(ScriptReadHalfword(ctx));
+        move2 = VarGet(ScriptReadHalfword(ctx));
+        move3 = VarGet(ScriptReadHalfword(ctx));
+        move4 = VarGet(ScriptReadHalfword(ctx));
+    }
+    else
+    {
+        move1 = ScriptReadHalfword(ctx);
+        move2 = ScriptReadHalfword(ctx);
+        move3 = ScriptReadHalfword(ctx);
+        move4 = ScriptReadHalfword(ctx);
+    }
+
     bool8 isShiny = ScriptReadByte(ctx);
 
     u8 evs[NUM_STATS] = {hpEv, atkEv, defEv, speedEv, spAtkEv, spDefEv};

@@ -785,9 +785,9 @@
 #define SPECIES_WISHIWASHI_SOLO                         746
 #define SPECIES_MAREANIE                                747
 #define SPECIES_TOXAPEX                                 748
-#define SPECIES_SAMUS                                 749
-#define SPECIES_GAMEWATCH                                750
-#define SPECIES_FALCO                                751
+#define SPECIES_SAMUS                                   749
+#define SPECIES_GAMEWATCH                               750
+#define SPECIES_FALCO                                   751
 #define SPECIES_ICLIMBERS                               752
 #define SPECIES_FOMANTIS                                753
 #define SPECIES_LURANTIS                                754

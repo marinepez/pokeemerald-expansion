@@ -699,8 +699,9 @@
 #define STRINGID_STUDIEDPKMN                          697
 #define STRINGID_SUCCESSFULSTUDY                      698
 #define STRINGID_ALREADYSTUDIED                       699
+#define STRINGID_PLAYERWHITEOUT3                      700
 
-#define BATTLESTRINGS_COUNT                           700
+#define BATTLESTRINGS_COUNT                           701
 
 // This is the string id that gBattleStringsTable starts with.
 // String ids before this (e.g. STRINGID_INTROMSG) are not in the table,

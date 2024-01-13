@@ -4,6 +4,7 @@
 #include "constants/battle.h"
 #include "constants/pokemon.h"
 #include "constants/battle_arena.h"
+#include "constants/battle_setup.h"
 #include "constants/battle_script_commands.h"
 #include "constants/battle_anim.h"
 #include "constants/battle_string_ids.h"
@@ -6569,6 +6570,8 @@ BattleScript_LocalBattleLostPrintWhiteOut::
 	jumpifbattletype BATTLE_TYPE_TRAINER, BattleScript_LocalBattleLostEnd
 	printstring STRINGID_PLAYERWHITEOUT
 	waitmessage B_WAIT_TIME_LONG
+	jumpifhalfword CMP_EQUAL, gTrainerBattleMode, TRAINER_BATTLE_NO_WHITEOUT_CONTINUE_SCRIPT, BattleScript_LocalBattleLostPrintNoWhiteout
+	jumpifhalfword CMP_EQUAL, gTrainerBattleMode, TRAINER_BATTLE_NO_INTRO_NO_WHITEOUT, BattleScript_LocalBattleLostPrintNoWhiteout
 	getmoneyreward
 	printstring STRINGID_PLAYERWHITEOUT2
 	waitmessage B_WAIT_TIME_LONG
@@ -6588,6 +6591,10 @@ BattleScript_LocalBattleLostEnd::
 BattleScript_LocalBattleLostEnd::
 	end2
 .endif
+BattleScript_LocalBattleLostPrintNoWhiteout::
+	printstring STRINGID_PLAYERWHITEOUT3
+	waitmessage B_WAIT_TIME_LONG
+	end2
 
 BattleScript_CheckDomeDrew::
 	jumpifbyte CMP_EQUAL, gBattleOutcome, B_OUTCOME_DREW, BattleScript_LocalBattleLostEnd_

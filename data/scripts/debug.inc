@@ -110,6 +110,7 @@ Debug_EventScript_Script_3::
 	end
 
 Debug_EventScript_Script_4::
+	special DrawWholeMapView
 	end
 
 Debug_EventScript_Script_5::

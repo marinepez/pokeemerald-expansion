@@ -24,7 +24,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "MAGM_HawluchaCave_EventScript_Hawlucha",
       "flag": "FLAG_HIDE_HAWLUCHA_CAVE"
     },
     {
@@ -54,6 +54,21 @@
 
   ],
   "bg_events": [
-
+    {
+      "type": "sign",
+      "x": 2,
+      "y": 3,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "MAGM_HawluchaCave_EventScript_ComicBook"
+    },
+    {
+      "type": "sign",
+      "x": 4,
+      "y": 2,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "MAGM_HawluchaCave_EventScript_GameCube"
+    }
   ]
 }
