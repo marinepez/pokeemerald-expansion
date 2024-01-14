@@ -144,6 +144,15 @@
       "var": "VAR_WRESTLING_AREA_STATE",
       "var_value": "0",
       "script": "MAGM_Wrestling_Area_EventScript_SmeargleNoticePlayer2"
+    },
+    {
+      "type": "trigger",
+      "x": 10,
+      "y": 9,
+      "elevation": 0,
+      "var": "VAR_WRESTLING_AREA_STATE",
+      "var_value": "3",
+      "script": "MAGM_Wrestling_Area_EventScript_AskToStartPikachuMatch"
     }
   ],
   "bg_events": [

@@ -545,3 +545,4 @@ gSpecials::
 	def_special CheckSpecialMail
 	def_special ZeroPlayerPartyMons
 	def_special DestroyVirtualObjects
+	def_special StartCredits

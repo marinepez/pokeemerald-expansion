@@ -80,6 +80,8 @@ MAGM_Wrestling_Area_EventScript_HawluchaWrestling::
 
 MAGM_Wrestling_Area_EventScript_AskToStartPikachuMatch::
 	goto_if_ne VAR_WRESTLING_AREA_STATE, 3, MAGM_Wrestling_Area_EventScript_AskToStartPikachuMatch_End
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceRight
+	waitmovement 0
 	special SpawnCameraObject
 	applymovement LOCALID_HAWLUCHA, Common_Movement_WalkInPlaceLeft
 	applymovement OBJ_EVENT_ID_CAMERA, MAGM_Wrestling_Area_Movement_CameraPanRight
@@ -88,11 +90,11 @@ MAGM_Wrestling_Area_EventScript_AskToStartPikachuMatch::
 	waitmoncry
 	msgbox MAGM_Wrestling_Area_Text_ReadyToStart, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, MAGM_Wrestling_Area_EventScript_StartPikachuMatch
+	closemessage
 	applymovement LOCALID_HAWLUCHA, Common_Movement_WalkInPlaceRight
 	applymovement OBJ_EVENT_ID_CAMERA, MAGM_Wrestling_Area_Movement_CameraPanLeft
 	waitmovement 0
 	special RemoveCameraObject
-	closemessage
 	releaseall
 MAGM_Wrestling_Area_EventScript_AskToStartPikachuMatch_End::
 	end
@@ -116,6 +118,7 @@ MAGM_Wrestling_Area_EventScript_StartPikachuMatch::
 	playmoncry SPECIES_PIKACHU, CRY_MODE_NORMAL
 	givecustommon SPECIES_HAWLUCHA, 50, ITEM_FOCUS_SASH, ITEM_GREAT_BALL, NATURE_ADAMANT, 0, 1, 1, 1, 1, 1, 1, 31, 31, 31, 31, 31, 31, MOVE_FLYING_PRESS, MOVE_DETECT, MOVE_ENCORE, MOVE_SWORDS_DANCE, FALSE	
 	closemessage
+	special RemoveCameraObject
 	trainerbattle_single TRAINER_SMASHBROS_PIKACHU_PIKACHU, MAGM_Wrestling_Area_Text_BattleIntro, MAGM_Wrestling_Area_Text_BattleLost, MAGM_Wrestling_Area_EventScript_PikachuMatchAfterBattle
 	end
 

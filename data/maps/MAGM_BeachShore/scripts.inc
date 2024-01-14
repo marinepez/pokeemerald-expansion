@@ -62,6 +62,8 @@ MAGM_BeachShore_EventScript_DropMail::
 	setflag FLAG_HIDE_HAWLUCHA_WRESTLING
 	setflag FLAG_HIDE_PIKACHU
 	setflag FLAG_HIDE_PIKACHU_CAVE
+	setflag FLAG_HIDE_MEW
+	setflag FLAG_HIDE_MASTERBALL
 	msgbox MAGM_BeachShore_MapScripts_Text_LeftALetter, MSGBOX_YESNO
 	switch VAR_RESULT
 	case YES, MAGM_BeachShore_MapScripts_EventScript_ReadLetter

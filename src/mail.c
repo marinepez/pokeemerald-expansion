@@ -785,12 +785,12 @@ void CheckSpecialMail(void)
         case 2:
             SpecialMail = (struct Mail) { //Old note
                 .words = {EC_WORD_BEAUTY, EC_WORD_AIR_LOCK, EC_WORD_PSYCHIC, 
-                EC_EMPTY_WORD, EC_WORD_HYPER_CUTTER, EC_WORD_FIGHTING,
+                EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD,
                 EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
-                .itemId = ITEM_HARBOR_MAIL,
+                .itemId = ITEM_ORANGE_MAIL,
                 .trainerId = {0, 0, 0, 0},
                 .species = SPECIES_PIKACHU,
-                .playerName = {CHAR_PK, CHAR_MN, CHAR_L, CHAR_E, CHAR_A, CHAR_G, CHAR_PERIOD, EOS}
+                .playerName = {CHAR_COMMA, EOS}
             };
             break;
     }

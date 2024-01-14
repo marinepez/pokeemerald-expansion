@@ -451,6 +451,7 @@ const u8 gInitialMovementTypeFacingDirections[] = {
 #define OBJ_EVENT_PAL_TAG_PIKACHU                 0x1134
 #define OBJ_EVENT_PAL_TAG_BELLOSSOM               0x1135
 #define OBJ_EVENT_PAL_TAG_LUDICOLO                0x1136
+#define OBJ_EVENT_PAL_TAG_MASTER_BALL             0x1137
 #define OBJ_EVENT_PAL_TAG_NONE                    0x11FF
 
 #include "data/field_effects/field_effect_object_template_pointers.h"
@@ -510,6 +511,7 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_Pikachu,               OBJ_EVENT_PAL_TAG_PIKACHU},
     {gObjectEventPal_Bellossom,             OBJ_EVENT_PAL_TAG_BELLOSSOM},
     {gObjectEventPal_Ludicolo,              OBJ_EVENT_PAL_TAG_LUDICOLO},
+    {gObjectEventPal_MasterBall,            OBJ_EVENT_PAL_TAG_MASTER_BALL},
 #ifdef BUGFIX
     {NULL,                                  OBJ_EVENT_PAL_TAG_NONE},
 #else
