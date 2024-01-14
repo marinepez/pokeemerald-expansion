@@ -515,7 +515,7 @@
 #define FLAG_GLOOM_SITRUS                    0x1DE // Gave Gloom Sitrus
 #define FLAG_LOMBRE_SITRUS                   0x1DF // Gave Lombre Sitrus
 #define FLAG_GOT_OLD_NOTE                    0x1E0
-#define FLAG_INSERTED_GAME                   0x1E1 // Unused Flag
+#define FLAG_INSERTED_GAME                   0x1E1
 #define FLAG_UNUSED_0x1E2                    0x1E2 // Unused Flag
 #define FLAG_UNUSED_0x1E3                    0x1E3 // Unused Flag
 
@@ -663,7 +663,7 @@
 #define FLAG_HIDE_SMEARGLE_CAVE         0x26C
 #define FLAG_HIDE_HAWLUCHA_CAVE         0x26D
 #define FLAG_HIDE_PIKACHU               0x26E
-#define FLAG_UNUSED_0x26F  0x26F // Unused Flag
+#define FLAG_HIDE_PIKACHU_CAVE          0x26F
 #define FLAG_UNUSED_0x270  0x270 // Unused Flag
 #define FLAG_UNUSED_0x271  0x271 // Unused Flag
 #define FLAG_UNUSED_0x272  0x272 // Unused Flag

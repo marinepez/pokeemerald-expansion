@@ -110,10 +110,11 @@ Debug_EventScript_Script_3::
 	end
 
 Debug_EventScript_Script_4::
-	special DrawWholeMapView
+	goto MAGM_MainArea_CheckIfGiveNote
 	end
 
 Debug_EventScript_Script_5::
+	goto ProfBirch_EventScript_RatePokedex
 	end
 
 Debug_EventScript_Script_6::

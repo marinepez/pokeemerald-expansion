@@ -544,3 +544,4 @@ gSpecials::
 	def_special VsSeekerFreezeObjectsAfterChargeComplete
 	def_special CheckSpecialMail
 	def_special ZeroPlayerPartyMons
+	def_special DestroyVirtualObjects

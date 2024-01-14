@@ -8346,7 +8346,7 @@ static void SpriteCB_VirtualObject(struct Sprite *sprite)
     UpdateObjectEventSpriteInvisibility(sprite, sprite->sInvisible);
 }
 
-static void UNUSED DestroyVirtualObjects(void)
+void DestroyVirtualObjects(void)
 {
     int i;
 

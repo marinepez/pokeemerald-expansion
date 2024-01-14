@@ -12,8 +12,6 @@ EventScript_TryDoNormalTrainerBattle::
 	faceplayer
 	applymovement VAR_LAST_TALKED, Movement_RevealTrainer
 	waitmovement 0
-	specialvar VAR_RESULT, GetTrainerFlag
-	goto_if_ne VAR_RESULT, FALSE, EventScript_NoNormalTrainerBattle
 	special PlayTrainerEncounterMusic
 	special SetTrainerFacingDirection
 	goto EventScript_ShowTrainerIntroMsg

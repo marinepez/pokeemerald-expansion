@@ -1,6 +1,7 @@
 MAGM_MainArea_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, MAGM_MainArea_OnTransition
 	map_script MAP_SCRIPT_ON_RETURN_TO_FIELD, MAGM_MainArea_CheckIfGiveNote
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, MAGM_MainArea_OnFrame
 	.byte 0
 
 MAGM_MainArea_OnTransition:
@@ -8,15 +9,31 @@ MAGM_MainArea_OnTransition:
 	setflag FLAG_SYS_SAFARI_MODE
 	end
 
+MAGM_MainArea_OnFrame:
+	map_script_2 VAR_MAGM_MAINAREA_STATE, 1, MAGM_MainArea_GiveNote
+	.2byte 0
+
 MAGM_MainArea_CheckIfGiveNote:
 	goto_if_set FLAG_GOT_OLD_NOTE, MAGM_MainArea_CheckIfGiveNote_End
 	special ScriptGetPokedexInfo
-	goto_if_lt VAR_0x8009, 10, MAGM_MainArea_CheckIfGiveNote_End //Number of national pokemon caught
+	goto_if_lt VAR_0x8006, 9, MAGM_MainArea_CheckIfGiveNote_End //Number of national pokemon caught
 	setflag FLAG_GOT_OLD_NOTE
+	setvar VAR_MAGM_MAINAREA_STATE, 1
+MAGM_MainArea_CheckIfGiveNote_End::
+	end
+
+MAGM_MainArea_GiveNote:
+	setvar VAR_MAGM_MAINAREA_STATE, 2
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_Delay32
+	waitmovement 0
+	playse SE_BALL
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_QuestionMark
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_Delay48
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_Delay48
+	waitmovement 0
 	msgbox MAGM_MainArea_Text_FoundSomethingOnGround, MSGBOX_DEFAULT
 	giveitem ITEM_LETTER_PLACEHOLDER
 	closemessage
-MAGM_MainArea_CheckIfGiveNote_End::
 	end
 
 MAGM_MainArea_ItemVideoGame::

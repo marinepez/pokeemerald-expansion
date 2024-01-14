@@ -79,10 +79,10 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_OLD_WOMAN",
-      "x": 3,
-      "y": 13,
+      "x": 13,
+      "y": 8,
       "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_type": "MOVEMENT_TYPE_WALK_IN_PLACE_RIGHT",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -100,13 +100,13 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "MAGM_Wrestling_Area_EventScript_Smeargle",
       "flag": "FLAG_HIDE_SMEARGLE_WRESTLING"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_RED",
-      "x": 12,
-      "y": 12,
+      "x": 18,
+      "y": 14,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_WALK_IN_PLACE_DOWN",
       "movement_range_x": 0,
@@ -154,6 +154,14 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "MAGM_MainArea_Sign_BanIncineraor"
+    },
+    {
+      "type": "sign",
+      "x": 11,
+      "y": 9,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "MAGM_Wrestling_Area_EventScript_AskToStartPikachuMatch"
     }
   ]
 }

@@ -1,3 +1,7 @@
+.set LOCALID_HAWLUCHA, 1
+.set LOCALID_SMEARGLE, 2
+.set LOCALID_PIKACHU, 3
+
 MAGM_HawluchaCave_MapScripts::
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, MAGM_HawluchaCave_OnFrame
 	map_script MAP_SCRIPT_ON_TRANSITION, MAGM_HawluchaCave_OnTransition
@@ -16,12 +20,35 @@ MAGM_HawluchaCave_OnTransition:
 
 MAGM_HawluchaCave_EventScript_IntroCutscene::
 	setvar VAR_HAWLUCHA_CAVE_STATE, 1
+	applymovement LOCALID_HAWLUCHA, Common_Movement_Delay48
+	waitmovement 0
+	playse SE_PIN
+	applymovement LOCALID_HAWLUCHA, MAGM_HawluchaCave_Movement_HawluchaNoticeSmeargle
+	waitmovement 0
+	applymovement LOCALID_SMEARGLE, MAGM_HawluchaCave_Movement_SmeargleApproachHawlucha
+	waitmovement 0
+	playmoncry SPECIES_SMEARGLE, CRY_MODE_NORMAL
+	waitmoncry
+	delay 60
+	playmoncry SPECIES_HAWLUCHA, CRY_MODE_ENCOUNTER
+	applymovement LOCALID_HAWLUCHA, MAGM_HawluchaCave_Movement_HawluchaAngry
+	waitmoncry
+	waitmovement 0
+	applymovement LOCALID_SMEARGLE, MAGM_HawluchaCave_Movement_SmeargleWalkBackToPlayer
+	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_HawluchaCave_Movement_PlayerMoveOutOfWay
+	waitmovement 0
+	applymovement LOCALID_SMEARGLE, MAGM_HawluchaCave_Movement_SmeargleExit
+	waitmovement 0
+	removeobject LOCALID_SMEARGLE, MAP_MAGM_HAWLUCHA_CAVE
 	end
 
 MAGM_HawluchaCave_EventScript_GameCube::
+	goto_if_eq VAR_HAWLUCHA_CAVE_STATE, 2, MAGM_HawluchaCave_EventScript_GameCube_LookAtGameCube
 	goto_if_set FLAG_INSERTED_GAME, MAGM_HawluchaCave_EventScript_GameCube_PlayGame
 	checkitem ITEM_VIDEO_GAME
 	goto_if_eq VAR_RESULT, TRUE, MAGM_HawluchaCave_EventScript_GameCube_InsertGame
+MAGM_HawluchaCave_EventScript_GameCube_LookAtGameCube::
 	msgbox MAGM_HawluchaCave_Text_GameCube, MSGBOX_DEFAULT
 	closemessage
 	end
@@ -30,7 +57,10 @@ MAGM_HawluchaCave_EventScript_GameCube_InsertGame::
 	removeitem ITEM_VIDEO_GAME, 1
 	setflag FLAG_INSERTED_GAME
 	msgbox MAGM_HawluchaCave_Text_InsertedGame, MSGBOX_DEFAULT
-	//Cutscene
+	playse SE_PIN
+	applymovement LOCALID_HAWLUCHA, MAGM_HawluchaCave_Movement_NoticeGameInserted
+	waitmovement 0
+	msgbox MAGM_HawluchaCave_Text_HawluchaPickedUpController, MSGBOX_DEFAULT
 MAGM_HawluchaCave_EventScript_GameCube_PlayGame::
 	special ZeroPlayerPartyMons
 	call_if_ne VAR_HAWLUCHA_CAVE_STATE, 4, MAGM_HawluchaCave_EventScript_BufferHawluchaName
@@ -74,6 +104,7 @@ MAGM_HawluchaCave_EventScript_GameCube_PlayGame_End::
 
 HawluchaCave_EventScript_GameCube_StartGame::
 	addvar VAR_SMASH_BROS_GAMES, 1
+	goto_if_eq VAR_HAWLUCHA_CAVE_STATE, 4, HawluchaCave_EventScript_GameCube_StartGame_Pikachu
 	switch VAR_OPPONENT_FIGHTER_CHOICE
 	case 0, HawluchaCave_EventScript_GameCube_StartGame_Opponent_Samus
 	case 1, HawluchaCave_EventScript_GameCube_StartGame_Opponent_GameWatch
@@ -81,6 +112,14 @@ HawluchaCave_EventScript_GameCube_StartGame::
 	case 3, HawluchaCave_EventScript_GameCube_StartGame_Opponent_IceClimbers
 	case 4, HawluchaCave_EventScript_GameCube_StartGame_Opponent_Jigglypuff
 	case 5, HawluchaCave_EventScript_GameCube_StartGame_Opponent_Pikachu
+HawluchaCave_EventScript_GameCube_StartGame_Pikachu::
+	switch VAR_OPPONENT_FIGHTER_CHOICE
+	case 0, HawluchaCave_EventScript_GameCube_StartGame_Opponent_Samus_Pikachu
+	case 1, HawluchaCave_EventScript_GameCube_StartGame_Opponent_GameWatch_Pikachu
+	case 2, HawluchaCave_EventScript_GameCube_StartGame_Opponent_Falco_Pikachu
+	case 3, HawluchaCave_EventScript_GameCube_StartGame_Opponent_IceClimbers_Pikachu
+	case 4, HawluchaCave_EventScript_GameCube_StartGame_Opponent_Jigglypuff_Pikachu
+	case 5, HawluchaCave_EventScript_GameCube_StartGame_Opponent_Pikachu_Pikachu
 	end
 
 HawluchaCave_EventScript_GameCube_AfterBattle::
@@ -92,32 +131,65 @@ HawluchaCave_EventScript_GameCube_AfterBattle::
 
 HawluchaCave_EventScript_GameCube_WonBattle::
 	addvar VAR_SMASH_BROS_WINS, 1
-	//Hawlucha smashes TV here
+	goto_if_lt VAR_SMASH_BROS_WINS, 3, HawluchaCave_EventScript_GameCube_WonBattle_End
+	goto_if_eq VAR_HAWLUCHA_CAVE_STATE, 4, HawluchaCave_EventScript_GameCube_WonBattle_End
+	setvar VAR_HAWLUCHA_CAVE_STATE, 2
+	setvar VAR_WRESTLING_AREA_STATE, 2
+	setflag FLAG_HIDE_HERACROSS
+	clearflag FLAG_HIDE_HAWLUCHA_WRESTLING
+	clearflag FLAG_HIDE_SMEARGLE_WRESTLING
+	delay 30
+	playmoncry SPECIES_HAWLUCHA, CRY_MODE_ENCOUNTER
+	waitmoncry
+	applymovement LOCALID_HAWLUCHA, MAGM_HawluchaCave_Movement_BreakTV
+	waitmovement 0
+	playse SE_BREAKABLE_DOOR
+	setmetatile 3, 1, METATILE_Building_TV_Off, TRUE
+	special DrawWholeMapView
+	applymovement LOCALID_HAWLUCHA, MAGM_HawluchaCave_Movement_HawluchaLeave
+	waitmovement 0
+	removeobject LOCALID_HAWLUCHA
+	end
+
+HawluchaCave_EventScript_GameCube_WonBattle_End::
 	releaseall
 	end
 
 HawluchaCave_EventScript_GameCube_StartGame_Opponent_Samus::
 	trainerbattle_no_whiteout_continue_script TRAINER_SMASHBROS_SAMUS, HawluchaCave_EventScript_GameCube_HawluchaIntroText, HawluchaCave_EventScript_GameCube_HawluchaLoseText, HawluchaCave_EventScript_GameCube_AfterBattle
 	end
-
 HawluchaCave_EventScript_GameCube_StartGame_Opponent_GameWatch::
 	trainerbattle_no_whiteout_continue_script TRAINER_SMASHBROS_GAMEWATCH, HawluchaCave_EventScript_GameCube_HawluchaIntroText, HawluchaCave_EventScript_GameCube_HawluchaLoseText, HawluchaCave_EventScript_GameCube_AfterBattle
 	end
-
 HawluchaCave_EventScript_GameCube_StartGame_Opponent_Falco::
 	trainerbattle_no_whiteout_continue_script TRAINER_SMASHBROS_FALCO, HawluchaCave_EventScript_GameCube_HawluchaIntroText, HawluchaCave_EventScript_GameCube_HawluchaLoseText, HawluchaCave_EventScript_GameCube_AfterBattle
 	end
-
 HawluchaCave_EventScript_GameCube_StartGame_Opponent_IceClimbers::
 	trainerbattle_no_whiteout_continue_script TRAINER_SMASHBROS_ICECLIMBERS, HawluchaCave_EventScript_GameCube_HawluchaIntroText, HawluchaCave_EventScript_GameCube_HawluchaLoseText, HawluchaCave_EventScript_GameCube_AfterBattle
 	end
-
 HawluchaCave_EventScript_GameCube_StartGame_Opponent_Jigglypuff::
 	trainerbattle_no_whiteout_continue_script TRAINER_SMASHBROS_JIGGLYPUFF, HawluchaCave_EventScript_GameCube_HawluchaIntroText, HawluchaCave_EventScript_GameCube_HawluchaLoseText, HawluchaCave_EventScript_GameCube_AfterBattle
 	end
-
 HawluchaCave_EventScript_GameCube_StartGame_Opponent_Pikachu::
 	trainerbattle_no_whiteout_continue_script TRAINER_SMASHBROS_PIKACHU, HawluchaCave_EventScript_GameCube_HawluchaIntroText, HawluchaCave_EventScript_GameCube_HawluchaLoseText, HawluchaCave_EventScript_GameCube_AfterBattle
+	end
+HawluchaCave_EventScript_GameCube_StartGame_Opponent_Samus_Pikachu::
+	trainerbattle_no_whiteout_continue_script TRAINER_SMASHBROS_SAMUS_PIKACHU, HawluchaCave_EventScript_GameCube_HawluchaIntroText, HawluchaCave_EventScript_GameCube_HawluchaLoseText, HawluchaCave_EventScript_GameCube_AfterBattle
+	end
+HawluchaCave_EventScript_GameCube_StartGame_Opponent_GameWatch_Pikachu::
+	trainerbattle_no_whiteout_continue_script TRAINER_SMASHBROS_GAMEWATCH_PIKACHU, HawluchaCave_EventScript_GameCube_HawluchaIntroText, HawluchaCave_EventScript_GameCube_HawluchaLoseText, HawluchaCave_EventScript_GameCube_AfterBattle
+	end
+HawluchaCave_EventScript_GameCube_StartGame_Opponent_Falco_Pikachu::
+	trainerbattle_no_whiteout_continue_script TRAINER_SMASHBROS_FALCO_PIKACHU, HawluchaCave_EventScript_GameCube_HawluchaIntroText, HawluchaCave_EventScript_GameCube_HawluchaLoseText, HawluchaCave_EventScript_GameCube_AfterBattle
+	end
+HawluchaCave_EventScript_GameCube_StartGame_Opponent_IceClimbers_Pikachu::
+	trainerbattle_no_whiteout_continue_script TRAINER_SMASHBROS_ICECLIMBERS_PIKACHU, HawluchaCave_EventScript_GameCube_HawluchaIntroText, HawluchaCave_EventScript_GameCube_HawluchaLoseText, HawluchaCave_EventScript_GameCube_AfterBattle
+	end
+HawluchaCave_EventScript_GameCube_StartGame_Opponent_Jigglypuff_Pikachu::
+	trainerbattle_no_whiteout_continue_script TRAINER_SMASHBROS_JIGGLYPUFF_PIKACHU, HawluchaCave_EventScript_GameCube_HawluchaIntroText, HawluchaCave_EventScript_GameCube_HawluchaLoseText, HawluchaCave_EventScript_GameCube_AfterBattle
+	end
+HawluchaCave_EventScript_GameCube_StartGame_Opponent_Pikachu_Pikachu::
+	trainerbattle_no_whiteout_continue_script TRAINER_SMASHBROS_PIKACHU_PIKACHU, HawluchaCave_EventScript_GameCube_HawluchaIntroText, HawluchaCave_EventScript_GameCube_HawluchaLoseText, HawluchaCave_EventScript_GameCube_AfterBattle
 	end
 
 HawluchaCave_EventScript_GameCube_GiveSamus::
@@ -230,11 +302,15 @@ MAGM_HawluchaCave_Text_InsertedGame:
 	.string "You inserted the disk\n"
 	.string "into the GameCube.$"
 
+MAGM_HawluchaCave_Text_HawluchaPickedUpController:
+	.string "Hawlucha picked up a\n"
+	.string "controller.$"
+
 HawluchaCave_EventScript_GameCube_HawluchaIntroText:
-	.string "Intro.$"
+	.string "READY? GO!$"
 
 HawluchaCave_EventScript_GameCube_HawluchaLoseText:
-	.string "Lost.$"
+	.string "GAME!$"
 
 MAGM_HawluchaCave_Text_OpponentChoseCharacter:
 	.string "{STR_VAR_1} chose {STR_VAR_2}.\n"
@@ -280,3 +356,91 @@ MAGM_DanceRoom_Text_Random:
 
 MAGM_HawluchaCave_Text_LowercaseRandom:
 	.string "Random$"
+
+MAGM_HawluchaCave_Movement_BreakTV:
+	walk_in_place_fast_up
+	walk_in_place_fast_up
+	walk_in_place_fast_up
+	walk_in_place_fast_up
+	walk_in_place_fast_up
+	walk_fast_up
+	step_end
+
+MAGM_HawluchaCave_Movement_HawluchaLeave:
+	lock_facing_direction
+	walk_fast_down
+	unlock_facing_direction
+	delay_16
+	delay_16
+	delay_16
+	walk_fast_down
+	walk_fast_down
+	walk_fast_down
+	walk_fast_right
+	walk_in_place_fast_down
+	step_end
+
+MAGM_HawluchaCave_Movement_SmeargleExit:
+	walk_slow_right
+	walk_in_place_slow_down
+	step_end
+
+MAGM_HawluchaCave_Movement_PlayerMoveOutOfWay:
+	walk_right
+	face_left
+	step_end
+
+MAGM_HawluchaCave_Movement_HawluchaAngry:
+	walk_in_place_fast_down
+	walk_in_place_fast_down
+	walk_in_place_fast_down
+	walk_in_place_up
+	step_end
+
+MAGM_HawluchaCave_Movement_HawluchaNoticeSmeargle:
+	face_down
+	emote_exclamation_mark
+	delay_16
+	delay_16
+	delay_16
+	delay_16
+	delay_16
+	delay_16
+	step_end
+
+MAGM_HawluchaCave_Movement_SmeargleWalkBackToPlayer:
+	walk_in_place_slow_up
+	delay_16
+	delay_16
+	walk_slow_down
+	walk_slow_down
+	face_up
+	delay_16
+	delay_16
+	delay_16
+	face_right
+	step_end
+
+MAGM_HawluchaCave_Movement_SmeargleApproachHawlucha:
+	walk_up
+	walk_up
+	walk_in_place_slow_up
+	step_end
+
+MAGM_HawluchaCave_Movement_NoticeGameInserted:
+	face_right
+	emote_exclamation_mark
+	delay_16
+	delay_16
+	delay_16
+	delay_16
+	delay_16
+	delay_16
+	delay_16
+	delay_16
+	walk_in_place_slow_right
+	walk_in_place_slow_up
+	delay_16
+	delay_16
+	delay_16
+	step_end

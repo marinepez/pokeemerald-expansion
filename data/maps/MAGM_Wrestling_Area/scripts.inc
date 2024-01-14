@@ -2,19 +2,149 @@
 .set LOCALID_EXEGGUTOR, 4
 .set LOCALID_HAWLUCHA, 5
 .set LOCALID_SMEARGLE, 6
+.set LOCALID_PIKACHU, 7
 
 MAGM_Wrestling_Area_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, MAGM_Wrestling_Area_OnResume
 	map_script MAP_SCRIPT_ON_TRANSITION, MAGM_Wrestling_Area_OnTransition
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, MAGM_Wrestling_Area_OnFrame
 	.byte 0
 
 MAGM_Wrestling_Area_OnTransition:
 	setflag FLAG_HIDE_MAP_NAME_POPUP
 	clearflag FLAG_SYS_SAFARI_MODE
+	call_if_ge VAR_WRESTLING_AREA_STATE, 3, MAGM_Wrestling_Area_MoveSmeargle
+	call_if_eq VAR_WRESTLING_AREA_STATE, 3, MAGM_Wrestling_Area_MoveHawlucha
+	call_if_eq VAR_WRESTLING_AREA_STATE, 4, MAGM_Wresting_Area_AddExeggutor
 	end
 
 MAGM_Wrestling_Area_OnResume:
+	special DestroyVirtualObjects
 	call_if_eq VAR_TEMP_9, 0, MAGM_Wrestling_Area_EventScript_AddAudience
+	end
+
+MAGM_Wrestling_Area_OnFrame:
+	map_script_2 VAR_WRESTLING_AREA_STATE, 2, MAGM_Wrestling_Area_EventScript_HawluchaWrestling
+	.2byte 0
+
+MAGM_Wresting_Area_AddExeggutor::
+	clearflag FLAG_HIDE_EXEGGUTOR
+	setvar VAR_WRESTLING_AREA_STATE, 5
+	return
+
+MAGM_Wrestling_Area_MoveSmeargle::
+	setobjectxyperm LOCALID_SMEARGLE, 15, 12
+	return
+
+MAGM_Wrestling_Area_MoveHawlucha::
+	setobjectxyperm LOCALID_HAWLUCHA, 12, 8
+	return
+
+
+MAGM_Wrestling_Area_EventScript_HawluchaWrestling::
+	call MAGM_Wrestling_Area_MoveSmeargle
+	setvar VAR_WRESTLING_AREA_STATE, 3
+	playse SE_APPLAUSE
+	applymovement OBJ_EVENT_ID_PLAYER, MAGM_Wrestling_Area_Text_ApproachRing
+	waitmovement 0
+	special SpawnCameraObject
+	applymovement OBJ_EVENT_ID_CAMERA, MAGM_Wrestling_Area_Movement_CameraPanRight
+	waitmovement 0
+	delay 60
+	playse SE_LEDGE
+	applymovement LOCALID_HAWLUCHA, MAGM_Wrestling_Area_Movement_RightJump
+	waitmovement 0
+	delay 30
+	playse SE_LEDGE
+	applymovement LOCALID_HAWLUCHA, MAGM_Wrestling_Area_Movement_RightJump
+	waitmovement 0
+	delay 30
+	playse SE_APPLAUSE
+	call MAGM_Wrestling_Area_EventScript_AllAudienceCheerFast
+	applymovement LOCALID_EXEGGUTOR, MAGM_Wrestling_Area_Movement_FleeStage
+	waitmovement 0
+	removeobject LOCALID_EXEGGUTOR, MAP_MAGM_WRESTLING_AREA
+	call MAGM_Wrestling_Area_EventScript_AllAudienceCheer
+	playse SE_PIN
+	applymovement LOCALID_HAWLUCHA, MAGM_Wrestling_Area_Movement_HawluchaAsksPlayerForHelp
+	waitmovement 0
+	msgbox MAGM_Wrestling_Area_Text_HawluchaAsksPlayerForHelp, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, MAGM_Wrestling_Area_EventScript_StartPikachuMatch
+	msgbox MAGM_Wrestling_Area_Text_HawluchaWillWait, MSGBOX_DEFAULT
+	closemessage
+	applymovement OBJ_EVENT_ID_CAMERA, MAGM_Wrestling_Area_Movement_CameraPanLeft
+	waitmovement 0
+	special RemoveCameraObject
+	release
+	end
+
+MAGM_Wrestling_Area_EventScript_AskToStartPikachuMatch::
+	goto_if_ne VAR_WRESTLING_AREA_STATE, 3, MAGM_Wrestling_Area_EventScript_AskToStartPikachuMatch_End
+	special SpawnCameraObject
+	applymovement LOCALID_HAWLUCHA, Common_Movement_WalkInPlaceLeft
+	applymovement OBJ_EVENT_ID_CAMERA, MAGM_Wrestling_Area_Movement_CameraPanRight
+	waitmovement 0
+	playmoncry SPECIES_HAWLUCHA, CRY_MODE_NORMAL
+	waitmoncry
+	msgbox MAGM_Wrestling_Area_Text_ReadyToStart, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, MAGM_Wrestling_Area_EventScript_StartPikachuMatch
+	applymovement LOCALID_HAWLUCHA, Common_Movement_WalkInPlaceRight
+	applymovement OBJ_EVENT_ID_CAMERA, MAGM_Wrestling_Area_Movement_CameraPanLeft
+	waitmovement 0
+	special RemoveCameraObject
+	closemessage
+	releaseall
+MAGM_Wrestling_Area_EventScript_AskToStartPikachuMatch_End::
+	end
+
+MAGM_Wrestling_Area_EventScript_StartPikachuMatch::
+	closemessage
+	playmoncry SPECIES_HAWLUCHA, CRY_MODE_NORMAL
+	applymovement LOCALID_HAWLUCHA, MAGM_Wrestling_Area_Movement_HawluchaStepIntoRing
+	waitmoncry
+	waitmovement 0
+	delay 60
+	playmoncry SPECIES_PIKACHU, CRY_MODE_NORMAL
+	waitmoncry
+	playse SE_APPLAUSE
+	addobject LOCALID_PIKACHU, MAP_MAGM_WRESTLING_AREA
+	applymovement LOCALID_PIKACHU, MAGM_Wrestling_Area_Movement_PikachuJoinRing_Part1
+	waitmovement 0
+	playse SE_APPLAUSE
+	applymovement LOCALID_PIKACHU, MAGM_Wrestling_Area_Movement_PikachuJoinRing_Part2
+	waitmovement 0
+	playmoncry SPECIES_PIKACHU, CRY_MODE_NORMAL
+	givecustommon SPECIES_HAWLUCHA, 50, ITEM_FOCUS_SASH, ITEM_GREAT_BALL, NATURE_ADAMANT, 0, 1, 1, 1, 1, 1, 1, 31, 31, 31, 31, 31, 31, MOVE_FLYING_PRESS, MOVE_DETECT, MOVE_ENCORE, MOVE_SWORDS_DANCE, FALSE	
+	closemessage
+	trainerbattle_single TRAINER_SMASHBROS_PIKACHU_PIKACHU, MAGM_Wrestling_Area_Text_BattleIntro, MAGM_Wrestling_Area_Text_BattleLost, MAGM_Wrestling_Area_EventScript_PikachuMatchAfterBattle
+	end
+
+MAGM_Wrestling_Area_EventScript_PikachuMatchAfterBattle::
+	special ZeroPlayerPartyMons
+	setvar VAR_WRESTLING_AREA_STATE, 4
+	setvar VAR_HAWLUCHA_CAVE_STATE, 4
+	clearflag FLAG_HIDE_PIKACHU_CAVE
+	playmoncry SPECIES_PIKACHU, CRY_MODE_FAINT
+	waitmoncry
+	playse SE_APPLAUSE
+	call MAGM_Wrestling_Area_EventScript_AllAudienceCheerFast
+	applymovement LOCALID_PIKACHU, MAGM_Wrestling_Area_Movement_FleeStage
+	waitmovement 0
+	removeobject LOCALID_PIKACHU, MAP_MAGM_WRESTLING_AREA
+	call MAGM_Wrestling_Area_EventScript_AllAudienceCheer
+	applymovement LOCALID_HAWLUCHA, MAGM_Wrestling_Area_Movement_GivePlayerRareCandy
+	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
+	msgbox MAGM_Wrestling_Area_Text_HawluchaGaveYouItem, MSGBOX_DEFAULT
+	giveitem ITEM_RARE_CANDY, 1
+	closemessage
+	applymovement LOCALID_HAWLUCHA, MAGM_Wrestling_Area_Movement_ReturnToRing
+	waitmovement 0
+	special SpawnCameraObject
+	applymovement OBJ_EVENT_ID_CAMERA, MAGM_Wrestling_Area_Movement_CameraPanLeft
+	waitmovement 0
+	special RemoveCameraObject
+	releaseall
 	end
 
 MAGM_Wrestling_Area_EventScript_AddAudience::
@@ -85,9 +215,116 @@ MAGM_Wrestling_Area_EventScript_SmeargleShowPlayerRing::
 	waitstate
 	end
 
+MAGM_Wrestling_Area_EventScript_Smeargle::
+	applymovement LOCALID_SMEARGLE, Common_Movement_FacePlayer
+	waitmovement 0
+	playmoncry SPECIES_SMEARGLE, CRY_MODE_NORMAL
+	waitmoncry
+	msgbox MAGM_Wrestling_Area_Text_Smeargle, MSGBOX_NPC
+	end
+
+MAGM_Wrestling_Area_Text_HawluchaGaveYouItem:
+	.string "Hawlucha handed you something.$"
+
+MAGM_Wrestling_Area_Text_BattleIntro:
+	.string "{PLAY_SE SE_NOTE_D}{CLEAR_TO 70}{FONT_NARROW}DING{WAIT_SE}\n"
+	.string "{PLAY_SE SE_NOTE_D}{CLEAR_TO 90}DING{WAIT_SE}$"
+
+MAGM_Wrestling_Area_Text_BattleLost:
+	.string "Pika pika...$"
+
+MAGM_Wrestling_Area_Text_Smeargle:
+	.string "Smeargle looks excited!$"
+
+MAGM_Wrestling_Area_Text_ReadyToStart:
+	.string "Ready to start the match?$"
+
+MAGM_Wrestling_Area_Text_HawluchaWillWait:
+	.string "Seems like she'll wait for\n"
+	.string "you.$"
+
+MAGM_Wrestling_Area_Text_HawluchaAsksPlayerForHelp:
+	.string "Hawlucha looks really happy!\p"
+	.string "It seems like she wants\n"
+	.string "you to coach her through\l"
+	.string "the next round.\p"
+	.string "Are you ready?$"
+
 MAGM_Wrestling_Area_Text_SmeargleGuide::
 	.string "Smeargle is leading you\n"
 	.string "by the hand.$"
+
+MAGM_Wrestling_Area_Movement_GivePlayerRareCandy:
+	walk_in_place_left
+	walk_left
+	jump_2_left
+	walk_in_place_down
+	step_end
+
+MAGM_Wrestling_Area_Movement_ReturnToRing:
+	walk_up
+	walk_up
+	walk_right
+	walk_right
+	walk_right
+	face_down
+	lock_facing_direction
+	jump_up
+	jump_2_down
+	unlock_facing_direction
+	walk_down
+	walk_in_place_right
+	step_end
+
+MAGM_Wrestling_Area_Movement_HawluchaAsksPlayerForHelp:
+	unlock_facing_direction
+	walk_in_place_left
+	emote_exclamation_mark
+	delay_16
+	delay_16
+	delay_16
+	walk_left
+	walk_in_place_left
+	step_end
+
+MAGM_Wrestling_Area_Movement_FleeStage:
+	walk_in_place_slow_left
+	walk_in_place_left
+	walk_in_place_fast_left
+	walk_in_place_fast_left
+	walk_fast_right
+	jump_2_right
+	walk_fast_down
+	walk_fast_down
+	walk_fast_down
+	walk_fast_down
+	walk_fast_down
+	walk_fast_down
+	step_end
+
+MAGM_Wrestling_Area_Text_ApproachRing:
+	emote_question_mark
+	delay_16
+	delay_16
+	delay_16
+	delay_16
+	delay_16
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_right
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_in_place_right
+	step_end
+
+MAGM_Wrestling_Area_Movement_HawluchaStepIntoRing::
+	walk_right
+	step_end
 
 MAGM_Wrestling_Area_Movement_GoToCave::
 	walk_down
@@ -135,6 +372,24 @@ MAGM_Wrestling_Area_Movement_RightJump::
 	lock_facing_direction
 	jump_right
 	walk_fast_left
+	step_end
+
+MAGM_Wrestling_Area_Movement_CameraPanRight::
+	walk_slow_up
+	walk_slow_up
+	walk_slow_right
+	walk_slow_right
+	walk_slow_right
+	walk_slow_right
+	step_end
+
+MAGM_Wrestling_Area_Movement_CameraPanLeft::
+	walk_slow_down
+	walk_slow_down
+	walk_left
+	walk_left
+	walk_left
+	walk_left
 	step_end
 
 MAGM_Wrestling_Area_Movement_CameraPanUp::
@@ -195,6 +450,46 @@ MAGM_Wrestling_Area_Movement_SmeargleWalk3::
 	walk_left
 	walk_left
 	walk_up
+	step_end
+
+MAGM_Wrestling_Area_Movement_PikachuJoinRing_Part1::
+	walk_fast_up
+	jump_up
+	walk_up
+	walk_fast_up
+	jump_up
+	walk_fast_up
+	jump_2_up
+	walk_left
+	walk_fast_left
+	jump_in_place_left_right
+	walk_left
+	walk_left
+	walk_fast_left
+	jump_in_place_up_down
+	walk_left
+	walk_left
+	walk_fast_left
+	step_end
+
+MAGM_Wrestling_Area_Movement_PikachuJoinRing_Part2::
+	jump_down
+	walk_fast_down
+	jump_in_place_Left
+	jump_in_place_Left
+	walk_up
+	walk_fast_up
+	walk_fast_right
+	jump_2_right
+	walk_right
+	walk_right
+	face_down
+	lock_facing_direction
+	jump_up
+	jump_2_down
+	unlock_facing_direction
+	walk_down
+	walk_in_place_left
 	step_end
 
 MAGM_Wrestling_Area_EventScript_AddAudienceRight::

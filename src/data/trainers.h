@@ -8594,7 +8594,7 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_SMASHBROS_SAMUS] =
     {
-        .trainerClass = TRAINER_CLASS_TEAM_MAGMA,
+        .trainerClass = TRAINER_CLASS_BATTLE_GIRL,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MAGMA,
         .trainerPic = TRAINER_PIC_MAGMA_GRUNT_M,
         .trainerName = _("HAWLUCHA"),
@@ -8606,7 +8606,7 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_SMASHBROS_GAMEWATCH] =
     {
-        .trainerClass = TRAINER_CLASS_TEAM_MAGMA,
+        .trainerClass = TRAINER_CLASS_BATTLE_GIRL,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MAGMA,
         .trainerPic = TRAINER_PIC_MAGMA_GRUNT_M,
         .trainerName = _("HAWLUCHA"),
@@ -8618,7 +8618,7 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_SMASHBROS_FALCO] =
     {
-        .trainerClass = TRAINER_CLASS_TEAM_MAGMA,
+        .trainerClass = TRAINER_CLASS_BATTLE_GIRL,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MAGMA,
         .trainerPic = TRAINER_PIC_MAGMA_GRUNT_M,
         .trainerName = _("HAWLUCHA"),
@@ -8630,7 +8630,7 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_SMASHBROS_ICECLIMBERS] =
     {
-        .trainerClass = TRAINER_CLASS_TEAM_MAGMA,
+        .trainerClass = TRAINER_CLASS_BATTLE_GIRL,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MAGMA,
         .trainerPic = TRAINER_PIC_MAGMA_GRUNT_M,
         .trainerName = _("HAWLUCHA"),
@@ -8642,7 +8642,7 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_SMASHBROS_JIGGLYPUFF] =
     {
-        .trainerClass = TRAINER_CLASS_TEAM_MAGMA,
+        .trainerClass = TRAINER_CLASS_BATTLE_GIRL,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MAGMA,
         .trainerPic = TRAINER_PIC_MAGMA_GRUNT_M,
         .trainerName = _("HAWLUCHA"),
@@ -8654,7 +8654,7 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_SMASHBROS_PIKACHU] =
     {
-        .trainerClass = TRAINER_CLASS_TEAM_MAGMA,
+        .trainerClass = TRAINER_CLASS_BATTLE_GIRL,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MAGMA,
         .trainerPic = TRAINER_PIC_MAGMA_GRUNT_M,
         .trainerName = _("HAWLUCHA"),
@@ -8666,7 +8666,7 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_SMASHBROS_SAMUS_PIKACHU] =
     {
-        .trainerClass = TRAINER_CLASS_TEAM_AQUA,
+        .trainerClass = TRAINER_CLASS_COOLTRAINER,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MAGMA,
         .trainerPic = TRAINER_PIC_MAGMA_GRUNT_F,
         .trainerName = _("LIBRE"),
@@ -8678,7 +8678,7 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_SMASHBROS_GAMEWATCH_PIKACHU] =
     {
-        .trainerClass = TRAINER_CLASS_TEAM_AQUA,
+        .trainerClass = TRAINER_CLASS_COOLTRAINER,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MAGMA,
         .trainerPic = TRAINER_PIC_MAGMA_GRUNT_F,
         .trainerName = _("LIBRE"),
@@ -8690,7 +8690,7 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_SMASHBROS_FALCO_PIKACHU] =
     {
-        .trainerClass = TRAINER_CLASS_TEAM_AQUA,
+        .trainerClass = TRAINER_CLASS_COOLTRAINER,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MAGMA,
         .trainerPic = TRAINER_PIC_MAGMA_GRUNT_F,
         .trainerName = _("LIBRE"),
@@ -8702,7 +8702,7 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_SMASHBROS_ICECLIMBERS_PIKACHU] =
     {
-        .trainerClass = TRAINER_CLASS_TEAM_AQUA,
+        .trainerClass = TRAINER_CLASS_COOLTRAINER,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MAGMA,
         .trainerPic = TRAINER_PIC_MAGMA_GRUNT_F,
         .trainerName = _("LIBRE"),
@@ -8714,7 +8714,7 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_SMASHBROS_JIGGLYPUFF_PIKACHU] =
     {
-        .trainerClass = TRAINER_CLASS_TEAM_AQUA,
+        .trainerClass = TRAINER_CLASS_COOLTRAINER,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MAGMA,
         .trainerPic = TRAINER_PIC_MAGMA_GRUNT_F,
         .trainerName = _("LIBRE"),
@@ -8726,7 +8726,7 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_SMASHBROS_PIKACHU_PIKACHU] =
     {
-        .trainerClass = TRAINER_CLASS_TEAM_AQUA,
+        .trainerClass = TRAINER_CLASS_COOLTRAINER,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MAGMA,
         .trainerPic = TRAINER_PIC_MAGMA_GRUNT_F,
         .trainerName = _("LIBRE"),

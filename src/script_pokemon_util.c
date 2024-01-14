@@ -277,7 +277,7 @@ void ReducePlayerPartyToSelectedMons(void)
 
 u8 ScriptGiveCustomMon(u16 species, u8 level, u16 item, u8 ball, u8 nature, u8 abilityNum, u8 *evs, u8 *ivs, u16 *moves, bool8 isShiny)
 {
-    u16 nationalDexNum;
+//    u16 nationalDexNum;
     int sentToPc;
     u8 heldItem[2];
     struct Pokemon mon;
@@ -359,13 +359,13 @@ u8 ScriptGiveCustomMon(u16 species, u8 level, u16 item, u8 ball, u8 nature, u8 a
         gPlayerPartyCount = i + 1;
     }
     
-    nationalDexNum = SpeciesToNationalPokedexNum(species); 
+//    nationalDexNum = SpeciesToNationalPokedexNum(species); 
     switch(sentToPc)
     {
     case MON_GIVEN_TO_PARTY:
     case MON_GIVEN_TO_PC:
-        GetSetPokedexFlag(nationalDexNum, FLAG_SET_SEEN);
-        GetSetPokedexFlag(nationalDexNum, FLAG_SET_CAUGHT);
+        //GetSetPokedexFlag(nationalDexNum, FLAG_SET_SEEN);
+        //GetSetPokedexFlag(nationalDexNum, FLAG_SET_CAUGHT);
         break;
     case MON_CANT_GIVE:
         break;
