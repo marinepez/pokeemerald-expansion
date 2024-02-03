@@ -126,12 +126,12 @@ HawluchaCave_EventScript_GameCube_AfterBattle::
 	special ZeroPlayerPartyMons
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, HawluchaCave_EventScript_GameCube_WonBattle
-	releaseall
+	goto MAGM_HawluchaCave_EventScript_GameCube_PlayGame
 	end
 
 HawluchaCave_EventScript_GameCube_WonBattle::
 	addvar VAR_SMASH_BROS_WINS, 1
-	goto_if_lt VAR_SMASH_BROS_WINS, 3, HawluchaCave_EventScript_GameCube_WonBattle_End
+	goto_if_lt VAR_SMASH_BROS_WINS, 3, MAGM_HawluchaCave_EventScript_GameCube_PlayGame
 	goto_if_eq VAR_HAWLUCHA_CAVE_STATE, 4, HawluchaCave_EventScript_GameCube_WonBattle_End
 	setvar VAR_HAWLUCHA_CAVE_STATE, 2
 	setvar VAR_WRESTLING_AREA_STATE, 2

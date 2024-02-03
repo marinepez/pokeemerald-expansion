@@ -17,6 +17,7 @@
 #include "evolution_scene.h"
 #include "field_control_avatar.h"
 #include "field_effect.h"
+#include "field_message_box.h"
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
 #include "field_specials.h"
@@ -505,7 +506,7 @@ void TryItemHoldFormChange(struct Pokemon *mon);
 static void ShowMoveSelectWindow(u8 slot);
 static void Task_HandleWhichMoveInput(u8 taskId);
 static bool32 CannotUsePartyBattleItem(u16 itemId, struct Pokemon* mon);
-
+static void Task_TeachMonSpecialMove(u8 taskId);
 // static const data
 #include "data/party_menu.h"
 
@@ -6551,6 +6552,53 @@ static void TryTutorSelectedMon(u8 taskId)
         gTasks[taskId].func = Task_ReplaceMoveYesNo;
     }
 }
+
+#define tPartyMenuPos  data[0]
+#define tMove          data[1]
+
+void TeachPartyMonMove(void)
+{
+    u8 taskId = CreateTask(Task_TeachMonSpecialMove, 1);
+    gTasks[taskId].tPartyMenuPos = gSpecialVar_0x8004;
+    gTasks[taskId].tMove = gSpecialVar_0x8005;
+}
+
+static void Task_TeachMonSpecialMove(u8 taskId)
+{ 
+    struct Pokemon *mon = &gPlayerParty[gTasks[taskId].tPartyMenuPos];
+    u16 move = gTasks[taskId].tMove;
+
+    gPartyMenu.data1 = move;
+    gPartyMenu.learnMoveState = 0;
+    gPartyMenu.slotId = gTasks[taskId].tPartyMenuPos;
+
+    GetMonNickname(mon, gStringVar1);
+    StringCopy(gStringVar2, gMoveNames[move]);
+
+    if (CanTeachMove(mon, move) == ALREADY_KNOWS_MOVE)
+    {
+        ShowFieldMessage(gText_PkmnAlreadyKnows);
+        DestroyTask(taskId);
+        return;
+    }
+
+    if (GiveMoveToMon(mon, move) != MON_HAS_MAX_MOVES)
+    {
+        GetMonNickname(mon, gStringVar1);
+        StringCopy(gStringVar2, gMoveNames[move]);
+        ShowFieldMessage(gText_PkmnLearnedMove3);
+        PlayFanfare(MUS_LEVEL_UP);
+        DestroyTask(taskId);
+    }
+    else
+    {
+        ShowFieldMessage(gText_PkmnNeedsToReplaceMove);
+        ShowSelectMovePokemonSummaryScreen(gPlayerParty, gPartyMenu.slotId, gPlayerPartyCount - 1, CB2_ReturnToFieldContinueScriptPlayMapMusic, gPartyMenu.data1);
+    }
+}
+
+#undef tPartyMenuPos
+#undef tMove
 
 void CB2_PartyMenuFromStartMenu(void)
 {

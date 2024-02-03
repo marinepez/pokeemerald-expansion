@@ -5,6 +5,11 @@
 .set LOCALID_LUDICOLO, 6
 .set LOCALID_BELLOSSOM, 7
 
+.set PARTYID_GLOOM, 0
+.set PARTYID_LOMBRE, 1
+.set BOXID_GLOOM, 0
+.set BOXID_LOMBRE, 1
+
 MAGM_DanceRoom_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, MAGM_DanceRoom_OnTransition
 	.byte 0
@@ -13,6 +18,32 @@ MAGM_DanceRoom_OnTransition:
 	setflag FLAG_HIDE_MAP_NAME_POPUP
 	clearflag FLAG_SYS_SAFARI_MODE
 	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_MoveDancersToHigherStage
+	end
+
+MAGM_DanceRoom_EventScript_GiveMons::
+	setvar VAR_TEMP_0, 1
+	special ZeroPlayerPartyMons
+	//Get Gloom from PC
+	setvar VAR_0x8004, PARTYID_GLOOM
+	setvar VAR_0x8005, BOXID_GLOOM
+	special ScriptGetBoxMon
+	//Get Lombre from PC
+	setvar VAR_0x8004, PARTYID_LOMBRE
+	setvar VAR_0x8005, BOXID_LOMBRE
+	special ScriptGetBoxMon
+	end
+
+MAGM_DanceRoom_EventScript_SendMonsToPC::
+	setvar VAR_TEMP_0, 0
+	//Send Gloom to PC
+	setvar VAR_0x8004, BOXID_GLOOM
+	setvar VAR_0x8005, PARTYID_GLOOM
+	special ScriptSetBoxMon
+	//Send Lombre to PC
+	setvar VAR_0x8004, BOXID_LOMBRE
+	setvar VAR_0x8005, PARTYID_LOMBRE
+	special ScriptSetBoxMon
+	special ZeroPlayerPartyMons
 	end
 
 MAGM_DanceRoom_MoveDancersToHigherStage::
@@ -107,10 +138,6 @@ MAGM_DanceRoom_DoDanceBattle::
 	applymovement LOCALID_GLOOM, Common_Movement_FaceUp
 	applymovement LOCALID_ORICORIO, Common_Movement_FaceDown
 	applymovement LOCALID_MAROWAK, Common_Movement_FaceLeft
-	call_if_unset FLAG_GLOOM_SITRUS MAGM_DanceRoom_DoDanceBattle_GiveGloom
-	call_if_unset FLAG_LOMBRE_SITRUS MAGM_DanceRoom_DoDanceBattle_GiveLombre
-	call_if_set FLAG_GLOOM_SITRUS MAGM_DanceRoom_DoDanceBattle_GiveSitrusGloom
-	call_if_set FLAG_LOMBRE_SITRUS MAGM_DanceRoom_DoDanceBattle_GiveSitrusLombre
 	clearflag FLAG_SYS_SAFARI_MODE
 	trainerbattle_double TRAINER_DANCERS, GabbyAndTy_Text_TyIntro, GabbyAndTy_Text_TyDefeat, GabbyAndTy_Text_TyNotEnoughMons, MAGM_DanceRoom_AfterDanceBattle
 	end
@@ -271,6 +298,16 @@ MAGM_DanceRoom_EventScript_Gloom_SkipToTeachMove::
 	msgbox MAGM_DanceRoom_Text_ShortTeachMonADance, MSGBOX_DEFAULT
 	waitmessage
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_CheckSunnyDay
+	end
+
+MAGM_DanceRoom_EventScript_GloomShowAllMultichoiceListOptions::
+	dynmultipush MAGM_DanceRoom_Text_SunnyDayDance, 0
+	dynmultipush MAGM_DanceRoom_Text_AfterYouDance, 1
+	dynmultipush MAGM_DanceRoom_Text_PetalDanceDance, 2
+	dynmultipush MAGM_DanceRoom_Text_MimicDance, 3
+	dynmultipush MAGM_DanceRoom_Text_CharmDance, 4
+	dynmultipush MAGM_DanceRoom_Text_TeeterDanceDance, 5
+	goto MAGM_DanceRoom_EventScript_DanceWithGloom_CreateMultichoiceList
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom::
@@ -444,6 +481,13 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_TeachTeeterDance::
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove::
+	setvar VAR_0x8004, PARTYID_GLOOM
+	copyvar VAR_0x8005, VAR_0x8000
+	special TeachPartyMonMove
+	releaseall
+	end
+
+MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_Old::
 	compare VAR_GLOOM_MOVE1, 0
 	goto_if_ne MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_Move2
 	copyvar VAR_GLOOM_MOVE1, VAR_0x8000

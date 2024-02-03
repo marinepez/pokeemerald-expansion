@@ -10052,6 +10052,31 @@ static void TilemapUtil_Draw(u8 id)
     }
 }
 
+//8004: Box position to set | 0x8005: Party position copy from
+void ScriptSetBoxMon(void)
+{
+    u8 boxPos = gSpecialVar_0x8004;
+    u8 partyPos = gSpecialVar_0x8005;
+
+    if(partyPos > CalculatePlayerPartyCount() || boxPos >= 30)
+        return;
+
+    SetBoxMonAt(0, boxPos, &gPlayerParty[partyPos].box);
+    return;
+}
+
+//8004: Party position to set | 0x8005: Box position to copy from
+void ScriptGetBoxMon(void)
+{
+    u8 partyPos = gSpecialVar_0x8004;
+    u8 boxPos = gSpecialVar_0x8005;
+
+    if(partyPos >= 6 || boxPos >= 30)
+        return;
+
+    BoxMonAtToMon(0, boxPos, &gPlayerParty[partyPos]);
+    return;
+}
 
 //------------------------------------------------------------------------------
 //  SECTION: UnkUtil

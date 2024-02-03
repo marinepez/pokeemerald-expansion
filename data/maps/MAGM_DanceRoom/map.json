@@ -142,6 +142,24 @@
       "var": "VAR_MAGM_DANCE_AREA_STATE",
       "var_value": "1",
       "script": "MAGM_DanceRoom_EventScript_DanceChallengeMonsAskForHelp"
+    },
+    {
+      "type": "trigger",
+      "x": 10,
+      "y": 19,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "1",
+      "script": "MAGM_DanceRoom_EventScript_SendMonsToPC"
+    },
+    {
+      "type": "trigger",
+      "x": 10,
+      "y": 17,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "MAGM_DanceRoom_EventScript_GiveMons"
     }
   ],
   "bg_events": [

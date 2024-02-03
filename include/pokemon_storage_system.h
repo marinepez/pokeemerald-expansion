@@ -61,6 +61,9 @@ u32 CountStorageNonEggMons(void);
 u32 CountAllStorageMons(void);
 bool32 AnyStorageMonWithMove(u16 moveId);
 
+void ScriptSetBoxMon(void);
+void ScriptGetBoxMon(void);
+
 void ResetWaldaWallpaper(void);
 void SetWaldaWallpaperLockedOrUnlocked(bool32 unlocked);
 bool32 IsWaldaWallpaperUnlocked(void);

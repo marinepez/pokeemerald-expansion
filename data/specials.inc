@@ -546,3 +546,6 @@ gSpecials::
 	def_special ZeroPlayerPartyMons
 	def_special DestroyVirtualObjects
 	def_special StartCredits
+	def_special ScriptSetBoxMon
+	def_special ScriptGetBoxMon
+	def_special TeachPartyMonMove

@@ -44,6 +44,7 @@
 #include "berry_powder.h"
 #include "mystery_gift.h"
 #include "union_room_chat.h"
+#include "string_util.h"
 #include "constants/items.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
@@ -51,6 +52,9 @@ extern const u8 EventScript_ResetAllMapFlags[];
 static void ClearFrontierRecord(void);
 static void WarpToTruck(void);
 static void ResetMiniGamesRecords(void);
+static void InitPCMons(void);
+static void AddBoxMon(struct BoxPokemon boxMon, u16 species, int boxId, int boxPosition);
+static void ZeroOutMoves(struct BoxPokemon* boxMon);
 
 EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
 EWRAM_DATA bool8 gEnableContestDebugging = FALSE;
@@ -204,6 +208,39 @@ void NewGameInitData(void)
     WipeTrainerNameRecords();
     ResetTrainerHillResults();
     ResetContestLinkResults();
+    InitPCMons();
+}
+
+static void InitPCMons(void)
+{
+    struct BoxPokemon boxMon;
+    CreateBoxMon(&boxMon, SPECIES_GLOOM, 35, MAX_IV_MASK, TRUE, 18, OT_ID_RANDOM_NO_SHINY, 0);
+    ZeroOutMoves(&boxMon);
+    AddBoxMon(boxMon, SPECIES_GLOOM, 0, 0);
+
+    CreateBoxMon(&boxMon, SPECIES_LOMBRE, 35, MAX_IV_MASK, TRUE, 24, OT_ID_RANDOM_NO_SHINY, 0);
+    ZeroOutMoves(&boxMon);
+    AddBoxMon(boxMon, SPECIES_LOMBRE, 0, 1);
+}
+
+static void AddBoxMon(struct BoxPokemon boxMon, u16 species, int boxId, int boxPosition)
+{   
+    u8 speciesName[POKEMON_NAME_LENGTH + 1];
+    StringCopy(speciesName, GetSpeciesName(species));
+    SetBoxMonData(&boxMon, MON_DATA_NICKNAME, &speciesName);
+    SetBoxMonData(&boxMon, MON_DATA_SPECIES, &species);
+    gPokemonStoragePtr->boxes[boxId][boxPosition] = boxMon;
+}
+
+static void ZeroOutMoves(struct BoxPokemon* boxMon)
+{
+    u8 i = 0;
+    u16 move = 0;
+    for(i = 0; i < 4; i++)
+    {
+        SetBoxMonData(boxMon, MON_DATA_MOVE1 + i, &move); //MOVE_NONE
+        SetBoxMonData(boxMon, MON_DATA_PP1 + i, &move);
+    }
 }
 
 static void ResetMiniGamesRecords(void)
