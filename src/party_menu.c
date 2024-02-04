@@ -414,8 +414,10 @@ static void Task_LearnNextMoveOrClosePartyMenu(u8);
 static void Task_TryLearningNextMove(u8);
 static void Task_HandleReplaceMoveYesNoInput(u8);
 static void Task_ShowSummaryScreenToForgetMove(u8);
+static void Task_ShowSummaryScreenToForgetMoveReturnToFieldAfter(u8);
 static void StopLearningMovePrompt(u8);
 static void CB2_ShowSummaryScreenToForgetMove(void);
+static void CB2_ShowSummaryScreenToForgetMoveReturnToFieldAfter(void);
 static void CB2_ReturnToPartyMenuWhileLearningMove(void);
 static void Task_ReturnToPartyMenuWhileLearningMove(u8);
 static void DisplayPartyMenuForgotMoveMessage(u8);
@@ -506,7 +508,6 @@ void TryItemHoldFormChange(struct Pokemon *mon);
 static void ShowMoveSelectWindow(u8 slot);
 static void Task_HandleWhichMoveInput(u8 taskId);
 static bool32 CannotUsePartyBattleItem(u16 itemId, struct Pokemon* mon);
-static void Task_TeachMonSpecialMove(u8 taskId);
 // static const data
 #include "data/party_menu.h"
 
@@ -554,6 +555,52 @@ static void InitPartyMenu(u8 menuType, u8 layout, u8 partyAction, bool8 keepCurs
         gTextFlags.autoScroll = 0;
         CalculatePlayerPartyCount();
         SetMainCallback2(CB2_InitPartyMenu);
+    }
+}
+
+static void InitFakePartyMenu(u8 menuType, u8 layout, u8 partyAction, bool8 keepCursorPos, u8 messageId, TaskFunc task, MainCallback callback)
+{
+    u16 i;
+
+    ResetPartyMenu();
+    sPartyMenuInternal = Alloc(sizeof(struct PartyMenuInternal));
+    if (sPartyMenuInternal == NULL)
+    {
+        SetMainCallback2(callback);
+    }
+    else
+    {
+        gPartyMenu.menuType = menuType;
+        gPartyMenu.exitCallback = callback;
+        gPartyMenu.action = partyAction;
+        sPartyMenuInternal->messageId = messageId;
+        sPartyMenuInternal->task = task;
+        sPartyMenuInternal->exitCallback = NULL;
+        sPartyMenuInternal->lastSelectedSlot = 0;
+        sPartyMenuInternal->spriteIdConfirmPokeball = 0x7F;
+        sPartyMenuInternal->spriteIdCancelPokeball = 0x7F;
+
+        if (menuType == PARTY_MENU_TYPE_CHOOSE_HALF)
+            sPartyMenuInternal->chooseHalf = TRUE;
+        else
+            sPartyMenuInternal->chooseHalf = FALSE;
+
+        if (layout != KEEP_PARTY_LAYOUT)
+            gPartyMenu.layout = layout;
+
+        for (i = 0; i < ARRAY_COUNT(sPartyMenuInternal->data); i++)
+            sPartyMenuInternal->data[i] = 0;
+        for (i = 0; i < ARRAY_COUNT(sPartyMenuInternal->windowId); i++)
+            sPartyMenuInternal->windowId[i] = WINDOW_NONE;
+
+        if (!keepCursorPos)
+            gPartyMenu.slotId = 0;
+        else if (gPartyMenu.slotId > PARTY_SIZE - 1 || GetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_SPECIES) == SPECIES_NONE)
+            gPartyMenu.slotId = 0;
+
+        gTextFlags.autoScroll = 0;
+        CalculatePlayerPartyCount();
+        CreateTask(sPartyMenuInternal->task, 0);
     }
 }
 
@@ -5345,9 +5392,23 @@ static void Task_ShowSummaryScreenToForgetMove(u8 taskId)
     }
 }
 
+static void Task_ShowSummaryScreenToForgetMoveReturnToFieldAfter(u8 taskId)
+{
+    if (IsPartyMenuTextPrinterActive() != TRUE)
+    {
+        sPartyMenuInternal->exitCallback = CB2_ShowSummaryScreenToForgetMoveReturnToFieldAfter;
+        Task_ClosePartyMenu(taskId);
+    }
+}
+
 static void CB2_ShowSummaryScreenToForgetMove(void)
 {
     ShowSelectMovePokemonSummaryScreen(gPlayerParty, gPartyMenu.slotId, gPlayerPartyCount - 1, CB2_ReturnToPartyMenuWhileLearningMove, gPartyMenu.data1);
+}
+
+static void CB2_ShowSummaryScreenToForgetMoveReturnToFieldAfter(void)
+{
+    ShowSelectMovePokemonSummaryScreen(gPlayerParty, gPartyMenu.slotId, gPlayerPartyCount - 1, CB2_ReturnToFieldContinueScript, gPartyMenu.data1);
 }
 
 static void CB2_ReturnToPartyMenuWhileLearningMove(void)
@@ -6553,52 +6614,25 @@ static void TryTutorSelectedMon(u8 taskId)
     }
 }
 
-#define tPartyMenuPos  data[0]
-#define tMove          data[1]
-
+//TODO: Relearn Move Functionality
 void TeachPartyMonMove(void)
 {
-    u8 taskId = CreateTask(Task_TeachMonSpecialMove, 1);
-    gTasks[taskId].tPartyMenuPos = gSpecialVar_0x8004;
-    gTasks[taskId].tMove = gSpecialVar_0x8005;
-}
-
-static void Task_TeachMonSpecialMove(u8 taskId)
-{ 
-    struct Pokemon *mon = &gPlayerParty[gTasks[taskId].tPartyMenuPos];
-    u16 move = gTasks[taskId].tMove;
-
-    gPartyMenu.data1 = move;
-    gPartyMenu.learnMoveState = 0;
-    gPartyMenu.slotId = gTasks[taskId].tPartyMenuPos;
-
-    GetMonNickname(mon, gStringVar1);
-    StringCopy(gStringVar2, gMoveNames[move]);
+    struct Pokemon *mon = &gPlayerParty[gSpecialVar_0x8004];
+    u16 move = gSpecialVar_0x8005;
 
     if (CanTeachMove(mon, move) == ALREADY_KNOWS_MOVE)
-    {
-        ShowFieldMessage(gText_PkmnAlreadyKnows);
-        DestroyTask(taskId);
-        return;
-    }
-
-    if (GiveMoveToMon(mon, move) != MON_HAS_MAX_MOVES)
-    {
-        GetMonNickname(mon, gStringVar1);
-        StringCopy(gStringVar2, gMoveNames[move]);
-        ShowFieldMessage(gText_PkmnLearnedMove3);
-        PlayFanfare(MUS_LEVEL_UP);
-        DestroyTask(taskId);
-    }
+        gSpecialVar_Result = 0;   
+    else if (GiveMoveToMon(mon, move) != MON_HAS_MAX_MOVES)
+        gSpecialVar_Result = 1;
     else
     {
-        ShowFieldMessage(gText_PkmnNeedsToReplaceMove);
-        ShowSelectMovePokemonSummaryScreen(gPlayerParty, gPartyMenu.slotId, gPlayerPartyCount - 1, CB2_ReturnToFieldContinueScriptPlayMapMusic, gPartyMenu.data1);
+        gSpecialVar_Result = 2;
+        gPartyMenu.learnMoveState = 0;
+        gPartyMenu.slotId = gSpecialVar_0x8004;
+        gPartyMenu.data1 = move;
+        InitFakePartyMenu(PARTY_MENU_TYPE_FIELD, PARTY_LAYOUT_SINGLE, PARTY_ACTION_MOVE_TUTOR, FALSE, NULL, Task_ShowSummaryScreenToForgetMoveReturnToFieldAfter, CB2_ReturnToFieldContinueScriptPlayMapMusic);
     }
 }
-
-#undef tPartyMenuPos
-#undef tMove
 
 void CB2_PartyMenuFromStartMenu(void)
 {

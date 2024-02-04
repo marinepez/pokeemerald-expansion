@@ -484,6 +484,10 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove::
 	setvar VAR_0x8004, PARTYID_GLOOM
 	copyvar VAR_0x8005, VAR_0x8000
 	special TeachPartyMonMove
+	switch VAR_RESULT
+	case 0, MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonAlreadyKnowsMove
+	case 1, MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonLearnedMove
+	case 2, MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonNeedsToReplaceMove
 	releaseall
 	end
 
@@ -516,10 +520,18 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonHasFourMoves::
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonReplacedMove
 	end
 
+MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonNeedsToReplaceMove::
+//	msgbox MAGM_DanceRoom_Text_AskLearnNewMove, MSGBOX_YESNO
+//	goto_if_eq VAR_RESULT, NO, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene
+	//Call a special to learn a new move
+//	goto MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene
+	releaseall
+	end
+
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonReplacedMove::
 	bufferspeciesname 0, SPECIES_GLOOM
 	buffermovename 1, VAR_0x8000
-	buffermovename 2, VAR_0x8001
+	buffermovename 2, VAR_0x8005
 	playse MUS_LEVEL_UP
 	msgbox MAGM_DanceRoom_Text_MonReplacedMove, MSGBOX_DEFAULT
 	waitse
@@ -527,9 +539,17 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonReplacedMove::
 	goto MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene
 	end
 
+MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonAlreadyKnowsMove::
+	bufferspeciesname 0, SPECIES_GLOOM
+	buffermovename 1, VAR_0x8005
+	msgbox MAGM_DanceRoom_Text_MonAlreadyKnowsMove, MSGBOX_DEFAULT
+	waitse
+	closemessage
+	end
+
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonLearnedMove::
 	bufferspeciesname 0, SPECIES_GLOOM
-	buffermovename 1, VAR_0x8000
+	buffermovename 1, VAR_0x8005
 	playse MUS_LEVEL_UP
 	msgbox MAGM_DanceRoom_Text_MonLearnedMove, MSGBOX_DEFAULT
 	waitse
@@ -929,12 +949,20 @@ MAGM_DanceRoom_Text_MonIsDancing:
 	.string "{STR_VAR_1} is dancing!\n"
 	.string "Dance with it?$"
 
+MAGM_DanceRoom_Text_MonAlreadyKnowsMove:
+	.string "{STR_VAR_1} already knows {STR_VAR_2}.$"	
+
 MAGM_DanceRoom_Text_MonLearnedMove:
 	.string "{STR_VAR_1} learned {STR_VAR_2}!$"
 
 MAGM_DanceRoom_Text_MonReplacedMove:
 	.string "{STR_VAR_1} forgot {STR_VAR_3} and\n"
 	.string "learned {STR_VAR_2}!$"
+
+MAGM_DanceRoom_Text_AskLearnNewMove:
+	.string "{STR_VAR_1} wants to learn {STR_VAR_2},\n"
+	.string "But it already knows four moves.\p"
+	.string "Replace a move?$"
 
 MAGM_DanceRoom_Movement_WalkDown:
 	walk_down
