@@ -1078,3 +1078,5 @@ EventScript_VsSeekerChargingDone::
 	.include "data/maps/MAGM_Wrestling_Area/scripts.inc"
 
 	.include "data/maps/MAGM_HawluchaCave/scripts.inc"
+
+	.include "data/maps/MAGM_Riverside/scripts.inc"

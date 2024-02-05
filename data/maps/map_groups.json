@@ -98,7 +98,8 @@
     "MAGM_DanceRoom",
     "MAGM_Indoor_Hut",
     "MAGM_Wrestling_Area",
-    "MAGM_HawluchaCave"
+    "MAGM_HawluchaCave",
+    "MAGM_Riverside"
   ],
   "gMapGroup_IndoorLittleroot": [
     "LittlerootTown_BrendansHouse_1F",

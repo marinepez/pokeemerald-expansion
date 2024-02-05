@@ -69,6 +69,7 @@
 #define MAP_MAGM_INDOOR_HUT     (60 | (0 << 8))
 #define MAP_MAGM_WRESTLING_AREA (61 | (0 << 8))
 #define MAP_MAGM_HAWLUCHA_CAVE  (62 | (0 << 8))
+#define MAP_MAGM_RIVERSIDE      (63 | (0 << 8))
 
 // gMapGroup_IndoorLittleroot
 #define MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F    (0 | (1 << 8))

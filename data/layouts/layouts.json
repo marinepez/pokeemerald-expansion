@@ -4470,6 +4470,16 @@
       "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/MAGM_HawluchaCave/border.bin",
       "blockdata_filepath": "data/layouts/MAGM_HawluchaCave/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM_RIVERSIDE",
+      "name": "MAGM_Riverside_Layout",
+      "width": 28,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Fortree",
+      "border_filepath": "data/layouts/MAGM_Riverside/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM_Riverside/map.bin"
     }
   ]
 }
