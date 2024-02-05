@@ -620,7 +620,7 @@ const struct Trainer gTrainers[] = {
         .trainerName = _("DANCERS"),
         .items = {},
         .doubleBattle = TRUE,
-        .aiFlags = AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_TRY_TO_FAINT | AI_FLAG_CHECK_VIABILITY | AI_FLAG_HELP_PARTNER,
+        .aiFlags = AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_TRY_TO_FAINT | AI_FLAG_CHECK_VIABILITY | AI_FLAG_SETUP_FIRST_TURN | AI_FLAG_HELP_PARTNER,
         .party = TRAINER_PARTY(sParty_GabbyAndTy1),
     },
 
