@@ -101,5 +101,6 @@ void BufferMoveDeleterNicknameAndMove(void);
 void GetNumMovesSelectedMonHas(void);
 void MoveDeleterChooseMoveToForget(void);
 void TeachPartyMonMove(void);
+void PartyMonForgetMove(void);
 
 #endif // GUARD_PARTY_MENU_H

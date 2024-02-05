@@ -418,6 +418,7 @@ static void Task_ShowSummaryScreenToForgetMoveReturnToFieldAfter(u8);
 static void StopLearningMovePrompt(u8);
 static void CB2_ShowSummaryScreenToForgetMove(void);
 static void CB2_ShowSummaryScreenToForgetMoveReturnToFieldAfter(void);
+static void CB2_ReturnToFieldTeachMoveContinueScript(void);
 static void CB2_ReturnToPartyMenuWhileLearningMove(void);
 static void Task_ReturnToPartyMenuWhileLearningMove(u8);
 static void DisplayPartyMenuForgotMoveMessage(u8);
@@ -5408,7 +5409,22 @@ static void CB2_ShowSummaryScreenToForgetMove(void)
 
 static void CB2_ShowSummaryScreenToForgetMoveReturnToFieldAfter(void)
 {
-    ShowSelectMovePokemonSummaryScreen(gPlayerParty, gPartyMenu.slotId, gPlayerPartyCount - 1, CB2_ReturnToFieldContinueScript, gPartyMenu.data1);
+    ShowSelectMovePokemonSummaryScreen(gPlayerParty, gPartyMenu.slotId, gPlayerPartyCount - 1, CB2_ReturnToFieldTeachMoveContinueScript, gPartyMenu.data1);
+}
+
+static void CB2_ReturnToFieldTeachMoveContinueScript(void)
+{
+    gSpecialVar_Result = GetMoveSlotToReplace();
+    if (GetMoveSlotToReplace() != MAX_MON_MOVES)
+    {
+        struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
+        u16 move = GetMonData(mon, MON_DATA_MOVE1 + GetMoveSlotToReplace());
+        mon = &gPlayerParty[gPartyMenu.slotId];
+        RemoveMonPPBonus(mon, GetMoveSlotToReplace());
+        move = gPartyMenu.data1;
+        SetMonMoveSlot(mon, move, GetMoveSlotToReplace());
+    }
+    SetMainCallback2(CB2_ReturnToFieldContinueScript); 
 }
 
 static void CB2_ReturnToPartyMenuWhileLearningMove(void)
@@ -6614,7 +6630,6 @@ static void TryTutorSelectedMon(u8 taskId)
     }
 }
 
-//TODO: Relearn Move Functionality
 void TeachPartyMonMove(void)
 {
     struct Pokemon *mon = &gPlayerParty[gSpecialVar_0x8004];
@@ -6627,12 +6642,18 @@ void TeachPartyMonMove(void)
     else
     {
         gSpecialVar_Result = 2;
-        gPartyMenu.learnMoveState = 0;
-        gPartyMenu.slotId = gSpecialVar_0x8004;
-        gPartyMenu.data1 = move;
-        InitFakePartyMenu(PARTY_MENU_TYPE_FIELD, PARTY_LAYOUT_SINGLE, PARTY_ACTION_MOVE_TUTOR, FALSE, NULL, Task_ShowSummaryScreenToForgetMoveReturnToFieldAfter, CB2_ReturnToFieldContinueScriptPlayMapMusic);
     }
 }
+
+//TODO
+void PartyMonForgetMove(void)
+{
+    gPartyMenu.learnMoveState = 0;
+    gPartyMenu.slotId = gSpecialVar_0x8004;
+    gPartyMenu.data1 = gSpecialVar_0x8005;
+    InitFakePartyMenu(PARTY_MENU_TYPE_FIELD, PARTY_LAYOUT_SINGLE, PARTY_ACTION_MOVE_TUTOR, FALSE, NULL, Task_ShowSummaryScreenToForgetMoveReturnToFieldAfter, CB2_ReturnToFieldContinueScriptPlayMapMusic);
+}
+
 
 void CB2_PartyMenuFromStartMenu(void)
 {

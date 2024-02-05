@@ -549,3 +549,4 @@ gSpecials::
 	def_special ScriptSetBoxMon
 	def_special ScriptGetBoxMon
 	def_special TeachPartyMonMove
+	def_special PartyMonForgetMove
