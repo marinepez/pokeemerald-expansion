@@ -18,6 +18,7 @@ MAGM_DanceRoom_OnTransition:
 	setflag FLAG_HIDE_MAP_NAME_POPUP
 	clearflag FLAG_SYS_SAFARI_MODE
 	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_MoveDancersToHigherStage
+	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 2, MAGM_DanceRoom_MoveDancersToHigherStage
 	end
 
 MAGM_DanceRoom_EventScript_GiveMons::
@@ -109,6 +110,8 @@ MAGM_DanceRoom_EventScript_Thwackey::
 	end
 
 MAGM_DanceRoom_EventScript_DanceChallengeMonsAskForHelp::
+	goto_if_eq VAR_MAGM_DANCE_AREA_STATE, 2, MAGM_DanceRoom_EventScript_DanceChallengeMonsAskForHelp_End
+	setvar VAR_MAGM_DANCE_AREA_STATE, 2
 	applymovement LOCALID_GLOOM, MAGM_DanceRoom_Movement_GloomDanceShort
 	applymovement LOCALID_LOMBRE, MAGM_DanceRoom_Movement_LombreDanceShort
 	waitmovement 0
@@ -125,6 +128,7 @@ MAGM_DanceRoom_EventScript_DanceChallengeMonsAskForHelp::
 	msgbox MAGM_DanceRoom_Text_TheyWillWait, MSGBOX_DEFAULT
 	closemessage
 	releaseall
+MAGM_DanceRoom_EventScript_DanceChallengeMonsAskForHelp_End::
 	end
 
 MAGM_DanceRoom_EventScript_SecondTimeMonsAskForHelp::
@@ -139,12 +143,33 @@ MAGM_DanceRoom_DoDanceBattle::
 	applymovement LOCALID_ORICORIO, Common_Movement_FaceDown
 	applymovement LOCALID_MAROWAK, Common_Movement_FaceLeft
 	clearflag FLAG_SYS_SAFARI_MODE
+	call MAGM_DanceRoom_EventScript_SendMonsToPC
+	call_if_unset FLAG_GLOOM_SITRUS MAGM_DanceRoom_DoDanceBattle_GiveGloom
+	call_if_unset FLAG_LOMBRE_SITRUS MAGM_DanceRoom_DoDanceBattle_GiveLombre
+	call_if_set FLAG_GLOOM_SITRUS MAGM_DanceRoom_DoDanceBattle_GiveSitrusGloom
+	call_if_set FLAG_LOMBRE_SITRUS MAGM_DanceRoom_DoDanceBattle_GiveSitrusLombre
 	trainerbattle_double TRAINER_DANCERS, GabbyAndTy_Text_TyIntro, GabbyAndTy_Text_TyDefeat, GabbyAndTy_Text_TyNotEnoughMons, MAGM_DanceRoom_AfterDanceBattle
 	end
 
+MAGM_DanceRoom_DoDanceBattle_GiveGloom:
+	givecustommon SPECIES_GLOOM, 35, ITEM_NONE, ITEM_GREAT_BALL, NATURE_BASHFUL, 0, 10, 01, 50, 01, 120, 1, 31, 31, 31, 31, 31, 31, VAR_GLOOM_MOVE1, VAR_GLOOM_MOVE2, VAR_GLOOM_MOVE3, VAR_GLOOM_MOVE4, 0
+	return
+
+MAGM_DanceRoom_DoDanceBattle_GiveSitrusGloom:
+	givecustommon SPECIES_GLOOM, 35, ITEM_SITRUS_BERRY, ITEM_GREAT_BALL, NATURE_BASHFUL, 0, 10, 01, 50, 01, 120, 1, 31, 31, 31, 31, 31, 31, VAR_GLOOM_MOVE1, VAR_GLOOM_MOVE2, VAR_GLOOM_MOVE3, VAR_GLOOM_MOVE4, 0
+	return
+
+MAGM_DanceRoom_DoDanceBattle_GiveLombre:
+	givecustommon SPECIES_LOMBRE, 35, ITEM_NONE, ITEM_GREAT_BALL, NATURE_QUIRKY, 0, 10, 75, 01, 01, 50, 50, 31, 31, 31, 31, 31, 31, VAR_LOMBRE_MOVE1, VAR_LOMBRE_MOVE2, VAR_LOMBRE_MOVE3, VAR_LOMBRE_MOVE4, 0
+	return
+
+MAGM_DanceRoom_DoDanceBattle_GiveSitrusLombre:
+	givecustommon SPECIES_LOMBRE, 35, ITEM_SITRUS_BERRY, ITEM_GREAT_BALL, NATURE_QUIRKY, 0, 10, 75, 01, 01, 50, 50, 31, 31, 31, 31, 31, 31, VAR_LOMBRE_MOVE1, VAR_LOMBRE_MOVE2, VAR_LOMBRE_MOVE3, VAR_LOMBRE_MOVE4, 0
+	return
+
 MAGM_DanceRoom_AfterDanceBattle::
-	call MAGM_DanceRoom_EventScript_SendMonsToPC
-	setvar VAR_MAGM_DANCE_AREA_STATE, 2
+	special ZeroPlayerPartyMons
+	setvar VAR_MAGM_DANCE_AREA_STATE, 3
 	playmoncry SPECIES_ORICORIO, CRY_MODE_NORMAL
 	waitmoncry
 	playse SE_LEDGE
@@ -188,7 +213,7 @@ MAGM_DanceRoom_AfterDanceBattle::
 MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene::
 	goto_if_eq VAR_GLOOM_MOVE4,  0, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
 	goto_if_eq VAR_LOMBRE_MOVE4, 0, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
-	goto_if_eq VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
+	goto_if_ge VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene_End
 	setvar VAR_MAGM_DANCE_AREA_STATE, 1
 	applymovement LOCALID_GLOOM, Common_Movement_FacePlayer
 	applymovement LOCALID_LOMBRE, Common_Movement_FacePlayer
@@ -261,7 +286,7 @@ EventScript_GiveLombreSitrusBerry_End::
 MAGM_DanceRoom_EventScript_Gloom::
 	checkitem ITEM_SITRUS_BERRY, 1
 	call_if_eq VAR_RESULT, TRUE, EventScript_GiveGloomSitrusBerry
-	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_EventScript_SecondTimeMonsAskForHelp
+	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 2, MAGM_DanceRoom_EventScript_SecondTimeMonsAskForHelp
 	bufferspeciesname 0, SPECIES_GLOOM
 	goto_if_set FLAG_DANCED_WITH_GLOOM, MAGM_DanceRoom_EventScript_Gloom_SkipToTeachMove
 	playmoncry SPECIES_GLOOM, CRY_MODE_NORMAL
@@ -459,6 +484,14 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove::
 	releaseall
 	end
 
+MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonAlreadyKnowsMove::
+	bufferspeciesname 0, SPECIES_GLOOM
+	buffermovename 1, VAR_TEMP_A
+	msgbox MAGM_DanceRoom_Text_MonAlreadyKnowsMove, MSGBOX_DEFAULT
+	waitse
+	closemessage
+	end
+
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_SetVars::
 	compare VAR_GLOOM_MOVE1, 0
 	goto_if_ne MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_Move2
@@ -475,26 +508,8 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_Move3::
 	copyvar VAR_GLOOM_MOVE3, VAR_TEMP_A
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonLearnedMove
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_Move4::
-	compare VAR_GLOOM_MOVE4, 0
-	goto_if_ne MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonHasFourMoves
 	copyvar VAR_GLOOM_MOVE4, VAR_TEMP_A
 	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonLearnedMove
-//Should never occur
-MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonHasFourMoves::
-	copyvar VAR_0x8001, VAR_GLOOM_MOVE1
-	copyvar VAR_GLOOM_MOVE1, VAR_GLOOM_MOVE2
-	copyvar VAR_GLOOM_MOVE2, VAR_GLOOM_MOVE3
-	copyvar VAR_GLOOM_MOVE3, VAR_GLOOM_MOVE4
-	copyvar VAR_GLOOM_MOVE4, VAR_TEMP_A
-	goto MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonReplacedMove
-	end
-
-MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonAlreadyKnowsMove::
-	bufferspeciesname 0, SPECIES_GLOOM
-	buffermovename 1, VAR_TEMP_A
-	msgbox MAGM_DanceRoom_Text_MonAlreadyKnowsMove, MSGBOX_DEFAULT
-	waitse
-	closemessage
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonLearnedMove::
@@ -551,7 +566,7 @@ MAGM_DanceRoom_EventScript_DanceWithGloom_TeachMove_MonNeedsToReplaceMove_End::
 MAGM_DanceRoom_EventScript_Lombre::
 	checkitem ITEM_SITRUS_BERRY, 1
 	call_if_eq VAR_RESULT, TRUE, EventScript_GiveLombreSitrusBerry
-	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 1, MAGM_DanceRoom_EventScript_SecondTimeMonsAskForHelp
+	call_if_eq VAR_MAGM_DANCE_AREA_STATE, 2, MAGM_DanceRoom_EventScript_SecondTimeMonsAskForHelp
 	bufferspeciesname 0, SPECIES_LOMBRE
 	goto_if_set FLAG_DANCED_WITH_LOMBRE, MAGM_DanceRoom_EventScript_Lombre_SkipToTeachMove
 	playmoncry SPECIES_LOMBRE, CRY_MODE_NORMAL
@@ -699,7 +714,7 @@ MAGM_DanceRoom_EventScript_DanceWithLombre_ShowMoves_End::
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachRainDance::
 	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerSpin
-	setvar VAR_0x8000, 240
+	setvar VAR_TEMP_B, 240
 	msgbox MAGM_DanceRoom_Text_RainDanceFlavor, MSGBOX_DEFAULT
 	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
@@ -707,7 +722,7 @@ MAGM_DanceRoom_EventScript_DanceWithLombre_TeachRainDance::
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachWeatherBall::
 	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepSides
-	setvar VAR_0x8000, 311
+	setvar VAR_TEMP_B, 311
 	msgbox MAGM_DanceRoom_Text_WeatherBallFlavor, MSGBOX_DEFAULT
 	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
@@ -715,7 +730,7 @@ MAGM_DanceRoom_EventScript_DanceWithLombre_TeachWeatherBall::
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachFakeOut::
 	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepDown
-	setvar VAR_0x8000, 252
+	setvar VAR_TEMP_B, 252
 	msgbox MAGM_DanceRoom_Text_FakeOutFlavor, MSGBOX_DEFAULT
 	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
@@ -723,7 +738,7 @@ MAGM_DanceRoom_EventScript_DanceWithLombre_TeachFakeOut::
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachGrassyGlide::
 	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepSides
-	setvar VAR_0x8000, 731
+	setvar VAR_TEMP_B, 731
 	msgbox MAGM_DanceRoom_Text_GrassyGlideFlavor, MSGBOX_DEFAULT
 	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
@@ -731,7 +746,7 @@ MAGM_DanceRoom_EventScript_DanceWithLombre_TeachGrassyGlide::
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachSwordsDance::
 	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerStepDown
-	setvar VAR_0x8000, 14
+	setvar VAR_TEMP_B, 14
 	msgbox MAGM_DanceRoom_Text_SwordsDanceFlavor, MSGBOX_DEFAULT
 	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
@@ -739,55 +754,54 @@ MAGM_DanceRoom_EventScript_DanceWithLombre_TeachSwordsDance::
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachTeeterDance::
 	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerSpin
-	setvar VAR_0x8000, 298
+	setvar VAR_TEMP_B, 298
 	msgbox MAGM_DanceRoom_Text_TeeterDanceFlavor, MSGBOX_DEFAULT
 	waitmovement 0
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove::
+	setvar VAR_0x8004, PARTYID_LOMBRE
+	copyvar VAR_0x8005, VAR_TEMP_B
+	special TeachPartyMonMove
+	switch VAR_RESULT
+	case 0, MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonAlreadyKnowsMove
+	case 1, MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_SetVars
+	case 2, MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonNeedsToReplaceMove
+	releaseall
+	end
+
+MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonAlreadyKnowsMove::
+	bufferspeciesname 0, SPECIES_LOMBRE
+	buffermovename 1, VAR_TEMP_B
+	msgbox MAGM_DanceRoom_Text_MonAlreadyKnowsMove, MSGBOX_DEFAULT
+	waitse
+	closemessage
+	end
+
+MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_SetVars::
 	compare VAR_LOMBRE_MOVE1, 0
 	goto_if_ne MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_Move2
-	copyvar VAR_LOMBRE_MOVE1, VAR_0x8000
+	copyvar VAR_LOMBRE_MOVE1, VAR_TEMP_B
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonLearnedMove
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_Move2::
 	compare VAR_LOMBRE_MOVE2, 0
 	goto_if_ne MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_Move3
-	copyvar VAR_LOMBRE_MOVE2, VAR_0x8000
+	copyvar VAR_LOMBRE_MOVE2, VAR_TEMP_B
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonLearnedMove
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_Move3::
 	compare VAR_LOMBRE_MOVE3, 0
 	goto_if_ne MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_Move4
-	copyvar VAR_LOMBRE_MOVE3, VAR_0x8000
+	copyvar VAR_LOMBRE_MOVE3, VAR_TEMP_B
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonLearnedMove
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_Move4::
-	compare VAR_LOMBRE_MOVE4, 0
-	goto_if_ne MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonHasFourMoves
-	copyvar VAR_LOMBRE_MOVE4, VAR_0x8000
+	copyvar VAR_LOMBRE_MOVE4, VAR_TEMP_B
 	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonLearnedMove
-MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonHasFourMoves::
-	copyvar VAR_0x8001, VAR_LOMBRE_MOVE1
-	copyvar VAR_LOMBRE_MOVE1, VAR_LOMBRE_MOVE2
-	copyvar VAR_LOMBRE_MOVE2, VAR_LOMBRE_MOVE3
-	copyvar VAR_LOMBRE_MOVE3, VAR_LOMBRE_MOVE4
-	copyvar VAR_LOMBRE_MOVE4, VAR_0x8000
-	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonReplacedMove
-	end
-
-MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonReplacedMove::
-	bufferspeciesname 0, SPECIES_LOMBRE
-	buffermovename 1, VAR_0x8000
-	buffermovename 2, VAR_0x8001
-	playse MUS_LEVEL_UP
-	msgbox MAGM_DanceRoom_Text_MonReplacedMove, MSGBOX_DEFAULT
-	waitse
-	closemessage
-	goto MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene
 	end
 
 MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonLearnedMove::
 	bufferspeciesname 0, SPECIES_LOMBRE
-	buffermovename 1, VAR_0x8000
+	buffermovename 1, VAR_TEMP_B
 	playse MUS_LEVEL_UP
 	msgbox MAGM_DanceRoom_Text_MonLearnedMove, MSGBOX_DEFAULT
 	waitse
@@ -795,6 +809,46 @@ MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonLearnedMove::
 	goto MAGM_DanceRoom_EventScript_StartDanceChallengeCutscene
 	end
 
+MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonNeedsToReplaceMove::
+	setvar VAR_0x8004, PARTYID_LOMBRE
+	copyvar VAR_0x8005, VAR_TEMP_B
+	bufferspeciesname 0, SPECIES_LOMBRE
+	buffermovename 1, VAR_TEMP_B
+	msgbox MAGM_DanceRoom_Text_AskLearnNewMove, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonNeedsToReplaceMove_End
+	special PartyMonForgetMove
+	waitstate
+	switch VAR_RESULT
+	case 0, MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_ReplaceMove1
+	case 1, MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_ReplaceMove2
+	case 2, MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_ReplaceMove3
+	case 3, MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_ReplaceMove4
+	case 4, MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonNeedsToReplaceMove
+MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_ReplaceMove1::
+	buffermovename 2, VAR_LOMBRE_MOVE1
+	copyvar VAR_LOMBRE_MOVE1, VAR_TEMP_B
+	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonReplacedMove
+MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_ReplaceMove2::
+	buffermovename 2, VAR_LOMBRE_MOVE2
+	copyvar VAR_LOMBRE_MOVE2, VAR_TEMP_B
+	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonReplacedMove
+MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_ReplaceMove3::
+	buffermovename 2, VAR_LOMBRE_MOVE3
+	copyvar VAR_LOMBRE_MOVE3, VAR_TEMP_B
+	goto MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonReplacedMove
+MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_ReplaceMove4::
+	buffermovename 2, VAR_LOMBRE_MOVE4
+	copyvar VAR_LOMBRE_MOVE4, VAR_TEMP_B
+MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonReplacedMove::
+	bufferspeciesname 0, SPECIES_LOMBRE
+	buffermovename 1, VAR_TEMP_B
+	playse MUS_LEVEL_UP
+	msgbox MAGM_DanceRoom_Text_MonReplacedMove, MSGBOX_DEFAULT
+	waitse
+MAGM_DanceRoom_EventScript_DanceWithLombre_TeachMove_MonNeedsToReplaceMove_End::
+	closemessage
+	releaseall
+	end
 
 MAGM_DanceRoom_EventScript_PlayerDance::
 	applymovement OBJ_EVENT_ID_PLAYER, MAGM_DanceRoom_Movement_PlayerDanceShort

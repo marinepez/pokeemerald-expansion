@@ -577,7 +577,7 @@ static void InitFakePartyMenu(u8 menuType, u8 layout, u8 partyAction, bool8 keep
         sPartyMenuInternal->messageId = messageId;
         sPartyMenuInternal->task = task;
         sPartyMenuInternal->exitCallback = NULL;
-        sPartyMenuInternal->lastSelectedSlot = 0;
+        sPartyMenuInternal->lastSelectedSlot = gSpecialVar_0x8004;
         sPartyMenuInternal->spriteIdConfirmPokeball = 0x7F;
         sPartyMenuInternal->spriteIdCancelPokeball = 0x7F;
 
@@ -595,7 +595,7 @@ static void InitFakePartyMenu(u8 menuType, u8 layout, u8 partyAction, bool8 keep
             sPartyMenuInternal->windowId[i] = WINDOW_NONE;
 
         if (!keepCursorPos)
-            gPartyMenu.slotId = 0;
+            gPartyMenu.slotId = gSpecialVar_0x8004;
         else if (gPartyMenu.slotId > PARTY_SIZE - 1 || GetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_SPECIES) == SPECIES_NONE)
             gPartyMenu.slotId = 0;
 
@@ -6645,15 +6645,14 @@ void TeachPartyMonMove(void)
     }
 }
 
-//TODO
 void PartyMonForgetMove(void)
 {
     gPartyMenu.learnMoveState = 0;
     gPartyMenu.slotId = gSpecialVar_0x8004;
     gPartyMenu.data1 = gSpecialVar_0x8005;
-    InitFakePartyMenu(PARTY_MENU_TYPE_FIELD, PARTY_LAYOUT_SINGLE, PARTY_ACTION_MOVE_TUTOR, FALSE, NULL, Task_ShowSummaryScreenToForgetMoveReturnToFieldAfter, CB2_ReturnToFieldContinueScriptPlayMapMusic);
+    gPlayerPartyCount = CalculatePlayerPartyCount();
+    InitFakePartyMenu(PARTY_MENU_TYPE_FIELD, PARTY_LAYOUT_SINGLE, PARTY_ACTION_MOVE_TUTOR, TRUE, NULL, Task_ShowSummaryScreenToForgetMoveReturnToFieldAfter, CB2_ReturnToFieldContinueScriptPlayMapMusic);
 }
-
 
 void CB2_PartyMenuFromStartMenu(void)
 {
