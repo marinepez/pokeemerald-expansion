@@ -15,4 +15,7 @@ void Task_OpenSampleUi_StartHere(u8 taskId);
 // Launch the sliding panel version of the UI
 void Task_OpenSampleUi_SlidingPanel(u8 taskId);
 
+// Launch the blank template version of the UI
+void Task_OpenSampleUi_BlankTemplate(u8 taskId);
+
 #endif

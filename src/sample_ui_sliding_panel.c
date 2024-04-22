@@ -1065,7 +1065,7 @@ static void SampleUi_PrintUiButtonHints(void)
         sSampleUiWindowFontColors[FONT_WHITE], TEXT_SKIP_DRAW, gStringVar2);
     AddTextPrinterParameterized4(WIN_UI_HINTS, FONT_SMALL, 47, 20, 0, 0,
         sSampleUiWindowFontColors[FONT_WHITE], TEXT_SKIP_DRAW, sText_SampleUiButtonHint3);
-        AddTextPrinterParameterized4(WIN_UI_HINTS, FONT_SMALL, 47, 30, 0, 0,
+    AddTextPrinterParameterized4(WIN_UI_HINTS, FONT_SMALL, 47, 30, 0, 0,
         sSampleUiWindowFontColors[FONT_WHITE], TEXT_SKIP_DRAW, sText_SampleUiButtonHint4);
 
     CopyWindowToVram(WIN_UI_HINTS, COPYWIN_GFX);

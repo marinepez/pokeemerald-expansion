@@ -362,6 +362,7 @@ SECTIONS {
         src/expansion_intro.o(.text);
         src/sample_ui_start_here.o(.text);
         src/sample_ui_sliding_panel.o(.text);
+        src/sample_ui_blank_template.o(.text);
     } > ROM =0
 
     script_data :
@@ -731,6 +732,7 @@ SECTIONS {
         src/expansion_intro.o(.rodata);
         src/sample_ui_start_here.o(.rodata);
         src/sample_ui_sliding_panel.o(.rodata);
+        src/sample_ui_blank_template.o(.rodata);
     } > ROM =0
 
     song_data :

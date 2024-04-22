@@ -154,3 +154,4 @@
 	.include "src/pokedex_plus_hgss.o"
 	.include "src/sample_ui_start_here.o"
 	.include "src/sample_ui_sliding_panel.o"
+	.include "src/sample_ui_blank_template.o"
