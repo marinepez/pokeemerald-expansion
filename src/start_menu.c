@@ -47,6 +47,11 @@
 #include "constants/battle_frontier.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "sample_ui.h"
+
+#if (DECAP_ENABLED) && (DECAP_MIRRORING) && !(DECAP_START_MENU)
+#define AddTextPrinterParameterized (AddTextPrinterFixedCaseParameterized)
+#endif
 
 // Menu actions
 enum
@@ -65,6 +70,7 @@ enum
     MENU_ACTION_RETIRE_FRONTIER,
     MENU_ACTION_PYRAMID_BAG,
     MENU_ACTION_DEBUG,
+    MENU_ACTION_SAMPLE_UI,
 };
 
 // Save status
@@ -132,6 +138,7 @@ static u8 SaveReturnErrorCallback(void);
 static u8 BattlePyramidConfirmRetireCallback(void);
 static u8 BattlePyramidRetireYesNoCallback(void);
 static u8 BattlePyramidRetireInputCallback(void);
+static bool8 StartMenuSampleUiCallback(void);
 
 // Task callbacks
 static void StartMenuTask(u8 taskId);
@@ -172,6 +179,8 @@ static const struct WindowTemplate sWindowTemplate_PyramidFloor = {
     .baseBlock = 0x8
 };
 
+static const u8 gText_MenuDebug[] = _("DEBUG");
+static const u8 sText_SampleUi[] = _("SAMPLEUI");
 static const struct WindowTemplate sWindowTemplate_PyramidPeak = {
     .bg = 0,
     .tilemapLeft = 1,
@@ -181,8 +190,6 @@ static const struct WindowTemplate sWindowTemplate_PyramidPeak = {
     .paletteNum = 15,
     .baseBlock = 0x8
 };
-
-static const u8 sText_MenuDebug[] = _("DEBUG");
 
 static const struct MenuAction sStartMenuItems[] =
 {
@@ -199,7 +206,8 @@ static const struct MenuAction sStartMenuItems[] =
     [MENU_ACTION_REST_FRONTIER]   = {gText_MenuRest,    {.u8_void = StartMenuSaveCallback}},
     [MENU_ACTION_RETIRE_FRONTIER] = {gText_MenuRetire,  {.u8_void = StartMenuBattlePyramidRetireCallback}},
     [MENU_ACTION_PYRAMID_BAG]     = {gText_MenuBag,     {.u8_void = StartMenuBattlePyramidBagCallback}},
-    [MENU_ACTION_DEBUG]           = {sText_MenuDebug,   {.u8_void = StartMenuDebugCallback}},
+    [MENU_ACTION_DEBUG]           = {gText_MenuDebug,   {.u8_void = StartMenuDebugCallback}},
+    [MENU_ACTION_SAMPLE_UI]       = {sText_SampleUi,    {.u8_void = StartMenuSampleUiCallback}}
 };
 
 static const struct BgTemplate sBgTemplates_LinkBattleSave[] =
@@ -340,6 +348,8 @@ static void BuildNormalStartMenu(void)
     {
         AddStartMenuAction(MENU_ACTION_POKENAV);
     }
+
+    AddStartMenuAction(MENU_ACTION_SAMPLE_UI);
 
     AddStartMenuAction(MENU_ACTION_PLAYER);
     AddStartMenuAction(MENU_ACTION_SAVE);
@@ -716,7 +726,7 @@ static bool8 StartMenuPokeNavCallback(void)
         PlayRainStoppingSoundEffect();
         RemoveExtraStartMenuWindows();
         CleanupOverworldWindowsAndTilemaps();
-        SetMainCallback2(CB2_InitPokeNav);  // Display PokeNav
+        SetMainCallback2(CB2_InitPokeNav);  // Display PokéNav
 
         return TRUE;
     }
@@ -1421,7 +1431,7 @@ static void ShowSaveInfoWindow(void)
 
     if (FlagGet(FLAG_SYS_POKEDEX_GET) == TRUE)
     {
-        // Print pokedex count
+        // Print Pokédex count
         yOffset += 16;
         AddTextPrinterParameterized(sSaveInfoWindowId, FONT_NORMAL, gText_SavingPokedex, 0, yOffset, TEXT_SKIP_DRAW, NULL);
         BufferSaveMenuText(SAVE_MENU_CAUGHT, gStringVar4, color);
@@ -1483,4 +1493,11 @@ void AppendToList(u8 *list, u8 *pos, u8 newEntry)
 {
     list[*pos] = newEntry;
     (*pos)++;
+}
+
+static bool8 StartMenuSampleUiCallback(void)
+{
+    // Change which version of the UI is launched by changing which task is called from here
+    CreateTask(Task_OpenSampleUi_BlankTemplate, 0);
+    return TRUE;
 }
