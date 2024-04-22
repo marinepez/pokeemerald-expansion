@@ -81,8 +81,6 @@ enum WindowIds
     WIN_MON_INFO
 };
 
-extern const struct PokedexEntry gPokedexEntries[];
-
 static EWRAM_DATA struct SampleUiState *sSampleUiState = NULL;
 static EWRAM_DATA u8 *sBg1TilemapBuffer = NULL;
 // We'll have an additional tilemap buffer for the sliding panel, which will live on BG2
@@ -671,7 +669,6 @@ static void SampleUi_Init(MainCallback callback)
 
 static void SampleUi_SetupCB(void)
 {
-    u8 taskId;
     switch (gMain.state)
     {
     case 0:
@@ -730,7 +727,7 @@ static void SampleUi_SetupCB(void)
         // Start button select animation for the current region, i.e. Kanto
         SampleUi_StartRegionButtonAnim(sSampleUiState->selectedRegion);
 
-        taskId = CreateTask(Task_SampleUiWaitFadeIn, 0);
+        CreateTask(Task_SampleUiWaitFadeIn, 0);
         gMain.state++;
         break;
     case 6:
@@ -1086,9 +1083,9 @@ static void SampleUi_PrintUiMonInfo(void)
     {
     case MODE_INFO: 
         ConvertIntToDecimalStringN(gStringVar1, sSampleUiState->monIconDexNum, STR_CONV_MODE_LEADING_ZEROS, 3);
-        StringCopy(gStringVar2, gSpeciesNames[speciesId]);
+        StringCopy(gStringVar2, GetSpeciesName(speciesId));
         StringExpandPlaceholders(gStringVar3, sText_SampleUiMonInfoSpecies);
-        StringCopy(gStringVar4, gPokedexEntries[sSampleUiState->monIconDexNum].description);
+        StringCopy(gStringVar4, GetSpeciesPokedexDescription(speciesId));
         AddTextPrinterParameterized4(WIN_MON_INFO, FONT_SHORT, 5, 3, 0, 0, sSampleUiWindowFontColors[FONT_BLACK],
             TEXT_SKIP_DRAW, gStringVar3);
         AddTextPrinterParameterized4(WIN_MON_INFO, FONT_SMALL, 5, 25, 0, 0, sSampleUiWindowFontColors[FONT_BLACK],

@@ -149,17 +149,6 @@ enum WindowIds
 };
 
 /*
- * We'll need this data in order to access the Pokedex descriptions. We have declared it `extern' because the actual
- * data is defined in pokedex.c (which becomes pokedex.o) as .rodata (via a direct inclusion from pokedex_entries.h),
- * so if we tried to include the array directly here we'd get duplicate definition errors.
- *
- * For a helpful primer on the difference between declarations and definitions in C, as well as some clarification of
- * the `extern' keyword:
- *      https://www.cprogramming.com/declare_vs_define.html
- */
-extern const struct PokedexEntry gPokedexEntries[];
-
-/*
  * Both of these can be pointers that live in EWRAM -- allocating the actual data on the heap will save precious WRAM
  * space since none of this data matters outside the context of our menu. We can easily cleanup when we're done. It's
  * worth noting that every time the game re-loads into the overworld, the heap gets nuked from orbit. However, it is
@@ -447,7 +436,6 @@ void SampleUi_Init(MainCallback callback)
 
 static void SampleUi_SetupCB(void)
 {
-    u8 taskId;
     /*
      * You may ask: why are these tasks in a giant switch statement? For one thing, it is because this is how GameFreak
      * does things, and cargo cult programming is a glorious institution. On a more serious note, the intention is to
@@ -561,7 +549,7 @@ static void SampleUi_SetupCB(void)
         SampleUi_PrintUiMonInfo();
 
         // Create a task that does nothing until the palette fade is done. We will start the palette fade next frame.
-        taskId = CreateTask(Task_SampleUiWaitFadeIn, 0);
+        CreateTask(Task_SampleUiWaitFadeIn, 0);
         gMain.state++;
         break;
     case 6:
@@ -994,9 +982,9 @@ static void SampleUi_PrintUiMonInfo(void)
          * strings, ready to be drawn.
          */
         ConvertIntToDecimalStringN(gStringVar1, sSampleUiState->monIconDexNum, STR_CONV_MODE_LEADING_ZEROS, 3);
-        StringCopy(gStringVar2, gSpeciesNames[speciesId]);
+        StringCopy(gStringVar2, GetSpeciesName(speciesId));
         StringExpandPlaceholders(gStringVar3, sText_SampleUiMonInfoSpecies);
-        StringCopy(gStringVar4, gPokedexEntries[sSampleUiState->monIconDexNum].description);
+        StringCopy(gStringVar4, GetSpeciesPokedexDescription(speciesId));
 
         // The window drawing code here works just like in `SampleUi_PrintUiButtonHints'
         AddTextPrinterParameterized4(WIN_MON_INFO, FONT_SHORT, 5, 3, 0, 0, sSampleUiWindowFontColors[FONT_BLACK],
