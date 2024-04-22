@@ -88,7 +88,7 @@ static void SetupHipster(void)
     struct MauvilleManHipster *hipster = &gSaveBlock1Ptr->oldMan.hipster;
 
     hipster->id = MAUVILLE_MAN_HIPSTER;
-    hipster->alreadySpoken = FALSE;
+    hipster->taughtWord = FALSE;
     hipster->language = gGameLanguage;
 }
 
@@ -225,27 +225,28 @@ void PlayBardSong(void)
     ScriptContext_Stop();
 }
 
-void GetHipsterSpokenFlag(void)
+void HasHipsterTaughtWord(void)
 {
-    gSpecialVar_Result = (&gSaveBlock1Ptr->oldMan.hipster)->alreadySpoken;
+    gSpecialVar_Result = (&gSaveBlock1Ptr->oldMan.hipster)->taughtWord;
 }
 
-void SetHipsterSpokenFlag(void)
+void SetHipsterTaughtWord(void)
 {
-    (&gSaveBlock1Ptr->oldMan.hipster)->alreadySpoken = TRUE;
+    (&gSaveBlock1Ptr->oldMan.hipster)->taughtWord = TRUE;
 }
 
 void HipsterTryTeachWord(void)
 {
-    u16 phrase = GetNewHipsterPhraseToTeach();
+    u16 word = UnlockRandomTrendySaying();
 
-    if (phrase == EC_EMPTY_WORD)
+    if (word == EC_EMPTY_WORD)
     {
+        // All words already unlocked
         gSpecialVar_Result = FALSE;
     }
     else
     {
-        CopyEasyChatWord(gStringVar1, phrase);
+        CopyEasyChatWord(gStringVar1, word);
         gSpecialVar_Result = TRUE;
     }
 }
@@ -319,11 +320,7 @@ static void InitGiddyTaleList(void)
     // Shuffle question list
     for (i = 0; i < GIDDY_MAX_QUESTIONS; i++)
         giddy->questionList[i] = i;
-    for (i = 0; i < GIDDY_MAX_QUESTIONS; i++)
-    {
-        var = Random() % (i + 1);
-        SWAP(giddy->questionList[i], giddy->questionList[var], temp);
-    }
+    Shuffle(giddy->questionList, GIDDY_MAX_QUESTIONS, sizeof(giddy->questionList[0]));
 
     // Count total number of words in above word groups
     totalWords = 0;
@@ -369,7 +366,7 @@ static void ResetBardFlag(void)
 
 static void ResetHipsterFlag(void)
 {
-    (&gSaveBlock1Ptr->oldMan.hipster)->alreadySpoken = FALSE;
+    (&gSaveBlock1Ptr->oldMan.hipster)->taughtWord = FALSE;
 }
 
 static void ResetTraderFlag(void)
@@ -739,8 +736,7 @@ void SanitizeMauvilleOldManForRuby(union OldMan * oldMan)
     }
 }
 
-// Unused
-static void SetMauvilleOldManLanguage(union OldMan * oldMan, u32 language1, u32 language2, u32 language3)
+static void UNUSED SetMauvilleOldManLanguage(union OldMan * oldMan, u32 language1, u32 language2, u32 language3)
 {
     s32 i;
 
@@ -968,7 +964,7 @@ static const struct Story sStorytellerStories[] = {
         MauvilleCity_PokemonCenter_1F_Text_PokemonCaughtStory
     },
     {
-        GAME_STAT_FISHING_CAPTURES, 1,
+        GAME_STAT_FISHING_ENCOUNTERS, 1,
         MauvilleCity_PokemonCenter_1F_Text_FishingPokemonCaughtTitle,
         MauvilleCity_PokemonCenter_1F_Text_FishingPokemonCaughtAction,
         MauvilleCity_PokemonCenter_1F_Text_FishingPokemonCaughtStory
@@ -1265,27 +1261,12 @@ static void StorytellerRecordNewStat(u32 player, u32 stat)
     sStorytellerPtr->language[player] = gGameLanguage;
 }
 
-static void ScrambleStatList(u8 *arr, s32 count)
-{
-    s32 i;
-
-    for (i = 0; i < count; i++)
-        arr[i] = i;
-    for (i = 0; i < count; i++)
-    {
-        u32 a = Random() % count;
-        u32 b = Random() % count;
-        u8 temp;
-        SWAP(arr[a], arr[b], temp);
-    }
-}
-
 static bool8 StorytellerInitializeRandomStat(void)
 {
     u8 storyIds[sNumStories];
     s32 i, j;
 
-    ScrambleStatList(storyIds, sNumStories);
+    Shuffle(storyIds, sNumStories, sizeof(storyIds[0]));
     for (i = 0; i < sNumStories; i++)
     {
         u8 stat = sStorytellerStories[storyIds[i]].stat;
@@ -1427,4 +1408,3 @@ bool8 Script_StorytellerInitializeRandomStat(void)
     sStorytellerPtr = &gSaveBlock1Ptr->oldMan.storyteller;
     return StorytellerInitializeRandomStat();
 }
-
