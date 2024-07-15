@@ -1074,3 +1074,7 @@ EventScript_VsSeekerChargingDone::
 	.include "data/text/birch_speech.inc"
 
 	.include "data/maps/MAGM9_Mall_MainArea/scripts.inc"
+
+	.include "data/maps/MAGM9_Hilltop/scripts.inc"
+
+	.include "data/maps/MAGM9_PathBelowHill/scripts.inc"

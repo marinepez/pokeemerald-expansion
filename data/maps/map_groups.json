@@ -584,7 +584,9 @@
     "NavelRock_Down10",
     "NavelRock_Down11",
     "NavelRock_Bottom",
-    "TrainerHill_Elevator"
+    "TrainerHill_Elevator",
+    "MAGM9_Hilltop",
+    "MAGM9_PathBelowHill"
   ],
   "gMapGroup_IndoorRoute104Prototype": [
     "Route104_Prototype",

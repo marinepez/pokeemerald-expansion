@@ -4420,6 +4420,26 @@
       "secondary_tileset": "gTileset_Unused1",
       "border_filepath": "data/layouts/MAGM9_Mall_MainArea/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_Mall_MainArea/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_HILLTOP",
+      "name": "MAGM9_Hilltop_Layout",
+      "width": 21,
+      "height": 35,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/MAGM9_Hilltop/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_Hilltop/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_PATH_BELOW_HILL",
+      "name": "MAGM9_PathBelowHill_Layout",
+      "width": 21,
+      "height": 10,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/MAGM9_PathBelowHill/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_PathBelowHill/map.bin"
     }
   ]
 }
