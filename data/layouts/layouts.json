@@ -4440,6 +4440,16 @@
       "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/MAGM9_PathBelowHill/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_PathBelowHill/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_STAIRS_DOWN",
+      "name": "MAGM9_StairsDown_Layout",
+      "width": 5,
+      "height": 40,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_MirageTower",
+      "border_filepath": "data/layouts/MAGM9_StairsDown/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_StairsDown/map.bin"
     }
   ]
 }

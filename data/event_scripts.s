@@ -1078,3 +1078,5 @@ EventScript_VsSeekerChargingDone::
 	.include "data/maps/MAGM9_Hilltop/scripts.inc"
 
 	.include "data/maps/MAGM9_PathBelowHill/scripts.inc"
+
+	.include "data/maps/MAGM9_StairsDown/scripts.inc"

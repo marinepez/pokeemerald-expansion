@@ -430,7 +430,8 @@
     "TerraCave_End",
     "AlteringCave",
     "MeteorFalls_StevensCave",
-    "MAGM9_Mall_MainArea"
+    "MAGM9_Mall_MainArea",
+    "MAGM9_StairsDown"
   ],
   "gMapGroup_IndoorDynamic": [
     "SecretBase_RedCave1",
