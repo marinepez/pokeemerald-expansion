@@ -1199,8 +1199,8 @@ static bool8 TryProduceOrHatchEgg(struct DayCare *daycare)
             TriggerPendingDaycareEgg();
     }
 
-    // Try to hatch Egg
-    if (++daycare->stepCounter == 255)
+    // Eggs will never hatch
+    /*if (++daycare->stepCounter == 255)
     {
         u32 eggCycles;
         u8 toSub = GetEggCyclesToSubtract();
@@ -1228,7 +1228,7 @@ static bool8 TryProduceOrHatchEgg(struct DayCare *daycare)
                 return TRUE;
             }
         }
-    }
+    }*/
 
     return FALSE;
 }

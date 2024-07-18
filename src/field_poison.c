@@ -2,6 +2,7 @@
 #include "battle.h"
 #include "battle_pike.h"
 #include "battle_pyramid.h"
+#include "daycare.h"
 #include "event_data.h"
 #include "field_message_box.h"
 #include "field_poison.h"
@@ -155,4 +156,64 @@ s32 DoPoisonFieldEffect(void)
         return FLDPSN_PSN;
 
     return FLDPSN_NONE;
+}
+
+s32 DoExpLossFieldEffect(void)
+{
+    int i;
+    u32 exp;
+    u32 currLvlExp;
+    u16 level;
+    u16 species;
+    u8 isEgg = FALSE;
+    s32 lostExp;
+    struct Pokemon *pokemon = gPlayerParty;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(pokemon, MON_DATA_SANITY_HAS_SPECIES) && !GetMonData(pokemon, MON_DATA_IS_EGG))
+        {
+            // Lose experience
+            species = GetMonData(pokemon, MON_DATA_SPECIES);
+            exp = GetMonData(pokemon, MON_DATA_EXP);
+            level = GetMonData(pokemon, MON_DATA_LEVEL);
+            lostExp = max(level, 1);
+            currLvlExp = gExperienceTables[gSpeciesInfo[species].growthRate][level];
+            exp -= lostExp;
+
+            SetMonData(pokemon, MON_DATA_EXP, &exp);
+
+            if(exp < currLvlExp)
+            {
+                CalculateMonStats(pokemon);
+                ForgetMoves(pokemon);
+            }
+
+            if(exp <= 0)
+            {
+                isEgg = TRUE;
+                SetMonData(pokemon, MON_DATA_IS_EGG, &isEgg);
+            }       
+        }
+        pokemon++;
+    }
+
+    return 0;
+}
+
+static bool8 ForgetMoves(struct Pokemon* mon)
+{
+    u16 species = GetMonData(mon, MON_DATA_SPECIES);
+    u16 currMove;
+    u16 i;
+
+    for(i = 0; i < MAX_MON_MOVES; i++)
+    {
+        currMove = GetMonData(mon, MON_DATA_MOVE1 + i);
+        if(currMove != MOVE_NONE && !DoesMonLearnMoveByLevel(species, currMove, GetMonData(mon, MON_DATA_LEVEL)))
+        {
+            ForgetOrReplaceMove(mon, i);
+        }
+    }
+    return TRUE;
 }

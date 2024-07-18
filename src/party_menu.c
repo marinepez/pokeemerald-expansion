@@ -7686,6 +7686,49 @@ void MoveDeleterForgetMove(void)
         ShiftMoveSlot(&gPlayerParty[gSpecialVar_0x8004], i, i + 1);
 }
 
+void ForgetOrReplaceMove(struct Pokemon *mon, u8 slot)
+{
+    s16 i, j;
+    u8 level = GetMonData(mon, MON_DATA_LEVEL);
+    u16 moveToReplace = MOVE_NONE;
+    const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(GetMonData(mon, MON_DATA_SPECIES));
+
+    //Get the first index in learnset that has a level higher than the current mon
+    for (i = 0; i < MAX_LEVEL_UP_MOVES && learnset[i].move != LEVEL_UP_MOVE_END; i++)
+       if(level < learnset[i].level) break;
+
+    if(i != 0) i--; //Go back to previous index where learnset[i].level wasn't too high
+
+    //Attempt to replace move
+    while(i >= 0 && learnset[i].level <= level) 
+    {
+        //Check if mon already has move
+        for(j = 0; j < MAX_MON_MOVES; j++)
+        {
+            moveToReplace = learnset[i].move;
+            if(moveToReplace == GetMonData(mon, MON_DATA_MOVE1 + j))
+            {
+                moveToReplace = MOVE_NONE;
+                break;
+            }
+        }
+        if(moveToReplace != MOVE_NONE)
+        {
+            SetMonMoveSlot(mon, moveToReplace, slot);
+            RemoveMonPPBonus(mon, slot);
+            return;
+        }
+        i--;
+    }
+
+    //No replacable moves, delete move
+    SetMonMoveSlot(mon, MOVE_NONE, slot);
+    RemoveMonPPBonus(mon, slot);
+    for (i = slot; i < MAX_MON_MOVES - 1; i++)
+        ShiftMoveSlot(mon, i, i + 1);
+    return;
+}
+
 static void ShiftMoveSlot(struct Pokemon *mon, u8 slotTo, u8 slotFrom)
 {
     u16 move1 = GetMonData(mon, MON_DATA_MOVE1 + slotTo);

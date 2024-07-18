@@ -5322,6 +5322,26 @@ u8 GetLevelUpMovesBySpecies(u16 species, u16 *moves)
      return numMoves;
 }
 
+//TODO: Include egg moves
+bool8 DoesMonLearnMoveByLevel(u16 species, u16 move, u8 level)
+{
+    int i;
+    const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(species);
+
+//    DebugPrintf("Mon: %d, Move: %d, Level: %d", species, move, level);
+
+    for (i = 0; i < MAX_LEVEL_UP_MOVES && learnset[i].move != LEVEL_UP_MOVE_END; i++)
+    {
+//        DebugPrintf("CompareMove: %d, CompareLevel: %d", learnset[i].move, learnset[i].level);
+        if(move == learnset[i].move && level >= learnset[i].level)
+            return TRUE;
+        else if (learnset[i].level > level)
+            break;
+    }
+
+    return FALSE;
+}
+
 u8 GetNumberOfRelearnableMoves(struct Pokemon *mon)
 {
     u16 learnedMoves[MAX_MON_MOVES];

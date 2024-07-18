@@ -98,6 +98,7 @@ void DoBattlePyramidMonsHaveHeldItem(void);
 void IsSelectedMonEgg(void);
 void IsLastMonThatKnowsSurf(void);
 void MoveDeleterForgetMove(void);
+void ForgetOrReplaceMove(struct Pokemon *mon, u8 slot);
 void BufferMoveDeleterNicknameAndMove(void);
 void GetNumMovesSelectedMonHas(void);
 void MoveDeleterChooseMoveToForget(void);
