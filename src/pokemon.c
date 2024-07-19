@@ -6573,10 +6573,26 @@ u16 GetCryIdBySpecies(u16 species)
 u16 GetSpeciesPreEvolution(u16 species)
 {
     int i, j;
+    const struct Evolution *evolutions;
+
+    //Since the species pre-evolution is usually the index below a given species, try that first
+    if (species != SPECIES_NONE) 
+    {
+        i = species - 1;
+        evolutions = GetSpeciesEvolutions(i);
+        if (evolutions != NULL)
+        {
+            for (j = 0; evolutions[j].method != EVOLUTIONS_END; j++)
+            {
+                if (SanitizeSpeciesId(evolutions[j].targetSpecies) == species)
+                    return i;
+            }
+        }
+    }
 
     for (i = SPECIES_BULBASAUR; i < NUM_SPECIES; i++)
     {
-        const struct Evolution *evolutions = GetSpeciesEvolutions(i);
+        evolutions = GetSpeciesEvolutions(i);
         if (evolutions == NULL)
             continue;
         for (j = 0; evolutions[j].method != EVOLUTIONS_END; j++)
@@ -6592,4 +6608,90 @@ u16 GetSpeciesPreEvolution(u16 species)
 const u8 *GetMoveName(u16 moveId)
 {
     return gMovesInfo[moveId].name;
+}
+
+u16 GetDeEvolutionTargetSpecies(struct Pokemon *mon)
+{
+    int i;
+    u16 targetSpecies = SPECIES_NONE;
+    u16 species = GetMonData(mon, MON_DATA_SPECIES, 0);
+    u16 preEvoSpecies = GetSpeciesPreEvolution(species);
+    u8 level;
+    const struct Evolution *preevolutions = GetSpeciesEvolutions(preEvoSpecies);
+
+    if (preevolutions == NULL)
+        return SPECIES_NONE;
+
+    level = GetMonData(mon, MON_DATA_LEVEL, 0);
+
+    for (i = 0; preevolutions[i].method != EVOLUTIONS_END; i++)
+    {
+        if (SanitizeSpeciesId(preevolutions[i].targetSpecies) == SPECIES_NONE)
+            continue;
+
+        switch (preevolutions[i].method)
+        {
+            case EVO_LEVEL_NATURE_AMPED:
+            case EVO_LEVEL_NATURE_LOW_KEY:
+            case EVO_LEVEL_MOVE_TWENTY_TIMES:
+            case EVO_LEVEL_RECOIL_DAMAGE_MALE:
+            case EVO_LEVEL_RECOIL_DAMAGE_FEMALE:
+            case EVO_LEVEL_DARK_TYPE_MON_IN_PARTY:
+            case EVO_LEVEL_RAIN:
+            case EVO_LEVEL_FOG:
+            case EVO_LEVEL_FEMALE:
+            case EVO_LEVEL_MALE:
+            case EVO_LEVEL_ATK_GT_DEF:
+            case EVO_LEVEL_ATK_EQ_DEF:
+            case EVO_LEVEL_ATK_LT_DEF:
+            case EVO_LEVEL_SILCOON:
+            case EVO_LEVEL_CASCOON:
+            case EVO_LEVEL_NINJASK:
+            case EVO_LEVEL_FAMILY_OF_FOUR:
+            case EVO_LEVEL_FAMILY_OF_THREE:
+            case EVO_LEVEL_DAY:
+            case EVO_LEVEL_DUSK:
+            case EVO_LEVEL_NIGHT:
+            case EVO_LEVEL:
+                if (preevolutions[i].param > level)
+                {
+                    return preEvoSpecies;
+                }
+                break;
+            case EVO_MOVE_TWO_SEGMENT:
+            case EVO_MOVE_THREE_SEGMENT:
+            case EVO_MOVE:
+                if(!DoesMonLearnMoveByLevel(preEvoSpecies, preevolutions[i].param, level))
+                {
+                    return preEvoSpecies;
+                }
+                break;
+            case EVO_TRADE:
+            case EVO_TRADE_ITEM:
+            case EVO_TRADE_SPECIFIC_MON:
+            case EVO_ITEM_HOLD:
+            case EVO_ITEM:
+            case EVO_ITEM_FEMALE:
+            case EVO_ITEM_MALE:
+            case EVO_ITEM_NIGHT:
+            case EVO_ITEM_DAY:
+            case EVO_ITEM_HOLD_NIGHT:
+            case EVO_ITEM_HOLD_DAY:
+            case EVO_FRIENDSHIP:
+            case EVO_FRIENDSHIP_DAY:
+            case EVO_FRIENDSHIP_NIGHT:
+            case EVO_FRIENDSHIP_MOVE_TYPE:
+            case EVO_BEAUTY:
+            case EVO_SPECIFIC_MON_IN_PARTY:
+            case EVO_MAPSEC:
+            case EVO_SPECIFIC_MAP:
+            default:
+                if (35 > level)
+                {
+                    return preEvoSpecies;
+                }
+                break;
+        }
+    }
+    return targetSpecies;
 }

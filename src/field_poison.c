@@ -185,7 +185,15 @@ s32 DoExpLossFieldEffect(void)
 
             if(exp < currLvlExp)
             {
+                u16 preEvolution;
                 CalculateMonStats(pokemon);
+                preEvolution = GetDeEvolutionTargetSpecies(pokemon);
+                if(preEvolution != SPECIES_NONE)
+                {
+                    SetMonData(pokemon, MON_DATA_SPECIES, &preEvolution);
+                    EvolutionRenameMon(pokemon, species, preEvolution);
+                    CalculateMonStats(pokemon);
+                }
                 ForgetMoves(pokemon);
             }
 
