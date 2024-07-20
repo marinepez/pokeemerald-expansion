@@ -3,6 +3,6 @@ MAGM9_Hilltop_MapScripts::
 	.byte 0
 
 MAGM9_Hilltop_OnTransition:
-	setwarp MAP_MAGM9_STAIRS_DOWN, 2, 2
+	setwarp MAP_MAGM9_STAIRS_DOWN, 1, 2
 	end
 

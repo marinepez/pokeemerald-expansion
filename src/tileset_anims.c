@@ -6,6 +6,7 @@
 #include "task.h"
 #include "battle_transition.h"
 #include "fieldmap.h"
+#include "random.h"
 
 static EWRAM_DATA struct {
     const u16 *src;
@@ -43,6 +44,7 @@ static void TilesetAnim_MauvilleGym(u16);
 static void TilesetAnim_BikeShop(u16);
 static void TilesetAnim_BattlePyramid(u16);
 static void TilesetAnim_BattleDome(u16);
+static void TilesetAnim_MirageTower(u16);
 static void QueueAnimTiles_General_Flower(u16);
 static void QueueAnimTiles_General_Water(u16);
 static void QueueAnimTiles_General_SandWaterEdge(u16);
@@ -73,6 +75,8 @@ static void QueueAnimTiles_MauvilleGym_ElectricGates(u16);
 static void QueueAnimTiles_SootopolisGym_Waterfalls(u16);
 static void QueueAnimTiles_EliteFour_GroundLights(u16);
 static void QueueAnimTiles_EliteFour_WallLights(u16);
+static void QueueAnimTiles_MirageTower_LightTiles(u16);
+static void QueueAnimTiles_MirageTower_MediumTiles(u16);
 
 const u16 gTilesetAnims_General_Flower_Frame1[] = INCBIN_U16("data/tilesets/primary/general/anim/flower/1.4bpp");
 const u16 gTilesetAnims_General_Flower_Frame0[] = INCBIN_U16("data/tilesets/primary/general/anim/flower/0.4bpp");
@@ -520,6 +524,12 @@ const u16 tileset_anims_space_11[224] = {};
 
 const u16 gTilesetAnims_Unused2_Frame1[] = INCBIN_U16("data/tilesets/secondary/unused_2/1.4bpp");
 
+const u16 gTilesetAnims_MirageTower_LightTiles_Frame0[] = INCBIN_U16("data/tilesets/secondary/mirage_tower/anim/light_tiles/0.4bpp");
+const u16 gTilesetAnims_MirageTower_LightTiles_Frame1[] = INCBIN_U16("data/tilesets/secondary/mirage_tower/anim/light_tiles/1.4bpp");
+
+const u16 gTilesetAnims_MirageTower_MediumTiles_Frame0[] = INCBIN_U16("data/tilesets/secondary/mirage_tower/anim/medium_tiles/0.4bpp");
+const u16 gTilesetAnims_MirageTower_MediumTiles_Frame1[] = INCBIN_U16("data/tilesets/secondary/mirage_tower/anim/medium_tiles/1.4bpp");
+
 const u16 *const gTilesetAnims_BattlePyramid_Torch[] = {
     gTilesetAnims_BattlePyramid_Torch_Frame0,
     gTilesetAnims_BattlePyramid_Torch_Frame1,
@@ -530,6 +540,16 @@ const u16 *const gTilesetAnims_BattlePyramid_StatueShadow[] = {
     gTilesetAnims_BattlePyramid_StatueShadow_Frame0,
     gTilesetAnims_BattlePyramid_StatueShadow_Frame1,
     gTilesetAnims_BattlePyramid_StatueShadow_Frame2
+};
+
+const u16 *const gTilesetAnims_MirageTower_LightTiles[] = {
+    gTilesetAnims_MirageTower_LightTiles_Frame0,
+    gTilesetAnims_MirageTower_LightTiles_Frame1,
+};
+
+const u16 *const gTilesetAnims_MirageTower_MediumTiles[] = {
+    gTilesetAnims_MirageTower_MediumTiles_Frame0,
+    gTilesetAnims_MirageTower_MediumTiles_Frame1,
 };
 
 static const u16 *const sTilesetAnims_BattleDomeFloorLightPals[] = {
@@ -822,6 +842,13 @@ void InitTilesetAnim_BattlePyramid(void)
     sSecondaryTilesetAnimCallback = TilesetAnim_BattlePyramid;
 }
 
+void InitTilesetAnim_MirageTower(void)
+{
+    sSecondaryTilesetAnimCounter = 0;
+    sSecondaryTilesetAnimCounterMax = sPrimaryTilesetAnimCounterMax;
+    sSecondaryTilesetAnimCallback = TilesetAnim_MirageTower;
+}
+
 void InitTilesetAnim_BattleDome(void)
 {
     sSecondaryTilesetAnimCounter = 0;
@@ -1093,6 +1120,15 @@ static void TilesetAnim_BattlePyramid(u16 timer)
     }
 }
 
+static void TilesetAnim_MirageTower(u16 timer)
+{
+    if ((timer % 4 == 0) && (Random() % 4 == 0))
+    {
+        QueueAnimTiles_MirageTower_LightTiles(timer / 4);
+        QueueAnimTiles_MirageTower_MediumTiles(timer / 4);
+    }
+}
+
 static void TilesetAnim_BattleDome(u16 timer)
 {
     if (timer % 4 == 0)
@@ -1158,6 +1194,18 @@ static void QueueAnimTiles_BattlePyramid_StatueShadow(u16 timer)
 {
     u16 i = timer % ARRAY_COUNT(gTilesetAnims_BattlePyramid_StatueShadow);
     AppendTilesetAnimToBuffer(gTilesetAnims_BattlePyramid_StatueShadow[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 135)), 8 * TILE_SIZE_4BPP);
+}
+
+static void QueueAnimTiles_MirageTower_LightTiles(u16 timer)
+{
+    u16 i = timer % ARRAY_COUNT(gTilesetAnims_MirageTower_LightTiles);
+    AppendTilesetAnimToBuffer(gTilesetAnims_MirageTower_LightTiles[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 448)), 10 * TILE_SIZE_4BPP);
+}
+
+static void QueueAnimTiles_MirageTower_MediumTiles(u16 timer)
+{
+    u16 i = timer % ARRAY_COUNT(gTilesetAnims_MirageTower_MediumTiles);
+    AppendTilesetAnimToBuffer(gTilesetAnims_MirageTower_MediumTiles[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 432)), 12 * TILE_SIZE_4BPP);
 }
 
 static void BlendAnimPalette_BattleDome_FloorLights(u16 timer)
