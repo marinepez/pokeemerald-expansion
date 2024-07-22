@@ -13,6 +13,5 @@
 void TryFieldPoisonWhiteOut(void);
 s32 DoPoisonFieldEffect(void);
 s32 DoExpLossFieldEffect(void);
-static bool8 ForgetMoves(struct Pokemon* mon);
 
 #endif //GUARD_FIELD_POISON_H

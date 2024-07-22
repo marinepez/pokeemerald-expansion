@@ -19,6 +19,8 @@
 #include "constants/form_change_types.h"
 #include "constants/party_menu.h"
 
+static bool8 ForgetMoves(struct Pokemon* mon);
+
 static bool32 IsMonValidSpecies(struct Pokemon *pokemon)
 {
     u16 species = GetMonData(pokemon, MON_DATA_SPECIES_OR_EGG);
