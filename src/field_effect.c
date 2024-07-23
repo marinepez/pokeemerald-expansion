@@ -1719,7 +1719,7 @@ static bool8 EscalatorWarpIn_Init(struct Task *task)
     objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
     ObjectEventSetHeldMovement(objectEvent, GetFaceDirectionMovementAction(DIR_EAST));
     PlayerGetDestCoords(&x, &y);
-    behavior = MapGridGetMetatileBehaviorAt(x, y);
+    behavior = ObjectEventGetMetatileBehaviorAt(x, y);
     task->tState++;
     task->data[1] = 16;
 
@@ -1936,7 +1936,7 @@ static bool8 DiveFieldEffect_ShowMon(struct Task *task)
 static bool8 DiveFieldEffect_TryWarp(struct Task *task)
 {
     struct MapPosition mapPosition;
-    PlayerGetDestCoords(&mapPosition.x, &mapPosition.y);
+    PlayerGetDestCoordsInTiles(&mapPosition.x, &mapPosition.y);
 
     // Wait for show mon first
     if (!FieldEffectActiveListContains(FLDEFF_FIELD_MOVE_SHOW_MON))
@@ -3010,7 +3010,7 @@ static void SurfFieldEffect_Init(struct Task *task)
     gPlayerAvatar.preventStep = TRUE;
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_SURFING);
     PlayerGetDestCoords(&task->tDestX, &task->tDestY);
-    MoveCoords(gObjectEvents[gPlayerAvatar.objectEventId].movementDirection, &task->tDestX, &task->tDestY);
+    MoveCoordsInMapCoordIncrement(gObjectEvents[gPlayerAvatar.objectEventId].movementDirection, &task->tDestX, &task->tDestY);
     task->tState++;
 }
 

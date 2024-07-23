@@ -796,7 +796,7 @@ static void BuyMenuDrawMapBg(void)
     u8 metatileLayerType;
 
     mapLayout = gMapHeader.mapLayout;
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
+    GetTileCoordsInFrontOfPlayer(&x, &y);
     x -= 4;
     y -= 4;
 
@@ -853,47 +853,58 @@ static void BuyMenuCollectObjectEventData(void)
 {
     s16 facingX;
     s16 facingY;
-    u8 y;
-    u8 x;
+    s16 minX;
+    s16 minY;
+    s16 maxX;
+    s16 maxY;
+    s16 y;
+    s16 x;
+    u8 i;
     u8 numObjects = 0;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&facingX, &facingY);
+    GetTileCoordsInFrontOfPlayer(&facingX, &facingY);
 
     for (y = 0; y < OBJECT_EVENTS_COUNT; y++)
         sShopData->viewportObjects[y][OBJ_EVENT_ID] = OBJECT_EVENTS_COUNT;
 
-    for (y = 0; y < 5; y++)
+    minX = GRID_TO_COORDS(facingX - 4);
+    minY = GRID_TO_COORDS(facingY - 2);
+    maxX = GRID_TO_COORDS(facingX + 3);
+    maxY = GRID_TO_COORDS(facingY + 3);
+
+    for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
-        for (x = 0; x < 7; x++)
+        if (!gObjectEvents[i].active)
+            continue;
+
+        x = gObjectEvents[i].currentCoords.x;
+        y = gObjectEvents[i].currentCoords.y;
+
+        if (x < minX || x > maxX || y < minY || y > maxY)
+            continue;
+
+        sShopData->viewportObjects[numObjects][OBJ_EVENT_ID] = i;
+        sShopData->viewportObjects[numObjects][X_COORD] = x - minX;
+        sShopData->viewportObjects[numObjects][Y_COORD] = y - minY;
+        sShopData->viewportObjects[numObjects][LAYER_TYPE] = ObjectEventGetMetatileLayerTypeAt(x, y);
+
+        switch (gObjectEvents[i].facingDirection)
         {
-            u8 objEventId = GetObjectEventIdByXY(facingX - 4 + x, facingY - 2 + y);
-
-            if (objEventId != OBJECT_EVENTS_COUNT)
-            {
-                sShopData->viewportObjects[numObjects][OBJ_EVENT_ID] = objEventId;
-                sShopData->viewportObjects[numObjects][X_COORD] = x;
-                sShopData->viewportObjects[numObjects][Y_COORD] = y;
-                sShopData->viewportObjects[numObjects][LAYER_TYPE] = MapGridGetMetatileLayerTypeAt(facingX - 4 + x, facingY - 2 + y);
-
-                switch (gObjectEvents[objEventId].facingDirection)
-                {
-                case DIR_SOUTH:
-                    sShopData->viewportObjects[numObjects][ANIM_NUM] = ANIM_STD_FACE_SOUTH;
-                    break;
-                case DIR_NORTH:
-                    sShopData->viewportObjects[numObjects][ANIM_NUM] = ANIM_STD_FACE_NORTH;
-                    break;
-                case DIR_WEST:
-                    sShopData->viewportObjects[numObjects][ANIM_NUM] = ANIM_STD_FACE_WEST;
-                    break;
-                case DIR_EAST:
-                default:
-                    sShopData->viewportObjects[numObjects][ANIM_NUM] = ANIM_STD_FACE_EAST;
-                    break;
-                }
-                numObjects++;
-            }
+        case DIR_SOUTH:
+            sShopData->viewportObjects[numObjects][ANIM_NUM] = ANIM_STD_FACE_SOUTH;
+            break;
+        case DIR_NORTH:
+            sShopData->viewportObjects[numObjects][ANIM_NUM] = ANIM_STD_FACE_NORTH;
+            break;
+        case DIR_WEST:
+            sShopData->viewportObjects[numObjects][ANIM_NUM] = ANIM_STD_FACE_WEST;
+            break;
+        case DIR_EAST:
+        default:
+            sShopData->viewportObjects[numObjects][ANIM_NUM] = ANIM_STD_FACE_EAST;
+            break;
         }
+        numObjects++;
     }
 }
 
@@ -913,8 +924,8 @@ static void BuyMenuDrawObjectEvents(void)
         spriteId = CreateObjectGraphicsSprite(
             gObjectEvents[sShopData->viewportObjects[i][OBJ_EVENT_ID]].graphicsId,
             SpriteCallbackDummy,
-            (u16)sShopData->viewportObjects[i][X_COORD] * 16 + 8,
-            (u16)sShopData->viewportObjects[i][Y_COORD] * 16 + 48 - graphicsInfo->height / 2,
+            (u16)sShopData->viewportObjects[i][X_COORD],
+            (u16)sShopData->viewportObjects[i][Y_COORD] + 40 - graphicsInfo->height / 2,
             2);
 
         if (BuyMenuCheckIfObjectEventOverlapsMenuBg(sShopData->viewportObjects[i]) == TRUE)
@@ -929,7 +940,7 @@ static void BuyMenuDrawObjectEvents(void)
 
 static bool8 BuyMenuCheckIfObjectEventOverlapsMenuBg(s16 *object)
 {
-    if (!BuyMenuCheckForOverlapWithMenuBg(object[X_COORD], object[Y_COORD] + 2) && object[LAYER_TYPE] != METATILE_LAYER_TYPE_COVERED)
+    if (!BuyMenuCheckForOverlapWithMenuBg(COORDS_TO_GRID(object[X_COORD]), COORDS_TO_GRID(object[Y_COORD]) + 2) && object[LAYER_TYPE] != METATILE_LAYER_TYPE_COVERED)
         return TRUE;
     else
         return FALSE;

@@ -8,7 +8,10 @@ u8 (*const gMovementTypeFuncs_WanderAround[])(struct ObjectEvent *, struct Sprit
     MovementType_WanderAround_Step6,
 };
 
-const u8 gStandardDirections[] = {DIR_SOUTH, DIR_NORTH, DIR_WEST, DIR_EAST};
+const u8 gStandardDirections[] = {
+    DIR_SOUTH, DIR_NORTH, DIR_WEST, DIR_EAST,
+    DIR_SOUTHEAST, DIR_NORTHEAST, DIR_SOUTHWEST, DIR_NORTHWEST
+};
 
 u8 (*const gGetVectorDirectionFuncs[])(s16, s16, s16, s16) = {
     GetVectorDirection,
@@ -429,6 +432,11 @@ u8 (*const gMovementTypeFuncs_JogInPlace[])(struct ObjectEvent *, struct Sprite 
 u8 (*const gMovementTypeFuncs_RunInPlace[])(struct ObjectEvent *, struct Sprite *) = {
     MovementType_RunInPlace_Step0,
     MovementType_MoveInPlace_Step1,
+};
+
+u8 (*const gMovementTypeFuncs_WalkInCircles[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementType_WalkInCircles_Step0,
+    MovementType_WalkInCircles_Step1
 };
 
 u8 (*const gMovementTypeFuncs_Invisible[])(struct ObjectEvent *, struct Sprite *) = {

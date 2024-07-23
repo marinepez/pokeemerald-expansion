@@ -4,7 +4,7 @@
 struct ApproachingTrainer
 {
     u8 objectEventId;
-    u8 radius; // plus 1
+    u16 radius;
     const u8 *trainerScriptPtr;
     u8 taskId;
 };

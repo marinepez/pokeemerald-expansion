@@ -188,7 +188,7 @@ static void CreateCloudSprites(void)
         {
             gWeatherPtr->sprites.s1.cloudSprites[i] = &gSprites[spriteId];
             sprite = gWeatherPtr->sprites.s1.cloudSprites[i];
-            SetSpritePosToMapCoords(sCloudSpriteMapCoords[i].x + MAP_OFFSET, sCloudSpriteMapCoords[i].y + MAP_OFFSET, &sprite->x, &sprite->y);
+            SetSpritePosToMapCoords(GRID_TO_COORDS(sCloudSpriteMapCoords[i].x + MAP_OFFSET), GRID_TO_COORDS(sCloudSpriteMapCoords[i].y + MAP_OFFSET), &sprite->x, &sprite->y);
             sprite->coordOffsetEnabled = TRUE;
         }
         else

@@ -269,8 +269,8 @@ static u8 GetSecretBaseTypeInFrontOfPlayer_(void)
     s16 x, y;
     s16 behavior;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
-    behavior = MapGridGetMetatileBehaviorAt(x, y) & 0xFFF;
+    GetOneStepInFrontOfPlayer(&x, &y);
+    behavior = ObjectEventGetMetatileBehaviorAt(x, y) & 0xFFF;
     if (behavior == MB_SECRET_BASE_SPOT_RED_CAVE || behavior == MB_SECRET_BASE_SPOT_RED_CAVE_OPEN)
         return SECRET_BASE_RED_CAVE;
 
@@ -324,7 +324,7 @@ void ToggleSecretBaseEntranceMetatile(void)
     s16 x, y;
     s16 metatileId;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
+    GetTileCoordsInFrontOfPlayer(&x, &y);
     metatileId = MapGridGetMetatileIdAt(x, y);
 
     // Look for entrance metatiles to open
@@ -1212,12 +1212,12 @@ void SecretBasePerStepCallback(u8 taskId)
         else
             sInFriendSecretBase = FALSE;
 
-        PlayerGetDestCoords(&tPlayerX, &tPlayerY);
+        PlayerGetDestCoordsInTiles(&tPlayerX, &tPlayerY);
         tState = 1;
         break;
     case 1:
         // End if player hasn't moved
-        PlayerGetDestCoords(&x, &y);
+        PlayerGetDestCoordsInTiles(&x, &y);
         if (x == tPlayerX && y == tPlayerY)
             return;
 
@@ -1889,8 +1889,8 @@ void CheckInteractedWithFriendsPosterDecor(void)
 {
     s16 x, y;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
-    switch (MapGridGetMetatileIdAt(x, y))
+    GetOneStepInFrontOfPlayer(&x, &y);
+    switch (ObjectEventGetMetatileIdAt(x, y))
     {
         case METATILE_SecretBase_PikaPoster_Left:
         case METATILE_SecretBase_PikaPoster_Right:
@@ -1917,8 +1917,8 @@ void CheckInteractedWithFriendsFurnitureBottom(void)
 {
     s16 x, y;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
-    switch (MapGridGetMetatileIdAt(x, y))
+    GetOneStepInFrontOfPlayer(&x, &y);
+    switch (ObjectEventGetMetatileIdAt(x, y))
     {
         case METATILE_SecretBase_GlassOrnament_Base1:
         case METATILE_SecretBase_GlassOrnament_Base2:
@@ -1995,8 +1995,8 @@ void CheckInteractedWithFriendsFurnitureMiddle(void)
 {
     s16 x, y;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
-    switch (MapGridGetMetatileIdAt(x, y))
+    GetOneStepInFrontOfPlayer(&x, &y);
+    switch (ObjectEventGetMetatileIdAt(x, y))
     {
         case METATILE_SecretBase_HeavyDesk_TopMid:
         case METATILE_SecretBase_RaggedDesk_TopMid:
@@ -2019,8 +2019,8 @@ void CheckInteractedWithFriendsFurnitureTop(void)
 {
     s16 x, y;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
-    switch (MapGridGetMetatileIdAt(x, y))
+    GetOneStepInFrontOfPlayer(&x, &y);
+    switch (ObjectEventGetMetatileIdAt(x, y))
     {
         case METATILE_SecretBase_HeavyDesk_TopLeft:
         case METATILE_SecretBase_HeavyDesk_TopRight:
@@ -2065,8 +2065,8 @@ void CheckInteractedWithFriendsSandOrnament(void)
 {
     s16 x, y;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
-    switch ((int)MapGridGetMetatileIdAt(x, y))
+    GetOneStepInFrontOfPlayer(&x, &y);
+    switch ((int)ObjectEventGetMetatileIdAt(x, y))
     {
         case METATILE_SecretBase_SandOrnament_Base1:
         case METATILE_SecretBase_SandOrnament_Base2:

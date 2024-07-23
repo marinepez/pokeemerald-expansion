@@ -158,7 +158,7 @@ static u8 CreateEscalatorTask(bool16 goingUp)
     u8 taskId = CreateTask(Task_DrawEscalator, 0);
     s16 *data = gTasks[taskId].data;
 
-    PlayerGetDestCoords(&tPlayerX, &tPlayerY);
+    PlayerGetDestCoordsInTiles(&tPlayerX, &tPlayerY);
     tState = 0;
     tTransitionStage = 0;
     tGoingUp = goingUp;

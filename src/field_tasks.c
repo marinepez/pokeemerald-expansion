@@ -368,7 +368,7 @@ static void PacifidlogBridgePerStepCallback(u8 taskId)
     s16 *data;
     s16 x, y;
     data = gTasks[taskId].data;
-    PlayerGetDestCoords(&x, &y);
+    PlayerGetDestCoordsInTiles(&x, &y);
     switch (tState)
     {
     case 0:
@@ -494,7 +494,7 @@ static void FortreeBridgePerStepCallback(u8 taskId)
     u8 elevation, onBridgeElevation;
     s16 x, y, prevX, prevY;
     s16 *data = gTasks[taskId].data;
-    PlayerGetDestCoords(&x, &y);
+    PlayerGetDestCoordsInTiles(&x, &y);
     switch (tState)
     {
     default:
@@ -665,13 +665,13 @@ static void SootopolisGymIcePerStepCallback(u8 taskId)
     switch (tState)
     {
     case 0:
-        PlayerGetDestCoords(&x, &y);
+        PlayerGetDestCoordsInTiles(&x, &y);
         tPrevX = x;
         tPrevY = y;
         tState = 1;
         break;
     case 1:
-        PlayerGetDestCoords(&x, &y);
+        PlayerGetDestCoordsInTiles(&x, &y);
         // End if player hasn't moved
         if (x == tPrevX && y == tPrevY)
             return;
@@ -750,7 +750,7 @@ static void AshGrassPerStepCallback(u8 taskId)
     s16 x, y;
     u16 *ashGatherCount;
     s16 *data = gTasks[taskId].data;
-    PlayerGetDestCoords(&x, &y);
+    PlayerGetDestCoordsInTiles(&x, &y);
 
     // End if player hasn't moved
     if (x == tPrevX && y == tPrevY)
@@ -803,7 +803,7 @@ static void CrackedFloorPerStepCallback(u8 taskId)
     s16 x, y;
     u16 behavior;
     s16 *data = gTasks[taskId].data;
-    PlayerGetDestCoords(&x, &y);
+    PlayerGetDestCoordsInTiles(&x, &y);
     behavior = MapGridGetMetatileBehaviorAt(x, y);
 
     // Update up to 2 previous cracked floor spaces
@@ -896,7 +896,7 @@ static void Task_MuddySlope(u8 taskId)
     int i;
     u16 mapId;
     s16 *data = gTasks[taskId].data;
-    PlayerGetDestCoords(&x, &y);
+    PlayerGetDestCoordsInTiles(&x, &y);
     mapId = (gSaveBlock1Ptr->location.mapGroup << 8) | gSaveBlock1Ptr->location.mapNum;
     switch (tState)
     {

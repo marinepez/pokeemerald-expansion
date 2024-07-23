@@ -28,6 +28,7 @@
 #include "constants/battle_frontier.h"
 #include "constants/rgb.h"
 #include "constants/region_map_sections.h"
+#include "constants/event_object_movement.h"
 #include "constants/songs.h"
 
 // gFrontierPassBg_Pal has 8*16 colors, but they attempt to load 13*16 colors.
@@ -1660,8 +1661,8 @@ static void InitFrontierMapSprites(void)
         if (mapNum == MAP_NUM(BATTLE_FRONTIER_OUTSIDE_WEST)
             || (mapNum == MAP_NUM(BATTLE_FRONTIER_OUTSIDE_EAST) && (x = 55)))
         {
-            x += gSaveBlock1Ptr->pos.x;
-            y = gSaveBlock1Ptr->pos.y;
+            x += COORDS_TO_GRID(gSaveBlock1Ptr->pos.x);
+            y = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y);
 
             x /= 8;
             y /= 8;

@@ -1772,8 +1772,8 @@ void GenerateBattlePyramidFloorLayout(u16 *backupMapData, bool8 setPlayerPositio
                 {
                     if (i == entranceSquareId && setPlayerPosition == FALSE)
                     {
-                        gSaveBlock1Ptr->pos.x = (mapLayout->width * (i % PYRAMID_FLOOR_SQUARES_WIDE)) + x;
-                        gSaveBlock1Ptr->pos.y = (mapLayout->height * (i / PYRAMID_FLOOR_SQUARES_WIDE)) + y;
+                        gSaveBlock1Ptr->pos.x = GRID_TO_TILE_CENTER((mapLayout->width * (i % PYRAMID_FLOOR_SQUARES_WIDE)) + x);
+                        gSaveBlock1Ptr->pos.y = GRID_TO_TILE_CENTER((mapLayout->height * (i / PYRAMID_FLOOR_SQUARES_WIDE)) + y);
                     }
                     map[x] = (layoutMap[x] & (MAPGRID_ELEVATION_MASK | MAPGRID_COLLISION_MASK)) | METATILE_BattlePyramid_Floor;
                 }

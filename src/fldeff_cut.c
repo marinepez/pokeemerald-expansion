@@ -177,10 +177,10 @@ bool8 SetUpFieldMove_Cut(void)
 
         for (i = 0; i < CUT_NORMAL_SIDE; i++)
         {
-            y = i - 1 + gPlayerFacingPosition.y;
+            y = i - 1 + COORDS_TO_GRID(gPlayerFacingPosition.y);
             for (j = 0; j < CUT_NORMAL_SIDE; j++)
             {
-                x = j - 1 + gPlayerFacingPosition.x;
+                x = j - 1 + COORDS_TO_GRID(gPlayerFacingPosition.x);
                 if (MapGridGetElevationAt(x, y) == gPlayerFacingPosition.elevation)
                 {
                     tileBehavior = MapGridGetMetatileBehaviorAt(x, y);
@@ -227,8 +227,8 @@ bool8 SetUpFieldMove_Cut(void)
             bool8 tileCuttable;
             for (i = 0; i < 16; i++)
             {
-                x = gPlayerFacingPosition.x + sHyperCutStruct[i].x;
-                y = gPlayerFacingPosition.y + sHyperCutStruct[i].y;
+                x = COORDS_TO_GRID(gPlayerFacingPosition.x) + sHyperCutStruct[i].x;
+                y = COORDS_TO_GRID(gPlayerFacingPosition.y) + sHyperCutStruct[i].y;
                 tileCuttable = TRUE;
 
                 for (j = 0; j < 2; ++j)
@@ -327,8 +327,8 @@ bool8 FldEff_CutGrass(void)
             s8 xAdd = (i % 5) - 2;
             s8 yAdd = (i / 5) - 2;
 
-            x = xAdd + gPlayerFacingPosition.x;
-            y = yAdd + gPlayerFacingPosition.y;
+            x = xAdd + COORDS_TO_GRID(gPlayerFacingPosition.x);
+            y = yAdd + COORDS_TO_GRID(gPlayerFacingPosition.y);
 
             SetCutGrassMetatile(x, y);
             AllowObjectAtPosTriggerGroundEffects(x, y);

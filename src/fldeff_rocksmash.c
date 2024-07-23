@@ -31,9 +31,9 @@ bool8 CheckObjectGraphicsInFrontOfPlayer(u8 graphicsId)
 {
     u8 objEventId;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&gPlayerFacingPosition.x, &gPlayerFacingPosition.y);
+    GetOneStepInFrontOfPlayer(&gPlayerFacingPosition.x, &gPlayerFacingPosition.y);
     gPlayerFacingPosition.elevation = PlayerGetElevation();
-    objEventId = GetObjectEventIdByPosition(gPlayerFacingPosition.x, gPlayerFacingPosition.y, gPlayerFacingPosition.elevation);
+    objEventId = GetObjectEventIdAroundPosition(gPlayerFacingPosition.x, gPlayerFacingPosition.y, gPlayerFacingPosition.elevation);
     if (gObjectEvents[objEventId].graphicsId != graphicsId)
     {
         return FALSE;
@@ -47,7 +47,7 @@ bool8 CheckObjectGraphicsInFrontOfPlayer(u8 graphicsId)
 
 u8 CreateFieldMoveTask(void)
 {
-    GetXYCoordsOneStepInFrontOfPlayer(&gPlayerFacingPosition.x, &gPlayerFacingPosition.y);
+    GetOneStepInFrontOfPlayer(&gPlayerFacingPosition.x, &gPlayerFacingPosition.y);
     return CreateTask(Task_DoFieldMove_Init, 8);
 }
 

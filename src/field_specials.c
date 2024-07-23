@@ -522,28 +522,31 @@ void SpawnLinkPartnerObjectEvent(void)
     u8 linkSpriteId;
     u8 i;
 
+    int posX = COORDS_TO_GRID(gSaveBlock1Ptr->pos.x);
+    int posY = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y);
+
     myLinkPlayerNumber = GetMultiplayerId();
     playerFacingDirection = GetPlayerFacingDirection();
     switch (playerFacingDirection)
     {
     case DIR_WEST:
         j = 2;
-        x = gSaveBlock1Ptr->pos.x - 1;
-        y = gSaveBlock1Ptr->pos.y;
+        x = posX - 1;
+        y = posY;
         break;
     case DIR_NORTH:
         j = 1;
-        x = gSaveBlock1Ptr->pos.x;
-        y = gSaveBlock1Ptr->pos.y - 1;
+        x = posX;
+        y = posY - 1;
         break;
     case DIR_EAST:
-        x = gSaveBlock1Ptr->pos.x + 1;
-        y = gSaveBlock1Ptr->pos.y;
+        x = posX + 1;
+        y = posY;
         break;
     case DIR_SOUTH:
         j = 3;
-        x = gSaveBlock1Ptr->pos.x;
-        y = gSaveBlock1Ptr->pos.y + 1;
+        x = posX;
+        y = posY + 1;
     }
     for (i = 0; i < gSpecialVar_0x8004; i++)
     {
@@ -902,8 +905,8 @@ void ShowFieldMessageStringVar4(void)
 
 void StorePlayerCoordsInVars(void)
 {
-    gSpecialVar_0x8004 = gSaveBlock1Ptr->pos.x;
-    gSpecialVar_0x8005 = gSaveBlock1Ptr->pos.y;
+    gSpecialVar_0x8004 = COORDS_TO_GRID(gSaveBlock1Ptr->pos.x);
+    gSpecialVar_0x8005 = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y);
 }
 
 u8 GetPlayerTrainerIdOnesDigit(void)
@@ -974,7 +977,7 @@ static bool8 IsPlayerInFrontOfPC(void)
     s16 x, y;
     u32 tileInFront;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
+    GetOneStepInFrontOfPlayer(&x, &y);
     tileInFront = MapGridGetMetatileIdAt(x, y);
 
     return (tileInFront == METATILE_BrendansMaysHouse_BrendanPC_On
@@ -1076,7 +1079,7 @@ static void PCTurnOnEffect_SetMetatile(s16 isScreenOn, s8 dx, s8 dy)
         else if (gSpecialVar_0x8004 == PC_LOCATION_MAYS_HOUSE)
             metatileId = METATILE_BrendansMaysHouse_MayPC_On;
     }
-    MapGridSetMetatileIdAt(gSaveBlock1Ptr->pos.x + dx + MAP_OFFSET, gSaveBlock1Ptr->pos.y + dy + MAP_OFFSET, metatileId | MAPGRID_COLLISION_MASK);
+    MapGridSetMetatileIdAt(COORDS_TO_GRID(gSaveBlock1Ptr->pos.x) + dx + MAP_OFFSET, COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) + dy + MAP_OFFSET, metatileId | MAPGRID_COLLISION_MASK);
 }
 
 // For this special, gSpecialVar_0x8004 is expected to be some PC_LOCATION_* value.
@@ -1266,8 +1269,8 @@ void SpawnCameraObject(void)
     u8 obj = SpawnSpecialObjectEventParameterized(OBJ_EVENT_GFX_BOY_1,
                                                   MOVEMENT_TYPE_FACE_DOWN,
                                                   OBJ_EVENT_ID_CAMERA,
-                                                  gSaveBlock1Ptr->pos.x + MAP_OFFSET,
-                                                  gSaveBlock1Ptr->pos.y + MAP_OFFSET,
+                                                  COORDS_TO_GRID(gSaveBlock1Ptr->pos.x) + MAP_OFFSET,
+                                                  COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) + MAP_OFFSET,
                                                   3); // elevation
     gObjectEvents[obj].invisible = TRUE;
     CameraObjectSetFollowedSpriteId(gObjectEvents[obj].spriteId);
@@ -3796,8 +3799,8 @@ static void Task_CloseBattlePikeCurtain(u8 taskId)
         {
             for (x = 0; x < CURTAIN_WIDTH; x++)
             {
-                MapGridSetMetatileIdAt(gSaveBlock1Ptr->pos.x + x + MAP_OFFSET - 1,
-                                       gSaveBlock1Ptr->pos.y + y + MAP_OFFSET - 3,
+                MapGridSetMetatileIdAt(COORDS_TO_GRID(gSaveBlock1Ptr->pos.x) + x + MAP_OFFSET - 1,
+                                       COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) + y + MAP_OFFSET - 3,
                                        (x + METATILE_BattlePike_CurtainFrames_Start) + (y * METATILE_ROW_WIDTH) + (tCurrentFrame * CURTAIN_HEIGHT * METATILE_ROW_WIDTH));
             }
         }

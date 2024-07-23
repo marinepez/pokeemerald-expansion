@@ -27,6 +27,7 @@
 #include "constants/map_types.h"
 #include "constants/rgb.h"
 #include "constants/weather.h"
+#include "constants/event_object_movement.h"
 
 /*
  *  This file handles region maps generally, and the map used when selecting a fly destination.
@@ -997,8 +998,8 @@ static void InitMapBasedOnPlayerLocation(void)
         sRegionMap->playerIsInCave = FALSE;
         mapWidth = gMapHeader.mapLayout->width;
         mapHeight = gMapHeader.mapLayout->height;
-        x = gSaveBlock1Ptr->pos.x;
-        y = gSaveBlock1Ptr->pos.y;
+        x = COORDS_TO_GRID(gSaveBlock1Ptr->pos.x);
+        y = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y);
         if (sRegionMap->mapSecId == MAPSEC_UNDERWATER_SEAFLOOR_CAVERN || sRegionMap->mapSecId == MAPSEC_UNDERWATER_MARINE_CAVE)
             sRegionMap->playerIsInCave = TRUE;
         break;
@@ -1092,15 +1093,15 @@ static void InitMapBasedOnPlayerLocation(void)
     case MAPSEC_ROUTE_126:
     case MAPSEC_UNDERWATER_126:
         x = 0;
-        if (gSaveBlock1Ptr->pos.x > 32)
+        if (gSaveBlock1Ptr->pos.x > GRID_TO_TILE_CENTER(32))
             x++;
-        if (gSaveBlock1Ptr->pos.x > 51)
+        if (gSaveBlock1Ptr->pos.x > GRID_TO_TILE_CENTER(51))
             x++;
 
         y = 0;
-        if (gSaveBlock1Ptr->pos.y > 37)
+        if (gSaveBlock1Ptr->pos.y > GRID_TO_TILE_CENTER(37))
             y++;
-        if (gSaveBlock1Ptr->pos.y > 56)
+        if (gSaveBlock1Ptr->pos.y > GRID_TO_TILE_CENTER(56))
             y++;
         break;
     case MAPSEC_ROUTE_121:

@@ -221,7 +221,7 @@ static void ScriptMovement_TakeStep(u8 taskId, u8 moveScrId, u8 objEventId, cons
     }
     else
     {
-        if (!ObjectEventSetHeldMovement(&gObjectEvents[objEventId], nextMoveActionId))
+        if (!ObjectEventSetHeldMovementScripted(&gObjectEvents[objEventId], nextMoveActionId))
         {
             movementScript++;
             SetMovementScript(moveScrId, movementScript);

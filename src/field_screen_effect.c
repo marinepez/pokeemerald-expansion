@@ -260,7 +260,7 @@ static void SetUpWarpExitTask(void)
     TaskFunc func;
 
     PlayerGetDestCoords(&x, &y);
-    behavior = MapGridGetMetatileBehaviorAt(x, y);
+    behavior = ObjectEventGetMetatileBehaviorAt(x, y);
     if (MetatileBehavior_IsDoor(behavior) == TRUE)
         func = Task_ExitDoor;
     else if (MetatileBehavior_IsNonAnimDoor(behavior) == TRUE)
@@ -325,7 +325,7 @@ static void Task_ExitDoor(u8 taskId)
     case 0:
         SetPlayerVisibility(FALSE);
         FreezeObjectEvents();
-        PlayerGetDestCoords(x, y);
+        PlayerGetDestCoordsInTiles(x, y);
         FieldSetDoorOpened(*x, *y);
         task->tState = 1;
         break;
@@ -335,7 +335,7 @@ static void Task_ExitDoor(u8 taskId)
             u8 objEventId;
             SetPlayerVisibility(TRUE);
             objEventId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
-            ObjectEventSetHeldMovement(&gObjectEvents[objEventId], MOVEMENT_ACTION_WALK_NORMAL_DOWN);
+            ObjectEventSetHeldMovementScripted(&gObjectEvents[objEventId], MOVEMENT_ACTION_WALK_NORMAL_DOWN);
             task->tState = 2;
         }
         break;
@@ -374,7 +374,7 @@ static void Task_ExitNonAnimDoor(u8 taskId)
     case 0:
         SetPlayerVisibility(FALSE);
         FreezeObjectEvents();
-        PlayerGetDestCoords(x, y);
+        PlayerGetDestCoordsInTiles(x, y);
         task->tState = 1;
         break;
     case 1:
@@ -383,7 +383,7 @@ static void Task_ExitNonAnimDoor(u8 taskId)
             u8 objEventId;
             SetPlayerVisibility(TRUE);
             objEventId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
-            ObjectEventSetHeldMovement(&gObjectEvents[objEventId], GetWalkNormalMovementAction(GetPlayerFacingDirection()));
+            ObjectEventSetHeldMovementScripted(&gObjectEvents[objEventId], GetWalkNormalMovementAction(GetPlayerFacingDirection()));
             task->tState = 2;
         }
         break;
@@ -684,7 +684,7 @@ static void Task_DoDoorWarp(u8 taskId)
     {
     case 0:
         FreezeObjectEvents();
-        PlayerGetDestCoords(x, y);
+        PlayerGetDestCoordsInTiles(x, y);
         PlaySE(GetDoorSoundEffect(*x, *y - 1));
         task->data[1] = FieldAnimateDoorOpen(*x, *y - 1);
         task->tState = 1;
@@ -696,7 +696,7 @@ static void Task_DoDoorWarp(u8 taskId)
             objEventId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
             ObjectEventClearHeldMovementIfActive(&gObjectEvents[objEventId]);
             objEventId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
-            ObjectEventSetHeldMovement(&gObjectEvents[objEventId], MOVEMENT_ACTION_WALK_NORMAL_UP);
+            ObjectEventSetHeldMovementScripted(&gObjectEvents[objEventId], MOVEMENT_ACTION_WALK_NORMAL_UP);
             task->tState = 2;
         }
         break;

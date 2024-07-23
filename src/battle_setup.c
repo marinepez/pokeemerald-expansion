@@ -369,6 +369,12 @@ static void Task_BattleStart(u8 taskId)
     case 1:
         if (IsBattleTransitionDone() == TRUE)
         {
+            if (CalculatePlayerPartyCount() == 0)
+            {
+                SetMainCallback2(gMain.savedCallback);
+                DestroyTask(taskId);
+                break;
+            }
             CleanupOverworldWindowsAndTilemaps();
             SetMainCallback2(CB2_InitBattle);
             RestartWildEncounterImmunitySteps();
@@ -734,7 +740,7 @@ u8 BattleSetup_GetTerrainId(void)
     s16 x, y;
 
     PlayerGetDestCoords(&x, &y);
-    tileBehavior = MapGridGetMetatileBehaviorAt(x, y);
+    tileBehavior = ObjectEventGetMetatileBehaviorAt(x, y);
 
     if (MetatileBehavior_IsTallGrass(tileBehavior))
         return BATTLE_TERRAIN_GRASS;
@@ -794,7 +800,7 @@ static u8 GetBattleTransitionTypeByMap(void)
     s16 x, y;
 
     PlayerGetDestCoords(&x, &y);
-    tileBehavior = MapGridGetMetatileBehaviorAt(x, y);
+    tileBehavior = ObjectEventGetMetatileBehaviorAt(x, y);
 
     if (GetFlashLevel())
         return TRANSITION_TYPE_FLASH;

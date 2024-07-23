@@ -195,7 +195,11 @@ struct ObjectEvent
              u32 disableJumpLandingGroundEffect:1;
              u32 fixedPriority:1;
              u32 hideReflection:1;
-             //u32 padding:4;
+             u32 isMidAir:1;
+             u32 moveBlocked:1;
+             u32 useTargetCoords:1;
+             u32 tookStep:1;
+             u32 moveToTileCenter:1;
     /*0x04*/ u8 spriteId;
     /*0x05*/ u8 graphicsId;
     /*0x06*/ u8 movementType;
@@ -208,21 +212,21 @@ struct ObjectEvent
     /*0x0C*/ struct Coords16 initialCoords;
     /*0x10*/ struct Coords16 currentCoords;
     /*0x14*/ struct Coords16 previousCoords;
-    /*0x18*/ u16 facingDirection:4; // current direction?
+    /*0x18*/ struct Coords16 targetCoords;
+             struct Coords16 pixelsMoved;
+    /*0x1C*/ u16 facingDirection:4; // current direction?
              u16 movementDirection:4;
              u16 rangeX:4;
              u16 rangeY:4;
-    /*0x1A*/ u8 fieldEffectSpriteId;
-    /*0x1B*/ u8 warpArrowSpriteId;
-    /*0x1C*/ u8 movementActionId;
-    /*0x1D*/ u8 trainerRange_berryTreeId;
-    /*0x1E*/ u8 currentMetatileBehavior;
-    /*0x1F*/ u8 previousMetatileBehavior;
-    /*0x20*/ u8 previousMovementDirection;
-    /*0x21*/ u8 directionSequenceIndex;
-    /*0x22*/ u8 playerCopyableMovement; // COPY_MOVE_*
-    /*0x23*/ //u8 padding2;
-    /*size = 0x24*/
+    /*0x1E*/ u8 fieldEffectSpriteId;
+    /*0x1F*/ u8 warpArrowSpriteId;
+    /*0x20*/ u8 movementActionId;
+    /*0x21*/ u8 trainerRange_berryTreeId;
+    /*0x22*/ u8 currentMetatileBehavior;
+    /*0x23*/ u8 previousMetatileBehavior;
+    /*0x24*/ u8 previousMovementDirection;
+    /*0x25*/ u8 directionSequenceIndex;
+    /*0x26*/ u8 playerCopyableMovement; // COPY_MOVE_*
 };
 
 struct ObjectEventGraphicsInfo
@@ -313,24 +317,31 @@ enum
 
 struct PlayerAvatar
 {
-    /*0x00*/ u8 flags;
-    /*0x01*/ u8 transitionFlags; // used to be named bike, but its definitely not that. seems to be some transition flags
-    /*0x02*/ u8 runningState; // this is a static running state. 00 is not moving, 01 is turn direction, 02 is moving.
-    /*0x03*/ u8 tileTransitionState; // this is a transition running state: 00 is not moving, 01 is transition between tiles, 02 means you are on the frame in which you have centered on a tile but are about to keep moving, even if changing directions. 2 is also used for a ledge hop, since you are transitioning.
-    /*0x04*/ u8 spriteId;
-    /*0x05*/ u8 objectEventId;
-    /*0x06*/ bool8 preventStep;
-    /*0x07*/ u8 gender;
-    /*0x08*/ u8 acroBikeState; // 00 is normal, 01 is turning, 02 is standing wheelie, 03 is hopping wheelie
-    /*0x09*/ u8 newDirBackup; // during bike movement, the new direction as opposed to player's direction is backed up here.
-    /*0x0A*/ u8 bikeFrameCounter; // on the mach bike, when this value is 1, the bike is moving but not accelerating yet for 1 tile. on the acro bike, this acts as a timer for acro bike.
-    /*0x0B*/ u8 bikeSpeed;
+    u8 flags;
+    u8 transitionFlags; // used to be named bike, but its definitely not that. seems to be some transition flags
+    u8 runningState; // this is a static running state. 00 is not moving, 01 is turn direction, 02 is moving.
+    u8 tileTransitionState; // this is a transition running state: 00 is not moving, 01 is transition between tiles, 02 means you are on the frame in which you have centered on a tile but are about to keep moving, even if changing directions. 2 is also used for a ledge hop, since you are transitioning.
+    u8 spriteId;
+    u8 objectEventId;
+    u8 isMoving:1;
+    u8 tookStep:1;
+    u8 moveBlocked:1;
+    u8 preventStep:1;
+    u8 changedTile:1;
+    u8 gender;
+    u16 lastTileX;
+    u16 lastTileY;
+    s8 spawnWarpEventId;
+    u8 acroBikeState; // 00 is normal, 01 is turning, 02 is standing wheelie, 03 is hopping wheelie
+    u8 newDirBackup; // during bike movement, the new direction as opposed to player's direction is backed up here.
+    u8 bikeFrameCounter; // on the mach bike, when this value is 1, the bike is moving but not accelerating yet for 1 tile. on the acro bike, this acts as a timer for acro bike.
+    u8 bikeSpeed;
     // acro bike only
-    /*0x0C*/ u32 directionHistory; // up/down/left/right history is stored in each nybble, but using the field directions and not the io inputs.
-    /*0x10*/ u32 abStartSelectHistory; // same as above but for A + B + start + select only
+    u32 directionHistory; // up/down/left/right history is stored in each nybble, but using the field directions and not the io inputs.
+    u32 abStartSelectHistory; // same as above but for A + B + start + select only
     // these two are timer history arrays which [0] is the active timer for acro bike. every element is backed up to the next element upon update.
-    /*0x14*/ u8 dirTimerHistory[8];
-    /*0x1C*/ u8 abStartSelectTimerHistory[8];
+    u8 dirTimerHistory[8];
+    u8 abStartSelectTimerHistory[8];
 };
 
 struct Camera

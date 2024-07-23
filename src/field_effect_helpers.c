@@ -313,6 +313,21 @@ u32 FldEff_TallGrass(void)
     return 0;
 }
 
+static bool8 CheckGrassEffectObjectMovedAway(u8 objectEventId, struct Sprite *sprite)
+{
+    struct ObjectEvent *objectEvent = &gObjectEvents[objectEventId];
+
+    s16 coordsX = COORDS_TO_GRID(objectEvent->currentCoords.x);
+    s16 coordsY = COORDS_TO_GRID(objectEvent->currentCoords.y);
+    s16 spriteX = COORDS_TO_GRID(sprite->sX);
+    s16 spriteY = COORDS_TO_GRID(sprite->sY);
+
+    if (coordsX != spriteX || coordsY != spriteY)
+        return TRUE;
+
+    return FALSE;
+}
+
 void UpdateTallGrassFieldEffect(struct Sprite *sprite)
 {
     u8 metatileBehavior;
@@ -323,14 +338,14 @@ void UpdateTallGrassFieldEffect(struct Sprite *sprite)
 
     if (gCamera.active && (gSaveBlock1Ptr->location.mapNum != mapNum || gSaveBlock1Ptr->location.mapGroup != mapGroup))
     {
-        sprite->sX -= gCamera.x;
-        sprite->sY -= gCamera.y;
+        sprite->sX -= gCamera.x >> OBJECT_EVENT_FRAC_SHIFT;
+        sprite->sY -= gCamera.y >> OBJECT_EVENT_FRAC_SHIFT;
         sprite->sCurrentMap = ((u8)gSaveBlock1Ptr->location.mapNum << 8) | (u8)gSaveBlock1Ptr->location.mapGroup;
     }
     localId = sprite->sLocalId;
     mapNum = sprite->sMapNum;
     mapGroup = sprite->sMapGroup;
-    metatileBehavior = MapGridGetMetatileBehaviorAt(sprite->sX, sprite->sY);
+    metatileBehavior = ObjectEventGetMetatileBehaviorAt(sprite->sX, sprite->sY);
 
     if (TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId)
      || !MetatileBehavior_IsTallGrass(metatileBehavior)
@@ -341,9 +356,7 @@ void UpdateTallGrassFieldEffect(struct Sprite *sprite)
     else
     {
         // Check if the object that triggered the effect has moved away
-        struct ObjectEvent *objectEvent = &gObjectEvents[objectEventId];
-        if ((objectEvent->currentCoords.x != sprite->sX || objectEvent->currentCoords.y != sprite->sY)
-        && (objectEvent->previousCoords.x != sprite->sX || objectEvent->previousCoords.y != sprite->sY))
+        if (CheckGrassEffectObjectMovedAway(objectEventId, sprite))
             sprite->sObjectMoved = TRUE;
 
         // Metatile behavior var re-used as subpriority
@@ -382,7 +395,8 @@ u8 FindTallGrassFieldEffectSpriteId(u8 localId, u8 mapNum, u8 mapGroup, s16 x, s
         {
             struct Sprite *sprite = &gSprites[i];
             if (sprite->callback == UpdateTallGrassFieldEffect
-                && (x == sprite->sX && y == sprite->sY)
+                && (COORDS_TO_GRID(x) == COORDS_TO_GRID(sprite->sX)
+                 && COORDS_TO_GRID(y) == COORDS_TO_GRID(sprite->sY))
                 && localId == (u8)(sprite->sLocalId)
                 && mapNum == (sprite->sMapNum & 0xFF)
                 && mapGroup == sprite->sMapGroup)
@@ -427,14 +441,14 @@ void UpdateLongGrassFieldEffect(struct Sprite *sprite)
 
     if (gCamera.active && (gSaveBlock1Ptr->location.mapNum != mapNum || gSaveBlock1Ptr->location.mapGroup != mapGroup))
     {
-        sprite->sX -= gCamera.x;
-        sprite->sY -= gCamera.y;
+        sprite->sX -= gCamera.x >> OBJECT_EVENT_FRAC_SHIFT;
+        sprite->sY -= gCamera.y >> OBJECT_EVENT_FRAC_SHIFT;
         sprite->sCurrentMap = ((u8)gSaveBlock1Ptr->location.mapNum << 8) | (u8)gSaveBlock1Ptr->location.mapGroup;
     }
     localId = sprite->sLocalId;
     mapNum = sprite->sMapNum;
     mapGroup = sprite->sMapGroup;
-    metatileBehavior = MapGridGetMetatileBehaviorAt(sprite->sX, sprite->sY);
+    metatileBehavior = ObjectEventGetMetatileBehaviorAt(sprite->data[1], sprite->data[2]);
     if (TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId)
      || !MetatileBehavior_IsLongGrass(metatileBehavior)
      || (sprite->sObjectMoved && sprite->animEnded))
@@ -444,9 +458,7 @@ void UpdateLongGrassFieldEffect(struct Sprite *sprite)
     else
     {
         // Check if the object that triggered the effect has moved away
-        struct ObjectEvent *objectEvent = &gObjectEvents[objectEventId];
-        if ((objectEvent->currentCoords.x != sprite->sX || objectEvent->currentCoords.y != sprite->sY)
-         && (objectEvent->previousCoords.x != sprite->sX || objectEvent->previousCoords.y != sprite->sY))
+        if (CheckGrassEffectObjectMovedAway(objectEventId, sprite))
             sprite->sObjectMoved = TRUE;
 
         UpdateObjectEventSpriteInvisibility(sprite, FALSE);
@@ -1068,10 +1080,10 @@ static void SynchroniseSurfAnim(struct ObjectEvent *playerObj, struct Sprite *sp
         [DIR_NORTH] = 1,
         [DIR_WEST] = 2,
         [DIR_EAST] = 3,
-        [DIR_SOUTHWEST] = 0,
-        [DIR_SOUTHEAST] = 0,
-        [DIR_NORTHWEST] = 1,
-        [DIR_NORTHEAST] = 1,
+        [DIR_SOUTHWEST] = 4,
+        [DIR_SOUTHEAST] = 5,
+        [DIR_NORTHWEST] = 6,
+        [DIR_NORTHEAST] = 7,
     };
 
     if (!GetSurfBlob_DontSyncAnim(sprite))
@@ -1093,8 +1105,8 @@ void SynchroniseSurfPosition(struct ObjectEvent *playerObj, struct Sprite *sprit
         sprite->sPrevY = y;
         for (i = DIR_SOUTH; i <= DIR_EAST; i++, x = sprite->sPrevX, y = sprite->sPrevY)
         {
-            MoveCoords(i, &x, &y);
-            if (MapGridGetElevationAt(x, y) == 3)
+            MoveCoordsInMapCoordIncrement(i, &x, &y);
+            if (ObjectEventGetElevationAt(x, y) == 3)
             {
                 // While dismounting the surf blob bobs at a slower rate
                 sprite->sIntervalIdx++;

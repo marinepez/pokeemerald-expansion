@@ -269,6 +269,7 @@ u32 GetMewMoveDirection(void)
 // Mew can move to any Tall/Long Grass metatile the player isn't currently on
 static bool8 CanMewMoveToCoords(s16 x, s16 y)
 {
+    // TODO
     if (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x == x
      && gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y == y)
     {

@@ -553,8 +553,8 @@ bool8 SetUpFieldMove_SecretPower(void)
     if (gSpecialVar_Result == 1 || GetPlayerFacingDirection() != DIR_NORTH)
         return FALSE;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&gPlayerFacingPosition.x, &gPlayerFacingPosition.y);
-    mb = MapGridGetMetatileBehaviorAt(gPlayerFacingPosition.x, gPlayerFacingPosition.y);
+    GetOneStepInFrontOfPlayer(&gPlayerFacingPosition.x, &gPlayerFacingPosition.y);
+    mb = ObjectEventGetMetatileBehaviorAt(gPlayerFacingPosition.x, gPlayerFacingPosition.y);
 
     if (MetatileBehavior_IsSecretBaseCave(mb) == TRUE)
     {
@@ -667,7 +667,7 @@ static void StartSecretBaseTreeFieldEffect(void)
 
 bool8 FldEff_SecretPowerTree(void)
 {
-    s16 mb = MapGridGetMetatileBehaviorAt(gPlayerFacingPosition.x, gPlayerFacingPosition.y) & 0xFFF;
+    s16 mb = ObjectEventGetMetatileBehaviorAt(gPlayerFacingPosition.x, gPlayerFacingPosition.y) & 0xFFF;
 
     if (mb == MB_SECRET_BASE_SPOT_TREE_LEFT)
         gFieldEffectArguments[7] = 0;
@@ -790,7 +790,7 @@ bool8 FldEff_SecretBasePCTurnOn(void)
     s16 x, y;
     u8 taskId;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
+    GetTileCoordsInFrontOfPlayer(&x, &y);
 
     taskId = CreateTask(Task_SecretBasePCTurnOn, 0);
     gTasks[taskId].tX = x;
@@ -836,7 +836,7 @@ void DoSecretBasePCTurnOffEffect(void)
 {
     s16 x, y;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
+    GetTileCoordsInFrontOfPlayer(&x, &y);
     PlaySE(SE_PC_OFF);
 
     if (!VarGet(VAR_CURRENT_SECRET_BASE))
@@ -1035,7 +1035,7 @@ bool8 FldEff_SandPillar(void)
     s16 x, y;
 
     LockPlayerFieldControls();
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
+    GetTileCoordsInFrontOfPlayer(&x, &y);
 
     gFieldEffectArguments[5] = x;
     gFieldEffectArguments[6] = y;
@@ -1121,9 +1121,9 @@ void InteractWithShieldOrTVDecoration(void)
     s16 x, y;
     s32 metatileId;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
+    GetOneStepInFrontOfPlayer(&x, &y);
 
-    metatileId = MapGridGetMetatileIdAt(x, y);
+    metatileId = ObjectEventGetMetatileIdAt(x, y);
 
     switch (metatileId)
     {
@@ -1303,7 +1303,7 @@ u8 CreateRecordMixingLights(void)
     else
     {
         struct Sprite *sprite = &gSprites[spriteId];
-        GetMapCoordsFromSpritePos(16, 13, &sprite->x, &sprite->y);
+        GetMapCoordsFromSpritePos(GRID_TO_COORDS(16), GRID_TO_COORDS(13), &sprite->x, &sprite->y);
         sprite->coordOffsetEnabled = TRUE;
         sprite->x += 16;
         sprite->y += 2;

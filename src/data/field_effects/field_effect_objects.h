@@ -174,6 +174,8 @@ static const struct SpriteFrameImage sPicTable_SurfBlob[] = {
     overworld_frame(gFieldEffectObjectPic_SurfBlob, 4, 4, 0),
     overworld_frame(gFieldEffectObjectPic_SurfBlob, 4, 4, 1),
     overworld_frame(gFieldEffectObjectPic_SurfBlob, 4, 4, 2),
+    overworld_frame(gFieldEffectObjectPic_SurfBlob, 4, 4, 3),
+    overworld_frame(gFieldEffectObjectPic_SurfBlob, 4, 4, 4),
 };
 
 static const union AnimCmd sSurfBlobAnim_FaceSouth[] =
@@ -200,12 +202,40 @@ static const union AnimCmd sSurfBlobAnim_FaceEast[] =
     ANIMCMD_JUMP(0),
 };
 
+static const union AnimCmd sSurfBlobAnim_FaceSouthwest[] =
+{
+    ANIMCMD_FRAME(3, 1),
+    ANIMCMD_JUMP(0),
+};
+
+static const union AnimCmd sSurfBlobAnim_FaceSoutheast[] =
+{
+    ANIMCMD_FRAME(3, 1, .hFlip = TRUE),
+    ANIMCMD_JUMP(0),
+};
+
+static const union AnimCmd sSurfBlobAnim_FaceNorthwest[] =
+{
+    ANIMCMD_FRAME(4, 1),
+    ANIMCMD_JUMP(0),
+};
+
+static const union AnimCmd sSurfBlobAnim_FaceNortheast[] =
+{
+    ANIMCMD_FRAME(4, 1, .hFlip = TRUE),
+    ANIMCMD_JUMP(0),
+};
+
 static const union AnimCmd *const sAnimTable_SurfBlob[] =
 {
     sSurfBlobAnim_FaceSouth,
     sSurfBlobAnim_FaceNorth,
     sSurfBlobAnim_FaceWest,
     sSurfBlobAnim_FaceEast,
+    sSurfBlobAnim_FaceSouthwest,
+    sSurfBlobAnim_FaceSoutheast,
+    sSurfBlobAnim_FaceNorthwest,
+    sSurfBlobAnim_FaceNortheast,
 };
 
 const struct SpriteTemplate gFieldEffectObjectTemplate_SurfBlob = {
@@ -338,6 +368,8 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_JumpTallGrass = {
 static const struct SpriteFrameImage sPicTable_SandFootprints[] = {
     overworld_frame(gFieldEffectObjectPic_SandFootprints, 2, 2, 0),
     overworld_frame(gFieldEffectObjectPic_SandFootprints, 2, 2, 1),
+    overworld_frame(gFieldEffectObjectPic_SandFootprints, 2, 2, 2),
+    overworld_frame(gFieldEffectObjectPic_SandFootprints, 2, 2, 3),
 };
 
 static const union AnimCmd sSandFootprintsAnim_South[] =
@@ -364,6 +396,30 @@ static const union AnimCmd sSandFootprintsAnim_East[] =
     ANIMCMD_END,
 };
 
+static const union AnimCmd sSandFootprintsAnim_Southwest[] =
+{
+    ANIMCMD_FRAME(2, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sSandFootprintsAnim_Southeast[] =
+{
+    ANIMCMD_FRAME(2, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sSandFootprintsAnim_Northwest[] =
+{
+    ANIMCMD_FRAME(3, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sSandFootprintsAnim_Northeast[] =
+{
+    ANIMCMD_FRAME(3, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
 static const union AnimCmd *const sAnimTable_SandFootprints[] =
 {
     sSandFootprintsAnim_South,
@@ -371,6 +427,10 @@ static const union AnimCmd *const sAnimTable_SandFootprints[] =
     sSandFootprintsAnim_North,
     sSandFootprintsAnim_West,
     sSandFootprintsAnim_East,
+    sSandFootprintsAnim_Southwest,
+    sSandFootprintsAnim_Southeast,
+    sSandFootprintsAnim_Northwest,
+    sSandFootprintsAnim_Northeast,
 };
 
 const struct SpriteTemplate gFieldEffectObjectTemplate_SandFootprints = {
@@ -386,6 +446,8 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_SandFootprints = {
 static const struct SpriteFrameImage sPicTable_DeepSandFootprints[] = {
     overworld_frame(gFieldEffectObjectPic_DeepSandFootprints, 2, 2, 0),
     overworld_frame(gFieldEffectObjectPic_DeepSandFootprints, 2, 2, 1),
+    overworld_frame(gFieldEffectObjectPic_DeepSandFootprints, 2, 2, 2),
+    overworld_frame(gFieldEffectObjectPic_DeepSandFootprints, 2, 2, 3),
 };
 
 static const union AnimCmd sDeepSandFootprintsAnim_South[] =
@@ -412,6 +474,30 @@ static const union AnimCmd sDeepSandFootprintsAnim_East[] =
     ANIMCMD_END,
 };
 
+static const union AnimCmd sDeepSandFootprintsAnim_Southwest[] =
+{
+    ANIMCMD_FRAME(2, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sDeepSandFootprintsAnim_Southeast[] =
+{
+    ANIMCMD_FRAME(2, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sDeepSandFootprintsAnim_Northwest[] =
+{
+    ANIMCMD_FRAME(3, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sDeepSandFootprintsAnim_Northeast[] =
+{
+    ANIMCMD_FRAME(3, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
 static const union AnimCmd *const sAnimTable_DeepSandFootprints[] =
 {
     sDeepSandFootprintsAnim_South,
@@ -419,6 +505,10 @@ static const union AnimCmd *const sAnimTable_DeepSandFootprints[] =
     sDeepSandFootprintsAnim_North,
     sDeepSandFootprintsAnim_West,
     sDeepSandFootprintsAnim_East,
+    sDeepSandFootprintsAnim_Southwest,
+    sDeepSandFootprintsAnim_Southeast,
+    sDeepSandFootprintsAnim_Northwest,
+    sDeepSandFootprintsAnim_Northeast,
 };
 
 const struct SpriteTemplate gFieldEffectObjectTemplate_DeepSandFootprints = {
@@ -432,10 +522,20 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_DeepSandFootprints = {
 };
 
 static const struct SpriteFrameImage sPicTable_BikeTireTracks[] = {
-    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 2, 2, 0),
-    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 2, 2, 1),
-    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 2, 2, 2),
-    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 2, 2, 3),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 0),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 1),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 2),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 3),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 4),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 5),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 6),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 7),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 8),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 9),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 10),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 11),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 12),
+    overworld_frame(gFieldEffectObjectPic_BikeTireTracks, 4, 4, 13),
 };
 
 static const union AnimCmd sBikeTireTracksAnim_South[] =
@@ -486,23 +586,227 @@ static const union AnimCmd sBikeTireTracksAnim_NECornerTurn[] =
     ANIMCMD_END,
 };
 
+static const union AnimCmd sBikeTireTracksAnim_Straight_Southwest[] =
+{
+    ANIMCMD_FRAME(4, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Straight_Southeast[] =
+{
+    ANIMCMD_FRAME(4, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Straight_Northwest[] =
+{
+    ANIMCMD_FRAME(4, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Straight_Northeast[] =
+{
+    ANIMCMD_FRAME(4, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_South_Southwest[] =
+{
+    ANIMCMD_FRAME(5, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_South_Southeast[] =
+{
+    ANIMCMD_FRAME(5, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_South_Northwest[] =
+{
+    ANIMCMD_FRAME(6, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_South_Northeast[] =
+{
+    ANIMCMD_FRAME(6, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_North_Southwest[] =
+{
+    ANIMCMD_FRAME(6, 1, .vFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_North_Southeast[] =
+{
+    ANIMCMD_FRAME(6, 1, .hFlip = TRUE, .vFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_North_Northwest[] =
+{
+    ANIMCMD_FRAME(5, 1, .vFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_North_Northeast[] =
+{
+    ANIMCMD_FRAME(5, 1, .hFlip = TRUE, .vFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_West_Southwest[] =
+{
+    ANIMCMD_FRAME(7, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_West_Southeast[] =
+{
+    ANIMCMD_FRAME(8, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_West_Northwest[] =
+{
+    ANIMCMD_FRAME(9, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_West_Northeast[] =
+{
+    ANIMCMD_FRAME(10, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_East_Southwest[] =
+{
+    ANIMCMD_FRAME(8, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_East_Southeast[] =
+{
+    ANIMCMD_FRAME(7, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_East_Northwest[] =
+{
+    ANIMCMD_FRAME(10, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_East_Northeast[] =
+{
+    ANIMCMD_FRAME(9, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_Southwest_Southeast[] =
+{
+    ANIMCMD_FRAME(11, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_Southwest_Northwest[] =
+{
+    ANIMCMD_FRAME(12, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_Northeast_Southeast[] =
+{
+    ANIMCMD_FRAME(12, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sBikeTireTracksAnim_Turn_Northeast_Northwest[] =
+{
+    ANIMCMD_FRAME(11, 1, .hFlip = TRUE),
+    ANIMCMD_END,
+};
+
+enum {
+    BIKE_TRACK_STRAIGHT_UNUSED,
+    BIKE_TRACK_STRAIGHT_SOUTH,
+    BIKE_TRACK_STRAIGHT_NORTH,
+    BIKE_TRACK_STRAIGHT_WEST,
+    BIKE_TRACK_STRAIGHT_EAST,
+    BIKE_TRACK_TURN_SOUTH_EAST,
+    BIKE_TRACK_TURN_SOUTH_WEST,
+    BIKE_TRACK_TURN_NORTH_WEST,
+    BIKE_TRACK_TURN_NORTH_EAST,
+    BIKE_TRACK_STRAIGHT_SOUTHWEST,
+    BIKE_TRACK_STRAIGHT_SOUTHEAST,
+    BIKE_TRACK_STRAIGHT_NORTHWEST,
+    BIKE_TRACK_STRAIGHT_NORTHEAST,
+    BIKE_TRACK_TURN_SOUTH_SOUTHWEST,
+    BIKE_TRACK_TURN_SOUTH_SOUTHEAST,
+    BIKE_TRACK_TURN_SOUTH_NORTHWEST,
+    BIKE_TRACK_TURN_SOUTH_NORTHEAST,
+    BIKE_TRACK_TURN_NORTH_SOUTHWEST,
+    BIKE_TRACK_TURN_NORTH_SOUTHEAST,
+    BIKE_TRACK_TURN_NORTH_NORTHWEST,
+    BIKE_TRACK_TURN_NORTH_NORTHEAST,
+    BIKE_TRACK_TURN_WEST_SOUTHWEST,
+    BIKE_TRACK_TURN_WEST_SOUTHEAST,
+    BIKE_TRACK_TURN_WEST_NORTHWEST,
+    BIKE_TRACK_TURN_WEST_NORTHEAST,
+    BIKE_TRACK_TURN_EAST_SOUTHWEST,
+    BIKE_TRACK_TURN_EAST_SOUTHEAST,
+    BIKE_TRACK_TURN_EAST_NORTHWEST,
+    BIKE_TRACK_TURN_EAST_NORTHEAST,
+    BIKE_TRACK_TURN_SOUTHWEST_SOUTHEAST,
+    BIKE_TRACK_TURN_SOUTHWEST_NORTHWEST,
+    BIKE_TRACK_TURN_NORTHEAST_SOUTHEAST,
+    BIKE_TRACK_TURN_NORTHEAST_NORTHWEST,
+};
+
 static const union AnimCmd *const sAnimTable_BikeTireTracks[] =
 {
-    sBikeTireTracksAnim_South,
-    sBikeTireTracksAnim_South,
-    sBikeTireTracksAnim_North,
-    sBikeTireTracksAnim_West,
-    sBikeTireTracksAnim_East,
-    sBikeTireTracksAnim_SECornerTurn,
-    sBikeTireTracksAnim_SWCornerTurn,
-    sBikeTireTracksAnim_NWCornerTurn,
-    sBikeTireTracksAnim_NECornerTurn,
+    [BIKE_TRACK_STRAIGHT_UNUSED] = sBikeTireTracksAnim_South,
+    [BIKE_TRACK_STRAIGHT_SOUTH] = sBikeTireTracksAnim_South,
+    [BIKE_TRACK_STRAIGHT_NORTH] = sBikeTireTracksAnim_North,
+    [BIKE_TRACK_STRAIGHT_WEST] = sBikeTireTracksAnim_West,
+    [BIKE_TRACK_STRAIGHT_EAST] = sBikeTireTracksAnim_East,
+    [BIKE_TRACK_TURN_SOUTH_EAST] = sBikeTireTracksAnim_SECornerTurn,
+    [BIKE_TRACK_TURN_SOUTH_WEST] = sBikeTireTracksAnim_SWCornerTurn,
+    [BIKE_TRACK_TURN_NORTH_WEST] = sBikeTireTracksAnim_NWCornerTurn,
+    [BIKE_TRACK_TURN_NORTH_EAST] = sBikeTireTracksAnim_NECornerTurn,
+    [BIKE_TRACK_STRAIGHT_SOUTHWEST] = sBikeTireTracksAnim_Straight_Southwest,
+    [BIKE_TRACK_STRAIGHT_SOUTHEAST] = sBikeTireTracksAnim_Straight_Southeast,
+    [BIKE_TRACK_STRAIGHT_NORTHWEST] = sBikeTireTracksAnim_Straight_Northwest,
+    [BIKE_TRACK_STRAIGHT_NORTHEAST] = sBikeTireTracksAnim_Straight_Northeast,
+    [BIKE_TRACK_TURN_SOUTH_SOUTHWEST] = sBikeTireTracksAnim_Turn_South_Southwest,
+    [BIKE_TRACK_TURN_SOUTH_SOUTHEAST] = sBikeTireTracksAnim_Turn_South_Southeast,
+    [BIKE_TRACK_TURN_SOUTH_NORTHWEST] = sBikeTireTracksAnim_Turn_South_Northwest,
+    [BIKE_TRACK_TURN_SOUTH_NORTHEAST] = sBikeTireTracksAnim_Turn_South_Northeast,
+    [BIKE_TRACK_TURN_NORTH_SOUTHWEST] = sBikeTireTracksAnim_Turn_North_Southwest,
+    [BIKE_TRACK_TURN_NORTH_SOUTHEAST] = sBikeTireTracksAnim_Turn_North_Southeast,
+    [BIKE_TRACK_TURN_NORTH_NORTHWEST] = sBikeTireTracksAnim_Turn_North_Northwest,
+    [BIKE_TRACK_TURN_NORTH_NORTHEAST] = sBikeTireTracksAnim_Turn_North_Northeast,
+    [BIKE_TRACK_TURN_WEST_SOUTHWEST] = sBikeTireTracksAnim_Turn_West_Southwest,
+    [BIKE_TRACK_TURN_WEST_SOUTHEAST] = sBikeTireTracksAnim_Turn_West_Southeast,
+    [BIKE_TRACK_TURN_WEST_NORTHWEST] = sBikeTireTracksAnim_Turn_West_Northwest,
+    [BIKE_TRACK_TURN_WEST_NORTHEAST] = sBikeTireTracksAnim_Turn_West_Northeast,
+    [BIKE_TRACK_TURN_EAST_SOUTHWEST] = sBikeTireTracksAnim_Turn_East_Southwest,
+    [BIKE_TRACK_TURN_EAST_SOUTHEAST] = sBikeTireTracksAnim_Turn_East_Southeast,
+    [BIKE_TRACK_TURN_EAST_NORTHWEST] = sBikeTireTracksAnim_Turn_East_Northwest,
+    [BIKE_TRACK_TURN_EAST_NORTHEAST] = sBikeTireTracksAnim_Turn_East_Northeast,
+    [BIKE_TRACK_TURN_SOUTHWEST_SOUTHEAST] = sBikeTireTracksAnim_Turn_Southwest_Southeast,
+    [BIKE_TRACK_TURN_SOUTHWEST_NORTHWEST] = sBikeTireTracksAnim_Turn_Southwest_Northwest,
+    [BIKE_TRACK_TURN_NORTHEAST_SOUTHEAST] = sBikeTireTracksAnim_Turn_Northeast_Southeast,
+    [BIKE_TRACK_TURN_NORTHEAST_NORTHWEST] = sBikeTireTracksAnim_Turn_Northeast_Northwest,
 };
 
 const struct SpriteTemplate gFieldEffectObjectTemplate_BikeTireTracks = {
     .tileTag = TAG_NONE,
     .paletteTag = FLDEFF_PAL_TAG_GENERAL_0,
-    .oam = &gObjectEventBaseOam_16x16,
+    .oam = &gObjectEventBaseOam_32x32,
     .anims = sAnimTable_BikeTireTracks,
     .images = sPicTable_BikeTireTracks,
     .affineAnims = gDummySpriteAffineAnimTable,

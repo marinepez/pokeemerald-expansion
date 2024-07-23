@@ -124,7 +124,7 @@ static const u8 sMovement_UnionPlayerEnter[2] = {
 
 static bool32 IsPlayerStandingStill(void)
 {
-    if (gPlayerAvatar.tileTransitionState == T_TILE_CENTER || gPlayerAvatar.tileTransitionState == T_NOT_MOVING)
+    if (gPlayerAvatar.tileTransitionState == T_NOT_MOVING)
         return TRUE;
     else
         return FALSE;
@@ -142,6 +142,7 @@ static void GetUnionRoomPlayerCoords(u32 leaderId, u32 memberId, s32 * x, s32 * 
     *y = sUnionRoomPlayerCoords[leaderId][1] + sUnionRoomGroupOffsets[memberId][1] + MAP_OFFSET;
 }
 
+// TODO: check for object hitboxes
 static bool32 IsUnionRoomPlayerAt(u32 leaderId, u32 memberId, s32 x, s32 y)
 {
     if ((sUnionRoomPlayerCoords[leaderId][0] + sUnionRoomGroupOffsets[memberId][0] + MAP_OFFSET == x)
@@ -262,7 +263,8 @@ static bool32 AnimateUnionRoomPlayerSpawn(s8 * state, u32 leaderId, struct Union
     case 0:
         if (!IsPlayerStandingStill())
             break;
-        PlayerGetDestCoords(&x, &y);
+        // TODO: check for hitboxes instead
+        PlayerGetDestCoordsInTiles(&x, &y);
         if (IsUnionRoomPlayerAt(leaderId, 0, x, y) == TRUE)
             break;
         player_get_pos_including_state_based_drift(&x, &y);
@@ -470,7 +472,8 @@ static void AssembleGroup(u32 leaderId, struct RfuGameData * gameData)
     s16 x, y, x2, y2;
     s32 i;
 
-    PlayerGetDestCoords(&x, &y);
+    // TODO: check for hitboxes instead
+    PlayerGetDestCoordsInTiles(&x, &y);
     player_get_pos_including_state_based_drift(&x2, &y2);
     if (IsVirtualObjectInvisible(UR_PLAYER_SPRITE_ID(leaderId, 0) - UR_SPRITE_START_ID) == TRUE)
     {
@@ -558,7 +561,8 @@ bool32 TryInteractWithUnionRoomMember(struct RfuPlayerList *list, s16 *memberIdP
     if (!IsPlayerStandingStill())
         return FALSE;
 
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
+    // TODO: check for hitboxes instead
+    GetTileCoordsInFrontOfPlayer(&x, &y);
     for (i = 0, leaders = list->players; i < MAX_UNION_ROOM_LEADERS; i++)
     {
         for (memberId = 0; memberId < MAX_RFU_PLAYERS; memberId++)

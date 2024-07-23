@@ -67,15 +67,18 @@ enum
 extern bool8 gUnusedBikeCameraAheadPanback;
 
 // Exported ROM declarations
+void PlayerCheckCurrentBikeMovement(u8 direction);
 void MovePlayerOnBike(u8 direction, u16 newKeys, u16 heldKeys);
 void Bike_TryAcroBikeHistoryUpdate(u16 newKeys, u16 heldKeys);
+bool8 PlayerCheckOnBikeNotMoving(u8 direction);
 bool8 RS_IsRunningDisallowed(u8 tile);
 bool8 IsBikingDisallowedByPlayer(void);
 bool8 IsPlayerNotUsingAcroBikeOnBumpySlope(void);
 void GetOnOffBike(u8 transitionFlags);
 void BikeClearState(int newDirHistory, int newAbStartHistory);
-void Bike_UpdateBikeCounterSpeed(u8 counter);
+void Bike_SetBikeStill(void);
 s16 GetPlayerSpeed(void);
+u8 GetBikeCollision(u8 direction);
 void Bike_HandleBumpySlopeJump(void);
 bool32 IsRunningDisallowed(u8 metatile);
 
