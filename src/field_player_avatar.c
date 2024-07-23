@@ -7,6 +7,7 @@
 #include "field_effect.h"
 #include "field_effect_helpers.h"
 #include "field_player_avatar.h"
+#include "field_screen_effect.h"
 #include "field_control_avatar.h"
 #include "fieldmap.h"
 #include "menu.h"
@@ -1124,6 +1125,8 @@ void UpdatePlayerAvatarTileInfo(void)
 void UpdatePlayerAvatarTransitionState(void)
 {
     struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    u8 flashLevel = GetFlashLevel();
+
     if (playerObjEvent->tookStep)
     {
         gPlayerAvatar.tookStep = TRUE;
@@ -1132,6 +1135,11 @@ void UpdatePlayerAvatarTransitionState(void)
 
     gPlayerAvatar.moveBlocked = FALSE;
     gPlayerAvatar.tileTransitionState = T_NOT_MOVING;
+
+    if(flashLevel > 0)
+    {
+        WriteFlashScanlineEffectBuffer(flashLevel);
+    }
 
     CheckPlayerAvatarChangedTile(playerObjEvent);
 

@@ -784,12 +784,107 @@ static void SetFlashScanlineEffectWindowBoundaries(u16 *dest, s32 centerX, s32 c
     s32 r = radius;
     s32 v2 = radius;
     s32 v3 = 0;
+    s32 newCenterX = centerX;
+    s32 newCenterY = centerY;
+
+    u8 dir = GetPlayerFacingDirection();
+    switch(dir)
+    {
+    case DIR_SOUTH:
+        newCenterX = centerX;
+        newCenterY = centerY - 4;
+        break;
+    case DIR_NORTH:
+        newCenterX = centerX;
+        newCenterY = centerY + 4;
+        break;
+    case DIR_WEST:
+        newCenterX = centerX + 4;
+        newCenterY = centerY;
+        break;
+    case DIR_EAST:
+        newCenterX = centerX - 4;
+        newCenterY = centerY;
+        break;
+    case DIR_SOUTHWEST:
+        newCenterX = centerX + 4;
+        newCenterY = centerY - 4;
+        break;
+    case DIR_SOUTHEAST:
+        newCenterX = centerX - 4;
+        newCenterY = centerY - 4;
+        break;
+    case DIR_NORTHWEST:
+        newCenterX = centerX + 4;
+        newCenterY = centerY + 4;
+        break;
+    case DIR_NORTHEAST:
+        newCenterX = centerX - 4;
+        newCenterY = centerY + 4;
+        break;
+    }
+
+
     while (r >= v3)
     {
-        SetFlashScanlineEffectWindowBoundary(dest, centerY - v3, centerX - r, centerX + r);
-        SetFlashScanlineEffectWindowBoundary(dest, centerY + v3, centerX - r, centerX + r);
-        SetFlashScanlineEffectWindowBoundary(dest, centerY - r, centerX - v3, centerX + v3);
-        SetFlashScanlineEffectWindowBoundary(dest, centerY + r, centerX - v3, centerX + v3);
+        switch(dir)
+        {
+        case DIR_SOUTH:
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - v3, newCenterX, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + v3, max(newCenterX - r, newCenterX - v3), min(newCenterX + r, newCenterX + v3));
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - r, newCenterX, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + r, newCenterX - v3, newCenterX + v3);
+            break;
+        case DIR_NORTH:
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - v3, max(newCenterX - r, newCenterX - v3), min(newCenterX + r, newCenterX + v3));
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + v3, newCenterX, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - r, newCenterX - v3, newCenterX + v3);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + r, newCenterX, newCenterX);
+            break;
+        case DIR_WEST:
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - v3, newCenterX - r, min(newCenterX + r, newCenterX - v3));
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + v3, newCenterX - r, min(newCenterX + r, newCenterX - v3));
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - r, newCenterX, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + r, newCenterX, newCenterX);
+            break;
+        case DIR_EAST:
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - v3, max(newCenterX - r, newCenterX + v3), newCenterX + r);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + v3, max(newCenterX - r, newCenterX + v3), newCenterX + r);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - r, newCenterX, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + r, newCenterX, newCenterX);
+            break;
+        case DIR_SOUTHWEST:
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - v3, newCenterX, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + v3, newCenterX - r, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - r, newCenterX, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + r, newCenterX - v3, newCenterX);
+            break;
+        case DIR_SOUTHEAST:
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - v3, newCenterX, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + v3, newCenterX, newCenterX + r);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - r, newCenterX, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + r, newCenterX, newCenterX + v3);
+            break;
+        case DIR_NORTHWEST:
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - v3, newCenterX - r, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + v3, newCenterX, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - r, newCenterX - v3, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + r, newCenterX, newCenterX);
+            break;
+        case DIR_NORTHEAST:
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - v3, newCenterX, newCenterX + r);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + v3, newCenterX, newCenterX);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - r, newCenterX, newCenterX + v3);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + r, newCenterX, newCenterX);
+            break;
+        default:
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - v3, newCenterX - r, newCenterX + r);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + v3, newCenterX - r, newCenterX + r);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY - r, newCenterX - v3, newCenterX + v3);
+            SetFlashScanlineEffectWindowBoundary(dest, newCenterY + r, newCenterX - v3, newCenterX + v3);
+            break;
+        }
+
         v2 -= (v3 * 2) - 1;
         v3++;
         if (v2 < 0)
