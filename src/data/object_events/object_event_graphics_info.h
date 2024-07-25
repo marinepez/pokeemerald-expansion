@@ -1890,10 +1890,10 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Poochyena = {
     .shadowSize = SHADOW_SIZE_M,
     .inanimate = FALSE,
     .disableReflectionPaletteLoad = FALSE,
-    .tracks = TRACKS_FOOT,
+    .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = sAnimTable_Standard,
+    .anims = sAnimTable_Standard_Diagonal,
     .images = sPicTable_Poochyena,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
