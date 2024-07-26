@@ -297,7 +297,8 @@ static void (*const sMovementTypeCallbacks[])(struct Sprite *) =
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_UP] = MovementType_WalkSlowlyInPlace,
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_LEFT] = MovementType_WalkSlowlyInPlace,
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_RIGHT] = MovementType_WalkSlowlyInPlace,
-    [MOVEMENT_TYPE_WALK_IN_CIRCLES] = MovementType_WalkInCircles
+    [MOVEMENT_TYPE_WALK_IN_CIRCLES] = MovementType_WalkInCircles,
+    [MOVEMENT_TYPE_CHASE] = MovementType_Chase,
 };
 
 static const bool8 sMovementTypeHasRange[NUM_MOVEMENT_TYPES] = {
@@ -426,7 +427,8 @@ const u8 gInitialMovementTypeFacingDirections[] = {
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_UP] = DIR_NORTH,
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_LEFT] = DIR_WEST,
     [MOVEMENT_TYPE_WALK_SLOWLY_IN_PLACE_RIGHT] = DIR_EAST,
-    [MOVEMENT_TYPE_WALK_IN_CIRCLES] = DIR_EAST
+    [MOVEMENT_TYPE_WALK_IN_CIRCLES] = DIR_EAST,
+    [MOVEMENT_TYPE_CHASE] = DIR_SOUTH,
 };
 
 #define OBJ_EVENT_PAL_TAG_BRENDAN                 0x1100
@@ -4741,6 +4743,119 @@ bool8 MovementType_Invisible_Step1(struct ObjectEvent *objectEvent, struct Sprit
 bool8 MovementType_Invisible_Step2(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     objectEvent->singleMovementActive = FALSE;
+    return FALSE;
+}
+
+movement_type_def(MovementType_Chase, gMovementTypeFuncs_Chase)
+
+bool8 MovementType_Chase_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    ClearObjectEventMovement(objectEvent, sprite);
+    sprite->sTypeFuncId = 1;
+    return TRUE;
+}
+
+//Fallback if collision or chooses not to move
+bool8 MovementType_Chase_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    ObjectEventSetSingleMovement(objectEvent, sprite, GetFaceDirectionMovementAction(objectEvent->facingDirection));
+    sprite->sTypeFuncId = 2;
+    return TRUE;
+}
+
+//Delay before taking next step
+bool8 MovementType_Chase_Step2(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    if (!ObjectEventExecSingleMovementAction(objectEvent, sprite))
+        return FALSE;
+    SetMovementDelay(sprite, 2);
+    sprite->sTypeFuncId = 3;
+    return TRUE;
+}
+
+bool8 MovementType_Chase_Step3(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    if (WaitForMovementDelay(sprite))
+    {
+        sprite->sTypeFuncId = 4;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+//Determine which direction to face
+bool8 MovementType_Chase_Step4(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    u8 directions[8];
+    u8 chosenDirection;
+    f32 slope;
+    s16 playerx = (gSaveBlock1Ptr->pos.x);
+    s16 playery = (gSaveBlock1Ptr->pos.y);
+    s16 objectx = (objectEvent->currentCoords.x) - GRID_TO_COORDS(7);
+    s16 objecty = (objectEvent->currentCoords.y) - GRID_TO_COORDS(7);
+
+    memcpy(directions, gStandardDirections, sizeof directions);
+//    chosenDirection = directions[Random() & 7];
+    DebugPrintf("px: %d, py: %d, ox: %d, oy: %d", playerx, playery, objectx, objecty);
+    if(playerx - objectx == 0) //Making sure no divide by zero errors
+    {
+        if(playery > objecty) chosenDirection = DIR_SOUTH;
+        else if (playery < objecty) chosenDirection = DIR_NORTH;
+        else chosenDirection = DIR_NONE;
+    }
+    else
+    {
+        slope =  (float)((playery - objecty) / (playerx - objectx));
+        DebugPrintf("slope: %d", slope);
+        if(abs(slope) >= 2.414) // 67.5 degrees
+        {
+            if(playery > objecty) chosenDirection = DIR_SOUTH;
+            else chosenDirection = DIR_NORTH;
+        }
+        else if (abs(slope) >= .414) // 22.5 degrees
+        {
+            if(playery > objecty)
+            {
+                if(playerx > objectx) chosenDirection = DIR_SOUTHEAST;
+                else chosenDirection = DIR_SOUTHWEST;
+            }
+            else {
+                if(playerx > objectx) chosenDirection = DIR_NORTHEAST;
+                else chosenDirection = DIR_NORTHWEST;
+            }
+        }
+        else
+        {
+            if(playerx > objectx) chosenDirection = DIR_EAST;
+            else chosenDirection = DIR_WEST;
+        }
+    }
+
+    SetObjectEventDirection(objectEvent, chosenDirection);
+    sprite->sTypeFuncId = 5;
+    if (GetCollisionInDirection(objectEvent, chosenDirection))
+        sprite->sTypeFuncId = 1;
+
+    return TRUE;
+}
+
+//No collision - set movement action to walk towards player
+bool8 MovementType_Chase_Step5(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkNormalMovementAction(objectEvent->movementDirection));
+    objectEvent->singleMovementActive = TRUE;
+    sprite->sTypeFuncId = 6;
+    return TRUE;
+}
+
+//Execute movement action to walk towards player
+bool8 MovementType_Chase_Step6(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    if (ObjectEventExecSingleMovementAction(objectEvent, sprite))
+    {
+        objectEvent->singleMovementActive = FALSE;
+        sprite->sTypeFuncId = 1;
+    }
     return FALSE;
 }
 
