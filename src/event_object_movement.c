@@ -4783,25 +4783,22 @@ bool8 MovementType_Chase_Step3(struct ObjectEvent *objectEvent, struct Sprite *s
     return FALSE;
 }
 
-//Determine which direction to face
-bool8 MovementType_Chase_Step4(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+static u8 GetDirectionForRollingGiant(struct ObjectEvent *objectEvent)
 {
-    u8 directions[8];
-    u8 chosenDirection;
     f32 slope;
     s16 playerx = (gSaveBlock1Ptr->pos.x);
     s16 playery = (gSaveBlock1Ptr->pos.y);
     s16 objectx = (objectEvent->currentCoords.x) - GRID_TO_COORDS(7);
     s16 objecty = (objectEvent->currentCoords.y) - GRID_TO_COORDS(7);
+    u8 direction;
+    u8 collision;
 
-    memcpy(directions, gStandardDirections, sizeof directions);
-//    chosenDirection = directions[Random() & 7];
-    DebugPrintf("px: %d, py: %d, ox: %d, oy: %d", playerx, playery, objectx, objecty);
+//    DebugPrintf("px: %d, py: %d, ox: %d, oy: %d", playerx, playery, objectx, objecty);
     if(playerx - objectx == 0) //Making sure no divide by zero errors
     {
-        if(playery > objecty) chosenDirection = DIR_SOUTH;
-        else if (playery < objecty) chosenDirection = DIR_NORTH;
-        else chosenDirection = DIR_NONE;
+        if(playery > objecty) direction = DIR_SOUTH;
+        else if (playery < objecty) direction = DIR_NORTH;
+        else direction = DIR_NONE;
     }
     else
     {
@@ -4809,27 +4806,185 @@ bool8 MovementType_Chase_Step4(struct ObjectEvent *objectEvent, struct Sprite *s
         DebugPrintf("slope: %d", slope);
         if(abs(slope) >= 2.414) // 67.5 degrees
         {
-            if(playery > objecty) chosenDirection = DIR_SOUTH;
-            else chosenDirection = DIR_NORTH;
+            if(playery > objecty) direction = DIR_SOUTH;
+            else direction = DIR_NORTH;
         }
         else if (abs(slope) >= .414) // 22.5 degrees
         {
             if(playery > objecty)
             {
-                if(playerx > objectx) chosenDirection = DIR_SOUTHEAST;
-                else chosenDirection = DIR_SOUTHWEST;
+                if(playerx > objectx) direction = DIR_SOUTHEAST;
+                else direction = DIR_SOUTHWEST;
             }
             else {
-                if(playerx > objectx) chosenDirection = DIR_NORTHEAST;
-                else chosenDirection = DIR_NORTHWEST;
+                if(playerx > objectx) direction = DIR_NORTHEAST;
+                else direction = DIR_NORTHWEST;
             }
         }
         else
         {
-            if(playerx > objectx) chosenDirection = DIR_EAST;
-            else chosenDirection = DIR_WEST;
+            if(playerx > objectx) direction = DIR_EAST;
+            else direction = DIR_WEST;
         }
     }
+
+    if(!GetCollisionInDirection(objectEvent, direction)) return direction;
+    else { //Find next best tile
+        switch(direction)
+        {
+            case DIR_SOUTH:
+                if (playerx > objectx)
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
+                    else return DIR_SOUTH;
+                }
+                else
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
+                    else return DIR_SOUTH;
+                }
+                break;
+            case DIR_NORTH:
+                if (playerx > objectx)
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
+                    else return DIR_NORTH;   
+                }
+                else
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
+                    else return DIR_NORTH;
+                }
+                break;
+            case DIR_WEST:
+                if (playery > objecty)
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
+                    else return DIR_WEST;
+                }
+                else
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
+                    else return DIR_WEST;
+                }
+                break;
+            case DIR_EAST:
+                if (playery > objecty)
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
+                    else return DIR_EAST;                    
+                }
+                else
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
+                    else return DIR_EAST;
+                }
+                break;
+            case DIR_SOUTHWEST:
+                if (abs(slope) > 1)
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
+                    else return DIR_SOUTHWEST;
+                }
+                else
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
+                    else return DIR_SOUTHWEST;
+                }
+                break;
+            case DIR_SOUTHEAST:
+                if (abs(slope) > 1)
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
+                    else return DIR_SOUTHEAST;
+                }
+                else
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
+                    else return DIR_SOUTHEAST;
+                }
+                break;
+            case DIR_NORTHWEST:
+                if (abs(slope) > 1)
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
+                    else return DIR_NORTHWEST;
+                }
+                else
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
+                    else return DIR_NORTHWEST;
+                }
+                break;
+            case DIR_NORTHEAST:
+                if (abs(slope) > 1)
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
+                    else return DIR_NORTHEAST;
+                }
+                else
+                {
+                    if(!GetCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
+                    else if(!GetCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
+                    else return DIR_NORTHEAST;
+                }
+                break;
+        }
+    }
+    return DIR_NONE;
+}
+
+//Determine which direction to face
+bool8 MovementType_Chase_Step4(struct ObjectEvent *objectEvent, struct Sprite *sprite)
+{
+    u8 chosenDirection = GetDirectionForRollingGiant(objectEvent);
 
     SetObjectEventDirection(objectEvent, chosenDirection);
     sprite->sTypeFuncId = 5;
