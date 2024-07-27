@@ -1486,8 +1486,7 @@ u8 PlayerGetElevation(void)
     return gObjectEvents[gPlayerAvatar.objectEventId].previousElevation;
 }
 
-// unused
-void MovePlayerToMapCoords(s16 x, s16 y)
+UNUSED void MovePlayerToMapCoords(s16 x, s16 y)
 {
     MoveObjectEventToMapCoords(&gObjectEvents[gPlayerAvatar.objectEventId], x, y);
 }

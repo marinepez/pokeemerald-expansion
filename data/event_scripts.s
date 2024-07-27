@@ -1017,6 +1017,15 @@ EventScript_VsSeekerChargingDone::
 	releaseall
 	end
 
+EventScript_RollingGiantBattle::
+	lockall
+	setwildbattle SPECIES_BULBASAUR, 12, ITEM_NONE
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	dowildbattle
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	releaseall
+	return
+
 	.include "data/scripts/pc_transfer.inc"
 	.include "data/scripts/questionnaire.inc"
 	.include "data/scripts/abnormal_weather.inc"
