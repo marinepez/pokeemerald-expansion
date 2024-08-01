@@ -813,7 +813,7 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
 
 u8 SensePlayerAvatarCollision(u8 direction, u8 (*checkCollisionFunction)(struct ObjectEvent *, s16, s16, u8, u8))
 {
-    s16 checkX[3], checkY[3];
+    s16 checkX[4], checkY[4];
     u8 numChecks, i;
 
     struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
@@ -841,16 +841,40 @@ u8 SensePlayerAvatarCollision(u8 direction, u8 (*checkCollisionFunction)(struct 
         numChecks = 3;
         break;
     case DIR_SOUTHWEST:
+        checkX[1] = checkX[0];
+        checkY[1] = checkY[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkX[2] = checkX[0];
+        checkY[2] = checkY[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkX[3] = checkX[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkY[3] = checkY[0];
+        numChecks = 4;
+        break;
     case DIR_SOUTHEAST:
         checkX[1] = checkX[0];
         checkY[1] = checkY[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
-        numChecks = 2;
+        checkX[2] = checkX[0];
+        checkY[2] = checkY[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkX[3] = checkX[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkY[3] = checkY[0];
+        numChecks = 4;
         break;
     case DIR_NORTHWEST:
+        checkX[1] = checkX[0];
+        checkY[1] = checkY[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkX[2] = checkX[0];
+        checkY[2] = checkY[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkX[3] = checkX[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkY[3] = checkY[0];
+        numChecks = 4;
+        break;
     case DIR_NORTHEAST:
         checkX[1] = checkX[0];
         checkY[1] = checkY[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
-        numChecks = 2;
+        checkX[2] = checkX[0];
+        checkY[2] = checkY[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkX[3] = checkX[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkY[3] = checkY[0];
+        numChecks = 4;
         break;
     default:
         return COLLISION_NONE;
