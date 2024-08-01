@@ -382,7 +382,7 @@ gSongTable::
 	song mus_move_deleted, 2, 2
 	song mus_encounter_girl, 0, 0
 	song mus_encounter_male, 0, 0
-	song mus_abandoned_ship, 0, 0
+	song mus_outside, 0, 0
 	song mus_fortree, 0, 0
 	song mus_birch_lab, 0, 0
 	song mus_b_tower_rs, 0, 0
@@ -444,8 +444,8 @@ gSongTable::
 	song mus_contest, 0, 0
 	song mus_encounter_magma, 0, 0
 	song mus_intro_battle, 0, 0
-	song mus_abnormal_weather, 0, 0
-	song mus_weather_groudon, 0, 0
+	song mus_staircase, 0, 0
+	song mus_mall, 0, 0
 	song mus_sootopolis, 0, 0
 	song mus_contest_results, 0, 0
 	song mus_hall_of_fame_room, 0, 0

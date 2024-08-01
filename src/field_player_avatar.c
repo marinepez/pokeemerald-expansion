@@ -1141,7 +1141,9 @@ void UpdatePlayerAvatarTransitionState(void)
         WriteFlashScanlineEffectBuffer(flashLevel);
     }
 
+
     CheckPlayerAvatarChangedTile(playerObjEvent);
+    ObjectEventUpdateMetatileBehaviors(playerObjEvent); // (AVIRCODE) Added so that it just always updates the metatile. Otherwise, there'd be problems where the game wouldn't realize the player isn't on a certain tile
 
     if (PlayerIsAnimActive())
     {
@@ -1280,7 +1282,7 @@ void PlayerJumpLedge(u8 direction)
 {
     struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
     playerObjEvent->isMidAir = TRUE;
-    PlaySE(SE_LEDGE);
+    //PlaySE(SE_LEDGE);
     PlayerSetAnimId(GetJump2MovementAction(direction), COPY_MOVE_JUMP2);
 }
 

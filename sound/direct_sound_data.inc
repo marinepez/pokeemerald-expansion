@@ -6389,3 +6389,37 @@ DirectSoundWaveData_sd90_classical_whistle::
 	.align 2
 DirectSoundWaveData_sd90_enhanced_delay_shaku::
 	.incbin "sound/direct_sound_samples/sd90_enhanced_delay_shaku.bin"
+
+	.align 2
+DirectSoundWaveData_mall_1::
+	.incbin "sound/direct_sound_samples/streamed/mall_1.bin"
+
+	.align 2
+DirectSoundWaveData_outside::
+	.incbin "sound/direct_sound_samples/streamed/outside.bin"
+
+	.align 2
+DirectSoundWaveData_mourning_dove::
+	.incbin "sound/direct_sound_samples/streamed/mourning_dove.bin"
+
+	.align 2
+DirectSoundWaveData_ambience_stairs::
+	.incbin "sound/direct_sound_samples/streamed/ambience_stairs.bin"
+
+DirectSoundWaveData_wall_hit_reverb::
+	.incbin "sound/direct_sound_samples/streamed/wall_hit_reverb.bin"
+
+DirectSoundWaveData_step_1::
+	.incbin "sound/direct_sound_samples/streamed/step_1.bin"
+
+DirectSoundWaveData_step_2::
+	.incbin "sound/direct_sound_samples/streamed/step_2.bin"
+
+DirectSoundWaveData_step_3::
+	.incbin "sound/direct_sound_samples/streamed/step_3.bin"
+
+DirectSoundWaveData_step_4::
+	.incbin "sound/direct_sound_samples/streamed/step_4.bin"
+
+DirectSoundWaveData_step_5::
+	.incbin "sound/direct_sound_samples/streamed/step_5.bin"

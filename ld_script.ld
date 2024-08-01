@@ -1032,7 +1032,7 @@ SECTIONS {
         sound/songs/midi/mus_move_deleted.o(.rodata);
         sound/songs/midi/mus_encounter_girl.o(.rodata);
         sound/songs/midi/mus_encounter_male.o(.rodata);
-        sound/songs/midi/mus_abandoned_ship.o(.rodata);
+        sound/songs/mus_outside.o(.rodata);
         sound/songs/midi/mus_fortree.o(.rodata);
         sound/songs/midi/mus_birch_lab.o(.rodata);
         sound/songs/midi/mus_b_tower_rs.o(.rodata);
@@ -1094,8 +1094,8 @@ SECTIONS {
         sound/songs/midi/mus_contest.o(.rodata);
         sound/songs/midi/mus_encounter_magma.o(.rodata);
         sound/songs/midi/mus_intro_battle.o(.rodata);
-        sound/songs/midi/mus_abnormal_weather.o(.rodata);
-        sound/songs/midi/mus_weather_groudon.o(.rodata);
+        sound/songs/mus_staircase.o(.rodata);
+        sound/songs/mus_mall.o(.rodata);
         sound/songs/midi/mus_sootopolis.o(.rodata);
         sound/songs/midi/mus_contest_results.o(.rodata);
         sound/songs/midi/mus_hall_of_fame_room.o(.rodata);

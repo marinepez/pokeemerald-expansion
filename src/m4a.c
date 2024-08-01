@@ -1257,6 +1257,40 @@ void m4aMPlayVolumeControl(struct MusicPlayerInfo *mplayInfo, u16 trackBits, u16
     mplayInfo->ident = ID_NUMBER;
 }
 
+void m4aMPlayMasterVolumeControl(struct MusicPlayerInfo *mplayInfo, u16 trackBits, u16 volume) // (AVIRCODE) An identical clone of "m4aMPlayVolumeControl", except it changes master volume instead of volX (or fade volume, like when a song fades out.)
+{
+    s32 i;
+    u32 bit;
+    struct MusicPlayerTrack *track;
+
+    if (mplayInfo->ident != ID_NUMBER)
+        return;
+
+    mplayInfo->ident++;
+
+    i = mplayInfo->trackCount;
+    track = mplayInfo->tracks;
+    bit = 1;
+
+    while (i > 0)
+    {
+        if (trackBits & bit)
+        {
+            if (track->flags & MPT_FLG_EXIST)
+            {
+                track->vol = volume / 4;
+                track->flags |= MPT_FLG_VOLCHG;
+            }
+        }
+
+        i--;
+        track++;
+        bit <<= 1;
+    }
+
+    mplayInfo->ident = ID_NUMBER;
+}
+
 void m4aMPlayPitchControl(struct MusicPlayerInfo *mplayInfo, u16 trackBits, s16 pitch)
 {
     s32 i;

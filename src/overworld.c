@@ -549,12 +549,23 @@ void SetObjEventTemplateMovementType(u8 localId, u8 movementType)
     }
 }
 
-static void InitMapView(void)
+void InitMapView(void) // (AVIRCODE) No longer static
 {
     ResetFieldCamera();
     CopyMapTilesetsToVram(gMapHeader.mapLayout);
     LoadMapTilesetPalettes(gMapHeader.mapLayout);
     DrawWholeMapView();
+    InitTilesetAnimations();
+}
+
+void InitMapViewAfterCrossingMap(void) // (AVIRCODE) New variation
+{
+    ResetFieldCamera();
+    CopyMapTilesetsToVram(gMapHeader.mapLayout);
+    LoadMapTilesetPalettes(gMapHeader.mapLayout);
+    FillPalBufferBlack();
+    gPaletteFade.active = FALSE;
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, 0);
     InitTilesetAnimations();
 }
 
@@ -1122,7 +1133,7 @@ u16 GetLocationMusic(struct WarpData *warp)
     if (NoMusicInSotopolisWithLegendaries(warp) == TRUE)
         return MUS_NONE;
     else if (ShouldLegendaryMusicPlayAtLocation(warp) == TRUE)
-        return MUS_ABNORMAL_WEATHER;
+        return MUS_STAIRCASE;
     else if (IsInflitratedSpaceCenter(warp) == TRUE)
         return MUS_ENCOUNTER_MAGMA;
     else if (IsInfiltratedWeatherInstitute(warp) == TRUE)
@@ -1181,7 +1192,7 @@ void Overworld_PlaySpecialMapMusic(void)
 {
     u16 music = GetCurrLocationDefaultMusic();
 
-    if (music != MUS_ABNORMAL_WEATHER && music != MUS_NONE)
+    if (music != MUS_STAIRCASE && music != MUS_NONE)
     {
         if (gSaveBlock1Ptr->savedMusic)
             music = gSaveBlock1Ptr->savedMusic;
@@ -1211,7 +1222,7 @@ static void TransitionMapMusic(void)
     {
         u16 newMusic = GetWarpDestinationMusic();
         u16 currentMusic = GetCurrentMapMusic();
-        if (newMusic != MUS_ABNORMAL_WEATHER && newMusic != MUS_NONE)
+        if (newMusic != MUS_STAIRCASE && newMusic != MUS_NONE)
         {
             if (currentMusic == MUS_UNDERWATER || currentMusic == MUS_SURF)
                 return;
@@ -1238,7 +1249,7 @@ void Overworld_ChangeMusicToDefault(void)
 void Overworld_ChangeMusicTo(u16 newMusic)
 {
     u16 currentMusic = GetCurrentMapMusic();
-    if (currentMusic != newMusic && currentMusic != MUS_ABNORMAL_WEATHER)
+    if (currentMusic != newMusic && currentMusic != MUS_STAIRCASE)
         FadeOutAndPlayNewMapMusic(newMusic, 8);
 }
 
@@ -1498,7 +1509,11 @@ static void DoCB1_Overworld(u16 newKeys, u16 heldKeys)
         {
             if (gPlayerAvatar.changedTile)
                 UpdatePlayerAvatarTileInfo();
-            PlayerStep(direction, newKeys, heldKeys);
+
+                PlayerStep(direction, newKeys, heldKeys);
+                //gSpecialVar_0x8000 = (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x % 256); // (AVIRCODE) Debug thing. Select button would display the player's position on the tile with this.
+                //gSpecialVar_0x8001 = (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y % 256);
+
         }
     }
     else
@@ -1598,7 +1613,7 @@ void CB2_NewGame(void)
     PlayTimeCounter_Start();
     ScriptContext_Init();
     UnlockPlayerFieldControls();
-    gFieldCallback = ExecuteTruckSequence;
+    gFieldCallback = NULL;
     gFieldCallback2 = NULL;
     DoMapLoadLoop(&gMain.state);
     SetFieldVBlankCallback();

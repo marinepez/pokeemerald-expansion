@@ -2,7 +2,7 @@
   "id": "MAP_MAGM9_MALL_MAIN_AREA",
   "name": "MAGM9_Mall_MainArea",
   "layout": "LAYOUT_MAGM9_MALL_MAIN_AREA",
-  "music": "MUS_NONE",
+  "music": "MUS_MALL",
   "region_map_section": "MAPSEC_NONE",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -14,15 +14,93 @@
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": 0,
   "object_events": [
-
+    {
+      "graphics_id": "OBJ_EVENT_GFX_POOCHYENA",
+      "x": 80,
+      "y": 65,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_CHASE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
+    }
   ],
   "warp_events": [
-
+    {
+      "x": 46,
+      "y": 1,
+      "elevation": 0,
+      "dest_map": "MAP_MAGM9_STAIRS_SIDE",
+      "dest_warp_id": "0"
+    }
   ],
   "coord_events": [
-
+    {
+      "type": "trigger",
+      "x": 36,
+      "y": 20,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_MallToShops1"
+    },
+    {
+      "type": "trigger",
+      "x": 36,
+      "y": 21,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_MallToShops1"
+    },
+    {
+      "type": "trigger",
+      "x": 37,
+      "y": 20,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_ShopsToMall"
+    },
+    {
+      "type": "trigger",
+      "x": 37,
+      "y": 21,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_ShopsToMall"
+    },
+    {
+      "type": "trigger",
+      "x": 37,
+      "y": 19,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_ShopsToMall"
+    },
+    {
+      "type": "trigger",
+      "x": 36,
+      "y": 19,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_MallToShops1"
+    }
   ],
   "bg_events": [
-
+    {
+      "type": "sign",
+      "x": 42,
+      "y": 7,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "Mall_PCTest"
+    }
   ]
 }

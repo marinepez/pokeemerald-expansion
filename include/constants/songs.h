@@ -311,7 +311,7 @@
 #define MUS_MOVE_DELETED            378 // MUS_ME_WASURE
 #define MUS_ENCOUNTER_GIRL          379 // MUS_SYOUJOEYE
 #define MUS_ENCOUNTER_MALE          380 // MUS_BOYEYE
-#define MUS_ABANDONED_SHIP          381 // MUS_DAN02            // Also used in Faraway and Southern Islands.
+#define MUS_OUTSIDE                 381 // MUS_DAN02            // Also used in Faraway and Southern Islands.
 #define MUS_FORTREE                 382 // MUS_MACHI_S3         // Also used in Secret Bases and the Safari Zone's entrance.
 #define MUS_BIRCH_LAB               383 // MUS_ODAMAKI
 #define MUS_B_TOWER_RS              384 // MUS_B_TOWER          // Used in Battle Tents, Trainer Hill and Battle Frontier's lounges and Exchange Service Corner.
@@ -373,8 +373,8 @@
 #define MUS_CONTEST                 440 // MUS_CONTEST0
 #define MUS_ENCOUNTER_MAGMA         441 // MUS_MGM0
 #define MUS_INTRO_BATTLE            442 // MUS_T_BATTLE
-#define MUS_ABNORMAL_WEATHER        443 // MUS_OOAME            // Replaces MUS_WEATHER_KYOGRE from R/S.
-#define MUS_WEATHER_GROUDON         444 // MUS_HIDERI           // Unused, from R/S.
+#define MUS_STAIRCASE               443 // MUS_OOAME            // Replaces MUS_WEATHER_KYOGRE from R/S.
+#define MUS_MALL                    444 // MUS_HIDERI           // Unused, from R/S.
 #define MUS_SOOTOPOLIS              445 // MUS_RUNECITY
 #define MUS_CONTEST_RESULTS         446 // MUS_CON_K
 #define MUS_HALL_OF_FAME_ROOM       447 // MUS_EIKOU_R

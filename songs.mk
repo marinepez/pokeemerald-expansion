@@ -108,9 +108,6 @@ $(MID_SUBDIR)/mus_encounter_champion.s: %.s: %.mid
 $(MID_SUBDIR)/mus_petalburg_woods.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G018 -V080
 
-$(MID_SUBDIR)/mus_abandoned_ship.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -G030 -V080
-
 $(MID_SUBDIR)/mus_cave_of_origin.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G037 -V080
 
@@ -188,9 +185,6 @@ $(MID_SUBDIR)/mus_route119.s: %.s: %.mid
 
 $(MID_SUBDIR)/mus_encounter_intense.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G062 -V078
-
-$(MID_SUBDIR)/mus_weather_groudon.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -G090 -V050
 
 $(MID_SUBDIR)/mus_dewford.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G073 -V078
@@ -311,9 +305,6 @@ $(MID_SUBDIR)/mus_gsc_pewter.s: %.s: %.mid
 
 $(MID_SUBDIR)/mus_birch_lab.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G033 -V080
-
-$(MID_SUBDIR)/mus_abnormal_weather.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -G089 -V080
 
 $(MID_SUBDIR)/mus_school.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G081 -V100

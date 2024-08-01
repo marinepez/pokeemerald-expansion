@@ -2,7 +2,7 @@
   "id": "MAP_MAGM9_PATH_BELOW_HILL",
   "name": "MAGM9_PathBelowHill",
   "layout": "LAYOUT_MAGM9_PATH_BELOW_HILL",
-  "music": "MUS_NONE",
+  "music": "MUS_OUTSIDE",
   "region_map_section": "MAPSEC_SPECIAL_AREA",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -20,6 +20,11 @@
     },
     {
       "map": "MAP_MAGM9_HILLTOP",
+      "offset": 0,
+      "direction": "up"
+    },
+    {
+      "map": "MAP_MAGM9_PATH_BELOW_HILL",
       "offset": 0,
       "direction": "up"
     }

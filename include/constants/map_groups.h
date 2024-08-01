@@ -402,6 +402,8 @@
 #define MAP_METEOR_FALLS_STEVENS_CAVE                (107 | (24 << 8))
 #define MAP_MAGM9_MALL_MAIN_AREA                     (108 | (24 << 8))
 #define MAP_MAGM9_STAIRS_DOWN                        (109 | (24 << 8))
+#define MAP_MAGM9_STAIRS_SIDE                        (110 | (24 << 8))
+#define MAP_MAGM9_MALL_SHOPS1                        (111 | (24 << 8))
 
 // gMapGroup_IndoorDynamic
 #define MAP_SECRET_BASE_RED_CAVE1    (0 | (25 << 8))

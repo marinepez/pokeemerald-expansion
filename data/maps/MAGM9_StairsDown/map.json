@@ -2,7 +2,7 @@
   "id": "MAP_MAGM9_STAIRS_DOWN",
   "name": "MAGM9_StairsDown",
   "layout": "LAYOUT_MAGM9_STAIRS_DOWN",
-  "music": "MUS_NONE",
+  "music": "MUS_STAIRCASE",
   "region_map_section": "MAPSEC_NONE",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -12,7 +12,13 @@
   "allow_running": false,
   "show_map_name": false,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": 0,
+  "connections": [
+    {
+      "map": "MAP_MAGM9_STAIRS_SIDE",
+      "offset": 76,
+      "direction": "right"
+    }
+  ],
   "object_events": [
 
   ],
@@ -26,7 +32,285 @@
     }
   ],
   "coord_events": [
-
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 11,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade0"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 13,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade1"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 15,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade2"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 17,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade3"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 19,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade4"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 21,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade5"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 23,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade6"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 25,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade7"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 27,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade8"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 29,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade9"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 31,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade10"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 33,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade11"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 35,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade12"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 37,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade13"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 39,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade14"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 41,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade15"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 43,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade16"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 45,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade17"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 47,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade18"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 49,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade19"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 51,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade20"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 53,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade21"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 55,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade22"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 57,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade23"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 59,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade24"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 61,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade25"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 63,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade26"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 65,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade27"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 67,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade28"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 69,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade29"
+    },
+    {
+      "type": "trigger",
+      "x": 1,
+      "y": 71,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Stairs_VolumeFade30"
+    }
   ],
   "bg_events": [
 

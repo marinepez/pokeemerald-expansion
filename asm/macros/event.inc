@@ -1594,10 +1594,11 @@
 	.2byte \box
 	.endm
 
-	@ Used only in FireRed/LeafGreen, does nothing in Emerald.
-	.macro textcolor color:req
+	@ (Avircode) A new command added to modify a track's master volume with a script.
+	.macro settrackvolume track:req, volume:req
 	.byte 0xc7
-	.byte \color
+	.2byte \track
+	.2byte \volume
 	.endm
 
 	@ Used only in FireRed/LeafGreen, does nothing in Emerald.

@@ -4414,8 +4414,8 @@
     {
       "id": "LAYOUT_MAGM9_MALL_MAIN_AREA",
       "name": "MAGM9_Mall_MainArea_Layout",
-      "width": 20,
-      "height": 20,
+      "width": 90,
+      "height": 83,
       "primary_tileset": "gTileset_Building",
       "secondary_tileset": "gTileset_Unused1",
       "border_filepath": "data/layouts/MAGM9_Mall_MainArea/border.bin",
@@ -4437,7 +4437,7 @@
       "width": 21,
       "height": 10,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Cave",
+      "secondary_tileset": "gTileset_BrendansMaysHouse",
       "border_filepath": "data/layouts/MAGM9_PathBelowHill/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_PathBelowHill/map.bin"
     },
@@ -4450,6 +4450,26 @@
       "secondary_tileset": "gTileset_MirageTower",
       "border_filepath": "data/layouts/MAGM9_StairsDown/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_StairsDown/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_STAIRS_SIDE",
+      "name": "MAGM9_StairsSide_Layout",
+      "width": 42,
+      "height": 40,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_MirageTower",
+      "border_filepath": "data/layouts/MAGM9_StairsSide/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_StairsSide/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_MALL_SHOPS1",
+      "name": "MAGM9_Mall_Shops1_Layout",
+      "width": 90,
+      "height": 83,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_PokemonCenter",
+      "border_filepath": "data/layouts/MAGM9_Mall_Shops1/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_Mall_Shops1/map.bin"
     }
   ]
 }

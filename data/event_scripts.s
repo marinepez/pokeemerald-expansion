@@ -965,10 +965,16 @@ gText_LegendaryFlewAway::
 	.include "data/text/abnormal_weather.inc"
 
 EventScript_SelectWithoutRegisteredItem::
-	msgbox gText_SelectWithoutRegisteredItem, MSGBOX_SIGN
+	buffernumberstring STR_VAR_1, VAR_0x8000
+	buffernumberstring STR_VAR_2, VAR_0x8001
+	msgbox gText_Test, MSGBOX_SIGN
+	@msgbox gText_SelectWithoutRegisteredItem, MSGBOX_SIGN
 	end
 
 	.include "data/scripts/field_poison.inc"
+
+gText_Test:
+	.string "X: {STR_VAR_1}, Y: {STR_VAR_2}$"
 
 Common_EventScript_NopReturn::
 	return
@@ -1089,3 +1095,7 @@ EventScript_RollingGiantBattle::
 	.include "data/maps/MAGM9_PathBelowHill/scripts.inc"
 
 	.include "data/maps/MAGM9_StairsDown/scripts.inc"
+
+	.include "data/maps/MAGM9_StairsSide/scripts.inc"
+
+	.include "data/maps/MAGM9_Mall_Shops1/scripts.inc"

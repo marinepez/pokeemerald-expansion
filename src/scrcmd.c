@@ -51,6 +51,8 @@
 #include "list_menu.h"
 #include "malloc.h"
 #include "constants/event_objects.h"
+#include "m4a.h"
+#include "gba/m4a_internal.h"
 
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(struct ScriptContext *ctx);
@@ -732,11 +734,16 @@ bool8 ScrCmd_setstepcallback(struct ScriptContext *ctx)
     return FALSE;
 }
 
-bool8 ScrCmd_setmaplayoutindex(struct ScriptContext *ctx)
+bool8 ScrCmd_setmaplayoutindex(struct ScriptContext *ctx) // (AVIRCODE) Modified to work as a "setmaptile" command on steroids.
 {
     u16 value = VarGet(ScriptReadHalfword(ctx));
+    
+    if(gSaveBlock1Ptr->mapLayoutId == value)
+        return FALSE; // Don't activate if it's the same map layout
 
     SetCurrentMapLayout(value);
+    InitMap();
+    InitMapViewAfterCrossingMap();
     return FALSE;
 }
 
@@ -1774,6 +1781,15 @@ bool8 ScrCmd_bufferboxname(struct ScriptContext *ctx)
     u16 boxId = VarGet(ScriptReadHalfword(ctx));
 
     StringCopy(sScriptStringVars[stringVarIndex], GetBoxNamePtr(boxId));
+    return FALSE;
+}
+
+bool8 ScrCmd_settrackvolume(struct ScriptContext *ctx)
+{
+    u16 trackId = ScriptReadHalfword(ctx);
+    u16 volume = ScriptReadHalfword(ctx);
+
+    m4aMPlayMasterVolumeControl(&gMPlayInfo_BGM, trackId, volume);
     return FALSE;
 }
 

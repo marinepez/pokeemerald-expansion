@@ -1,6 +1,9 @@
 #include "global.h"
 #include "metatile_behavior.h"
 #include "constants/metatile_behaviors.h"
+#include "fieldmap.h"
+#include "event_data.h"
+#include "event_object_movement.h"
 
 #define TILE_FLAG_HAS_ENCOUNTERS (1 << 0)
 #define TILE_FLAG_SURFABLE       (1 << 1)
@@ -390,7 +393,7 @@ bool8 MetatileBehavior_IsForcedMovementTile(u8 metatileBehavior)
      || metatileBehavior == MB_MUDDY_SLOPE
      || metatileBehavior == MB_CRACKED_FLOOR
      || metatileBehavior == MB_WATERFALL
-     || metatileBehavior == MB_ICE
+     //|| metatileBehavior == MB_ICE (AVIRCODE) Ice not made slidey
      || metatileBehavior == MB_SECRET_BASE_JUMP_MAT
      || metatileBehavior == MB_SECRET_BASE_SPIN_MAT)
         return TRUE;
@@ -398,11 +401,11 @@ bool8 MetatileBehavior_IsForcedMovementTile(u8 metatileBehavior)
         return FALSE;
 }
 
-bool8 MetatileBehavior_IsIce_2(u8 metatileBehavior)
+bool8 MetatileBehavior_IsIce_2(u8 metatileBehavior) // (AVIRCODE) Used to determine whether the tile is slidey rather than if it's reflective. Here, I nulled it out to only make it reflective.
 {
-    if (metatileBehavior == MB_ICE)
-        return TRUE;
-    else
+    //if (metatileBehavior == MB_ICE)
+    //    return TRUE;
+    //else
         return FALSE;
 }
 
@@ -981,72 +984,104 @@ bool8 MetatileBehavior_IsSurfableAndNotWaterfall(u8 metatileBehavior)
 bool8 MetatileBehavior_IsEastBlocked(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_IMPASSABLE_EAST
-     || metatileBehavior == MB_IMPASSABLE_NORTHEAST
-     || metatileBehavior == MB_IMPASSABLE_SOUTHEAST
-     || metatileBehavior == MB_IMPASSABLE_WEST_AND_EAST
+     //|| metatileBehavior == MB_IMPASSABLE_NORTHEAST
+     //|| metatileBehavior == MB_IMPASSABLE_SOUTHEAST
+     //|| metatileBehavior == MB_IMPASSABLE_WEST_AND_EAST
      || metatileBehavior == MB_SECRET_BASE_BREAKABLE_DOOR)
         return TRUE;
     else
-        return FALSE;
+        return (MetatileBehavior_IsNortheastBlocked(metatileBehavior)
+            || MetatileBehavior_IsSoutheastBlocked(metatileBehavior));
 }
 
 bool8 MetatileBehavior_IsWestBlocked(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_IMPASSABLE_WEST
-     || metatileBehavior == MB_IMPASSABLE_NORTHWEST
-     || metatileBehavior == MB_IMPASSABLE_SOUTHWEST
-     || metatileBehavior == MB_IMPASSABLE_WEST_AND_EAST
+     //|| metatileBehavior == MB_IMPASSABLE_NORTHWEST
+     //|| metatileBehavior == MB_IMPASSABLE_SOUTHWEST
+     //|| metatileBehavior == MB_IMPASSABLE_WEST_AND_EAST
      || metatileBehavior == MB_SECRET_BASE_BREAKABLE_DOOR)
         return TRUE;
     else
-        return FALSE;
+        return (MetatileBehavior_IsNorthwestBlocked(metatileBehavior)
+            || MetatileBehavior_IsSouthwestBlocked(metatileBehavior));
 }
 
 bool8 MetatileBehavior_IsNorthBlocked(u8 metatileBehavior)
 {
-    if (metatileBehavior == MB_IMPASSABLE_NORTH
-     || metatileBehavior == MB_IMPASSABLE_NORTHEAST
-     || metatileBehavior == MB_IMPASSABLE_NORTHWEST
-     || metatileBehavior == MB_IMPASSABLE_SOUTH_AND_NORTH)
+    if (metatileBehavior == MB_IMPASSABLE_NORTH)
         return TRUE;
-    else
-        return FALSE;
+     //|| metatileBehavior == MB_IMPASSABLE_NORTHEAST
+     //|| metatileBehavior == MB_IMPASSABLE_NORTHWEST
+     //|| metatileBehavior == MB_IMPASSABLE_SOUTH_AND_NORTH)
+    return (MetatileBehavior_IsNortheastBlocked(metatileBehavior)
+        || MetatileBehavior_IsNorthwestBlocked(metatileBehavior));
 }
 
 bool8 MetatileBehavior_IsSouthBlocked(u8 metatileBehavior)
 {
-    if (metatileBehavior == MB_IMPASSABLE_SOUTH
-     || metatileBehavior == MB_IMPASSABLE_SOUTHEAST
-     || metatileBehavior == MB_IMPASSABLE_SOUTHWEST
-     || metatileBehavior == MB_IMPASSABLE_SOUTH_AND_NORTH)
+    if (metatileBehavior == MB_IMPASSABLE_SOUTH)
         return TRUE;
+     //|| metatileBehavior == MB_IMPASSABLE_SOUTHEAST
+     //|| metatileBehavior == MB_IMPASSABLE_SOUTHWEST
+     //|| metatileBehavior == MB_IMPASSABLE_SOUTH_AND_NORTH)
+    return (MetatileBehavior_IsSoutheastBlocked(metatileBehavior)
+        || MetatileBehavior_IsSouthwestBlocked(metatileBehavior));
+}
+
+// Diagonal walls: Basically, the idea is that we get a coordinate distance by subtracting the Y with the X. To get the coords of a mirror wall,
+// we subtract from 256 (the max coordinate size of a tile where 32 represents one pixel.) This effectively reverses the number and flips the distance.
+
+
+bool8 MetatileBehavior_IsSouthwestBlocked(u8 metatileBehavior) // (AVIRCODE) These are repurposed for diagonal collisions
+{
+    int yDistance = (256 - (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y % 256)) - (256 - ((gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x) % 256));
+    if(metatileBehavior == MB_IMPASSABLE_SOUTHWEST && yDistance <= 68)
+    {
+        gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y -= (68 - yDistance); // Basically, if it's too far in the diagonal collision, push it out to a desired distance (in this case, 68.) This is done to hopefully avoid solid collisions in between diagonal walls.
+        return TRUE;
+    } 
     else
         return FALSE;
 }
 
-bool8 MetatileBehavior_IsSouthwestBlocked(u8 metatileBehavior)
-{
-    return (MetatileBehavior_IsSouthBlocked(metatileBehavior)
-        || MetatileBehavior_IsWestBlocked(metatileBehavior));
-}
-
 bool8 MetatileBehavior_IsSoutheastBlocked(u8 metatileBehavior)
 {
-    return (MetatileBehavior_IsSouthBlocked(metatileBehavior)
-        || MetatileBehavior_IsEastBlocked(metatileBehavior));
+    int yDistance = (256 - (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y % 256)) - ((gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x) % 256);
+    if(metatileBehavior == MB_IMPASSABLE_SOUTHEAST  && yDistance <= 68)
+    {
+        gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y -= (68 - yDistance);
+        return TRUE;
+    } 
+    else
+        return FALSE;
 }
 
 bool8 MetatileBehavior_IsNorthwestBlocked(u8 metatileBehavior)
 {
-    return (MetatileBehavior_IsNorthBlocked(metatileBehavior)
-        || MetatileBehavior_IsWestBlocked(metatileBehavior));
+    int xDistance = (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y % 256) - (256 - ((gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x - 32) % 256)); // The "-32" is added here since for some reason, north-west walls are offset two pixels to the left in terms of where it will read the tile as the correct metatile.
+    metatileBehavior = MapGridGetMetatileBehaviorAt(COORDS_TO_GRID(gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x - 32), COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) + MAP_OFFSET); // Same idea here, the metatile is re-read as being two pixels to the left.
+    if (metatileBehavior == MB_IMPASSABLE_NORTHWEST && xDistance <= 68)
+    {
+        gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x += (68 - xDistance);
+        return TRUE; 
+    }
+    else
+        return FALSE;
 }
 
 bool8 MetatileBehavior_IsNortheastBlocked(u8 metatileBehavior)
 {
-    return (MetatileBehavior_IsNorthBlocked(metatileBehavior)
-        || MetatileBehavior_IsEastBlocked(metatileBehavior));
+    int xDistance = (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y % 256) - (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x % 256);
+    if(metatileBehavior == MB_IMPASSABLE_NORTHEAST && xDistance <= 64)
+    {
+        gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x -= (64 - xDistance);
+        return TRUE;
+    }
+    else
+        return FALSE;
 }
+
 
 bool8 MetatileBehavior_IsShortGrass(u8 metatileBehavior)
 {

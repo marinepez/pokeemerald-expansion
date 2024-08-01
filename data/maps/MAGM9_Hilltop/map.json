@@ -2,7 +2,7 @@
   "id": "MAP_MAGM9_HILLTOP",
   "name": "MAGM9_Hilltop",
   "layout": "LAYOUT_MAGM9_HILLTOP",
-  "music": "MUS_NONE",
+  "music": "MUS_OUTSIDE",
   "region_map_section": "MAPSEC_SPECIAL_AREA",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -37,7 +37,7 @@
   "warp_events": [
     {
       "x": 10,
-      "y": 19,
+      "y": 32,
       "elevation": 0,
       "dest_map": "MAP_MAGM9_HILLTOP",
       "dest_warp_id": "0"

@@ -104,7 +104,7 @@ static bool8 DoesObjectCollideWithObjectAt(struct ObjectEvent *, s16, s16);
 static void StopObjectEventMovement(struct ObjectEvent *);
 static void UpdateObjectEventOffscreen(struct ObjectEvent *, struct Sprite *);
 static void UpdateObjectEventSpriteVisibility(struct ObjectEvent *, struct Sprite *);
-static void ObjectEventUpdateMetatileBehaviors(struct ObjectEvent *);
+//void ObjectEventUpdateMetatileBehaviors(struct ObjectEvent *); // (AVIRCODE) Now non-static as it's used in field_player_avatar.
 static void GetGroundEffectFlags_Reflection(struct ObjectEvent *, u32 *);
 static void GetGroundEffectFlags_TallGrassOnSpawn(struct ObjectEvent *, u32 *);
 static void GetGroundEffectFlags_LongGrassOnSpawn(struct ObjectEvent *, u32 *);
@@ -5453,8 +5453,8 @@ static bool8 IsCoordOutsideObjectEventMovementRange(struct ObjectEvent *objectEv
 
 static bool8 IsMetatileDirectionallyImpassable(struct ObjectEvent *objectEvent, s16 x, s16 y, u8 direction)
 {
-    if (gOppositeDirectionBlockedMetatileFuncs[direction - 1](objectEvent->currentMetatileBehavior)
-        || gDirectionBlockedMetatileFuncs[direction - 1](ObjectEventGetMetatileBehaviorAt(x, y)))
+    if (gOppositeDirectionBlockedMetatileFuncs[direction - 1](objectEvent->currentMetatileBehavior))
+        //|| gDirectionBlockedMetatileFuncs[direction - 1](ObjectEventGetMetatileBehaviorAt(x, y))) // (AVIRCODE) Only checks opposite direction now. Changed for directional collision
         return TRUE;
 
     return FALSE;
@@ -8185,7 +8185,7 @@ static void GetAllGroundEffectFlags_OnFinishStep(struct ObjectEvent *objEvent, u
     GetGroundEffectFlags_JumpLanding(objEvent, flags);
 }
 
-static void ObjectEventUpdateMetatileBehaviors(struct ObjectEvent *objEvent)
+void ObjectEventUpdateMetatileBehaviors(struct ObjectEvent *objEvent)
 {
     objEvent->previousMetatileBehavior = ObjectEventGetMetatileBehaviorAt(objEvent->previousCoords.x, objEvent->previousCoords.y);
     objEvent->currentMetatileBehavior = ObjectEventGetMetatileBehaviorAt(objEvent->currentCoords.x, objEvent->currentCoords.y);

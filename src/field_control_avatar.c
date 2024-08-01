@@ -183,13 +183,14 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     }
     if (input->heldDirection && input->dpadDirection == playerDirection)
     {
-        if (TryStartCoordEventScript(&position) == TRUE)
+        if (gPlayerAvatar.changedTile == TRUE && TryStartCoordEventScript(&position)) // (AVIRCODE) (EDIT: this code is faulty, needs to be changed as sometimes the tile scripts won't activate). Changed tile scripts to only activate once you enter the tile rather than while you're inside the tile. This can be adjusted later if needbe.
             return TRUE;
         if (TryStartWarpEventScript(&position, metatileBehavior) == TRUE)
             return TRUE;
         if (TryArrowWarp(&position, metatileBehavior, playerDirection) == TRUE)
             return TRUE;
     }
+
     if (input->checkStandardWildEncounter && CheckStandardWildEncounter(metatileBehavior) == TRUE)
         return TRUE;
 

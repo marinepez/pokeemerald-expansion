@@ -4434,7 +4434,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(MUS_MOVE_DELETED) \
     X(MUS_ENCOUNTER_GIRL) \
     X(MUS_ENCOUNTER_MALE) \
-    X(MUS_ABANDONED_SHIP) \
+    X(MUS_OUTSIDE) \
     X(MUS_FORTREE) \
     X(MUS_BIRCH_LAB) \
     X(MUS_B_TOWER_RS) \
@@ -4497,7 +4497,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(MUS_ENCOUNTER_MAGMA) \
     X(MUS_INTRO_BATTLE) \
     X(MUS_WEATHER_KYOGRE) \
-    X(MUS_WEATHER_GROUDON) \
+    X(MUS_MALL) \
     X(MUS_SOOTOPOLIS) \
     X(MUS_CONTEST_RESULTS) \
     X(MUS_HALL_OF_FAME_ROOM) \
