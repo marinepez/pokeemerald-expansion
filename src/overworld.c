@@ -1207,6 +1207,8 @@ void Overworld_PlaySpecialMapMusic(void)
 
     if (music != GetCurrentMapMusic())
         PlayNewMapMusic(music);
+    else // (AVIRCODE) Sets the fade volume to the maximum number, which is 64 * 4.
+        m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 64*4);
 }
 
 void Overworld_SetSavedMusic(u16 songNum)

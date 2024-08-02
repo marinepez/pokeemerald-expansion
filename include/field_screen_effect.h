@@ -5,6 +5,7 @@ extern const s32 gMaxFlashLevel;
 
 void WarpFadeInScreen(void);
 void WarpFadeOutScreen(void);
+void WarpCutOutScreen(void);
 void FadeInFromBlack(void);
 void FadeInFromWhite(void);
 void FieldCB_ContinueScriptUnionRoom(void);

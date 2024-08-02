@@ -34,6 +34,8 @@
 #include "constants/rgb.h"
 #include "trainer_hill.h"
 #include "fldeff.h"
+#include "m4a.h"
+#include "gba/m4a_internal.h"
 
 static void Task_ExitNonAnimDoor(u8);
 static void Task_ExitNonDoor(u8);
@@ -43,6 +45,7 @@ static void Task_ExitDoor(u8);
 static bool32 WaitForWeatherFadeIn(void);
 static void Task_SpinEnterWarp(u8 taskId);
 static void Task_WarpAndLoadMap(u8 taskId);
+static void Task_CutAndLoadMap(u8 taskId);
 static void Task_DoDoorWarp(u8 taskId);
 static void Task_EnableScriptAfterMusicFade(u8 taskId);
 
@@ -484,22 +487,22 @@ static bool32 WaitForWeatherFadeIn(void)
 void DoWarp(void)
 {
     LockPlayerFieldControls();
-    TryFadeOutOldMapMusic();
-    WarpFadeOutScreen();
+    //TryFadeOutOldMapMusic(); (AVIRCODE) Disabled as the music now completely cuts out. I did this for a few commands.
+    //WarpFadeOutScreen(); // Same here
     PlayRainStoppingSoundEffect();
-    PlaySE(SE_EXIT);
+    //PlaySE(SE_EXIT);
     gFieldCallback = FieldCB_DefaultWarpExit;
-    CreateTask(Task_WarpAndLoadMap, 10);
+    CreateTask(Task_CutAndLoadMap, 10);
 }
 
 void DoDiveWarp(void)
 {
     LockPlayerFieldControls();
-    TryFadeOutOldMapMusic();
-    WarpFadeOutScreen();
+    //TryFadeOutOldMapMusic();
+    //WarpFadeOutScreen();
     PlayRainStoppingSoundEffect();
     gFieldCallback = FieldCB_DefaultWarpExit;
-    CreateTask(Task_WarpAndLoadMap, 10);
+    CreateTask(Task_CutAndLoadMap, 10);
 }
 
 void DoWhiteFadeWarp(void)
@@ -674,6 +677,38 @@ static void Task_WarpAndLoadMap(u8 taskId)
     }
 }
 
+static void Task_CutAndLoadMap(u8 taskId) // (AVIRCODE) New variation of the command, just in case we wanted to use the old warp fade out for anything later down the line.
+{
+    struct Task *task = &gTasks[taskId];
+
+    switch (task->tState)
+    {
+    case 0:
+        m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 0); // Cuts the audio out
+        FillPalBufferBlack(); // Fills the screen with black
+        FreezeObjectEvents();
+        LockPlayerFieldControls();
+        task->tState++;
+        break;
+    case 1:
+        if (task->data[1] == 0)
+        {
+            ClearMirageTowerPulseBlendEffect();
+            task->data[1] = 1;
+        }
+        if(task->data[2] < 90) // Delay after the camera cuts.
+            task->data[2]++;
+        else
+            task->tState++;
+        break;
+    case 2:
+        WarpIntoMap();
+        SetMainCallback2(CB2_LoadMap);
+        DestroyTask(taskId);
+        break;
+    }
+}
+
 static void Task_DoDoorWarp(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
@@ -718,11 +753,11 @@ static void Task_DoDoorWarp(u8 taskId)
         }
         break;
     case 4:
-        TryFadeOutOldMapMusic();
-        WarpFadeOutScreen();
+        //TryFadeOutOldMapMusic();
+        //WarpFadeOutScreen();
         PlayRainStoppingSoundEffect();
         task->tState = 0;
-        task->func = Task_WarpAndLoadMap;
+        task->func = Task_CutAndLoadMap;
         break;
     }
 }
