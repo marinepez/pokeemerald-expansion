@@ -813,7 +813,7 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
 
 u8 SensePlayerAvatarCollision(u8 direction, u8 (*checkCollisionFunction)(struct ObjectEvent *, s16, s16, u8, u8))
 {
-    s16 checkX[4], checkY[4];
+    s16 checkX[3], checkY[3];
     u8 numChecks, i;
 
     struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
@@ -826,61 +826,56 @@ u8 SensePlayerAvatarCollision(u8 direction, u8 (*checkCollisionFunction)(struct 
     {
     case DIR_SOUTH:
     case DIR_NORTH:
-        checkX[1] = checkX[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkX[1] = checkX[0] - (OBJECT_EVENT_HITBOX_HALF >> 1) - 20;
         checkY[1] = checkY[0];
         checkX[2] = checkX[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
         checkY[2] = checkY[0];
         numChecks = 3;
         break;
-    case DIR_WEST:
     case DIR_EAST:
+        checkX[0] -= (OBJECT_EVENT_HITBOX_HALF >> 1) - 16;
+    case DIR_WEST:
         checkX[1] = checkX[0];
-        checkY[1] = checkY[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkY[1] = checkY[0] - (OBJECT_EVENT_HITBOX_HALF >> 1) - 48;
         checkX[2] = checkX[0];
-        checkY[2] = checkY[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
+        checkY[2] = checkY[0] + (OBJECT_EVENT_HITBOX_HALF >> 1) + 32;
         numChecks = 3;
         break;
     case DIR_SOUTHWEST:
         checkX[1] = checkX[0];
-        checkY[1] = checkY[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
-        checkX[2] = checkX[0];
-        checkY[2] = checkY[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
-        checkX[3] = checkX[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
-        checkY[3] = checkY[0];
-        numChecks = 4;
+        checkY[1] = checkY[0] + (OBJECT_EVENT_HITBOX_HALF >> 1) - 26;
+        checkX[2] = checkX[0] - (OBJECT_EVENT_HITBOX_HALF >> 1) + 27;
+        checkY[2] = checkY[0];
+        numChecks = 3;
         break;
     case DIR_SOUTHEAST:
+        checkX[0] -= (OBJECT_EVENT_HITBOX_HALF >> 1) - 16;
         checkX[1] = checkX[0];
-        checkY[1] = checkY[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
-        checkX[2] = checkX[0];
-        checkY[2] = checkY[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
-        checkX[3] = checkX[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
-        checkY[3] = checkY[0];
-        numChecks = 4;
+        checkY[1] = checkY[0] + (OBJECT_EVENT_HITBOX_HALF >> 1) - 26;
+        checkX[2] = checkX[0] + (OBJECT_EVENT_HITBOX_HALF >> 1) - 26;
+        checkY[2] = checkY[0];
+        numChecks = 3;
         break;
     case DIR_NORTHWEST:
-        checkX[1] = checkX[0];
-        checkY[1] = checkY[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
-        checkX[2] = checkX[0];
-        checkY[2] = checkY[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
-        checkX[3] = checkX[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
-        checkY[3] = checkY[0];
-        numChecks = 4;
+        checkX[1] = checkX[0] + 32;
+        checkY[1] = checkY[0] - (OBJECT_EVENT_HITBOX_HALF >> 1) + 27;
+        checkX[2] = checkX[0] - (OBJECT_EVENT_HITBOX_HALF >> 1) + 27;
+        checkY[2] = checkY[0];
+        numChecks = 3;
         break;
     case DIR_NORTHEAST:
+        checkX[0] -= (OBJECT_EVENT_HITBOX_HALF >> 1) - 16;
         checkX[1] = checkX[0];
-        checkY[1] = checkY[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
-        checkX[2] = checkX[0];
-        checkY[2] = checkY[0] - (OBJECT_EVENT_HITBOX_HALF >> 1);
-        checkX[3] = checkX[0] + (OBJECT_EVENT_HITBOX_HALF >> 1);
-        checkY[3] = checkY[0];
-        numChecks = 4;
+        checkY[1] = checkY[0] - (OBJECT_EVENT_HITBOX_HALF >> 1) + 27;
+        checkX[2] = checkX[0] + (OBJECT_EVENT_HITBOX_HALF >> 1) - 26;
+        checkY[2] = checkY[0];
+        numChecks = 3;
         break;
     default:
         return COLLISION_NONE;
     }
 
-    for (i = 0; i < numChecks; i++)
+    for (i = 1; i < numChecks; i++) //Never need to do the first check because the remaining two checks make a bounding box (Bounding line)
     {
         s16 x = checkX[i];
         s16 y = checkY[i];
@@ -889,6 +884,7 @@ u8 SensePlayerAvatarCollision(u8 direction, u8 (*checkCollisionFunction)(struct 
 
         metatileBehavior = ObjectEventGetMetatileBehaviorAt(x, y);
         collision = checkCollisionFunction(playerObjEvent, x, y, direction, metatileBehavior);
+//        DebugPrintf("%d: checkX: %00d, checkY: %00d, col:%d", i, x%255, y%255, collision);
 
         if (collision != COLLISION_NONE)
         {
