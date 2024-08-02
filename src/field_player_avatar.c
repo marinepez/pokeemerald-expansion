@@ -31,6 +31,7 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/trainer_types.h"
+#include "constants/map_types.h"
 
 #define NUM_FORCED_MOVEMENTS 18
 #define NUM_ACRO_BIKE_COLLISIONS 5
@@ -1422,7 +1423,12 @@ static void PlayCollisionSoundIfNotFacingWarp(u8 direction)
                 return;
         }
         if (gObjectEvents[gPlayerAvatar.objectEventId].moveBlocked == FALSE)
-            PlaySE(SE_WALL_HIT);
+        {
+            if(gMapHeader.mapType == MAP_TYPE_UNDERGROUND)
+                PlaySE(SE_WALL_HIT_REVERB); // (AVIRCODE): Play reverb version when underground
+            else
+                PlaySE(SE_WALL_HIT);
+        }
     }
 }
 

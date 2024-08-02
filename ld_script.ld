@@ -1001,6 +1001,7 @@ SECTIONS {
         sound/songs/midi/se_pike_curtain_close.o(.rodata);
         sound/songs/midi/se_pike_curtain_open.o(.rodata);
         sound/songs/midi/se_sudowoodo_shake.o(.rodata);
+        sound/songs/midi/se_wall_hit_reverb.o(.rodata);
         sound/songs/midi/mus_littleroot_test.o(.rodata);
         sound/songs/midi/mus_gsc_route38.o(.rodata);
         sound/songs/midi/mus_caught.o(.rodata);
@@ -1096,7 +1097,7 @@ SECTIONS {
         sound/songs/midi/mus_intro_battle.o(.rodata);
         sound/songs/mus_staircase.o(.rodata);
         sound/songs/mus_mall.o(.rodata);
-        sound/songs/midi/mus_sootopolis.o(.rodata);
+        sound/songs/midi/mus_mall_dark.o(.rodata);
         sound/songs/midi/mus_contest_results.o(.rodata);
         sound/songs/midi/mus_hall_of_fame_room.o(.rodata);
         sound/songs/midi/mus_trick_house.o(.rodata);

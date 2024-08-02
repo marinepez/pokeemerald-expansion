@@ -4498,7 +4498,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(MUS_INTRO_BATTLE) \
     X(MUS_WEATHER_KYOGRE) \
     X(MUS_MALL) \
-    X(MUS_SOOTOPOLIS) \
+    X(MUS_MALL_DARK) \
     X(MUS_CONTEST_RESULTS) \
     X(MUS_HALL_OF_FAME_ROOM) \
     X(MUS_TRICK_HOUSE) \
@@ -4934,6 +4934,10 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(SE_PIKE_CURTAIN_CLOSE) \
     X(SE_PIKE_CURTAIN_OPEN) \
     X(SE_SUDOWOODO_SHAKE) \
+    X(SE_WALL_HIT_REVERB) \
+    X(SE_ROLLING) \
+    X(SE_ROLLING_REVERB) \
+    X(SE_SOUND_END) \
 
 // Create BGM list
 #define X(songId) static const u8 sBGMName_##songId[] = _(#songId);

@@ -6406,20 +6406,34 @@ DirectSoundWaveData_mourning_dove::
 DirectSoundWaveData_ambience_stairs::
 	.incbin "sound/direct_sound_samples/streamed/ambience_stairs.bin"
 
+	.align 2
 DirectSoundWaveData_wall_hit_reverb::
 	.incbin "sound/direct_sound_samples/streamed/wall_hit_reverb.bin"
 
+	.align 2
 DirectSoundWaveData_step_1::
 	.incbin "sound/direct_sound_samples/streamed/step_1.bin"
 
+	.align 2
 DirectSoundWaveData_step_2::
 	.incbin "sound/direct_sound_samples/streamed/step_2.bin"
 
+	.align 2
 DirectSoundWaveData_step_3::
 	.incbin "sound/direct_sound_samples/streamed/step_3.bin"
 
+	.align 2
 DirectSoundWaveData_step_4::
 	.incbin "sound/direct_sound_samples/streamed/step_4.bin"
 
+	.align 2
 DirectSoundWaveData_step_5::
 	.incbin "sound/direct_sound_samples/streamed/step_5.bin"
+
+	.align 2
+DirectSoundWaveData_rolling::
+	.incbin "sound/direct_sound_samples/streamed/rolling.bin"
+
+	.align 2
+DirectSoundWaveData_rolling_reverb::
+	.incbin "sound/direct_sound_samples/streamed/rolling_reverb.bin"

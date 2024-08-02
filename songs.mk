@@ -552,9 +552,6 @@ $(MID_SUBDIR)/mus_rg_victory_wild.s: %.s: %.mid
 $(MID_SUBDIR)/mus_cable_car.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G071 -V078
 
-$(MID_SUBDIR)/mus_sootopolis.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -G091 -V062
-
 $(MID_SUBDIR)/mus_safari_zone.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G074 -V082
 

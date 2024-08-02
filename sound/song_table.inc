@@ -271,10 +271,10 @@ gSongTable::
 	song se_pike_curtain_close, 1, 1
 	song se_pike_curtain_open, 1, 1
 	song se_sudowoodo_shake, 1, 1
-	song dummy_song_header, 0, 0
-	song dummy_song_header, 0, 0
-	song dummy_song_header, 0, 0
-	song dummy_song_header, 0, 0
+	song se_wall_hit_reverb, 1, 1
+	song se_rolling, 3, 3
+	song se_rolling_reverb, 3, 3
+	song se_sound_end, 3, 3
 	song dummy_song_header, 0, 0
 	song dummy_song_header, 0, 0
 	song dummy_song_header, 0, 0
@@ -446,7 +446,7 @@ gSongTable::
 	song mus_intro_battle, 0, 0
 	song mus_staircase, 0, 0
 	song mus_mall, 0, 0
-	song mus_sootopolis, 0, 0
+	song mus_mall_dark, 0, 0
 	song mus_contest_results, 0, 0
 	song mus_hall_of_fame_room, 0, 0
 	song mus_trick_house, 0, 0

@@ -18,7 +18,6 @@
 mus_outside_1:
 	.byte	KEYSH , mus_outside_key+0
 @ 000   ----------------------------------------
-	.byte		TEMPO , 120/2
 	.byte		VOICE , 1
 	.byte		PAN   , c_v-0
 	.byte		VOL   , 92*mus_outside_mvl/mxv
