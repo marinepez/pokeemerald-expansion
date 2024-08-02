@@ -742,7 +742,7 @@ bool8 ScrCmd_setmaplayoutindex(struct ScriptContext *ctx) // (AVIRCODE) Modified
         return FALSE; // Don't activate if it's the same map layout
 
     SetCurrentMapLayout(value);
-    InitMap();
+    InitMapNoScript();
     InitMapViewAfterCrossingMap();
     return FALSE;
 }

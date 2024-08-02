@@ -559,12 +559,16 @@ void InitMapView(void) // (AVIRCODE) No longer static
 }
 
 void InitMapViewAfterCrossingMap(void) // (AVIRCODE) New variation
+void InitMapViewAfterCrossingMap(void) // (AVIRCODE) New variation of this command for crossing maps.
 {
     ResetFieldCamera();
     CopyMapTilesetsToVram(gMapHeader.mapLayout);
     LoadMapTilesetPalettes(gMapHeader.mapLayout);
     FillPalBufferBlack();
     gPaletteFade.active = FALSE;
+    gPaletteFade.y = 0; // Not actually sure if these are needed, but they seem to help avoid seeing garbled tiles when transitioning really fast.
+    gPaletteFade.targetY = 0;
+    ResetPaletteFade();
     BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, 0);
     InitTilesetAnimations();
 }

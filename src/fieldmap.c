@@ -74,6 +74,12 @@ void InitMap(void)
     RunOnLoadMapScript();
 }
 
+void InitMapNoScript(void) // (AVIRCODE) Just a copy of the command that does not trigger map scripts.
+{
+    InitMapLayoutData(&gMapHeader);
+    SetOccupiedSecretBaseEntranceMetatiles(gMapHeader.events);
+}
+
 void InitMapFromSavedGame(void)
 {
     InitMapLayoutData(&gMapHeader);
