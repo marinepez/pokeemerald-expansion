@@ -4,7 +4,7 @@
   "layout": "LAYOUT_MAGM9_MALL_MAIN_AREA",
   "music": "MUS_MALL",
   "region_map_section": "MAPSEC_NONE",
-  "requires_flash": false,
+  "requires_flash": true,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_UNKNOWN",
   "allow_cycling": false,

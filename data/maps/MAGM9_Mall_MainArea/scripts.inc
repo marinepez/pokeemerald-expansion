@@ -28,4 +28,5 @@ Mall_MallToShops1::
 Mall_PCTest::
 	lock
 	call Common_EventScript_SaveGame
+	closemessage
 	end

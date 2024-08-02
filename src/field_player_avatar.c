@@ -421,8 +421,14 @@ static void PlayerCheckForcedMovement(struct ObjectEvent *playerObjEvent, u8 dir
 void PlayerStep(u8 direction, u16 newKeys, u16 heldKeys)
 {
     struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    u8 flashLevel = GetFlashLevel();
 
     HideShowWarpArrow(playerObjEvent);
+
+    if (flashLevel > 0 && newKeys != heldKeys) {
+        DebugPrintf("Flashlevel: %d", flashLevel);
+        WriteFlashScanlineEffectBuffer(flashLevel);                
+    }
     if (gPlayerAvatar.preventStep == FALSE)
     {
         Bike_TryAcroBikeHistoryUpdate(newKeys, heldKeys);
@@ -1145,7 +1151,6 @@ void UpdatePlayerAvatarTileInfo(void)
 void UpdatePlayerAvatarTransitionState(void)
 {
     struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
-    u8 flashLevel = GetFlashLevel();
 
     if (playerObjEvent->tookStep)
     {
@@ -1155,12 +1160,6 @@ void UpdatePlayerAvatarTransitionState(void)
 
     gPlayerAvatar.moveBlocked = FALSE;
     gPlayerAvatar.tileTransitionState = T_NOT_MOVING;
-
-    if(flashLevel > 0)
-    {
-        WriteFlashScanlineEffectBuffer(flashLevel);
-    }
-
 
     CheckPlayerAvatarChangedTile(playerObjEvent);
     ObjectEventUpdateMetatileBehaviors(playerObjEvent); // (AVIRCODE) Added so that it just always updates the metatile. Otherwise, there'd be problems where the game wouldn't realize the player isn't on a certain tile

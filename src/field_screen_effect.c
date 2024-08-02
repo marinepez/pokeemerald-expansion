@@ -792,35 +792,35 @@ static void SetFlashScanlineEffectWindowBoundaries(u16 *dest, s32 centerX, s32 c
     {
     case DIR_SOUTH:
         newCenterX = centerX;
-        newCenterY = centerY - 4;
+        newCenterY = centerY;
         break;
     case DIR_NORTH:
         newCenterX = centerX;
-        newCenterY = centerY + 4;
+        newCenterY = centerY;
         break;
     case DIR_WEST:
-        newCenterX = centerX + 4;
+        newCenterX = centerX;
         newCenterY = centerY;
         break;
     case DIR_EAST:
-        newCenterX = centerX - 4;
+        newCenterX = centerX;
         newCenterY = centerY;
         break;
     case DIR_SOUTHWEST:
-        newCenterX = centerX + 4;
-        newCenterY = centerY - 4;
+        newCenterX = centerX;
+        newCenterY = centerY;
         break;
     case DIR_SOUTHEAST:
-        newCenterX = centerX - 4;
-        newCenterY = centerY - 4;
+        newCenterX = centerX;
+        newCenterY = centerY;
         break;
     case DIR_NORTHWEST:
-        newCenterX = centerX + 4;
-        newCenterY = centerY + 4;
+        newCenterX = centerX;
+        newCenterY = centerY;
         break;
     case DIR_NORTHEAST:
-        newCenterX = centerX - 4;
-        newCenterY = centerY + 4;
+        newCenterX = centerX;
+        newCenterY = centerY;
         break;
     }
 

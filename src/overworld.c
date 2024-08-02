@@ -1513,9 +1513,9 @@ static void DoCB1_Overworld(u16 newKeys, u16 heldKeys)
             if (gPlayerAvatar.changedTile)
                 UpdatePlayerAvatarTileInfo();
 
-                PlayerStep(direction, newKeys, heldKeys);
-                //gSpecialVar_0x8000 = (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x % 256); // (AVIRCODE) Debug thing. Select button would display the player's position on the tile with this.
-                //gSpecialVar_0x8001 = (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y % 256);
+            PlayerStep(direction, newKeys, heldKeys);
+            //gSpecialVar_0x8000 = (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x % 256); // (AVIRCODE) Debug thing. Select button would display the player's position on the tile with this.
+            //gSpecialVar_0x8001 = (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y % 256);
 
         }
     }
