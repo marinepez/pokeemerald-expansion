@@ -558,7 +558,6 @@ void InitMapView(void) // (AVIRCODE) No longer static
     InitTilesetAnimations();
 }
 
-void InitMapViewAfterCrossingMap(void) // (AVIRCODE) New variation
 void InitMapViewAfterCrossingMap(void) // (AVIRCODE) New variation of this command for crossing maps.
 {
     ResetFieldCamera();
