@@ -181,10 +181,10 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
         if (TryStartStepBasedScript(&position, metatileBehavior, playerDirection) == TRUE)
             return TRUE;
     }
+    if (gPlayerAvatar.changedTile == TRUE && TryStartCoordEventScript(&position)) // (AVIRCODE) (fixed from before where you could sometimes avoid the script by stuttering your steps or blocking movement.)
+        return TRUE; // Changed tile scripts to only activate once you enter the tile rather than while you're inside the tile. Useful for having a tile script only activate once. This can be adjusted later if needbe.
     if (input->heldDirection && input->dpadDirection == playerDirection)
     {
-        if (gPlayerAvatar.changedTile == TRUE && TryStartCoordEventScript(&position)) // (AVIRCODE) (EDIT: this code is faulty, needs to be changed as sometimes the tile scripts won't activate). Changed tile scripts to only activate once you enter the tile rather than while you're inside the tile. This can be adjusted later if needbe.
-            return TRUE;
         if (TryStartWarpEventScript(&position, metatileBehavior) == TRUE)
             return TRUE;
         if (TryArrowWarp(&position, metatileBehavior, playerDirection) == TRUE)
