@@ -1912,8 +1912,8 @@ static bool32 LoadMapInStepsLink(u8 *state)
         (*state)++;
         break;
     case 4:
-        InitCurrentFlashLevelScanlineEffect();
         InitOverworldGraphicsRegisters();
+        InitCurrentFlashLevelScanlineEffect();
         InitTextBoxGfxAndPrinters();
         (*state)++;
         break;
@@ -1987,8 +1987,8 @@ static bool32 LoadMapInStepsLocal(u8 *state, bool32 a2)
         (*state)++;
         break;
     case 4:
-        InitCurrentFlashLevelScanlineEffect();
         InitOverworldGraphicsRegisters();
+        InitCurrentFlashLevelScanlineEffect();
         InitTextBoxGfxAndPrinters();
         (*state)++;
         break;
@@ -2084,8 +2084,8 @@ static bool32 ReturnToFieldLink(u8 *state)
         (*state)++;
         break;
     case 3:
-        InitCurrentFlashLevelScanlineEffect();
         InitOverworldGraphicsRegisters();
+        InitCurrentFlashLevelScanlineEffect();
         InitTextBoxGfxAndPrinters();
         (*state)++;
         break;
@@ -2164,8 +2164,8 @@ static void ResetScreenForMapLoad(void)
 
 static void InitViewGraphics(void)
 {
-    InitCurrentFlashLevelScanlineEffect();
     InitOverworldGraphicsRegisters();
+    InitCurrentFlashLevelScanlineEffect();
     InitTextBoxGfxAndPrinters();
     InitMapView();
 }
@@ -3067,7 +3067,7 @@ static void UNUSED DestroyLinkPlayerObject(u8 linkPlayerId)
 }
 
 // Returns the spriteId corresponding to this player.
-static u8 GetSpriteForLinkedPlayer(u8 linkPlayerId)
+UNUSED static u8 GetSpriteForLinkedPlayer(u8 linkPlayerId)
 {
     u8 objEventId = gLinkPlayerObjectEvents[linkPlayerId].objEventId;
     struct ObjectEvent *objEvent = &gObjectEvents[objEventId];

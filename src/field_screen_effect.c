@@ -784,46 +784,10 @@ static void SetFlashScanlineEffectWindowBoundaries(u16 *dest, s32 centerX, s32 c
     s32 r = radius;
     s32 v2 = radius;
     s32 v3 = 0;
-    s32 newCenterX = centerX;
+    s32 newCenterX = centerX - 1;
     s32 newCenterY = centerY;
 
     u8 dir = GetPlayerFacingDirection();
-    switch(dir)
-    {
-    case DIR_SOUTH:
-        newCenterX = centerX;
-        newCenterY = centerY;
-        break;
-    case DIR_NORTH:
-        newCenterX = centerX;
-        newCenterY = centerY;
-        break;
-    case DIR_WEST:
-        newCenterX = centerX;
-        newCenterY = centerY;
-        break;
-    case DIR_EAST:
-        newCenterX = centerX;
-        newCenterY = centerY;
-        break;
-    case DIR_SOUTHWEST:
-        newCenterX = centerX;
-        newCenterY = centerY;
-        break;
-    case DIR_SOUTHEAST:
-        newCenterX = centerX;
-        newCenterY = centerY;
-        break;
-    case DIR_NORTHWEST:
-        newCenterX = centerX;
-        newCenterY = centerY;
-        break;
-    case DIR_NORTHEAST:
-        newCenterX = centerX;
-        newCenterY = centerY;
-        break;
-    }
-
 
     while (r >= v3)
     {

@@ -426,9 +426,10 @@ void PlayerStep(u8 direction, u16 newKeys, u16 heldKeys)
     HideShowWarpArrow(playerObjEvent);
 
     if (flashLevel > 0 && newKeys != heldKeys) {
-        DebugPrintf("Flashlevel: %d", flashLevel);
+//        DebugPrintf("Flashlevel: %d", flashLevel);
         WriteFlashScanlineEffectBuffer(flashLevel);                
     }
+    
     if (gPlayerAvatar.preventStep == FALSE)
     {
         Bike_TryAcroBikeHistoryUpdate(newKeys, heldKeys);

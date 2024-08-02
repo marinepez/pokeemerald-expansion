@@ -892,7 +892,7 @@ const u8 gTrainerFacingDirectionMovementTypes[] = {
     [DIR_NORTHEAST] = MOVEMENT_TYPE_FACE_UP,
 };
 
-bool8 (*const gOppositeDirectionBlockedMetatileFuncs[])(u8) = {
+bool8 (*const gOppositeDirectionBlockedMetatileFuncs[])(struct ObjectEvent *) = {
     MetatileBehavior_IsSouthBlocked,
     MetatileBehavior_IsNorthBlocked,
     MetatileBehavior_IsWestBlocked,
@@ -903,7 +903,7 @@ bool8 (*const gOppositeDirectionBlockedMetatileFuncs[])(u8) = {
     MetatileBehavior_IsNortheastBlocked,
 };
 
-bool8 (*const gDirectionBlockedMetatileFuncs[])(u8) = {
+bool8 (*const gDirectionBlockedMetatileFuncs[])(struct ObjectEvent *) = {
     MetatileBehavior_IsNorthBlocked,
     MetatileBehavior_IsSouthBlocked,
     MetatileBehavior_IsEastBlocked,
@@ -5453,7 +5453,7 @@ static bool8 IsCoordOutsideObjectEventMovementRange(struct ObjectEvent *objectEv
 
 static bool8 IsMetatileDirectionallyImpassable(struct ObjectEvent *objectEvent, s16 x, s16 y, u8 direction)
 {
-    if (gOppositeDirectionBlockedMetatileFuncs[direction - 1](objectEvent->currentMetatileBehavior))
+    if (gOppositeDirectionBlockedMetatileFuncs[direction - 1](objectEvent))
         //|| gDirectionBlockedMetatileFuncs[direction - 1](ObjectEventGetMetatileBehaviorAt(x, y))) // (AVIRCODE) Only checks opposite direction now. Changed for directional collision
         return TRUE;
 
