@@ -4467,9 +4467,19 @@
       "width": 90,
       "height": 83,
       "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_PokemonCenter",
+      "secondary_tileset": "gTileset_PokemonFanClub",
       "border_filepath": "data/layouts/MAGM9_Mall_Shops1/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_Mall_Shops1/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_MALL_DECAYED",
+      "name": "MAGM9_Mall_Decayed_Layout",
+      "width": 90,
+      "height": 83,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_Lilycove",
+      "border_filepath": "data/layouts/MAGM9_Mall_Decayed/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_Mall_Decayed/map.bin"
     }
   ]
 }
