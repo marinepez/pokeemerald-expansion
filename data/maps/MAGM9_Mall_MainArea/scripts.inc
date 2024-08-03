@@ -15,12 +15,16 @@ MarioDebugRoom2_MapScripts_HideRollingGiantTEST:
 
 Mall_ShopsToMall::
 	setmaplayoutindex LAYOUT_MAGM9_MALL_MAIN_AREA
+	setvar VAR_0x8004 4
+	special SetFlashlightRevealLayer
 	special DrawWholeMapView
 	releaseall
 	end
 
 Mall_MallToShops1::
 	setmaplayoutindex LAYOUT_MAGM9_MALL_SHOPS1
+	setvar VAR_0x8004 1
+	special SetFlashlightRevealLayer
 	special DrawWholeMapView
 	releaseall
 	end

@@ -156,5 +156,6 @@ bool32 IsSendingKeysOverCable(void);
 void ClearLinkPlayerObjectEvents(void);
 void InitMapView(void);
 void InitMapViewAfterCrossingMap(void);
+void SetFlashlightRevealLayer(void);
 
 #endif // GUARD_OVERWORLD_H
