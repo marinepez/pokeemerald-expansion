@@ -29,6 +29,14 @@ Mall_MallToShops1::
 	releaseall
 	end
 
+Mall_MallToArcade::
+	setmaplayoutindex LAYOUT_MAGM9_MALL_ARCADE
+	setvar VAR_0x8004 2
+	special SetFlashlightRevealLayer
+	special DrawWholeMapView
+	releaseall
+	end
+
 Mall_PCTest::
 	lock
 	call Common_EventScript_SaveGame

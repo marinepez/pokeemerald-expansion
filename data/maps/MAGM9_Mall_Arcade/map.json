@@ -1,0 +1,28 @@
+{
+  "id": "MAP_MAGM9_MALL_ARCADE",
+  "name": "MAGM9_Mall_Arcade",
+  "layout": "LAYOUT_MAGM9_MALL_ARCADE",
+  "music": "MUS_MALL",
+  "region_map_section": "MAPSEC_NONE",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_UNDERGROUND",
+  "allow_cycling": false,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": false,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": 0,
+  "object_events": [
+
+  ],
+  "warp_events": [
+
+  ],
+  "coord_events": [
+
+  ],
+  "bg_events": [
+
+  ]
+}

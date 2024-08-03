@@ -76,8 +76,8 @@
     },
     {
       "type": "trigger",
-      "x": 37,
-      "y": 19,
+      "x": 55,
+      "y": 73,
       "elevation": 0,
       "var": "VAR_TEMP_0",
       "var_value": "0",
@@ -85,12 +85,30 @@
     },
     {
       "type": "trigger",
-      "x": 36,
-      "y": 19,
+      "x": 55,
+      "y": 74,
       "elevation": 0,
       "var": "VAR_TEMP_0",
       "var_value": "0",
-      "script": "Mall_MallToShops1"
+      "script": "Mall_ShopsToMall"
+    },
+    {
+      "type": "trigger",
+      "x": 56,
+      "y": 73,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_MallToArcade"
+    },
+    {
+      "type": "trigger",
+      "x": 56,
+      "y": 74,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_MallToArcade"
     }
   ],
   "bg_events": [

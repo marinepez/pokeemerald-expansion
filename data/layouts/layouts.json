@@ -4480,6 +4480,16 @@
       "secondary_tileset": "gTileset_Lilycove",
       "border_filepath": "data/layouts/MAGM9_Mall_Decayed/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_Mall_Decayed/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_MALL_ARCADE",
+      "name": "MAGM9_Mall_Arcade_Layout",
+      "width": 90,
+      "height": 83,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_MauvilleGym",
+      "border_filepath": "data/layouts/MAGM9_Mall_Arcade/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_Mall_Arcade/map.bin"
     }
   ]
 }

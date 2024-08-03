@@ -1087,8 +1087,7 @@ static void QueueAnimTiles_Slateport_Balloons(u16 timer)
 
 static void TilesetAnim_MauvilleGym(u16 timer)
 {
-    if (timer % 2 == 0)
-        QueueAnimTiles_MauvilleGym_ElectricGates(timer / 2);
+    return;
 }
 
 static void TilesetAnim_SootopolisGym(u16 timer)
@@ -1166,7 +1165,7 @@ static void QueueAnimTiles_EliteFour_GroundLights(u16 timer)
     AppendTilesetAnimToBuffer(gTilesetAnims_EliteFour_FloorLight[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 480)), 4 * TILE_SIZE_4BPP);
 }
 
-static void QueueAnimTiles_MauvilleGym_ElectricGates(u16 timer)
+UNUSED static void QueueAnimTiles_MauvilleGym_ElectricGates(u16 timer)
 {
     u16 i = timer % ARRAY_COUNT(gTilesetAnims_MauvilleGym_ElectricGates);
     AppendTilesetAnimToBuffer(gTilesetAnims_MauvilleGym_ElectricGates[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 144)), 16 * TILE_SIZE_4BPP);

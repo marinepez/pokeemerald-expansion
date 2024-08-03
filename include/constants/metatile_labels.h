@@ -340,14 +340,10 @@
 #define METATILE_MauvilleGym_PoleTop_On       0x250
 #define METATILE_MauvilleGym_PressedSwitch    0x206
 #define METATILE_MauvilleGym_RaisedSwitch     0x205
-#define METATILE_MauvilleGym_RedBeamH1_Off    0x232
 #define METATILE_MauvilleGym_RedBeamH1_On     0x222
-#define METATILE_MauvilleGym_RedBeamH2_Off    0x233
 #define METATILE_MauvilleGym_RedBeamH2_On     0x223
-#define METATILE_MauvilleGym_RedBeamH3_Off    0x23A
 #define METATILE_MauvilleGym_RedBeamH3_On     0x22A
 #define METATILE_MauvilleGym_RedBeamH4_Off    0x23B
-#define METATILE_MauvilleGym_RedBeamH4_On     0x22B
 #define METATILE_MauvilleGym_RedBeamV1_On     0x241
 #define METATILE_MauvilleGym_RedBeamV2_On     0x249
 
