@@ -1,6 +1,6 @@
 	.include "MPlayDef.s"
 
-	.equ	se_sound_end_grp, voicegroup127
+	.equ	se_sound_end_grp, voicegroup030
 	.equ	se_sound_end_pri, 2
 	.equ	se_sound_end_rev, reverb_set+50
 	.equ	se_sound_end_mvl, 127

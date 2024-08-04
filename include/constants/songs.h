@@ -278,7 +278,7 @@
 #define SE_SUDOWOODO_SHAKE          269 // SE_USSOKI
 #define SE_WALL_HIT_REVERB          270
 #define SE_ROLLING                  271
-#define SE_ROLLING_REVERB           272
+#define SE_GIANT_CATCH           272
 #define SE_SOUND_END                273 // Dummy song used to end rolling sounds.
 #define END_SE                      SE_SOUND_END
 
@@ -380,7 +380,7 @@
 #define MUS_STAIRCASE               443 // MUS_OOAME            // Replaces MUS_WEATHER_KYOGRE from R/S.
 #define MUS_MALL                    444 // MUS_HIDERI           // Unused, from R/S.
 #define MUS_MALL_DARK              445 // MUS_RUNECITY
-#define MUS_CONTEST_RESULTS         446 // MUS_CON_K
+#define MUS_GIANT_BATTLE_1         446 // MUS_CON_K
 #define MUS_HALL_OF_FAME_ROOM       447 // MUS_EIKOU_R
 #define MUS_TRICK_HOUSE             448 // MUS_KARAKURI
 #define MUS_ENCOUNTER_TWINS         449 // MUS_HUTAGO

@@ -2,7 +2,7 @@
 	.equiv NUM_TRACKS_BGM, 10
 	.equiv NUM_TRACKS_SE1, 3
 	.equiv NUM_TRACKS_SE2, 9
-	.equiv NUM_TRACKS_SE3, 1
+	.equiv NUM_TRACKS_SE3, 2 @ (AVIRCODE) Changed from 1 to 2 tracks for the rolling giant's rolling sound
 
     .bss
 

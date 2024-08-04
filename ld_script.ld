@@ -1098,7 +1098,7 @@ SECTIONS {
         sound/songs/mus_staircase.o(.rodata);
         sound/songs/mus_mall.o(.rodata);
         sound/songs/midi/mus_mall_dark.o(.rodata);
-        sound/songs/midi/mus_contest_results.o(.rodata);
+        sound/songs/midi/mus_giant_battle_1.o(.rodata);
         sound/songs/midi/mus_hall_of_fame_room.o(.rodata);
         sound/songs/midi/mus_trick_house.o(.rodata);
         sound/songs/midi/mus_encounter_twins.o(.rodata);

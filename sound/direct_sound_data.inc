@@ -6437,3 +6437,11 @@ DirectSoundWaveData_rolling::
 	.align 2
 DirectSoundWaveData_rolling_reverb::
 	.incbin "sound/direct_sound_samples/streamed/rolling_reverb.bin"
+
+	.align 2
+DirectSoundWaveData_giant_catch::
+	.incbin "sound/direct_sound_samples/streamed/giant_catch.bin"
+
+	.align 2
+DirectSoundWaveData_giant_battle_1::
+	.incbin "sound/direct_sound_samples/streamed/giant_battle_1.bin"

@@ -42,8 +42,10 @@ void PlaySE12WithPanning(u16 songNum, s8 pan);
 void PlaySE1WithPanning(u16 songNum, s8 pan);
 void PlaySE2WithPanning(u16 songNum, s8 pan);
 void SE12PanpotControl(s8 pan);
+void SE3PanpotControl(s8 pan);
 bool8 IsSEPlaying(void);
 bool8 IsBGMPlaying(void);
 bool8 IsSpecialSEPlaying(void);
+
 
 #endif // GUARD_SOUND_H
