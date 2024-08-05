@@ -1035,7 +1035,14 @@ bool8 MetatileBehavior_IsSouthBlocked(struct ObjectEvent *objectEvent)
 
 // Diagonal walls: Basically, the idea is that we get a coordinate distance by subtracting the Y with the X. To get the coords of a mirror wall,
 // we subtract from 256 (the max coordinate size of a tile where 32 represents one pixel.) This effectively reverses the number and flips the distance.
-
+bool8 isDiagonalMetatile(int x, int y)
+{
+    u32 metatileBehavior = MapGridGetMetatileBehaviorAt(x, y);
+    if(metatileBehavior == MB_IMPASSABLE_SOUTHEAST || metatileBehavior == MB_IMPASSABLE_SOUTHWEST || metatileBehavior == MB_IMPASSABLE_NORTHEAST || metatileBehavior == MB_IMPASSABLE_NORTHWEST)
+        return TRUE;
+    else
+        return FALSE;
+}
 
 bool8 MetatileBehavior_IsSouthwestBlocked(struct ObjectEvent *objectEvent) // (AVIRCODE) These are repurposed for diagonal collisions
 {
@@ -1068,8 +1075,8 @@ bool8 MetatileBehavior_IsSoutheastBlocked(struct ObjectEvent *objectEvent)
 bool8 MetatileBehavior_IsNorthwestBlocked(struct ObjectEvent *objectEvent)
 {
     u8 metatileBehavior = objectEvent->currentMetatileBehavior;
-    int xDistance = (objectEvent->currentCoords.y % 256) - (256 - ((objectEvent->currentCoords.x - 32) % 256)); // The "-32" is added here since for some reason, north-west walls are offset two pixels to the left in terms of where it will read the tile as the correct metatile.
-    metatileBehavior = MapGridGetMetatileBehaviorAt(COORDS_TO_GRID(objectEvent->currentCoords.x - 32), COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) + MAP_OFFSET); // Same idea here, the metatile is re-read as being two pixels to the left.
+    int xDistance = (objectEvent->currentCoords.y % 256) - (256 - ((objectEvent->currentCoords.x) % 256));
+    metatileBehavior = MapGridGetMetatileBehaviorAt(COORDS_TO_GRID(objectEvent->currentCoords.x), COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) + MAP_OFFSET);
     if (metatileBehavior == MB_IMPASSABLE_NORTHWEST && xDistance <= 68)
     {
         objectEvent->currentCoords.x += (68 - xDistance);

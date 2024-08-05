@@ -157,6 +157,7 @@ u8 GetWalkInPlaceSlowMovementAction(u32);
 u8 GetCollisionAtCoords(struct ObjectEvent *, s16 x, s16 y, u32 dir);
 void MoveCoords(u8 direction, s16 *x, s16 *y);
 void MoveObjectEventCoords(u8 direction, s16 *x, s16 *y);
+void IncrementObjectEventCoords(u8 direction, s16 *x, s16 *y);
 void MoveObjectEventCoordsByAngle(int angle, s16 *x, s16 *y);
 void MoveCoordsByAngle(int angle, int length, s16 *x, s16 *y);
 void MoveCoordsByDistance(u8 direction, int length, s16 *x, s16 *y);

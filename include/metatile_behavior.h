@@ -110,6 +110,7 @@ bool8 MetatileBehavior_IsSouthwestBlocked(struct ObjectEvent *);
 bool8 MetatileBehavior_IsSoutheastBlocked(struct ObjectEvent *);
 bool8 MetatileBehavior_IsNorthwestBlocked(struct ObjectEvent *);
 bool8 MetatileBehavior_IsNortheastBlocked(struct ObjectEvent *);
+bool8 isDiagonalMetatile(int x, int y);
 bool8 MetatileBehavior_IsShortGrass(u8);
 bool8 MetatileBehavior_IsHotSprings(u8);
 bool8 MetatileBehavior_IsWaterfall(u8);

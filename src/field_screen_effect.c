@@ -819,7 +819,7 @@ static void SetFlashScanlineEffectWindowBoundaries(u16 *dest, s32 centerX, s32 c
     s32 r = radius;
     s32 v2 = radius;
     s32 v3 = 0;
-    s32 newCenterX = centerX - 1;
+    s32 newCenterX = centerX;
     s32 newCenterY = centerY;
 
     u8 dir = GetPlayerFacingDirection();

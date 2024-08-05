@@ -91,7 +91,8 @@ static u8 GetCollisionInAngle(struct ObjectEvent *, int);
 static u8 GetCollisionInAngleWithDistance(struct ObjectEvent *, int, int);
 static u8 GetNonPlayerCollisionInDirection(struct ObjectEvent *objectEvent, u8 direction);
 static bool8 DoesObjectCollideWithPlayerInDirection(struct ObjectEvent *objectEvent, u8 direction);
-static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite *sprite, u16 speed, u16 angle);
+static void DoObjectEventMovementByAngle(struct ObjectEvent *objectEvent, struct Sprite *sprite, u16 speed, u16 angle);
+static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite *sprite, u16 speed, u8 dir);
 static void UpdateObjectEventTookStep(struct ObjectEvent *objectEvent, int x, int y);
 static void InitNpcForMovement(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction, u8 speed);
 static u32 GetCopyDirection(u8, u32, u32);
@@ -2242,12 +2243,39 @@ static void _PatchObjectPalette(u16 tag, u8 slot)
     PatchObjectPalette(tag, slot);
 }
 
-UNUSED static void IncrementObjectEventCoords(struct ObjectEvent *objectEvent, s16 x, s16 y)
+void IncrementObjectEventCoords(u8 direction, s16 *x, s16 *y)
 {
-    objectEvent->previousCoords.x = objectEvent->currentCoords.x;
-    objectEvent->previousCoords.y = objectEvent->currentCoords.y;
-    objectEvent->currentCoords.x += x;
-    objectEvent->currentCoords.y += y;
+    switch(direction)
+    {
+        case DIR_SOUTH:
+            *y += 0x01;
+            break;
+        case DIR_NORTH:
+            *y -= 0x01;
+            break;
+        case DIR_EAST:
+            *x += 0x01;
+            break;
+        case DIR_WEST:
+            *x -= 0x01;
+            break;
+        case DIR_SOUTHEAST:
+            *x += 0x01;
+            *y += 0x01;
+            break;
+        case DIR_SOUTHWEST:
+            *x -= 0x01;
+            *y += 0x01;
+            break;
+        case DIR_NORTHEAST:
+            *x += 0x01;
+            *y -= 0x01;
+            break;
+        case DIR_NORTHWEST:
+            *x -= 0x01;
+            *y -= 0x01;
+            break;
+    }
 }
 
 void ShiftObjectEventCoords(struct ObjectEvent *objectEvent, s16 x, s16 y)
@@ -5568,8 +5596,8 @@ void SetSpritePosToMapCoords(s16 mapX, s16 mapY, s16 *destX, s16 *destY)
     s16 dx = -gTotalCameraPixelOffsetX;
     s16 dy = -gTotalCameraPixelOffsetY;
 
-    *destX = (((px + 0x7F) >> OBJECT_EVENT_FRAC_SHIFT) + dx) - 8;
-    *destY = (((py + 0x7F) >> OBJECT_EVENT_FRAC_SHIFT) + dy) - 8;
+    *destX = (((px + 0x7F) >> OBJECT_EVENT_FRAC_SHIFT) + dx) - 7;
+    *destY = (((py + 0x7F) >> OBJECT_EVENT_FRAC_SHIFT) + dy) - 7;
 }
 
 void SetSpritePosToOffsetMapCoords(s16 *x, s16 *y, s16 dx, s16 dy)
@@ -9045,7 +9073,7 @@ void UnfreezeObjectEvents(void)
             UnfreezeObjectEvent(&gObjectEvents[i]);
 }
 
-static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite *sprite, u16 speed, u16 angle)
+static void DoObjectEventMovementByAngle(struct ObjectEvent *objectEvent, struct Sprite *sprite, u16 speed, u16 angle)
 {
     int x, y;
 
@@ -9065,9 +9093,179 @@ static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite
     UpdateObjectEventTookStep(objectEvent, x, y);
 }
 
+static u8 CheckForPlayerCollision(struct ObjectEvent *objectEvent, s16 xOffset, s16 yOffset, u8 dir)
+{
+    u32 collision = CheckForObjectEventCollision(objectEvent, objectEvent->currentCoords.x+xOffset, objectEvent->currentCoords.y+yOffset, dir, ObjectEventGetMetatileBehaviorAt(objectEvent->currentCoords.x, objectEvent->currentCoords.y));
+    if(collision && isDiagonalMetatile(objectEvent->previousCoords.x, objectEvent->previousCoords.y)) return COLLISION_NONE;
+    else return collision;
+}
+
+static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite *sprite, u16 speed, u8 dir)
+{
+    int x, y;
+    u16 angle = sDirectionToAngles[dir];
+
+    if (objectEvent->moveBlocked)
+        return;
+
+    x = Cos2(angle) >> 8;
+    y = Sin2(angle) >> 8;
+    x = (x * speed) >> 8;
+    y = (y * speed) >> 8;
+
+    objectEvent->previousCoords.x = objectEvent->currentCoords.x;
+    objectEvent->previousCoords.y = objectEvent->currentCoords.y;
+    objectEvent->currentCoords.x += x;
+    objectEvent->currentCoords.y += y;
+
+    //EVALUATE COLLISIONS HERE FOR PLAYER BECAUSE WHOOP DEE DOO
+    //If the object is the player...
+    //AND if current coords are a collision...
+    //AND if it's possible to still move in some direction... (it will be because we sensed player avatar collision earlier)
+    //Move in that direction as far as you can
+    if(objectEvent->isPlayer)
+    {
+//        DebugPrintf("PrevCoords: x:%d.%d, y:%d.%d", objectEvent->previousCoords.x>>8, objectEvent->previousCoords.x&255, objectEvent->previousCoords.y>>8, objectEvent->previousCoords.y&255);
+//        DebugPrintf("CurrCoords: x:%d.%d, y:%d.%d", objectEvent->currentCoords.x>>8, objectEvent->currentCoords.x&255, objectEvent->currentCoords.y>>8, objectEvent->currentCoords.y&255);
+
+        switch(dir)
+        {
+            case DIR_SOUTH:
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir)
+                || CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
+                 {
+                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                    objectEvent->currentCoords.y |= 0x7F;
+                 }
+                break;
+            case DIR_NORTH:
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir)
+                || CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
+                {
+                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                }
+                break;
+            case DIR_EAST:
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir)
+                || CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir))
+                {
+                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                    objectEvent->currentCoords.x |= 0x90;
+                }
+                break;
+            case DIR_WEST:
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir)
+                || CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
+                {
+                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                    objectEvent->currentCoords.x |= 0x70;
+                }
+                break;
+            case DIR_SOUTHEAST:
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
+                {
+                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                    objectEvent->currentCoords.y |= 0x7F;
+                }
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir))
+                {
+                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                    objectEvent->currentCoords.x |= 0x90;
+                }
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir))
+                {
+                    if(COORDS_TO_GRID(objectEvent->currentCoords.x+PLAYER_HITBOX_RIGHT) > COORDS_TO_GRID(objectEvent->previousCoords.x+PLAYER_HITBOX_RIGHT))
+                    {
+                        objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                        objectEvent->currentCoords.x |= 0x90;
+                    }
+                    if(COORDS_TO_GRID(objectEvent->currentCoords.y+PLAYER_HITBOX_BOTTOM) > COORDS_TO_GRID(objectEvent->previousCoords.y+PLAYER_HITBOX_BOTTOM))
+                    {
+                        objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                        objectEvent->currentCoords.y |= 0x7F;
+                    }
+                }
+                break;
+            case DIR_SOUTHWEST:
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir))
+                {
+                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                    objectEvent->currentCoords.y |= 0x7F;
+                }
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
+                {
+                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                    objectEvent->currentCoords.x |= 0x70;
+                }
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
+                {
+                    if(COORDS_TO_GRID(objectEvent->currentCoords.x-PLAYER_HITBOX_LEFT) < COORDS_TO_GRID(objectEvent->previousCoords.x-PLAYER_HITBOX_LEFT))
+                    {
+                        objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                        objectEvent->currentCoords.x |= 0x70;
+                    }
+                    if(COORDS_TO_GRID(objectEvent->currentCoords.y+PLAYER_HITBOX_BOTTOM) > COORDS_TO_GRID(objectEvent->previousCoords.y+PLAYER_HITBOX_BOTTOM))
+                    {
+                        objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                        objectEvent->currentCoords.y |= 0x7F;
+                    }
+                }
+                break;
+            case DIR_NORTHEAST:
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
+                {
+                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                }
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir))
+                {
+                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                    objectEvent->currentCoords.x |= 0x90;
+                }
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir))
+                {
+                    if(COORDS_TO_GRID(objectEvent->currentCoords.x+PLAYER_HITBOX_RIGHT) > COORDS_TO_GRID(objectEvent->previousCoords.x+PLAYER_HITBOX_RIGHT))
+                    {
+                        objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                        objectEvent->currentCoords.x |= 0x90;
+                    }
+                    if(COORDS_TO_GRID(objectEvent->currentCoords.y-PLAYER_HITBOX_TOP) < COORDS_TO_GRID(objectEvent->previousCoords.y-PLAYER_HITBOX_TOP))
+                    {
+                        objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                    }
+                }
+                break;
+            case DIR_NORTHWEST:
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir))
+                {
+                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                }
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
+                {
+                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                    objectEvent->currentCoords.x |= 0x70;
+                }
+                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
+                {
+                    if(COORDS_TO_GRID(objectEvent->currentCoords.x-PLAYER_HITBOX_LEFT) < COORDS_TO_GRID(objectEvent->previousCoords.x-PLAYER_HITBOX_LEFT))
+                    {
+                        objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                        objectEvent->currentCoords.x |= 0x70;
+                    }
+                    if(COORDS_TO_GRID(objectEvent->currentCoords.y-PLAYER_HITBOX_TOP) < COORDS_TO_GRID(objectEvent->previousCoords.y-PLAYER_HITBOX_TOP))
+                    {
+                        objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                    }
+                }
+                break;
+        }
+    }
+
+    UpdateObjectEventTookStep(objectEvent, x, y);
+}
+
 void MoveObjectEventAtSpeed(struct ObjectEvent *objectEvent, u16 speed, u16 angle)
 {
-    DoObjectEventMovement(objectEvent, &gSprites[objectEvent->spriteId], speed, angle);
+    DoObjectEventMovementByAngle(objectEvent, &gSprites[objectEvent->spriteId], speed, angle);
 }
 
 void UpdateObjectEventTookStep(struct ObjectEvent *objectEvent, int x, int y)
@@ -9181,7 +9379,7 @@ static void Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 dir
         return;
     }
 
-    DoObjectEventMovement(objectEvent, sprite, 1 << OBJECT_EVENT_COORD_SHIFT, sDirectionToAngles[dir]);
+    DoObjectEventMovement(objectEvent, sprite, 1 << OBJECT_EVENT_COORD_SHIFT, dir);
 }
 
 static void Step2(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 dir)
@@ -9192,7 +9390,7 @@ static void Step2(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 dir
         return;
     }
 
-    DoObjectEventMovement(objectEvent, sprite, 2 << OBJECT_EVENT_COORD_SHIFT, sDirectionToAngles[dir]);
+    DoObjectEventMovement(objectEvent, sprite, 2 << OBJECT_EVENT_COORD_SHIFT, dir);
 }
 
 static void Step3(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 dir)
@@ -9203,7 +9401,7 @@ static void Step3(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 dir
         return;
     }
 
-    DoObjectEventMovement(objectEvent, sprite, 3 << OBJECT_EVENT_COORD_SHIFT, sDirectionToAngles[dir]);
+    DoObjectEventMovement(objectEvent, sprite, 3 << OBJECT_EVENT_COORD_SHIFT, dir);
 }
 
 static void Step4(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 dir)
@@ -9214,7 +9412,7 @@ static void Step4(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 dir
         return;
     }
 
-    DoObjectEventMovement(objectEvent, sprite, 4 << OBJECT_EVENT_COORD_SHIFT, sDirectionToAngles[dir]);
+    DoObjectEventMovement(objectEvent, sprite, 4 << OBJECT_EVENT_COORD_SHIFT, dir);
 }
 
 static void Step8(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 dir)
@@ -9225,7 +9423,7 @@ static void Step8(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 dir
         return;
     }
 
-    DoObjectEventMovement(objectEvent, sprite, 8 << OBJECT_EVENT_COORD_SHIFT, sDirectionToAngles[dir]);
+    DoObjectEventMovement(objectEvent, sprite, 8 << OBJECT_EVENT_COORD_SHIFT, dir);
 }
 
 #define sSpeed data[4]
