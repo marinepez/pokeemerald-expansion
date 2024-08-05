@@ -20,6 +20,7 @@ se_rolling_1:
 	.byte	TEMPO , 220*se_rolling_tbs/2
 	.byte		VOICE , 5
 	.byte		VOL   , 127*se_rolling_mvl/mxv
+	.byte		W08
 	.byte		TIE   , Cn3 , v127
 se_rolling_1_B1:
 	.byte	W96
@@ -32,6 +33,7 @@ se_rolling_2:
 	.byte	KEYSH , se_rolling_key+0
 	.byte		VOICE , 6
 	.byte		VOL   , 1*se_rolling_mvl/mxv
+	.byte		W08
 	.byte		TIE   , Cn3 , v127
 se_rolling_2_B1:
 	.byte	W96

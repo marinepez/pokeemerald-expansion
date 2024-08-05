@@ -550,7 +550,7 @@ static void CB2_StartShowContestResults(void)
     if (gLinkContestFlags & LINK_CONTEST_FLAG_IS_WIRELESS)
         gPaletteFade.bufferTransferDisabled = TRUE;
     else
-        PlayBGM(MUS_CONTEST_RESULTS);
+        PlayBGM(MUS_GIANT_BATTLE_1);
 
     SetVBlankCallback(VBlankCB_ShowContestResults);
 }
@@ -636,7 +636,7 @@ static void Task_ShowContestResults(u8 taskId)
         case 3:
             if (IsLinkTaskFinished() == TRUE)
             {
-                PlayBGM(MUS_CONTEST_RESULTS);
+                PlayBGM(MUS_GIANT_BATTLE_1);
                 gPaletteFade.bufferTransferDisabled = FALSE;
                 gTasks[taskId].tState++;
                 break;

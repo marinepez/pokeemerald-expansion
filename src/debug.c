@@ -4499,7 +4499,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(MUS_WEATHER_KYOGRE) \
     X(MUS_MALL) \
     X(MUS_MALL_DARK) \
-    X(MUS_CONTEST_RESULTS) \
+    X(MUS_GIANT_BATTLE_1) \
     X(MUS_HALL_OF_FAME_ROOM) \
     X(MUS_TRICK_HOUSE) \
     X(MUS_ENCOUNTER_TWINS) \
@@ -4936,7 +4936,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(SE_SUDOWOODO_SHAKE) \
     X(SE_WALL_HIT_REVERB) \
     X(SE_ROLLING) \
-    X(SE_ROLLING_REVERB) \
+    X(SE_GIANT_CATCH) \
     X(SE_SOUND_END) \
 
 // Create BGM list

@@ -32,6 +32,10 @@
 #include "constants/mauville_old_man.h"
 #include "constants/trainer_types.h"
 #include "constants/union_room.h"
+#include "sound.h"
+#include "constants/songs.h"
+#include "m4a.h"
+#include "gba/m4a_internal.h"
 
 // this file was known as evobjmv.c in Game Freak's original source
 
@@ -175,6 +179,8 @@ static void CreateLevitateMovementTask(struct ObjectEvent *);
 static void DestroyLevitateMovementTask(u8);
 static bool8 NpcTakeStep(struct ObjectEvent *, struct Sprite *);
 static bool8 IsElevationMismatchAt(u8, s16, s16);
+static void fadeOutRollingGiantSound(void);
+static void panRollingGiantSounds(struct ObjectEvent *objectEvent);
 
 static const struct SpriteFrameImage sPicTable_PechaBerryTree[];
 
@@ -4794,6 +4800,10 @@ bool8 MovementType_Chase_Step0(struct ObjectEvent *objectEvent, struct Sprite *s
 //Fallback if collision or chooses not to move
 bool8 MovementType_Chase_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
+    if(sprite->sPrevSpeed == 0 && gMPlayInfo_SE3.fadeOI == 0) // (AVIRCODE) End the rolling sound if colliding with something and the speed is set to zero. The "gMPlayInfo_SE3.fadeOI" would equate to an "isSE3Fading" command.
+    {
+        fadeOutRollingGiantSound();
+    }
     ObjectEventSetSingleMovement(objectEvent, sprite, GetFaceDirectionMovementAction(objectEvent->facingDirection));
     sprite->sTypeFuncId = 2;
     return TRUE;
@@ -4817,7 +4827,7 @@ bool8 MovementType_Chase_Step2(struct ObjectEvent *objectEvent, struct Sprite *s
     s16 movementDelay;
 
     if (!ObjectEventExecSingleMovementAction(objectEvent, sprite))
-        return FALSE;
+            return FALSE;
 
     if (agressionLvl == 1)
     {
@@ -4825,7 +4835,7 @@ bool8 MovementType_Chase_Step2(struct ObjectEvent *objectEvent, struct Sprite *s
         if(750 < distance && distance < 1400)
         {
             movementDelay = sMovementDelaysShort[Random() % ARRAY_COUNT(sMovementDelaysShort)];
-            sprite->sPrevSpeed = 1;
+            sprite->sPrevSpeed = 2; // (AVIRCODE) Test this later
         }
         else
             movementDelay = 2;
@@ -4835,6 +4845,10 @@ bool8 MovementType_Chase_Step2(struct ObjectEvent *objectEvent, struct Sprite *s
         movementDelay = 2;
     }
 
+    if(movementDelay > 2)
+    {
+        fadeOutRollingGiantSound();
+    }
     SetMovementDelay(sprite, movementDelay);
 
     sprite->sTypeFuncId = 3;
@@ -5109,15 +5123,73 @@ static bool8 isAdjacentDirection(u8 dir, u8 newDir)
     }
 }
 
+static void fadeOutRollingGiantSound(void)
+{
+    if(IsSpecialSEPlaying())
+        m4aMPlayFadeOut(&gMPlayInfo_SE3, 1);
+}
+
+static void panRollingGiantSounds(struct ObjectEvent *objectEvent)
+{
+    u16 distance;
+    u16 distanceX;
+
+    distance = getDistance(gSaveBlock1Ptr->pos.x, gSaveBlock1Ptr->pos.y, (objectEvent->currentCoords.x - GRID_TO_COORDS(7)), (objectEvent->currentCoords.y - GRID_TO_COORDS(7))) / 32;
+    distanceX = getDistance(gSaveBlock1Ptr->pos.x, 0, (objectEvent->currentCoords.x - GRID_TO_COORDS(7)), 0) / 32;
+
+    // Panpot Testing
+    if(gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x > objectEvent->currentCoords.x) // (AVIRCODE) Rolling giant sound panning. This checks if the player is to the right of the giant.
+    {
+        SE3PanpotControl(0 - distanceX); // Pan to the left (255 and lower represents how far left it's panned.)
+        if(distanceX > 127)
+            SE3PanpotControl(128); // Capped panning so it doesn't wrap around.
+    }
+    else // Player is to the left.
+    {
+        SE3PanpotControl(distanceX); // Pan to the right
+        if(distanceX > 127)
+            SE3PanpotControl(127);
+    }
+
+    // Volume Testing
+    if((distance) > 126) // If far distance, mute the normal rolling channel and decrease or mute the reverb one based on distance.
+    {
+        if((distance) > 250)
+        {
+                m4aMPlayMasterVolumeControl(&gMPlayInfo_SE3, 0x2, 2); // Set reverb channel to silent if too far away
+        }
+        else
+                m4aMPlayMasterVolumeControl(&gMPlayInfo_SE3, 0x2, (127 - (distance / 2)) * 4); // Make reverb channel quieter the further the player goes away.
+        m4aMPlayMasterVolumeControl(&gMPlayInfo_SE3, 0x1, 2); // Set the normal rolling track to silent.
+    }
+    else
+    {
+        m4aMPlayMasterVolumeControl(&gMPlayInfo_SE3, 0x2, (distance) * 4); // Reverb rolling track
+        m4aMPlayMasterVolumeControl(&gMPlayInfo_SE3, 0x1, (127 - (distance)) * 4); // Normal rolling track
+    }
+}
+
 //No collision - set movement action to walk towards player. Speed depends on past speed and movement
 bool8 MovementType_Chase_Step5(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    if(sprite->sPrevSpeed == 0)
+    if(sprite->sPrevSpeed != 0) // Rolling Giant is not stationary.
+    {
+        if(!IsSpecialSEPlaying())
+            PlaySE(SE_ROLLING); // (AVIRCODE) The sound actually uses "SE3", which is only used for rain sound effects, meaning it can't be overwritten by stuff. Perfect for this!
+    }
+    panRollingGiantSounds(objectEvent);
+    if(sprite->sPrevSpeed < 2) // This is a workaround for the rolling sound as for some reason, it doesn't stop/play properly without an sPrevSpeed check (or that's the best way I've found to do it.) This adds two frames before it starts moving as it also needs the buffer or else it would stop when it turns.
+    {
+        //sprite->sTypeFuncId = 5;
+        sprite->sPrevSpeed++;
+        return FALSE;
+    }
+    else if(sprite->sPrevSpeed == 3)
     {
         ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkSlowMovementAction(objectEvent->movementDirection));
         sprite->sPrevSpeed++;
     }
-    else if(sprite->sPrevSpeed == 1)
+    else if(sprite->sPrevSpeed == 4)
     {
         if(sprite->sPrevDir == objectEvent->movementDirection)
         {
@@ -9041,6 +9113,7 @@ bool8 FreezeObjectEvent(struct ObjectEvent *objectEvent)
 
 void FreezeObjectEvents(void)
 {
+    PlaySE(SE_SOUND_END); // (AVIRCODE) Stops the rolling giant's sound. 
     u8 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
         if (gObjectEvents[i].active && i != gPlayerAvatar.objectEventId)

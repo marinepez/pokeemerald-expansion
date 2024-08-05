@@ -576,6 +576,11 @@ void SE12PanpotControl(s8 pan)
     m4aMPlayPanpotControl(&gMPlayInfo_SE2, TRACKS_ALL, pan);
 }
 
+void SE3PanpotControl(s8 pan) // (AVIRCODE) For the rolling giant's sounds
+{
+    m4aMPlayPanpotControl(&gMPlayInfo_SE3, TRACKS_ALL, pan);
+}
+
 bool8 IsSEPlaying(void)
 {
     if ((gMPlayInfo_SE1.status & MUSICPLAYER_STATUS_PAUSE) && (gMPlayInfo_SE2.status & MUSICPLAYER_STATUS_PAUSE))

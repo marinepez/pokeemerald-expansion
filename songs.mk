@@ -90,9 +90,6 @@ $(MID_SUBDIR)/mus_game_corner.s: %.s: %.mid
 $(MID_SUBDIR)/mus_contest_winner.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G085 -V100
 
-$(MID_SUBDIR)/mus_contest_results.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -G092 -V080
-
 $(MID_SUBDIR)/mus_contest_lobby.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G098 -V060
 
