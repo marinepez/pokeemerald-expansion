@@ -248,6 +248,7 @@ const u32 gObjectEventPic_EnemyZigzagoon[] = INCBIN_U32("graphics/object_events/
 const u16 gObjectEventPal_EnemyZigzagoon[] = INCBIN_U16("graphics/object_events/palettes/enemy_zigzagoon.gbapal");
 const u32 gObjectEventPic_Poochyena[] = INCBIN_U32("graphics/object_events/pics/pokemon/poochyena.4bpp");
 const u16 gObjectEventPal_Poochyena[] = INCBIN_U16("graphics/object_events/palettes/poochyena.gbapal");
+const u16 gObjectEventPal_PoochyenaReflection[] = INCBIN_U16("graphics/object_events/palettes/poochyena_reflection.gbapal");
 const u32 gObjectEventPic_CableCar[] = INCBIN_U32("graphics/object_events/pics/misc/cable_car.4bpp");
 const u16 gObjectEventPal_CableCar[] = INCBIN_U16("graphics/object_events/palettes/cable_car.gbapal");
 const u32 gObjectEventPic_SSTidal[] = INCBIN_U32("graphics/object_events/pics/misc/ss_tidal.4bpp");

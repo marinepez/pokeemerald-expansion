@@ -470,13 +470,14 @@ const u8 gInitialMovementTypeFacingDirections[] = {
 #define OBJ_EVENT_PAL_TAG_UNUSED                  0x111A
 #define OBJ_EVENT_PAL_TAG_SUBMARINE_SHADOW        0x111B
 #define OBJ_EVENT_PAL_TAG_POOCHYENA               0x111C
-#define OBJ_EVENT_PAL_TAG_RED_LEAF                0x111D
-#define OBJ_EVENT_PAL_TAG_DEOXYS                  0x111E
-#define OBJ_EVENT_PAL_TAG_BIRTH_ISLAND_STONE      0x111F
-#define OBJ_EVENT_PAL_TAG_HO_OH                   0x1120
-#define OBJ_EVENT_PAL_TAG_LUGIA                   0x1121
-#define OBJ_EVENT_PAL_TAG_RS_BRENDAN              0x1122
-#define OBJ_EVENT_PAL_TAG_RS_MAY                  0x1123
+#define OBJ_EVENT_PAL_TAG_POOCHYENA_REFLECTION    0x111D
+#define OBJ_EVENT_PAL_TAG_RED_LEAF                0x111E
+#define OBJ_EVENT_PAL_TAG_DEOXYS                  0x111F
+#define OBJ_EVENT_PAL_TAG_BIRTH_ISLAND_STONE      0x1120
+#define OBJ_EVENT_PAL_TAG_HO_OH                   0x1121
+#define OBJ_EVENT_PAL_TAG_LUGIA                   0x1122
+#define OBJ_EVENT_PAL_TAG_RS_BRENDAN              0x1123
+#define OBJ_EVENT_PAL_TAG_RS_MAY                  0x1124
 #define OBJ_EVENT_PAL_TAG_NONE                    0x11FF
 
 #include "data/object_events/object_event_graphics_info_pointers.h"
@@ -516,6 +517,7 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_GroudonReflection,     OBJ_EVENT_PAL_TAG_GROUDON_REFLECTION},
     {gObjectEventPal_SubmarineShadow,       OBJ_EVENT_PAL_TAG_SUBMARINE_SHADOW},
     {gObjectEventPal_Poochyena,             OBJ_EVENT_PAL_TAG_POOCHYENA},
+    {gObjectEventPal_PoochyenaReflection,   OBJ_EVENT_PAL_TAG_POOCHYENA_REFLECTION}, // Rolling giant reflection
     {gObjectEventPal_RedLeaf,               OBJ_EVENT_PAL_TAG_RED_LEAF},
     {gObjectEventPal_Deoxys,                OBJ_EVENT_PAL_TAG_DEOXYS},
     {gObjectEventPal_BirthIslandStone,      OBJ_EVENT_PAL_TAG_BIRTH_ISLAND_STONE},
@@ -557,6 +559,13 @@ static const struct PairedPalettes sPlayerReflectionPaletteSets[] = {
     {OBJ_EVENT_PAL_TAG_MAY,               sReflectionPaletteTags_May},
     {OBJ_EVENT_PAL_TAG_PLAYER_UNDERWATER, sReflectionPaletteTags_PlayerUnderwater},
     {OBJ_EVENT_PAL_TAG_NONE,              NULL},
+};
+
+static const u16 sReflectionPaletteTags_Poochyena[] = { // (AVIRCODE) Giant's reflection palette
+    OBJ_EVENT_PAL_TAG_POOCHYENA_REFLECTION,
+    OBJ_EVENT_PAL_TAG_POOCHYENA_REFLECTION,
+    OBJ_EVENT_PAL_TAG_POOCHYENA_REFLECTION,
+    OBJ_EVENT_PAL_TAG_POOCHYENA_REFLECTION,
 };
 
 static const u16 sReflectionPaletteTags_QuintyPlump[] = {
@@ -639,6 +648,7 @@ static const u16 sReflectionPaletteTags_RedLeaf[] = {
 static const struct PairedPalettes sSpecialObjectReflectionPaletteSets[] = {
     {OBJ_EVENT_PAL_TAG_BRENDAN,          sReflectionPaletteTags_Brendan},
     {OBJ_EVENT_PAL_TAG_MAY,              sReflectionPaletteTags_May},
+    {OBJ_EVENT_PAL_TAG_POOCHYENA,        sReflectionPaletteTags_Poochyena},
     {OBJ_EVENT_PAL_TAG_QUINTY_PLUMP,     sReflectionPaletteTags_QuintyPlump},
     {OBJ_EVENT_PAL_TAG_TRUCK,            sReflectionPaletteTags_Truck},
     {OBJ_EVENT_PAL_TAG_VIGOROTH,         sReflectionPaletteTags_VigorothMover},
