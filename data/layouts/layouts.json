@@ -4456,7 +4456,7 @@
       "name": "MAGM9_StairsSide_Layout",
       "width": 42,
       "height": 40,
-      "primary_tileset": "gTileset_General",
+      "primary_tileset": "gTileset_Building",
       "secondary_tileset": "gTileset_MirageTower",
       "border_filepath": "data/layouts/MAGM9_StairsSide/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_StairsSide/map.bin"
@@ -4490,6 +4490,16 @@
       "secondary_tileset": "gTileset_MauvilleGym",
       "border_filepath": "data/layouts/MAGM9_Mall_Arcade/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_Mall_Arcade/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_MALL_LOWER_FLOOR",
+      "name": "MAGM9_Mall_LowerFloor_Layout",
+      "width": 90,
+      "height": 83,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_Unused1",
+      "border_filepath": "data/layouts/MAGM9_Mall_LowerFloor/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_Mall_LowerFloor/map.bin"
     }
   ]
 }
