@@ -5099,7 +5099,7 @@ bool8 MovementType_Chase_Step4(struct ObjectEvent *objectEvent, struct Sprite *s
         sprite->sPrevSpeed = 0;
         sprite->sTypeFuncId = 1;
     }
-    
+
     return TRUE;
 }
 

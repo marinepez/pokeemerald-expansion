@@ -10,11 +10,13 @@ MAGM9_Mall_MainArea_MapScripts_OnResume::
 	return
 
 MAGM9_Mall_MainArea_OnWarp::
-	map_script_2 VAR_ROLLING_GIANT_LOCALID, 0, MAGM9_Mall_MainArea_MapScripts_SetRollingGiantID
+	map_script_2 VAR_ROLLING_GIANT_LOCALID, 0, MAGM9_Mall_MainArea_MapScripts_SetInitialVars
 	.2byte 0
 
-MAGM9_Mall_MainArea_MapScripts_SetRollingGiantID::
+MAGM9_Mall_MainArea_MapScripts_SetInitialVars::
 	setvar VAR_ROLLING_GIANT_LOCALID LOCALID_GIANT
+	setvar VAR_ROLLING_GIANT_AI_STATE 2
+	return
 
 MAGM9_Mall_MainArea_MapScripts_HideRollingGiant:
 	return

@@ -646,10 +646,9 @@ static bool8 GetSpawnableTileByQuadrant(u8 quadrant, s16 *x, s16 *y)
 {
     s16 camLeft = COORDS_TO_GRID(gSaveBlock1Ptr->pos.x) - 9;
     s16 camRight = COORDS_TO_GRID(gSaveBlock1Ptr->pos.x) + 9;
-    s16 camTop = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) - 10;
+    s16 camTop = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) - 8;
     s16 camBottom = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) + 8;
     s16 border = 1;
-    u8 collision, borderId, i;
 
     switch(quadrant)
     {
@@ -689,18 +688,14 @@ static bool8 GetSpawnableTileByQuadrant(u8 quadrant, s16 *x, s16 *y)
             return FALSE;
     }
 
-    //Giant is a 2x2, so we actually need to check four spaces
-    if ((MapGridGetCollisionAt(*x, *y) || GetMapBorderIdAt(*x, *y) == CONNECTION_INVALID)
-    || (MapGridGetCollisionAt((*x)-1, *y) || GetMapBorderIdAt((*x)-1, *y) == CONNECTION_INVALID)
-    || (MapGridGetCollisionAt(*x, (*y)-1) || GetMapBorderIdAt(*x, (*y)-1) == CONNECTION_INVALID)
-    || (MapGridGetCollisionAt((*x)-1, (*y)-1) || GetMapBorderIdAt((*x)-1, (*y)-1) == CONNECTION_INVALID))
+    if (MapGridGetCollisionAt(*x+MAP_OFFSET, *y+MAP_OFFSET) || GetMapBorderIdAt(*x+MAP_OFFSET, *y+MAP_OFFSET) == CONNECTION_INVALID)
     {
-        //DebugPrintf("Q%d Failed spawn: %d, %d", quadrant, *x, *y);
+        DebugPrintf("Q%d Failed spawn: %d, %d", quadrant, *x, *y);
         return FALSE;
     }
     else 
     {
-        //DebugPrintf("Q%d Successful spawn: %d, %d", quadrant, *x, *y);
+        DebugPrintf("Q%d Successful spawn: %d, %d", quadrant, *x, *y);
         return TRUE;
     }
 }
@@ -759,6 +754,28 @@ static bool8 GetSpawnableTileAroundPlayer(u8 playerDir, s16 *x, s16 *y)
     return GetSpawnableTileByQuadrant((Random()%8)+1, x, y);
 }
 
+static bool8 IsGiantOnOrNearScreen(void)
+{
+    u16 giantId = GetObjectEventIdByLocalIdAndMap(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+    s16 gX = COORDS_TO_GRID(gObjectEvents[giantId].currentCoords.x)-MAP_OFFSET;
+    s16 gY = COORDS_TO_GRID(gObjectEvents[giantId].currentCoords.y)-MAP_OFFSET;
+
+    s16 camLeft = COORDS_TO_GRID(gSaveBlock1Ptr->pos.x) - 8;
+    s16 camRight = COORDS_TO_GRID(gSaveBlock1Ptr->pos.x) + 8;
+    s16 camTop = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) - 9;
+    s16 camBottom = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) + 7;
+
+//    DebugPrintf("Giant: %d, %d", gX, gY);
+//    DebugPrintf("Grid: L:%d, R:%d, T:%d, B:%d", camLeft, camRight, camTop, camBottom);
+    if(camLeft <= gX && gX <= camRight && camTop <= gY && gY <= camBottom)
+    {
+        DebugPrintf("OnOrNearScreen");
+        return TRUE;
+    }
+    else
+        return FALSE;
+}
+
 //AI state to spawn location: 0: Agressive - spawn anywhere | 1: Stalking - Spawn behind | 2: Dormant - Spawn in front
 //Returns false if it fails to find a place to spawn the giant
 static bool8 GetSpawnableTileForGiant(u8 playerDir)
@@ -769,32 +786,35 @@ static bool8 GetSpawnableTileForGiant(u8 playerDir)
 
     while(spawnAttempts > 0)
     {
-        switch(AIState)
+        if(AIState == 0) 
         {
-            case 0:
-                if(GetSpawnableTileAroundPlayer(playerDir, &x, &y))
-                {
-                    TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
-                    TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
-                    return TRUE;
-                }
-                break;
-            case 1:
-                if(GetSpawnableTileBehindPlayer(playerDir, &x, &y))
-                {
-                    TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
-                    TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
-                    return TRUE;
-                }
-                break;
-            case 2:
-                if(GetSpawnableTileInFrontOfPlayer(playerDir, &x, &y))
-                {
-                    TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
-                    TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
-                    return TRUE;
-                }
-                break;
+            if(GetSpawnableTileAroundPlayer(playerDir, &x, &y))
+            {
+                TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+                TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
+                DebugPrintf("Giant0: %d, %d", x, y);
+                return TRUE;
+            }
+        }
+        else if(AIState == 1)
+        {
+            if(GetSpawnableTileBehindPlayer(playerDir, &x, &y))
+            {
+                TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+                TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
+                DebugPrintf("Giant1: %d, %d", x, y);
+                return TRUE;
+            }
+        }
+        else if(AIState == 2)
+        {
+            if(GetSpawnableTileInFrontOfPlayer(playerDir, &x, &y))
+            {
+                TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+                TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
+                DebugPrintf("Giant2: %d, %d", x, y);
+                return TRUE;
+            }
         }
         spawnAttempts--;
     }
@@ -804,6 +824,10 @@ static bool8 GetSpawnableTileForGiant(u8 playerDir)
 bool8 StandardGiantEncounter(u8 playerDirection)
 {
     if (sWildEncountersDisabled)
+        return FALSE;
+
+    //Don't attempt to change giant location if giant is on screen
+    if(IsGiantOnOrNearScreen())
         return FALSE;
 
     if(!GetSpawnableTileForGiant(playerDirection))
