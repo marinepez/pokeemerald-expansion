@@ -690,12 +690,12 @@ static bool8 GetSpawnableTileByQuadrant(u8 quadrant, s16 *x, s16 *y)
 
     if (MapGridGetCollisionAt(*x+MAP_OFFSET, *y+MAP_OFFSET) || GetMapBorderIdAt(*x+MAP_OFFSET, *y+MAP_OFFSET) == CONNECTION_INVALID)
     {
-        DebugPrintf("Q%d Failed spawn: %d, %d", quadrant, *x, *y);
+//        DebugPrintf("Q%d Failed spawn: %d, %d", quadrant, *x, *y);
         return FALSE;
     }
     else 
     {
-        DebugPrintf("Q%d Successful spawn: %d, %d", quadrant, *x, *y);
+//        DebugPrintf("Q%d Successful spawn: %d, %d", quadrant, *x, *y);
         return TRUE;
     }
 }
@@ -769,7 +769,7 @@ static bool8 IsGiantOnOrNearScreen(void)
 //    DebugPrintf("Grid: L:%d, R:%d, T:%d, B:%d", camLeft, camRight, camTop, camBottom);
     if(camLeft <= gX && gX <= camRight && camTop <= gY && gY <= camBottom)
     {
-        DebugPrintf("OnOrNearScreen");
+//        DebugPrintf("OnOrNearScreen");
         return TRUE;
     }
     else
@@ -792,7 +792,7 @@ static bool8 GetSpawnableTileForGiant(u8 playerDir)
             {
                 TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
                 TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
-                DebugPrintf("Giant0: %d, %d", x, y);
+                //DebugPrintf("Giant0: %d, %d", x, y);
                 return TRUE;
             }
         }
@@ -802,7 +802,7 @@ static bool8 GetSpawnableTileForGiant(u8 playerDir)
             {
                 TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
                 TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
-                DebugPrintf("Giant1: %d, %d", x, y);
+                //DebugPrintf("Giant1: %d, %d", x, y);
                 return TRUE;
             }
         }
@@ -812,7 +812,7 @@ static bool8 GetSpawnableTileForGiant(u8 playerDir)
             {
                 TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
                 TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
-                DebugPrintf("Giant2: %d, %d", x, y);
+                //DebugPrintf("Giant2: %d, %d", x, y);
                 return TRUE;
             }
         }
