@@ -16,8 +16,8 @@
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_POOCHYENA",
-      "x": 10,
-      "y": 34,
+      "x": 51,
+      "y": 3,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_CHASE",
       "movement_range_x": 0,

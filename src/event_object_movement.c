@@ -1541,6 +1541,7 @@ static bool8 GetAvailableObjectEventId(u16 localId, u8 mapNum, u8 mapGroup, u8 *
 
 static void RemoveObjectEvent(struct ObjectEvent *objectEvent)
 {
+    DebugPrintf("FUCK");
     objectEvent->active = FALSE;
     RemoveObjectEventInternal(objectEvent);
 }
@@ -1844,7 +1845,10 @@ void RemoveObjectEventsOutsideView(void)
             struct ObjectEvent *objectEvent = &gObjectEvents[i];
 
             if (objectEvent->active && !objectEvent->isPlayer && objectEvent->trainerType != TRAINER_TYPE_PERSISTENT)
+            {
+                DebugPrintf("Object removed");
                 RemoveObjectEventIfOutsideView(objectEvent);
+            }
         }
     }
 }
@@ -1862,6 +1866,7 @@ static void RemoveObjectEventIfOutsideView(struct ObjectEvent *objectEvent)
     if (objectEvent->initialCoords.x >= left && objectEvent->initialCoords.x <= right
      && objectEvent->initialCoords.y >= top && objectEvent->initialCoords.y <= bottom)
         return;
+    DebugPrintf("WHY?????");
     RemoveObjectEvent(objectEvent);
 }
 

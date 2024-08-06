@@ -647,7 +647,7 @@ static bool8 GetSpawnableTileByQuadrant(u8 quadrant, s16 *x, s16 *y)
     s16 camLeft = COORDS_TO_GRID(gSaveBlock1Ptr->pos.x) - 9;
     s16 camRight = COORDS_TO_GRID(gSaveBlock1Ptr->pos.x) + 9;
     s16 camTop = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) - 8;
-    s16 camBottom = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) + 8;
+    s16 camBottom = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) + 9;
     s16 border = 1;
 
     switch(quadrant)
