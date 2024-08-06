@@ -1051,7 +1051,7 @@ bool8 MetatileBehavior_IsSouthwestBlocked(struct ObjectEvent *objectEvent) // (A
     int yDistance = (256 - (objectEvent->currentCoords.y % 256)) - (256 - ((objectEvent->currentCoords.x) % 256));
     if(metatileBehavior == MB_IMPASSABLE_SOUTHWEST && yDistance <= 68)
     {
-        objectEvent->currentCoords.y -= (68 - yDistance); // Basically, if it's too far in the diagonal collision, push it out to a desired distance (in this case, 68.) This is done to hopefully avoid solid collisions in between diagonal walls.
+//        objectEvent->currentCoords.y -= (68 - yDistance); // Basically, if it's too far in the diagonal collision, push it out to a desired distance (in this case, 68.) This is done to hopefully avoid solid collisions in between diagonal walls.
         return TRUE;
     } 
     else
@@ -1065,7 +1065,7 @@ bool8 MetatileBehavior_IsSoutheastBlocked(struct ObjectEvent *objectEvent)
     int yDistance = (256 - (objectEvent->currentCoords.y % 256)) - ((objectEvent->currentCoords.x) % 256);
     if(metatileBehavior == MB_IMPASSABLE_SOUTHEAST  && yDistance <= 68)
     {
-        objectEvent->currentCoords.y -= (68 - yDistance);
+//        objectEvent->currentCoords.y -= (68 - yDistance);
         return TRUE;
     } 
     else
@@ -1079,7 +1079,7 @@ bool8 MetatileBehavior_IsNorthwestBlocked(struct ObjectEvent *objectEvent)
     metatileBehavior = MapGridGetMetatileBehaviorAt(COORDS_TO_GRID(objectEvent->currentCoords.x), COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) + MAP_OFFSET);
     if (metatileBehavior == MB_IMPASSABLE_NORTHWEST && xDistance <= 68)
     {
-        objectEvent->currentCoords.x += (68 - xDistance);
+//        objectEvent->currentCoords.x += (68 - xDistance);
         return TRUE; 
     }
     else
@@ -1092,7 +1092,7 @@ bool8 MetatileBehavior_IsNortheastBlocked(struct ObjectEvent *objectEvent)
     int xDistance = (objectEvent->currentCoords.y % 256) - (objectEvent->currentCoords.x % 256);
     if(metatileBehavior == MB_IMPASSABLE_NORTHEAST && xDistance <= 64)
     {
-        objectEvent->currentCoords.x -= (64 - xDistance);
+//        objectEvent->currentCoords.x -= (64 - xDistance);
         return TRUE;
     }
     else

@@ -37,7 +37,7 @@
 #include "constants/songs.h"
 #include "constants/trainer_hill.h"
 
-static EWRAM_DATA u8 sWildEncounterImmunitySteps = 0;
+static EWRAM_DATA u8 sGiantEncounterImmunitySteps = 0;
 static EWRAM_DATA u16 sPrevMetatileBehavior = 0;
 
 u8 gSelectedObjectEvent;
@@ -54,7 +54,7 @@ static const u8 *GetInteractedWaterScript(struct MapPosition *, u8, u8);
 static bool32 TrySetupDiveDownScript(void);
 static bool32 TrySetupDiveEmergeScript(void);
 static bool8 TryStartStepBasedScript(struct MapPosition *, u16, u16);
-static bool8 CheckStandardWildEncounter(u16);
+static bool8 CheckStandardWildEncounter(u8);
 static bool8 TryArrowWarp(struct MapPosition *, u16, u8);
 static bool8 IsWarpMetatileBehavior(u16);
 static bool8 IsArrowWarpMetatileBehavior(u16, u8);
@@ -191,8 +191,8 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
             return TRUE;
     }
 
-    if (input->checkStandardWildEncounter && CheckStandardWildEncounter(metatileBehavior) == TRUE)
-        return TRUE;
+    if (input->checkStandardWildEncounter && CheckStandardWildEncounter(playerDirection) == TRUE)
+//        return TRUE;
 
     GetInFrontOfPlayerPosition(&position);
     metatileBehavior = ObjectEventGetMetatileBehaviorAt(position.x, position.y);
@@ -734,30 +734,28 @@ static bool8 LoseExpParty(void)
 
 void RestartWildEncounterImmunitySteps(void)
 {
-    // Starts at 0 and counts up to 4 steps.
-    sWildEncounterImmunitySteps = 0;
+    // Starts at 0 and counts up to 30 steps.
+    sGiantEncounterImmunitySteps = 0;
 }
 
-static bool8 CheckStandardWildEncounter(u16 metatileBehavior)
+static bool8 CheckStandardWildEncounter(u8 playerDirection)
 {
-    if (FlagGet(OW_FLAG_NO_ENCOUNTER))
+    if (FlagGet(OW_FLAG_NO_ENCOUNTER) || VarGet(VAR_ROLLING_GIANT_LOCALID) == 0)
         return FALSE;
 
-    if (sWildEncounterImmunitySteps < 4)
+    if (sGiantEncounterImmunitySteps < 10)
     {
-        sWildEncounterImmunitySteps++;
-        sPrevMetatileBehavior = metatileBehavior;
+        sGiantEncounterImmunitySteps++;
         return FALSE;
     }
 
-    if (StandardWildEncounter(metatileBehavior, sPrevMetatileBehavior) == TRUE)
+    if (StandardGiantEncounter(playerDirection))
     {
-        sWildEncounterImmunitySteps = 0;
-        sPrevMetatileBehavior = metatileBehavior;
+        VarSet(VAR_ROLLING_GIANT_NUM_ENCOUNTERS, VarGet(VAR_ROLLING_GIANT_NUM_ENCOUNTERS)+1);
+        sGiantEncounterImmunitySteps = 0;
         return TRUE;
     }
 
-    sPrevMetatileBehavior = metatileBehavior;
     return FALSE;
 }
 

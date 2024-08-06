@@ -1,16 +1,26 @@
+.set LOCALID_GIANT, 1
+
 MAGM9_Mall_MainArea_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, MAGM9_Mall_MainArea_MapScripts_OnResume
+	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, MAGM9_Mall_MainArea_OnWarp
 	.byte 0
 
 MAGM9_Mall_MainArea_MapScripts_OnResume::
-	goto_if_set FLAG_SYS_CTRL_OBJ_DELETE, MarioDebugRoom2_MapScripts_HideRollingGiant
+	goto_if_set FLAG_SYS_CTRL_OBJ_DELETE, MAGM9_Mall_MainArea_MapScripts_HideRollingGiant
 	return
 
-MarioDebugRoom2_MapScripts_HideRollingGiant:
+MAGM9_Mall_MainArea_OnWarp::
+	map_script_2 VAR_ROLLING_GIANT_LOCALID, 0, MAGM9_Mall_MainArea_MapScripts_SetRollingGiantID
+	.2byte 0
+
+MAGM9_Mall_MainArea_MapScripts_SetRollingGiantID::
+	setvar VAR_ROLLING_GIANT_LOCALID LOCALID_GIANT
+
+MAGM9_Mall_MainArea_MapScripts_HideRollingGiant:
 	return
 
-MarioDebugRoom2_MapScripts_HideRollingGiantTEST:
-	removeobject 0
+MAGM9_Mall_MainArea_MapScripts_HideRollingGiantTEST:
+	removeobject LOCALID_GIANT
 	return
 
 Mall_ShopsToMall::

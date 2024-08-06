@@ -5075,17 +5075,21 @@ static u8 GetDirectionForRollingGiant(struct ObjectEvent *objectEvent)
 //Determine which direction to face. If giant collides with player, start battle
 bool8 MovementType_Chase_Step4(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    u8 chosenDirection = GetDirectionForRollingGiant(objectEvent);
+    u8 chosenDirection;
 
-    SetObjectEventDirection(objectEvent, chosenDirection);
-    sprite->sTypeFuncId = 5;
     if(VarGet(VAR_ROLLING_GIANT_AI_STATE) == 2) //Dormant
     {
         sprite->sPrevDir = DIR_NONE;
         sprite->sPrevSpeed = 0;
         sprite->sTypeFuncId = 1;
+        return TRUE;
     }
-    else if (GetCollisionInDirection(objectEvent, chosenDirection))
+    
+    chosenDirection = GetDirectionForRollingGiant(objectEvent);
+    SetObjectEventDirection(objectEvent, chosenDirection);
+    sprite->sTypeFuncId = 5;
+
+    if (GetCollisionInDirection(objectEvent, chosenDirection))
     {
         if(DoesObjectCollideWithPlayerInDirection(objectEvent, chosenDirection))
         {
@@ -5095,7 +5099,7 @@ bool8 MovementType_Chase_Step4(struct ObjectEvent *objectEvent, struct Sprite *s
         sprite->sPrevSpeed = 0;
         sprite->sTypeFuncId = 1;
     }
-
+    
     return TRUE;
 }
 

@@ -475,8 +475,8 @@ u32 InitCameraUpdateCallback(u8 trackedObjectEventId)
 
 void CameraUpdate(void)
 {
-    int deltaX;
-    int deltaY;
+//    int deltaX;
+//    int deltaY;
     int movementSpeedX;
     int movementSpeedY;
 

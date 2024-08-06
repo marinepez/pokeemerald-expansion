@@ -4,6 +4,7 @@
 #include "metatile_behavior.h"
 #include "fieldmap.h"
 #include "random.h"
+#include "event_object_movement.h"
 #include "field_player_avatar.h"
 #include "event_data.h"
 #include "safari_zone.h"
@@ -615,6 +616,200 @@ static bool8 AreLegendariesInSootopolisPreventingEncounters(void)
     }
 
     return FlagGet(FLAG_LEGENDARIES_IN_SOOTOPOLIS);
+}
+
+/*
+                CamTop - Border
+            ________________________
+            |       Q1  |  Q2      |
+            | _ _|______|_____|_ _ |
+            |    |            |    |
+    CamLeft | Q3 |            | Q4 | CamRight
+       -    |----|     P      |----|    +
+     Border | Q5 |            | Q6 |  Border
+            | _ _|____________|_ _ |
+            |    |  Q7  |  Q8 |    |
+            |___________|__________|
+                CamBottom + Border
+
+Q1: Left-Border    < X < (Left+Right)/2 | Top-Border     < Y < Top
+Q2: (Left+Right)/2 < X < Right+Border   | Top-Border     < Y < Top
+Q3: Left-Border    < X < Left           | Top-Border     < Y < (Top+Bottom)/2
+Q4: Right          < X < Right + Border | Top-Border     < Y < (Top+Bottom)/2
+Q5: Left-Border    < X < Left           | (Top+Bottom)/2 < Y < Bottom+Border
+Q6: Right          < X < Right + Border | (Top+Bottom)/2 < Y < Bottom+Border
+Q7: Left-Border    < X < (Left+Right)/2 | Bottom         < Y < Bottom+Border
+Q8: (Left+Right)/2 < X < Right+Border   | Bottom         < Y < Bottom+Border
+*/
+
+static bool8 GetSpawnableTileByQuadrant(u8 quadrant, s16 *x, s16 *y)
+{
+    s16 camLeft = COORDS_TO_GRID(gSaveBlock1Ptr->pos.x) - 9;
+    s16 camRight = COORDS_TO_GRID(gSaveBlock1Ptr->pos.x) + 9;
+    s16 camTop = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) - 10;
+    s16 camBottom = COORDS_TO_GRID(gSaveBlock1Ptr->pos.y) + 8;
+    s16 border = 1;
+    u8 collision, borderId, i;
+
+    switch(quadrant)
+    {
+        case 1:
+            *x = (s16)RandomUniform(RNG_NONE, camLeft-border, (camLeft+camRight)/2);
+            *y = (s16)RandomUniform(RNG_NONE, camTop-border, camTop);
+            break;
+        case 2:
+            *x = (s16)RandomUniform(RNG_NONE, (camLeft+camRight)/2, camRight+border);
+            *y = (s16)RandomUniform(RNG_NONE, camTop-border, camTop);
+            break;
+        case 3:
+            *x = (s16)RandomUniform(RNG_NONE, camLeft-border, camLeft);
+            *y = (s16)RandomUniform(RNG_NONE, camTop-border, (camTop+camBottom)/2);
+            break;
+        case 4:
+            *x = (s16)RandomUniform(RNG_NONE, camRight, camRight+border);
+            *y = (s16)RandomUniform(RNG_NONE, camTop-border, (camTop+camBottom)/2);
+            break;
+        case 5:
+            *x = (s16)RandomUniform(RNG_NONE, camLeft-border, camLeft);
+            *y = (s16)RandomUniform(RNG_NONE, (camTop+camBottom)/2, camBottom+border);
+            break;
+        case 6:
+            *x = (s16)RandomUniform(RNG_NONE, camRight, camRight+border);
+            *y = (s16)RandomUniform(RNG_NONE, (camTop+camBottom)/2, camBottom+border);
+            break;
+        case 7:
+            *x = (s16)RandomUniform(RNG_NONE, camLeft-border, (camLeft+camRight)/2);
+            *y = (s16)RandomUniform(RNG_NONE, camBottom, camBottom+border);
+            break;
+        case 8:
+            *x = (s16)RandomUniform(RNG_NONE, (camLeft+camRight)/2, camRight+border);
+            *y = (s16)RandomUniform(RNG_NONE, camBottom, camBottom+border);
+            break;
+        default:
+            return FALSE;
+    }
+
+    //Giant is a 2x2, so we actually need to check four spaces
+    if ((MapGridGetCollisionAt(*x, *y) || GetMapBorderIdAt(*x, *y) == CONNECTION_INVALID)
+    || (MapGridGetCollisionAt((*x)-1, *y) || GetMapBorderIdAt((*x)-1, *y) == CONNECTION_INVALID)
+    || (MapGridGetCollisionAt(*x, (*y)-1) || GetMapBorderIdAt(*x, (*y)-1) == CONNECTION_INVALID)
+    || (MapGridGetCollisionAt((*x)-1, (*y)-1) || GetMapBorderIdAt((*x)-1, (*y)-1) == CONNECTION_INVALID))
+    {
+        //DebugPrintf("Q%d Failed spawn: %d, %d", quadrant, *x, *y);
+        return FALSE;
+    }
+    else 
+    {
+        //DebugPrintf("Q%d Successful spawn: %d, %d", quadrant, *x, *y);
+        return TRUE;
+    }
+}
+
+static bool8 GetSpawnableTileBehindPlayer(u8 playerDir, s16 *x, s16 *y)
+{
+    u8 relevantQuadrents[2];
+    switch(playerDir)
+    {
+        case DIR_SOUTH:
+            relevantQuadrents[0] = 1;
+            relevantQuadrents[1] = 2;
+            break;
+        case DIR_NORTH:
+            relevantQuadrents[0] = 7;
+            relevantQuadrents[1] = 8;
+            break;
+        case DIR_EAST:
+            relevantQuadrents[0] = 3;
+            relevantQuadrents[1] = 5;
+            break;
+        case DIR_WEST:
+            relevantQuadrents[0] = 4;
+            relevantQuadrents[1] = 6;
+            break;
+        case DIR_SOUTHEAST:
+            relevantQuadrents[0] = 1;
+            relevantQuadrents[1] = 3;
+            break;
+        case DIR_SOUTHWEST:
+            relevantQuadrents[0] = 2;
+            relevantQuadrents[1] = 4;
+            break;
+        case DIR_NORTHEAST:
+            relevantQuadrents[0] = 5;
+            relevantQuadrents[1] = 7;
+            break;
+        case DIR_NORTHWEST:
+            relevantQuadrents[0] = 6;
+            relevantQuadrents[1] = 8;
+            break;
+        default:
+            return FALSE;
+    }
+
+    return GetSpawnableTileByQuadrant(relevantQuadrents[Random()%2], x, y);
+}
+
+static bool8 GetSpawnableTileInFrontOfPlayer(u8 playerDir, s16 *x, s16 *y)
+{
+    return GetSpawnableTileBehindPlayer(GetOppositeDirection(playerDir), x, y);
+}
+
+static bool8 GetSpawnableTileAroundPlayer(u8 playerDir, s16 *x, s16 *y)
+{
+    return GetSpawnableTileByQuadrant((Random()%8)+1, x, y);
+}
+
+//AI state to spawn location: 0: Agressive - spawn anywhere | 1: Stalking - Spawn behind | 2: Dormant - Spawn in front
+//Returns false if it fails to find a place to spawn the giant
+static bool8 GetSpawnableTileForGiant(u8 playerDir)
+{
+    u8 AIState = VarGet(VAR_ROLLING_GIANT_AI_STATE);
+    u8 spawnAttempts = 5;
+    s16 x, y;
+
+    while(spawnAttempts > 0)
+    {
+        switch(AIState)
+        {
+            case 0:
+                if(GetSpawnableTileAroundPlayer(playerDir, &x, &y))
+                {
+                    TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+                    TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
+                    return TRUE;
+                }
+                break;
+            case 1:
+                if(GetSpawnableTileBehindPlayer(playerDir, &x, &y))
+                {
+                    TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+                    TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
+                    return TRUE;
+                }
+                break;
+            case 2:
+                if(GetSpawnableTileInFrontOfPlayer(playerDir, &x, &y))
+                {
+                    TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+                    TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
+                    return TRUE;
+                }
+                break;
+        }
+        spawnAttempts--;
+    }
+    return FALSE; //Couldn't find a place to spawn the Giant
+}
+
+bool8 StandardGiantEncounter(u8 playerDirection)
+{
+    if (sWildEncountersDisabled)
+        return FALSE;
+
+    if(!GetSpawnableTileForGiant(playerDirection))
+        return FALSE;
+
+    return TRUE;
 }
 
 bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)
