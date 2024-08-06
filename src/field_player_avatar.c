@@ -937,6 +937,7 @@ static u8 CheckForPlayerAvatarStaticCollision(u8 direction)
     return SensePlayerAvatarCollision(direction, CheckForObjectEventStaticCollision);
 }
 
+
 u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u8 direction, u8 metatileBehavior)
 {
     u8 collision = GetCollisionAtCoords(objectEvent, x, y, direction);
@@ -957,6 +958,21 @@ u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u
             return COLLISION_ROTATING_GATE;
         CheckAcroBikeCollision(x, y, metatileBehavior, &collision);
     }
+ 
+    if (collision == COLLISION_IMPASSABLE) // (AVIRCODE)
+    {
+        x = objectEvent->currentCoords.x; // This is more precise than the original "x and y" and it lets the player peer over the side of
+        y = objectEvent->currentCoords.y; // a tile while also being considered over a new one when they do.
+        if((direction == DIR_SOUTH && !GetCollisionAtCoords(objectEvent, x, y + 256, direction))) // When the player is at a corner of a tile with these new X and Y values, they'll be considered
+        {                                                                                         // over the tile beside the one they're trying to go to the side of. This detects what would essentially
+            objectEvent->currentCoords.x += (128 - (objectEvent->currentCoords.x % 256));         // be the tile diagonal from the player in this case. If that tile is blank, it adds to the X coord and centers
+        }                                                                                         // the player on that tile.
+        if((direction == DIR_NORTH && !GetCollisionAtCoords(objectEvent, x, y - 127, direction))) // Since the player can go higher up against a northway wall, it only checks 127 units up instead of 256.
+        {
+            objectEvent->currentCoords.x += (128 - (objectEvent->currentCoords.x % 256));
+        }
+    }
+
     return collision;
 }
 
