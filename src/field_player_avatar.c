@@ -823,6 +823,7 @@ u8 SensePlayerAvatarCollision(u8 direction, u8 (*checkCollisionFunction)(struct 
 {
     s16 checkX[4], checkY[4];
     u8 numChecks, i;
+    u8 collision;
 //    s16 testX, testY;
 
     struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
@@ -911,20 +912,20 @@ u8 SensePlayerAvatarCollision(u8 direction, u8 (*checkCollisionFunction)(struct 
     {
         s16 x = checkX[i];
         s16 y = checkY[i];
-        u8 collision;
         u32 metatileBehavior;
 
         metatileBehavior = ObjectEventGetMetatileBehaviorAt(x, y);
         collision = checkCollisionFunction(playerObjEvent, x, y, direction, metatileBehavior);
 //        DebugPrintf("%d: checkX: %d.%d, checkY: %d.%d, collision:%d", i, x>>8, x&0xFF, y>>8, y&0xFF, collision);
 
-        if (collision != COLLISION_NONE)
+        //Returns no collision if it's possible there's no collision at ANY point
+        if (collision == COLLISION_NONE)
         {
             return collision;
         }
     }
 
-    return COLLISION_NONE;
+    return collision;
 }
 
 static u8 CheckForPlayerAvatarCollision(u8 direction)
@@ -959,20 +960,6 @@ u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u
         CheckAcroBikeCollision(x, y, metatileBehavior, &collision);
     }
  
-    if (collision == COLLISION_IMPASSABLE) // (AVIRCODE)
-    {
-        x = objectEvent->currentCoords.x; // This is more precise than the original "x and y" and it lets the player peer over the side of
-        y = objectEvent->currentCoords.y; // a tile while also being considered over a new one when they do.
-        if((direction == DIR_SOUTH && !GetCollisionAtCoords(objectEvent, x, y + 256, direction))) // When the player is at a corner of a tile with these new X and Y values, they'll be considered
-        {                                                                                         // over the tile beside the one they're trying to go to the side of. This detects what would essentially
-            objectEvent->currentCoords.x += (128 - (objectEvent->currentCoords.x % 256));         // be the tile diagonal from the player in this case. If that tile is blank, it adds to the X coord and centers
-        }                                                                                         // the player on that tile.
-        if((direction == DIR_NORTH && !GetCollisionAtCoords(objectEvent, x, y - 127, direction))) // Since the player can go higher up against a northway wall, it only checks 127 units up instead of 256.
-        {
-            objectEvent->currentCoords.x += (128 - (objectEvent->currentCoords.x % 256));
-        }
-    }
-
     return collision;
 }
 

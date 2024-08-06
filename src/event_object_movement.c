@@ -5883,6 +5883,19 @@ const u8 gSubDirections[][2] =
     [DIR_NORTHEAST] = { DIR_NORTH, DIR_EAST },
 };
 
+const u8 gAdjacentDirections[][2] =
+{
+    [DIR_NONE] = { DIR_NONE, DIR_NONE },
+    [DIR_SOUTH] = { DIR_SOUTHEAST, DIR_SOUTHWEST },
+    [DIR_NORTH] = { DIR_NORTHEAST, DIR_NORTHWEST },
+    [DIR_WEST] = { DIR_SOUTHWEST, DIR_NORTHWEST },
+    [DIR_EAST] = { DIR_SOUTHEAST, DIR_NORTHEAST },
+    [DIR_SOUTHWEST] = { DIR_SOUTH, DIR_WEST },
+    [DIR_SOUTHEAST] = { DIR_SOUTH, DIR_EAST },
+    [DIR_NORTHWEST] = { DIR_NORTH, DIR_WEST },
+    [DIR_NORTHEAST] = { DIR_NORTH, DIR_EAST },
+};
+
 bool8 IsDirectionDiagonal(u8 direction)
 {
     return direction == DIR_SOUTHWEST || direction == DIR_SOUTHEAST || direction == DIR_NORTHWEST || direction == DIR_NORTHEAST;
@@ -9185,7 +9198,8 @@ static void DoObjectEventMovementByAngle(struct ObjectEvent *objectEvent, struct
 static u8 CheckForPlayerCollision(struct ObjectEvent *objectEvent, s16 xOffset, s16 yOffset, u8 dir)
 {
     u32 collision = CheckForObjectEventCollision(objectEvent, objectEvent->currentCoords.x+xOffset, objectEvent->currentCoords.y+yOffset, dir, ObjectEventGetMetatileBehaviorAt(objectEvent->currentCoords.x, objectEvent->currentCoords.y));
-    if(collision && isDiagonalMetatile(objectEvent->previousCoords.x, objectEvent->previousCoords.y)) return COLLISION_NONE;
+    if(collision == COLLISION_OBJECT_EVENT) return COLLISION_NONE;
+    else if(isDiagonalMetatile(objectEvent->currentCoords.x+xOffset, objectEvent->currentCoords.y+yOffset)) return COLLISION_NONE;
     else return collision;
 }
 

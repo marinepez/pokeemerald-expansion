@@ -1037,7 +1037,7 @@ bool8 MetatileBehavior_IsSouthBlocked(struct ObjectEvent *objectEvent)
 // we subtract from 256 (the max coordinate size of a tile where 32 represents one pixel.) This effectively reverses the number and flips the distance.
 bool8 isDiagonalMetatile(int x, int y)
 {
-    u32 metatileBehavior = MapGridGetMetatileBehaviorAt(x, y);
+    u32 metatileBehavior = ObjectEventGetMetatileBehaviorAt(x, y);
     if(metatileBehavior == MB_IMPASSABLE_SOUTHEAST || metatileBehavior == MB_IMPASSABLE_SOUTHWEST || metatileBehavior == MB_IMPASSABLE_NORTHEAST || metatileBehavior == MB_IMPASSABLE_NORTHWEST)
         return TRUE;
     else
