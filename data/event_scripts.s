@@ -1025,7 +1025,7 @@ EventScript_VsSeekerChargingDone::
 
 EventScript_RollingGiantBattle::
 	lockall
-	setwildbattle SPECIES_BULBASAUR, 12, ITEM_NONE
+	setwildbattle SPECIES_ROLLING_GIANT, 60, ITEM_NONE
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	dowildbattle
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
