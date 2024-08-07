@@ -5876,7 +5876,7 @@ const u8 gSubDirections[][2] =
     [DIR_SOUTH] = { DIR_SOUTH, DIR_SOUTH },
     [DIR_NORTH] = { DIR_NORTH, DIR_NORTH },
     [DIR_WEST] = { DIR_WEST, DIR_WEST },
-    [DIR_EAST] = { DIR_EAST, DIR_EAST },
+    [DIR_EAST] = { DIR_SOUTHEAST, DIR_NORTHEAST },
     [DIR_SOUTHWEST] = { DIR_SOUTH, DIR_WEST },
     [DIR_SOUTHEAST] = { DIR_SOUTH, DIR_EAST },
     [DIR_NORTHWEST] = { DIR_NORTH, DIR_WEST },
@@ -9198,8 +9198,14 @@ static void DoObjectEventMovementByAngle(struct ObjectEvent *objectEvent, struct
 static u8 CheckForPlayerCollision(struct ObjectEvent *objectEvent, s16 xOffset, s16 yOffset, u8 dir)
 {
     u32 collision = CheckForObjectEventCollision(objectEvent, objectEvent->currentCoords.x+xOffset, objectEvent->currentCoords.y+yOffset, dir, ObjectEventGetMetatileBehaviorAt(objectEvent->currentCoords.x, objectEvent->currentCoords.y));
-    if(collision && isDiagonalMetatile(objectEvent->previousCoords.x, objectEvent->previousCoords.y)) return COLLISION_NONE;
-    else return collision;
+    if(collision == COLLISION_OBJECT_EVENT) 
+    {
+        objectEvent->currentCoords.x = objectEvent->previousCoords.x;
+        objectEvent->currentCoords.y = objectEvent->previousCoords.y;
+        return COLLISION_NONE;
+    }
+    else if(isDiagonalMetatile(objectEvent->currentCoords.x+xOffset, objectEvent->currentCoords.y+yOffset)) return COLLISION_NONE;
+else return collision;
 }
 
 static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite *sprite, u16 speed, u8 dir)
@@ -9301,7 +9307,7 @@ static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite
                 }
                 if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
                 {
-                    if(COORDS_TO_GRID(objectEvent->currentCoords.x-PLAYER_HITBOX_LEFT) < COORDS_TO_GRID(objectEvent->previousCoords.x-PLAYER_HITBOX_LEFT))
+                    if(COORDS_TO_GRID(objectEvent->currentCoords.x+PLAYER_HITBOX_LEFT) < COORDS_TO_GRID(objectEvent->previousCoords.x+PLAYER_HITBOX_LEFT))
                     {
                         objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
                         objectEvent->currentCoords.x |= 0x70;
@@ -9348,7 +9354,7 @@ static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite
                 }
                 if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
                 {
-                    if(COORDS_TO_GRID(objectEvent->currentCoords.x-PLAYER_HITBOX_LEFT) < COORDS_TO_GRID(objectEvent->previousCoords.x-PLAYER_HITBOX_LEFT))
+                    if(COORDS_TO_GRID(objectEvent->currentCoords.x+PLAYER_HITBOX_LEFT) < COORDS_TO_GRID(objectEvent->previousCoords.x+PLAYER_HITBOX_LEFT))
                     {
                         objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
                         objectEvent->currentCoords.x |= 0x70;
