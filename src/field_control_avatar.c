@@ -745,12 +745,17 @@ static bool8 CheckStandardWildEncounter(u8 playerDirection)
 
     //Don't attempt to change giant location if giant is on screen
     if(IsGiantOnOrNearScreen())
-        return FALSE;
-    else if(FlagGet(FLAG_GIANT_SPAWNED))
     {
-        //Only increase encounters once the giant is actually seen
-        VarSet(VAR_ROLLING_GIANT_NUM_SIGHTINGS, VarGet(VAR_ROLLING_GIANT_NUM_SIGHTINGS)+1);
-        FlagClear(FLAG_GIANT_SPAWNED);
+        if(FlagGet(FLAG_GIANT_SPAWNED))
+        {
+            //Only increase encounters once the giant is actually seen
+            VarSet(VAR_ROLLING_GIANT_NUM_SIGHTINGS, VarGet(VAR_ROLLING_GIANT_NUM_SIGHTINGS)+1);
+            FlagClear(FLAG_GIANT_SPAWNED);
+
+            if (VarGet(VAR_ROLLING_GIANT_AI_STATE) != 1 && VarGet(VAR_ROLLING_GIANT_NUM_SIGHTINGS) > 4) //Arbitrary
+                VarSet(VAR_ROLLING_GIANT_AI_STATE, 1); //Set behavior to stalking after a certain number of Giant sights
+        }
+        return FALSE;
     }
 
     if (sGiantEncounterImmunitySteps < 10)
@@ -765,10 +770,6 @@ static bool8 CheckStandardWildEncounter(u8 playerDirection)
         FlagSet(FLAG_GIANT_SPAWNED);
         sGiantEncounterImmunitySteps = 0;
         return TRUE;
-    }
-    if (VarGet(VAR_ROLLING_GIANT_NUM_SIGHTINGS) > 4) //Arbitrary
-    {
-        VarSet(VAR_ROLLING_GIANT_AI_STATE, 1); //Set behavior to stalking after a certain number of Giant sights
     }
 
     return FALSE;
