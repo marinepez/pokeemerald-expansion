@@ -5479,7 +5479,7 @@ u16 GetBattleBGM(void)
         }
     }
     else
-        return MUS_VS_WILD;
+        return MUS_GIANT_BATTLE_1; // (AVIRCODE) Changed default wild theme for testing
 }
 
 void PlayBattleBGM(void)
@@ -5495,8 +5495,11 @@ void PlayMapChosenOrBattleBGM(u16 songId)
     m4aMPlayAllStop();
     if (songId)
         PlayNewMapMusic(songId);
-    else
-        PlayNewMapMusic(GetBattleBGM());
+    else // (Battle music start is here for some reason?)
+    {
+        PlaySE(SE_GIANT_CATCH);
+        //PlayNewMapMusic(GetBattleBGM());
+    }
 }
 
 // Identical to PlayMapChosenOrBattleBGM, but uses a task instead

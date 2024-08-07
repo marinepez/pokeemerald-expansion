@@ -863,6 +863,7 @@ u8 GetWildBattleTransition(void)
     u8 enemyLevel = GetMonData(&gEnemyParty[0], MON_DATA_LEVEL);
     u8 playerLevel = GetSumOfPlayerPartyLevel(1);
 
+    return B_TRANSITION_BLUR; // (AVIRCODE) Just for now, all battle transitions start with an instant cutout (B_TRANSITION_BLUR means B_TRANSITION_INSTANT, I was just too lazy to change it.)
     if (enemyLevel < playerLevel)
     {
         if (InBattlePyramid())

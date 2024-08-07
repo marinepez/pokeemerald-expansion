@@ -5095,7 +5095,7 @@ bool8 MovementType_Chase_Step4(struct ObjectEvent *objectEvent, struct Sprite *s
     {
         if(DoesObjectCollideWithPlayerInDirection(objectEvent, chosenDirection))
         {
-//            ScriptContext_SetupScript(EventScript_RollingGiantBattle);
+            ScriptContext_SetupScript(EventScript_RollingGiantBattle);
         }
         sprite->sPrevDir = DIR_NONE;
         sprite->sPrevSpeed = 0;

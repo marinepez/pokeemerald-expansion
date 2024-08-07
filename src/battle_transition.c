@@ -26,6 +26,7 @@
 #include "constants/songs.h"
 #include "constants/trainers.h"
 #include "constants/rgb.h"
+#include "field_screen_effect.h"
 
 #define PALTAG_UNUSED_MUGSHOT 0x100A
 
@@ -97,6 +98,7 @@ static bool8 Transition_WaitForMain(struct Task *);
 static void LaunchBattleTransitionTask(u8);
 static void Task_BattleTransition(u8);
 static void Task_Intro(u8);
+static void Task_Instant(u8);
 static void Task_Blur(u8);
 static void Task_Swirl(u8);
 static void Task_Shuffle(u8);
@@ -343,7 +345,7 @@ static const TaskFunc sTasks_Intro[B_TRANSITION_COUNT] =
 // This task will call the functions that do the transition effects.
 static const TaskFunc sTasks_Main[B_TRANSITION_COUNT] =
 {
-    [B_TRANSITION_BLUR] = Task_Blur,
+    [B_TRANSITION_BLUR] = Task_Instant, // (AVIRCODE)
     [B_TRANSITION_SWIRL] = Task_Swirl,
     [B_TRANSITION_SHUFFLE] = Task_Shuffle,
     [B_TRANSITION_BIG_POKEBALL] = Task_BigPokeball,
@@ -385,8 +387,8 @@ static const TaskFunc sTasks_Main[B_TRANSITION_COUNT] =
 
 static const TransitionStateFunc sTaskHandlers[] =
 {
-    &Transition_StartIntro,
-    &Transition_WaitForIntro,
+    //&Transition_StartIntro, (AVIRCODE) Removed the initial animation to make the screen cut out when starting a battle with the giant.
+    //&Transition_WaitForIntro,
     &Transition_StartMain,
     &Transition_WaitForMain
 };
@@ -1092,6 +1094,19 @@ static void Task_Intro(u8 taskId)
     {
         DestroyTask(taskId);
     }
+}
+
+//--------------------
+// B_TRANSITION_INSTANT
+//--------------------
+
+static void Task_Instant(u8 taskId) // (AVIRCODE)
+{
+    if (gTasks[taskId].tState == 0)
+        FillPalBufferBlack();
+    if(gTasks[taskId].tState > 120)
+        DestroyTask(taskId);
+    gTasks[taskId].tState++;
 }
 
 //--------------------

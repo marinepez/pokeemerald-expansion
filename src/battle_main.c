@@ -3707,6 +3707,7 @@ static void DoBattleIntro(void)
         }
         break;
     case 2: // Start graphical intro slide.
+        PlayBGM(GetBattleBGM()); // (AVIRCODE) Start battle music here once the battle screen is loaded
         if (!gBattleControllerExecFlags)
         {
             battler = GetBattlerAtPosition(0);
