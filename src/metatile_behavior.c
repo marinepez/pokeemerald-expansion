@@ -1049,7 +1049,7 @@ bool8 MetatileBehavior_IsSouthwestBlocked(struct ObjectEvent *objectEvent) // (A
     u8 metatileBehavior = objectEvent->currentMetatileBehavior;
 
     int yDistance = (256 - (objectEvent->currentCoords.y % 256)) - (256 - ((objectEvent->currentCoords.x) % 256));
-    if(metatileBehavior == MB_IMPASSABLE_SOUTHWEST && yDistance <= 68)
+    if((metatileBehavior == MB_IMPASSABLE_SOUTHWEST || metatileBehavior == MB_STAIRS_RIGHT_DIAGONAL) && yDistance <= 68)
     {
 //        objectEvent->currentCoords.y -= (68 - yDistance); // Basically, if it's too far in the diagonal collision, push it out to a desired distance (in this case, 68.) This is done to hopefully avoid solid collisions in between diagonal walls.
         return TRUE;
@@ -1520,6 +1520,22 @@ bool8 MetatileBehavior_IsLongGrassSouthEdge(u8 metatileBehavior)
 bool8 MetatileBehavior_IsTrainerHillTimer(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_TRAINER_HILL_TIMER)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+bool8 MetatileBehavior_IsStairsRight(u8 metatileBehavior)
+{
+    if (metatileBehavior == MB_STAIRS_RIGHT || metatileBehavior == MB_STAIRS_RIGHT_DIAGONAL)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+bool8 MetatileBehavior_IsStairsLeft(u8 metatileBehavior)
+{
+    if (metatileBehavior == MB_STAIRS_LEFT)
         return TRUE;
     else
         return FALSE;

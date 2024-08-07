@@ -766,10 +766,14 @@ static bool8 CheckStandardWildEncounter(u8 playerDirection)
             FlagClear(FLAG_GIANT_SPAWNED);
 
             if (VarGet(VAR_ROLLING_GIANT_AI_STATE) != 1 && VarGet(VAR_ROLLING_GIANT_NUM_SIGHTINGS) > 4) //Arbitrary
+            {
+                //DebugPrintf("AI State set to 1");
                 VarSet(VAR_ROLLING_GIANT_AI_STATE, 1); //Set behavior to stalking after a certain number of Giant sights
+            }
         }
         return FALSE;
     }
+    //DebugPrintf("Encounters: %d, AI State: %d", VarGet(VAR_ROLLING_GIANT_NUM_SIGHTINGS), VarGet(VAR_ROLLING_GIANT_AI_STATE));
 
     if (sGiantEncounterImmunitySteps < 10)
     {

@@ -9242,6 +9242,23 @@ static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite
 //        DebugPrintf("PrevCoords: x:%d.%d, y:%d.%d", objectEvent->previousCoords.x>>8, objectEvent->previousCoords.x&255, objectEvent->previousCoords.y>>8, objectEvent->previousCoords.y&255);
 //        DebugPrintf("CurrCoords: x:%d.%d, y:%d.%d", objectEvent->currentCoords.x>>8, objectEvent->currentCoords.x&255, objectEvent->currentCoords.y>>8, objectEvent->currentCoords.y&255);
 
+        //Evaluate stair interactions here
+        if(MetatileBehavior_IsStairsRight(ObjectEventGetMetatileBehaviorAt(objectEvent->currentCoords.x, objectEvent->currentCoords.y)))
+        {
+            switch(dir)
+            {
+                case DIR_EAST:
+                case DIR_SOUTHEAST:
+                case DIR_NORTHEAST:
+                case DIR_WEST:
+                case DIR_SOUTHWEST:
+                case DIR_NORTHWEST:
+                    objectEvent->currentCoords.y += x;
+                    break;
+            }
+        }
+
+        //Evaluate collisions here
         switch(dir)
         {
             case DIR_SOUTH:
