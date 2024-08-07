@@ -274,3 +274,19 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_SKY_PILLAR_TOP_RAYQUAZA_STILL
 	call EventScript_ResetAllBerries
 	end
+
+EventScript_InitMAGMPlayer::
+	setflag FLAG_RECEIVED_RUNNING_SHOES
+	setflag FLAG_SYS_B_DASH
+	setflag FLAG_BADGE01_GET
+	setflag FLAG_BADGE02_GET
+	setflag FLAG_BADGE03_GET
+	setflag FLAG_BADGE04_GET
+	setflag FLAG_BADGE05_GET
+	setflag FLAG_BADGE06_GET
+	setflag FLAG_BADGE07_GET
+	setflag FLAG_BADGE08_GET
+	givemon SPECIES_ROTOM, 100, ITEM_NONE
+	givemon SPECIES_VILEPLUME, 100, ITEM_NONE
+	givemon SPECIES_PORYGON_Z, 100, ITEM_NONE
+	end
