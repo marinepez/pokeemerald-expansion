@@ -407,6 +407,7 @@
 #define MAP_MAGM9_MALL_DECAYED                       (112 | (24 << 8))
 #define MAP_MAGM9_MALL_ARCADE                        (113 | (24 << 8))
 #define MAP_MAGM9_MALL_LOWER_FLOOR                   (114 | (24 << 8))
+#define MAP_MAGM_MALL_SHOPS2                         (115 | (24 << 8))
 
 // gMapGroup_IndoorDynamic
 #define MAP_SECRET_BASE_RED_CAVE1    (0 | (25 << 8))
