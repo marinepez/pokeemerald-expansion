@@ -4446,7 +4446,7 @@
       "name": "MAGM9_StairsDown_Layout",
       "width": 3,
       "height": 80,
-      "primary_tileset": "gTileset_General",
+      "primary_tileset": "gTileset_Building",
       "secondary_tileset": "gTileset_MirageTower",
       "border_filepath": "data/layouts/MAGM9_StairsDown/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_StairsDown/map.bin"
