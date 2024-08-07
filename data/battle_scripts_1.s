@@ -5768,7 +5768,7 @@ BattleScript_PursuitDmgOnSwitchOutRet:
 	return
 
 BattleScript_Pausex20::
-	pause B_WAIT_TIME_SHORT
+	@pause B_WAIT_TIME_SHORT @ (AVIRCODE) This is when the battle animations are disabled. I disabled the pause to speed things up.
 	return
 
 BattleScript_LevelUp::

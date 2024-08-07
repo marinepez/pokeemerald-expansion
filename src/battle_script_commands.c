@@ -2705,7 +2705,7 @@ static void Cmd_waitmessage(void)
         else
         {
             u16 toWait = cmd->time;
-            if (++gPauseCounterBattle >= toWait)
+            if (++gPauseCounterBattle >= toWait || (JOY_HELD(A_BUTTON) || JOY_HELD(B_BUTTON))) // (AVIRCODE) Lets player skip through battle text pauses when holding A or B
             {
                 gPauseCounterBattle = 0;
                 gBattlescriptCurrInstr = cmd->nextInstr;
