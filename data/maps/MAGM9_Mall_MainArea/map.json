@@ -2,7 +2,7 @@
   "id": "MAP_MAGM9_MALL_MAIN_AREA",
   "name": "MAGM9_Mall_MainArea",
   "layout": "LAYOUT_MAGM9_MALL_MAIN_AREA",
-  "music": "MUS_MALL",
+  "music": "MUS_MALL_DARK",
   "region_map_section": "MAPSEC_NONE",
   "requires_flash": true,
   "weather": "WEATHER_NONE",
