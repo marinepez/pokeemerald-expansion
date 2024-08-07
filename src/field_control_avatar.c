@@ -36,6 +36,7 @@
 #include "constants/map_types.h"
 #include "constants/songs.h"
 #include "constants/trainer_hill.h"
+#include "constants/metatile_behaviors.h"
 
 static EWRAM_DATA u8 sGiantEncounterImmunitySteps = 0;
 static EWRAM_DATA u16 sPrevMetatileBehavior = 0;
@@ -165,6 +166,17 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     playerDirection = GetPlayerFacingDirection();
     GetPlayerPosition(&position);
     metatileBehavior = ObjectEventGetMetatileBehaviorAt(position.x, position.y);
+
+    if(gSaveBlock1Ptr->flashLevel == 0) // (AVIRCODE) Escalator metatiles. If not dark, they move the player up when they stand on them.
+    {
+        if(metatileBehavior == MB_DOWN_ESCALATOR)
+            gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y += 8;
+        if(metatileBehavior == MB_UP_ESCALATOR)
+            gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y -= 8;
+        if(MetatileBehavior_IsEscalator(metatileBehavior))
+            TryStartCoordEventScript(&position); // (AVIRCODE) It checks for script tiles. This is needed as I couldn't get normal warps to work out unfortunately due to them spawning inside of the warp and direction-based positioning not working out.
+
+    }
 
     if (CheckForTrainersWantingBattle() == TRUE)
         return TRUE;
@@ -807,7 +819,8 @@ static bool8 TryStartWarpEventScript(struct MapPosition *position, u16 metatileB
         SetupWarp(&gMapHeader, warpEventId, position);
         if (MetatileBehavior_IsEscalator(metatileBehavior) == TRUE)
         {
-            DoEscalatorWarp(metatileBehavior);
+            //DoEscalatorWarp(metatileBehavior);
+            DoWarp();
             return TRUE;
         }
         if (MetatileBehavior_IsLavaridgeB1FWarp(metatileBehavior) == TRUE)

@@ -248,7 +248,7 @@ const struct Tileset gTileset_Unused1 =
     .palettes = gTilesetPalettes_Unused1,
     .metatiles = gMetatiles_Unused1,
     .metatileAttributes = gMetatileAttributes_Unused1,
-    .callback = NULL,
+    .callback = InitTilesetAnim_Unused_1,
 };
 
 const struct Tileset gTileset_MeteorFalls =

@@ -757,7 +757,9 @@ bool8 ScrCmd_warp(struct ScriptContext *ctx)
 
     SetWarpDestination(mapGroup, mapNum, warpId, x, y);
     DoWarp();
-    ResetInitialPlayerAvatarState();
+    ResetInitialPlayerAvatarStateKeepDir(); // (AVIRCODE) This is to avoid the player's initial direction being reset after warping, mostly for the escalator warps which can be entered in a variety of ways.
+    StoreInitialPlayerAvatarState(); // (AVIRCODE) This is added here since the function stores the player's last direction. Used to preserve direction through escalators since they can be entered multiple directions.
+   // ResetInitialPlayerAvatarState();
     return TRUE;
 }
 

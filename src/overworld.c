@@ -932,6 +932,11 @@ void ResetInitialPlayerAvatarState(void)
     sInitialPlayerAvatarState.transitionFlags = PLAYER_AVATAR_FLAG_ON_FOOT;
 }
 
+void ResetInitialPlayerAvatarStateKeepDir(void)
+{
+    sInitialPlayerAvatarState.transitionFlags = PLAYER_AVATAR_FLAG_ON_FOOT;
+}
+
 void StoreInitialPlayerAvatarState(void)
 {
     sInitialPlayerAvatarState.direction = GetPlayerFacingDirection();
@@ -1000,7 +1005,7 @@ static u8 GetAdjustedInitialDirection(struct InitialPlayerAvatarState *playerStr
     else if (MetatileBehavior_IsLadder(metatileBehavior) == TRUE)
         return playerStruct->direction;
     else
-        return DIR_SOUTH;
+        return sInitialPlayerAvatarState.direction; // (AVIRCODE) It now keeps a direction when being warped via the "warp" command. This is for escalators which can be entered multiple ways.
 }
 
 static u16 GetCenterScreenMetatileBehavior(void)
@@ -1516,8 +1521,8 @@ static void DoCB1_Overworld(u16 newKeys, u16 heldKeys)
                 UpdatePlayerAvatarTileInfo();
 
             PlayerStep(direction, newKeys, heldKeys);
-            //gSpecialVar_0x8000 = (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x % 256); // (AVIRCODE) Debug thing. Select button would display the player's position on the tile with this.
-            //gSpecialVar_0x8001 = (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y % 256);
+            //gSpecialVar_0x8000 = (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y + 128) % 256; // (AVIRCODE) Debug thing. Select button would display the player's position on the tile with this.
+            //gSpecialVar_0x8001 = (gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y + 128) / 256;
 
         }
     }

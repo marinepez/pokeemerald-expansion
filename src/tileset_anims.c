@@ -45,6 +45,7 @@ static void TilesetAnim_BikeShop(u16);
 static void TilesetAnim_BattlePyramid(u16);
 static void TilesetAnim_BattleDome(u16);
 static void TilesetAnim_MirageTower(u16);
+static void TilesetAnim_Unused_1(u16);
 static void QueueAnimTiles_General_Flower(u16);
 static void QueueAnimTiles_General_Water(u16);
 static void QueueAnimTiles_General_SandWaterEdge(u16);
@@ -77,6 +78,7 @@ static void QueueAnimTiles_EliteFour_GroundLights(u16);
 static void QueueAnimTiles_EliteFour_WallLights(u16);
 static void QueueAnimTiles_MirageTower_LightTiles(u16);
 static void QueueAnimTiles_MirageTower_MediumTiles(u16);
+static void QueueAnimTiles_Unused_1_Escalator(u16);
 
 const u16 gTilesetAnims_General_Flower_Frame1[] = INCBIN_U16("data/tilesets/primary/general/anim/flower/1.4bpp");
 const u16 gTilesetAnims_General_Flower_Frame0[] = INCBIN_U16("data/tilesets/primary/general/anim/flower/0.4bpp");
@@ -324,6 +326,27 @@ const u16 tileset_anims_space_2[16] = {};
 const u16 *const gTilesetAnims_Rustboro_Fountain[] = {
     gTilesetAnims_Rustboro_Fountain_Frame0,
     gTilesetAnims_Rustboro_Fountain_Frame1
+};
+
+const u16 gTilesetAnims_Unused_1_Escalator_Frame0[] = INCBIN_U16("data/tilesets/secondary/unused_1/anim/escalator/0.4bpp");
+const u16 gTilesetAnims_Unused_1_Escalator_Frame1[] = INCBIN_U16("data/tilesets/secondary/unused_1/anim/escalator/1.4bpp");
+const u16 gTilesetAnims_Unused_1_Escalator_Frame2[] = INCBIN_U16("data/tilesets/secondary/unused_1/anim/escalator/2.4bpp");
+const u16 gTilesetAnims_Unused_1_Escalator_Frame3[] = INCBIN_U16("data/tilesets/secondary/unused_1/anim/escalator/3.4bpp");
+const u16 gTilesetAnims_Unused_1_Escalator_Frame4[] = INCBIN_U16("data/tilesets/secondary/unused_1/anim/escalator/4.4bpp");
+const u16 gTilesetAnims_Unused_1_Escalator_Frame5[] = INCBIN_U16("data/tilesets/secondary/unused_1/anim/escalator/5.4bpp");
+const u16 gTilesetAnims_Unused_1_Escalator_Frame6[] = INCBIN_U16("data/tilesets/secondary/unused_1/anim/escalator/6.4bpp");
+const u16 gTilesetAnims_Unused_1_Escalator_Frame7[] = INCBIN_U16("data/tilesets/secondary/unused_1/anim/escalator/7.4bpp");
+const u16 tileset_anims_space_2_1[16] = {};
+
+const u16 *const gTilesetAnims_Unused_1_Escalator[] = {
+    gTilesetAnims_Unused_1_Escalator_Frame0,
+    gTilesetAnims_Unused_1_Escalator_Frame2,
+    gTilesetAnims_Unused_1_Escalator_Frame4,
+    gTilesetAnims_Unused_1_Escalator_Frame6,
+    gTilesetAnims_Unused_1_Escalator_Frame0,
+    gTilesetAnims_Unused_1_Escalator_Frame2,
+    gTilesetAnims_Unused_1_Escalator_Frame4,
+    gTilesetAnims_Unused_1_Escalator_Frame6
 };
 
 const u16 gTilesetAnims_Lavaridge_Cave_Lava_Frame0[] = INCBIN_U16("data/tilesets/secondary/cave/anim/lava/0.4bpp");
@@ -856,6 +879,21 @@ void InitTilesetAnim_BattleDome(void)
     sSecondaryTilesetAnimCallback = TilesetAnim_BattleDome;
 }
 
+void InitTilesetAnim_Unused_1(void)
+{
+    sSecondaryTilesetAnimCounter = 0;
+    sSecondaryTilesetAnimCounterMax = sPrimaryTilesetAnimCounterMax;
+    sSecondaryTilesetAnimCallback = TilesetAnim_Unused_1;
+}
+
+static void TilesetAnim_Unused_1(u16 timer)
+{
+    if(gSaveBlock1Ptr->flashLevel != 0) // (AVIRCODE) If the flash level is not zero (zero being, the lights are on) don't animate tiles.
+        return;
+    if (timer % 8 == 0)
+        QueueAnimTiles_Unused_1_Escalator(timer / 8);
+}
+
 static void TilesetAnim_Rustboro(u16 timer)
 {
     if (timer % 8 == 0)
@@ -1025,6 +1063,13 @@ static void QueueAnimTiles_Mauville_Flowers(u16 timer_div, u8 timer_mod)
         AppendTilesetAnimToBuffer(gTilesetAnims_Mauville_Flower1_B[timer_div], gTilesetAnims_Mauville_Flower1_VDests[timer_mod], 4 * TILE_SIZE_4BPP);
         AppendTilesetAnimToBuffer(gTilesetAnims_Mauville_Flower2_B[timer_div], gTilesetAnims_Mauville_Flower2_VDests[timer_mod], 4 * TILE_SIZE_4BPP);
     }
+}
+
+static void QueueAnimTiles_Unused_1_Escalator(u16 timer)
+{
+    u16 i = timer % ARRAY_COUNT(gTilesetAnims_Unused_1_Escalator);
+    AppendTilesetAnimToBuffer(gTilesetAnims_Unused_1_Escalator[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 464)), 2 * TILE_SIZE_4BPP);
+    AppendTilesetAnimToBuffer(gTilesetAnims_Unused_1_Escalator[7 - i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 466)), 2 * TILE_SIZE_4BPP); // Escalator going down
 }
 
 static void QueueAnimTiles_Rustboro_WindyWater(u16 timer_div, u8 timer_mod)

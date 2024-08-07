@@ -54,3 +54,23 @@ Mall_PCTest::
 	call Common_EventScript_SaveGame
 	closemessage
 	end
+
+Mall_WarpToLowerFloorLeft::
+	warp MAP_MAGM9_MALL_LOWER_FLOOR, 43, 45
+	waitstate
+	end
+
+Mall_WarpToLowerFloorRight::
+	warp MAP_MAGM9_MALL_LOWER_FLOOR, 49, 45
+	waitstate
+	end
+
+Mall_WarpToMainAreaLeft::
+	warp MAP_MAGM9_MALL_MAIN_AREA, 43, 41
+	waitstate
+	end
+
+Mall_WarpToMainAreaRight::
+	warp MAP_MAGM9_MALL_MAIN_AREA, 49, 41
+	waitstate
+	end
