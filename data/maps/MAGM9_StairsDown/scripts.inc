@@ -2,7 +2,16 @@
 .set TRACKS_STAIRS,  0x4 @ Hex code for bitmask: 0000 0000 0000 1100 (only changes tracks 3 and 4, which is the stairway ambience)
 
 MAGM9_StairsDown_MapScripts::
+	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, MAGM9_StairsDown_OnWarp
 	.byte 0
+
+MAGM9_StairsDown_OnWarp::
+	map_script_2 VAR_LEVEL_LOSS_SPEED, 0, MAGM9_StairsDown_MapScripts_SetExpLossEffectAndPlayerDir
+
+MAGM9_StairsDown_MapScripts_SetExpLossEffectAndPlayerDir::
+	setvar VAR_LEVEL_LOSS_SPEED, 1
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
+	end
 
 Stairs_VolumeFade0::
 	settrackvolume TRACKS_OUTSIDE, 46*4

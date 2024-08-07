@@ -47,6 +47,7 @@
 #include "constants/items.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
+extern const u8 EventScript_InitMAGMPlayer[];
 
 static void ClearFrontierRecord(void);
 static void WarpToTruck(void);
@@ -195,6 +196,7 @@ void NewGameInitData(void)
     ResetLotteryCorner();
     WarpToTruck();
     RunScriptImmediately(EventScript_ResetAllMapFlags);
+    RunScriptImmediately(EventScript_InitMAGMPlayer);
     ResetMiniGamesRecords();
     InitUnionRoomChatRegisteredTexts();
     InitLilycoveLady();

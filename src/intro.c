@@ -23,6 +23,7 @@
 #include "sound.h"
 #include "util.h"
 #include "title_screen.h"
+#include "main_menu.h"
 #include "expansion_intro.h"
 #include "constants/rgb.h"
 #include "constants/battle_anim.h"
@@ -1149,7 +1150,7 @@ static u8 SetUpCopyrightScreen(void)
 
 void CB2_InitCopyrightScreenAfterBootup(void)
 {
-    if (!SetUpCopyrightScreen())
+    if (gMain.state == 0)
     {
         SetSaveBlocksPointers(GetSaveBlocksPointersBaseOffset());
         ResetMenuAndMonGlobals();
@@ -1160,6 +1161,7 @@ void CB2_InitCopyrightScreenAfterBootup(void)
         SetPokemonCryStereo(gSaveBlock2Ptr->optionsSound);
         InitHeap(gHeap, HEAP_SIZE);
     }
+    CB2_InitMainMenu();
 }
 
 void CB2_InitCopyrightScreenAfterTitleScreen(void)

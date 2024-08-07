@@ -621,7 +621,8 @@ static bool8 TryStartStepCountScript(u16 metatileBehavior)
             return TRUE;
         }
     #endif
-        LoseExpParty();
+        if(VarGet(VAR_LEVEL_LOSS_SPEED))
+            LoseExpParty();
 
         if (ShouldEggHatch())
         {
