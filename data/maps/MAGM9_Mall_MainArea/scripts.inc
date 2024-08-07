@@ -3,6 +3,7 @@
 MAGM9_Mall_MainArea_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, MAGM9_Mall_MainArea_MapScripts_OnResume
 	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, MAGM9_Mall_MainArea_OnWarp
+	map_script MAP_SCRIPT_ON_TRANSITION, MAGM9_Mall_MainArea_OnTransition
 	.byte 0
 
 MAGM9_Mall_MainArea_MapScripts_OnResume::
@@ -18,10 +19,11 @@ MAGM9_Mall_MainArea_MapScripts_SetInitialVars::
 	setvar VAR_ROLLING_GIANT_AI_STATE 2
 	return
 
-MAGM9_Mall_MainArea_MapScripts_HideRollingGiant:
-	return
+MAGM9_Mall_MainArea_OnTransition::
+	setflashlevel 3
+	end
 
-MAGM9_Mall_MainArea_MapScripts_HideRollingGiantTEST:
+MAGM9_Mall_MainArea_MapScripts_HideRollingGiant:
 	removeobject LOCALID_GIANT
 	return
 
