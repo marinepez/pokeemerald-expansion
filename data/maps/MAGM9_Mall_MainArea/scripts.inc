@@ -37,7 +37,7 @@ Mall_ShopsToMall::
 
 Mall_MallToShops1::
 	setmaplayoutindex LAYOUT_MAGM9_MALL_SHOPS1
-	setvar VAR_0x8004 1
+	setvar VAR_0x8004 2
 	special SetFlashlightRevealLayer
 	special DrawWholeMapView
 	releaseall
