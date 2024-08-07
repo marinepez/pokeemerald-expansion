@@ -1105,3 +1105,5 @@ EventScript_RollingGiantBattle::
 	.include "data/maps/MAGM9_Mall_Arcade/scripts.inc"
 
 	.include "data/maps/MAGM9_Mall_LowerFloor/scripts.inc"
+
+	.include "data/maps/MAGM_Mall_Shops2/scripts.inc"

@@ -754,7 +754,7 @@ static bool8 GetSpawnableTileAroundPlayer(u8 playerDir, s16 *x, s16 *y)
     return GetSpawnableTileByQuadrant((Random()%8)+1, x, y);
 }
 
-static bool8 IsGiantOnOrNearScreen(void)
+bool8 IsGiantOnOrNearScreen(void)
 {
     u16 giantId = GetObjectEventIdByLocalIdAndMap(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
     s16 gX = COORDS_TO_GRID(gObjectEvents[giantId].currentCoords.x)-MAP_OFFSET;
@@ -824,10 +824,6 @@ static bool8 GetSpawnableTileForGiant(u8 playerDir)
 bool8 StandardGiantEncounter(u8 playerDirection)
 {
     if (sWildEncountersDisabled)
-        return FALSE;
-
-    //Don't attempt to change giant location if giant is on screen
-    if(IsGiantOnOrNearScreen())
         return FALSE;
 
     if(!GetSpawnableTileForGiant(playerDirection))
