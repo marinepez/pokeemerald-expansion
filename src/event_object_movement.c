@@ -36,6 +36,9 @@
 #include "constants/songs.h"
 #include "m4a.h"
 #include "gba/m4a_internal.h"
+#include "constants/rgb.h"
+#include "constants/weather.h"
+#include "field_weather.h"
 
 // this file was known as evobjmv.c in Game Freak's original source
 
@@ -1595,7 +1598,7 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
     }
     else if (paletteSlot == PALSLOT_NPC_SPECIAL)
     {
-        LoadSpecialObjectReflectionPalette(graphicsInfo->paletteTag, paletteSlot);
+        //LoadSpecialObjectReflectionPalette(graphicsInfo->paletteTag, paletteSlot); // (AVIRCODE) Not really sure why, but this causes issues where it won't stay the correct blend when respawning, so I just removed it.
     }
     else if (paletteSlot >= 16)
     {
@@ -2200,6 +2203,10 @@ void PatchObjectPalette(u16 paletteTag, u8 paletteSlot)
     u8 paletteIndex = FindObjectEventPaletteIndexByTag(paletteTag);
 
     LoadPalette(sObjectEventSpritePalettes[paletteIndex].data, OBJ_PLTT_ID(paletteSlot), PLTT_SIZE_4BPP);
+    if(FlagGet(FLAG_USE_FOREST_PAL)) // (AVIRCODE) Applies color blend to sprites if applicable.
+        BlendUnfadedPalette(OBJ_PLTT_ID(paletteSlot), PLTT_SIZE_4BPP / 2, 7, RGB_BLUE_FOREST);
+    if(FlagGet(FLAG_GRAYSCALE))
+        TintPalette_GrayScale(&gPlttBufferUnfaded[OBJ_PLTT_ID2(paletteSlot)], 16);
 }
 
 void PatchObjectPaletteRange(const u16 *paletteTags, u8 minSlot, u8 maxSlot)

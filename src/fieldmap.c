@@ -19,6 +19,9 @@
 #include "constants/metatile_behaviors.h"
 #include "constants/event_object_movement.h"
 #include "util.h"
+#include "constants/weather.h"
+#include "field_weather.h"
+#include "event_data.h"
 
 struct ConnectionFlags
 {
@@ -921,21 +924,20 @@ void CopySecondaryTilesetToVramUsingHeap(struct MapLayout const *mapLayout)
 static void LoadPrimaryTilesetPalette(struct MapLayout const *mapLayout)
 {
     LoadTilesetPalette(mapLayout->primaryTileset, BG_PLTT_ID(0), NUM_PALS_IN_PRIMARY * PLTT_SIZE_4BPP);
-    //if(mapLayout) // (AVIRCODE) Blend the palette with the vars 
-    //{
-        //BlendPalette(0,  (NUM_PALS_IN_PRIMARY - 1) * PLTT_SIZE_4BPP, 9, RGB(8, 8, 12));
-        //BlendPalettes(PALETTES_OBJECTS, 9, RGB(8, 8, 12));
-    //}
+    if(FlagGet(FLAG_USE_FOREST_PAL)) // (AVIRCODE) Blend the palette with the vars if it's shaded.
+    {
+        BlendUnfadedPalette(1,  (NUM_PALS_IN_PRIMARY - 1) * PLTT_SIZE_4BPP - 1, 7, RGB_BLUE_FOREST);
+    }
 }
 
 void LoadSecondaryTilesetPalette(struct MapLayout const *mapLayout)
 {
     LoadTilesetPalette(mapLayout->secondaryTileset, BG_PLTT_ID(NUM_PALS_IN_PRIMARY), (NUM_PALS_TOTAL - NUM_PALS_IN_PRIMARY) * PLTT_SIZE_4BPP);
-    //if(mapLayout) // Separately handled when switching maps.
-    //{
-        //BlendPalette((96),  (7) * 16, 9, RGB(8, 8, 12));
+    if(FlagGet(FLAG_USE_FOREST_PAL))
+    {
+        BlendUnfadedPalette((96),  (7) * 16, 7, RGB_BLUE_FOREST);
         //CpuFastCopy(gPlttBufferFaded, gPlttBufferUnfaded, PLTT_SIZE); // Copy the blended palettes to the "unfaded" register
-    //}
+    }
 }
 
 void CopyMapTilesetsToVram(struct MapLayout const *mapLayout)
