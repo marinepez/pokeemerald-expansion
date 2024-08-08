@@ -379,6 +379,60 @@
       "var": "VAR_TEMP_0",
       "var_value": "0",
       "script": "Mall_ShopsToMall"
+    },
+    {
+      "type": "trigger",
+      "x": 23,
+      "y": 61,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_ShopsToMall"
+    },
+    {
+      "type": "trigger",
+      "x": 22,
+      "y": 61,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_ShopsToMall"
+    },
+    {
+      "type": "trigger",
+      "x": 21,
+      "y": 61,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_ShopsToMall"
+    },
+    {
+      "type": "trigger",
+      "x": 21,
+      "y": 60,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_MallToGroceryStore"
+    },
+    {
+      "type": "trigger",
+      "x": 22,
+      "y": 60,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_MallToGroceryStore"
+    },
+    {
+      "type": "trigger",
+      "x": 23,
+      "y": 60,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_MallToGroceryStore"
     }
   ],
   "bg_events": [
