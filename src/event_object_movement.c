@@ -71,8 +71,10 @@ void setup(struct Sprite *sprite)\
 }\
 static u8 setup##_callback(struct ObjectEvent *objectEvent, struct Sprite *sprite)\
 {\
+    if(objectEvent->movementType == MOVEMENT_TYPE_CHASE && IsSpecialSEPlaying())\
+        panRollingGiantSounds(objectEvent);\
     return table[sprite->sTypeFuncId](objectEvent, sprite);\
-}
+} // (AVIRCODE) Made the "panRollingGiantSounds" command run every frame. This is just because there was issues with the previous method where the sound sometimes wouldn't start panned.
 
 #define movement_type_empty_callback(setup) \
 static u8 setup##_callback(struct ObjectEvent *, struct Sprite *);\
@@ -182,7 +184,6 @@ static void CreateLevitateMovementTask(struct ObjectEvent *);
 static void DestroyLevitateMovementTask(u8);
 static bool8 NpcTakeStep(struct ObjectEvent *, struct Sprite *);
 static bool8 IsElevationMismatchAt(u8, s16, s16);
-static void panRollingGiantSounds(struct ObjectEvent *objectEvent);
 
 static const struct SpriteFrameImage sPicTable_PechaBerryTree[];
 
@@ -5153,7 +5154,7 @@ void fadeOutRollingGiantSound(void)
         m4aMPlayFadeOut(&gMPlayInfo_SE3, 1);
 }
 
-static void panRollingGiantSounds(struct ObjectEvent *objectEvent)
+void panRollingGiantSounds(struct ObjectEvent *objectEvent)
 {
     u16 distance;
     u16 distanceX;
@@ -5201,7 +5202,6 @@ bool8 MovementType_Chase_Step5(struct ObjectEvent *objectEvent, struct Sprite *s
         if(!IsSpecialSEPlaying())
             PlaySE(SE_ROLLING); // (AVIRCODE) The sound actually uses "SE3", which is only used for rain sound effects, meaning it can't be overwritten by stuff. Perfect for this!
     }
-    panRollingGiantSounds(objectEvent);
     if(sprite->sPrevSpeed < 2) // This is a workaround for the rolling sound as for some reason, it doesn't stop/play properly without an sPrevSpeed check (or that's the best way I've found to do it.) This adds two frames before it starts moving as it also needs the buffer or else it would stop when it turns.
     {
         //sprite->sTypeFuncId = 5;
