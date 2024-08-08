@@ -3707,6 +3707,7 @@ static void DoBattleIntro(void)
         }
         break;
     case 2: // Start graphical intro slide.
+        PlaySE(SE_SOUND_END); // (AVIRCODE) Fixes a weird bug where SE3 plays a sound sometimes when exiting battle
         PlayBGM(GetBattleBGM()); // (AVIRCODE) Start battle music here once the battle screen is loaded
         if (!gBattleControllerExecFlags)
         {

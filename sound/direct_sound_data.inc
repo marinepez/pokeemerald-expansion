@@ -6445,3 +6445,11 @@ DirectSoundWaveData_giant_catch::
 	.align 2
 DirectSoundWaveData_giant_battle_1::
 	.incbin "sound/direct_sound_samples/streamed/giant_battle_1.bin"
+
+	.align 2
+DirectSoundWaveData_ambience_forest::
+	.incbin "sound/direct_sound_samples/streamed/ambience_forest.bin"
+
+	.align 2
+DirectSoundWaveData_reset::
+	.incbin "sound/direct_sound_samples/streamed/reset.bin"

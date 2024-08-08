@@ -4530,6 +4530,26 @@
       "secondary_tileset": "gTileset_MossdeepGym",
       "border_filepath": "data/layouts/MAGM9_Mall_Restaurants/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_Mall_Restaurants/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_STAIRS_COLLAPSED",
+      "name": "MAGM9_StairsCollapsed_Layout",
+      "width": 9,
+      "height": 7,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_MirageTower",
+      "border_filepath": "data/layouts/MAGM9_StairsCollapsed/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_StairsCollapsed/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_GAME_OVER",
+      "name": "MAGM9_GameOver_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Unused1",
+      "border_filepath": "data/layouts/MAGM9_GameOver/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_GameOver/map.bin"
     }
   ]
 }

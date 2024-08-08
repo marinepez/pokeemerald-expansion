@@ -8363,7 +8363,7 @@ static void GetGroundEffectFlags_TallGrassOnSpawn(struct ObjectEvent *objEvent, 
 
 static void GetGroundEffectFlags_TallGrassOnBeginStep(struct ObjectEvent *objEvent, u32 *flags)
 {
-    if (MetatileBehavior_IsTallGrass(objEvent->currentMetatileBehavior))
+    if (MetatileBehavior_IsTallGrass(objEvent->currentMetatileBehavior && !(objEvent->invisible))) // (AVIRCODE) Invisible objects don't trail over tall grass. This is literally just for moving the camera in the "game over" animation as moving the camera object didn't work out.
         *flags |= GROUND_EFFECT_FLAG_TALL_GRASS_ON_MOVE;
 }
 

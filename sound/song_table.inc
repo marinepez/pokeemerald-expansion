@@ -274,8 +274,8 @@ gSongTable::
 	song se_wall_hit_reverb, 1, 1
 	song se_rolling, 3, 3
 	song se_giant_catch, 3, 3
+	song se_reset, 1, 1
 	song se_sound_end, 3, 3
-	song dummy_song_header, 0, 0
 	song dummy_song_header, 0, 0
 	song dummy_song_header, 0, 0
 	song dummy_song_header, 0, 0
@@ -448,7 +448,7 @@ gSongTable::
 	song mus_mall, 0, 0
 	song mus_mall_dark, 0, 0
 	song mus_giant_battle_1, 0, 0
-	song mus_hall_of_fame_room, 0, 0
+	song mus_forest, 0, 0
 	song mus_trick_house, 0, 0
 	song mus_encounter_twins, 0, 0
 	song mus_encounter_elite_four, 0, 0

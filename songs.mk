@@ -132,9 +132,6 @@ $(MID_SUBDIR)/mus_route101.s: %.s: %.mid
 $(MID_SUBDIR)/mus_dummy.s: %.s: %.mid
 	$(MID) $< $@ -E -R40
 
-$(MID_SUBDIR)/mus_hall_of_fame_room.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -G093 -V080
-
 $(MID_SUBDIR)/mus_end.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G102 -V036
 

@@ -33,7 +33,7 @@
       "x": 46,
       "y": 1,
       "elevation": 0,
-      "dest_map": "MAP_MAGM9_STAIRS_SIDE",
+      "dest_map": "MAP_MAGM9_STAIRS_COLLAPSED",
       "dest_warp_id": "0"
     }
   ],

@@ -1111,3 +1111,7 @@ EventScript_RollingGiantBattle::
 	.include "data/maps/MAGM9_Mall_Dojo/scripts.inc"
 
 	.include "data/maps/MAGM9_Mall_Restaurants/scripts.inc"
+
+	.include "data/maps/MAGM9_StairsCollapsed/scripts.inc"
+
+	.include "data/maps/MAGM9_GameOver/scripts.inc"
