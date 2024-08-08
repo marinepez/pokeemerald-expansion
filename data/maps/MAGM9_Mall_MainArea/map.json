@@ -433,6 +433,42 @@
       "var": "VAR_TEMP_0",
       "var_value": "0",
       "script": "Mall_MallToGroceryStore"
+    },
+    {
+      "type": "trigger",
+      "x": 37,
+      "y": 73,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_ShopsToMall"
+    },
+    {
+      "type": "trigger",
+      "x": 37,
+      "y": 74,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_ShopsToMall"
+    },
+    {
+      "type": "trigger",
+      "x": 36,
+      "y": 73,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_MallToDojo"
+    },
+    {
+      "type": "trigger",
+      "x": 36,
+      "y": 74,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "Mall_MallToDojo"
     }
   ],
   "bg_events": [

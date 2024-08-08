@@ -59,6 +59,14 @@ Mall_MallToGroceryStore::
 	releaseall
 	end
 
+Mall_MallToDojo::
+	setmaplayoutindex LAYOUT_MAGM9_MALL_DOJO
+	setvar VAR_0x8004 2
+	special SetFlashlightRevealLayer
+	special DrawWholeMapView
+	releaseall
+	end
+
 Mall_PCTest::
 	lock
 	call Common_EventScript_SaveGame

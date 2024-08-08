@@ -4510,6 +4510,16 @@
       "secondary_tileset": "gTileset_Shop",
       "border_filepath": "data/layouts/MAGM_Mall_Shops2/border.bin",
       "blockdata_filepath": "data/layouts/MAGM_Mall_Shops2/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_MALL_DOJO",
+      "name": "MAGM9_Mall_Dojo_Layout",
+      "width": 90,
+      "height": 83,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_BattleArena",
+      "border_filepath": "data/layouts/MAGM9_Mall_Dojo/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_Mall_Dojo/map.bin"
     }
   ]
 }

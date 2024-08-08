@@ -437,7 +437,8 @@
     "MAGM9_Mall_Decayed",
     "MAGM9_Mall_Arcade",
     "MAGM9_Mall_LowerFloor",
-    "MAGM_Mall_Shops2"
+    "MAGM_Mall_Shops2",
+    "MAGM9_Mall_Dojo"
   ],
   "gMapGroup_IndoorDynamic": [
     "SecretBase_RedCave1",
