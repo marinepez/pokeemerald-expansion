@@ -438,7 +438,8 @@
     "MAGM9_Mall_Arcade",
     "MAGM9_Mall_LowerFloor",
     "MAGM_Mall_Shops2",
-    "MAGM9_Mall_Dojo"
+    "MAGM9_Mall_Dojo",
+    "MAGM9_Mall_Restaurants"
   ],
   "gMapGroup_IndoorDynamic": [
     "SecretBase_RedCave1",
