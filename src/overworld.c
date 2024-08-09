@@ -704,9 +704,7 @@ void SetWarpDestinationToHealLocation(u8 healLocationId)
 
 void SetWarpDestinationToLastHealLocation(void)
 {
-    sWarpDestination.mapGroup = 24;
-    sWarpDestination.mapNum = 117;
-    sWarpDestination.warpId = 0;
+    SetWarpDestination(MAP_GROUP(MAGM9_GAME_OVER), MAP_NUM(MAGM9_GAME_OVER), WARP_ID_NONE, -1, -1);
     //sWarpDestination = gSaveBlock1Ptr->lastHealLocation; // (AVIRCODE) Now leads to the "game over" map.
 }
 
