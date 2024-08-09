@@ -18,7 +18,7 @@ MAGM9_GameOver_OnFrame:
 	.2byte 0
 
 MAGM9_GameOver_Setup::
-	setobjectxy OBJ_EVENT_ID_PLAYER, 10, 11
+	setobjectxy OBJ_EVENT_ID_PLAYER, 10, 12
 	hideobjectat OBJ_EVENT_ID_PLAYER, 0
 	end
 
@@ -26,7 +26,7 @@ MAGM9_GameOver::
 	lockall
 	delay 340
 	applymovement 0xFF, MAGM9_GameOver_CameraPan
-	delay 100
+	delay 80
 	setvar VAR_0x8004, 4  @ vertical pan
 	setvar VAR_0x8005, 4  @ horizontal pan
 	setvar VAR_0x8006, 255  @ num shakes

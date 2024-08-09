@@ -4545,7 +4545,7 @@
       "id": "LAYOUT_MAGM9_GAME_OVER",
       "name": "MAGM9_GameOver_Layout",
       "width": 20,
-      "height": 20,
+      "height": 21,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Unused1",
       "border_filepath": "data/layouts/MAGM9_GameOver/border.bin",

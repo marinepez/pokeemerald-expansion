@@ -17,7 +17,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_BRENDAN_SURFING",
       "x": 10,
-      "y": 12,
+      "y": 13,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
       "movement_range_x": 0,
@@ -31,7 +31,7 @@
   "warp_events": [
     {
       "x": 10,
-      "y": 11,
+      "y": 12,
       "elevation": 0,
       "dest_map": "MAP_MAGM9_GAME_OVER",
       "dest_warp_id": "0"
