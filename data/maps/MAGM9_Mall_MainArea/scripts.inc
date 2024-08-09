@@ -7,7 +7,7 @@ MAGM9_Mall_MainArea_MapScripts::
 	.byte 0
 
 MAGM9_Mall_MainArea_MapScripts_OnResume::
-	goto_if_set FLAG_SYS_CTRL_OBJ_DELETE, MAGM9_Mall_MainArea_MapScripts_HideRollingGiant
+	call_if_set FLAG_SYS_CTRL_OBJ_DELETE, MAGM9_Mall_MainArea_MapScripts_HideRollingGiant
 	return
 
 MAGM9_Mall_MainArea_OnWarp::
@@ -29,7 +29,7 @@ MAGM9_Mall_MainArea_MapScripts_HideRollingGiant:
 
 Mall_ShopsToMall::
 	setmaplayoutindex LAYOUT_MAGM9_MALL_MAIN_AREA
-	setvar VAR_0x8004 4
+	setvar VAR_FLASH_LAYER 4
 	special SetFlashlightRevealLayer
 	special DrawWholeMapView
 	releaseall
@@ -37,7 +37,7 @@ Mall_ShopsToMall::
 
 Mall_MallToShops1::
 	setmaplayoutindex LAYOUT_MAGM9_MALL_SHOPS1
-	setvar VAR_0x8004 2
+	setvar VAR_FLASH_LAYER 2
 	special SetFlashlightRevealLayer
 	special DrawWholeMapView
 	releaseall
@@ -45,7 +45,7 @@ Mall_MallToShops1::
 
 Mall_MallToArcade::
 	setmaplayoutindex LAYOUT_MAGM9_MALL_ARCADE
-	setvar VAR_0x8004 2
+	setvar VAR_FLASH_LAYER 2
 	special SetFlashlightRevealLayer
 	special DrawWholeMapView
 	releaseall
@@ -53,7 +53,7 @@ Mall_MallToArcade::
 
 Mall_MallToGroceryStore::
 	setmaplayoutindex LAYOUT_MAGM_MALL_SHOPS2
-	setvar VAR_0x8004 2
+	setvar VAR_FLASH_LAYER 2
 	special SetFlashlightRevealLayer
 	special DrawWholeMapView
 	releaseall
@@ -61,7 +61,15 @@ Mall_MallToGroceryStore::
 
 Mall_MallToDojo::
 	setmaplayoutindex LAYOUT_MAGM9_MALL_DOJO
-	setvar VAR_0x8004 2
+	setvar VAR_FLASH_LAYER 2
+	special SetFlashlightRevealLayer
+	special DrawWholeMapView
+	releaseall
+	end
+
+Mall_MallToRestaurants::
+	setmaplayoutindex LAYOUT_MAGM9_MALL_RESTAURANTS
+	setvar VAR_FLASH_LAYER 2
 	special SetFlashlightRevealLayer
 	special DrawWholeMapView
 	releaseall
