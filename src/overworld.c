@@ -866,9 +866,9 @@ if (I_VS_SEEKER_CHARGING != 0)
     ResetFieldTasksArgs();
     RunOnResumeMapScript();
 
-    if (gMapHeader.regionMapSectionId != MAPSEC_BATTLE_FRONTIER
-     || gMapHeader.regionMapSectionId != sLastMapSectionId)
-        ShowMapNamePopup();
+//    if (gMapHeader.regionMapSectionId != MAPSEC_BATTLE_FRONTIER
+//     || gMapHeader.regionMapSectionId != sLastMapSectionId)
+        //ShowMapNamePopup();
 }
 
 static void LoadMapFromWarp(bool32 a1)
@@ -1782,8 +1782,8 @@ void CB2_ReturnToFieldFadeFromBlack(void)
 
 static void FieldCB_FadeTryShowMapPopup(void)
 {
-    if (gMapHeader.showMapName == TRUE && SecretBaseMapPopupEnabled() == TRUE)
-        ShowMapNamePopup();
+    //if (gMapHeader.showMapName == TRUE && SecretBaseMapPopupEnabled() == TRUE)
+        //ShowMapNamePopup();
     FieldCB_WarpExitFadeFromBlack();
 }
 
@@ -2057,8 +2057,8 @@ static bool32 LoadMapInStepsLocal(u8 *state, bool32 a2)
         (*state)++;
         break;
     case 11:
-        if (gMapHeader.showMapName == TRUE && SecretBaseMapPopupEnabled() == TRUE)
-            ShowMapNamePopup();
+        //if (gMapHeader.showMapName == TRUE && SecretBaseMapPopupEnabled() == TRUE)
+            //ShowMapNamePopup();
         (*state)++;
         break;
     case 12:
