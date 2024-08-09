@@ -1078,7 +1078,7 @@ void AnimateFlash(u8 newFlashLevel)
 
 void WriteFlashScanlineEffectBuffer(u8 flashLevel)
 {
-    if (flashLevel)
+    if (flashLevel < 8)
     {
         SetFlashScanlineEffectWindowBoundaries(&gScanlineEffectRegBuffers[0][0], DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, sFlashLevelToRadius[flashLevel]); // (AVIRCODE) Flash can now be transparent
         CpuFastSet(&gScanlineEffectRegBuffers[0], &gScanlineEffectRegBuffers[1], 480);

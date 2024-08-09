@@ -158,5 +158,6 @@ void ClearLinkPlayerObjectEvents(void);
 void InitMapView(void);
 void InitMapViewAfterCrossingMap(void);
 void SetFlashlightRevealLayer(void);
+void UpdateFlashScanlines(void);
 
 #endif // GUARD_OVERWORLD_H

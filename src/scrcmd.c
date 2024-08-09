@@ -53,6 +53,7 @@
 #include "constants/event_objects.h"
 #include "m4a.h"
 #include "gba/m4a_internal.h"
+#include "scanline_effect.h"
 
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(struct ScriptContext *ctx);
@@ -1792,6 +1793,14 @@ bool8 ScrCmd_settrackvolume(struct ScriptContext *ctx)
     u16 volume = ScriptReadHalfword(ctx);
 
     m4aMPlayMasterVolumeControl(&gMPlayInfo_BGM, trackId, volume);
+    return FALSE;
+}
+
+bool8 ScrCmd_setflashalpha(struct ScriptContext *ctx)
+{
+    u8 alpha = ScriptReadByte(ctx);
+
+    gSaveBlock1Ptr->flashAlpha = alpha;
     return FALSE;
 }
 

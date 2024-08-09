@@ -1602,9 +1602,9 @@
 	.endm
 
 	@ Used only in FireRed/LeafGreen, does nothing in Emerald.
-	.macro loadhelp text:req
+	.macro setflashalpha alpha:req
 	.byte 0xc8
-	.4byte \text
+	.byte \alpha
 	.endm
 
 	@ Used only in FireRed/LeafGreen, does nothing in Emerald.

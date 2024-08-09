@@ -171,6 +171,7 @@ static void TransitionMapMusic(void);
 static u8 GetAdjustedInitialTransitionFlags(struct InitialPlayerAvatarState *, u16, u8);
 static u8 GetAdjustedInitialDirection(struct InitialPlayerAvatarState *, u8, u16, u8);
 static u16 GetCenterScreenMetatileBehavior(void);
+static void InitCurrentFlashLevelScanlineEffect(void);
 
 static void *sUnusedOverworldCallback;
 static u8 sPlayerLinkStates[MAX_LINK_PLAYERS];
@@ -704,7 +705,7 @@ void SetWarpDestinationToHealLocation(u8 healLocationId)
 
 void SetWarpDestinationToLastHealLocation(void)
 {
-    SetWarpDestination(MAP_GROUP(MAGM9_GAME_OVER), MAP_NUM(MAGM9_GAME_OVER), WARP_ID_NONE, -1, -1);
+    SetWarpDestination(MAP_GROUP(MAGM9_GAME_OVER), MAP_NUM(MAGM9_GAME_OVER), 0, -1, -1);
     //sWarpDestination = gSaveBlock1Ptr->lastHealLocation; // (AVIRCODE) Now leads to the "game over" map.
 }
 
@@ -1876,6 +1877,10 @@ static void VBlankCB_Field(void)
     TransferTilesetAnimsBuffer();
 }
 
+void UpdateFlashScanlines(void)
+{
+    u8 flashLevel = GetFlashLevel();
+    if(flashLevel == 0 || flashLevel > 7)
 static void InitCurrentFlashLevelScanlineEffect(void)
 {
     u8 flashLevel;
@@ -1886,8 +1891,8 @@ static void InitCurrentFlashLevelScanlineEffect(void)
         ScanlineEffect_SetParams(sFlashEffectParams);
     }
     else if ((flashLevel = GetFlashLevel()))
+    else if ((flashLevel = GetFlashLevel())) // (AVIRCODE) Flash stuff
     {
-        WriteFlashScanlineEffectBuffer(flashLevel);
         SetGpuReg(REG_OFFSET_WININ, (WININ_WIN1_BG_ALL | WININ_WIN1_OBJ) | (WININ_WIN0_BG_ALL | WININ_WIN0_OBJ));
         SetGpuReg(REG_OFFSET_WINOUT, (WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR)); // where the main tiles are so the window hides whats behind it
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3 | BLDCNT_TGT1_OBJ);   // Set Darken Effect on things not in the window on bg 0, 1, and sprite layer
