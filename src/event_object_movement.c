@@ -1599,7 +1599,7 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
     }
     else if (paletteSlot == PALSLOT_NPC_SPECIAL)
     {
-        //LoadSpecialObjectReflectionPalette(graphicsInfo->paletteTag, paletteSlot); // (AVIRCODE) Not really sure why, but this causes issues where it won't stay the correct blend when respawning, so I just removed it.
+        LoadSpecialObjectReflectionPalette(graphicsInfo->paletteTag, paletteSlot);
     }
     else if (paletteSlot >= 16)
     {

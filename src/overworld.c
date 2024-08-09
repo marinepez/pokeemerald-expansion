@@ -1889,9 +1889,9 @@ static void InitCurrentFlashLevelScanlineEffect(void)
     {
         WriteFlashScanlineEffectBuffer(flashLevel);
         SetGpuReg(REG_OFFSET_WININ, (WININ_WIN1_BG_ALL | WININ_WIN1_OBJ) | (WININ_WIN0_BG_ALL | WININ_WIN0_OBJ));
-        SetGpuReg(REG_OFFSET_WINOUT, (WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR)); // where the main tiles are so the window hides whats behind it
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3 | BLDCNT_TGT1_OBJ);   // Set Darken Effect on things not in the window on bg 0, 1, and sprite layer
         SetGpuReg(REG_OFFSET_BLDY, 14);  // Set Level of Darken effect, can be changed 0-16
+        SetFlashlightRevealLayer();
         ScanlineEffect_SetParams(sFlashEffectParams);
     }
 }
@@ -1900,7 +1900,7 @@ void SetFlashlightRevealLayer(void)
 {
     if (GetFlashLevel())
     {
-        switch(gSpecialVar_0x8004)
+        switch(VarGet(VAR_FLASH_LAYER))
         {
             case 0:
                 SetGpuReg(REG_OFFSET_WINOUT, ((WINOUT_WIN01_BG1 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3) | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR));
