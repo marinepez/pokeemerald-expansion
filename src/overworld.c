@@ -1881,6 +1881,15 @@ void UpdateFlashScanlines(void)
 {
     u8 flashLevel = GetFlashLevel();
     if(flashLevel == 0 || flashLevel > 7)
+    {
+        ScanlineEffect_Clear();
+        ScanlineEffect_Stop();
+        InitCurrentFlashLevelScanlineEffect();
+    }
+    // (AVIRCODE) Basically removes the flashlight by lowering the scanline radius to zero manually.
+    InitCurrentFlashLevelScanlineEffect(); 
+}
+
 static void InitCurrentFlashLevelScanlineEffect(void)
 {
     u8 flashLevel;
@@ -1890,13 +1899,16 @@ static void InitCurrentFlashLevelScanlineEffect(void)
         WriteBattlePyramidViewScanlineEffectBuffer();
         ScanlineEffect_SetParams(sFlashEffectParams);
     }
-    else if ((flashLevel = GetFlashLevel()))
     else if ((flashLevel = GetFlashLevel())) // (AVIRCODE) Flash stuff
     {
+        if(flashLevel < 8)
+            WriteFlashScanlineEffectBuffer(flashLevel);
         SetGpuReg(REG_OFFSET_WININ, (WININ_WIN1_BG_ALL | WININ_WIN1_OBJ) | (WININ_WIN0_BG_ALL | WININ_WIN0_OBJ));
         SetGpuReg(REG_OFFSET_WINOUT, (WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR)); // where the main tiles are so the window hides whats behind it
+        
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3 | BLDCNT_TGT1_OBJ);   // Set Darken Effect on things not in the window on bg 0, 1, and sprite layer
-        SetGpuReg(REG_OFFSET_BLDY, 14);  // Set Level of Darken effect, can be changed 0-16
+        
+        SetGpuReg(REG_OFFSET_BLDY, gSaveBlock1Ptr->flashAlpha);  // Set Level of Darken effect, can be changed 0-16
         ScanlineEffect_SetParams(sFlashEffectParams);
     }
 }
