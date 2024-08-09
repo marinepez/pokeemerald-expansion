@@ -9255,11 +9255,7 @@ static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite
             switch(dir)
             {
                 case DIR_EAST:
-                case DIR_SOUTHEAST:
-                case DIR_NORTHEAST:
                 case DIR_WEST:
-                case DIR_SOUTHWEST:
-                case DIR_NORTHWEST:
                     objectEvent->currentCoords.y += x;
                     break;
             }

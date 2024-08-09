@@ -4534,8 +4534,8 @@
     {
       "id": "LAYOUT_MAGM9_STAIRS_COLLAPSED",
       "name": "MAGM9_StairsCollapsed_Layout",
-      "width": 9,
-      "height": 7,
+      "width": 10,
+      "height": 10,
       "primary_tileset": "gTileset_Building",
       "secondary_tileset": "gTileset_MirageTower",
       "border_filepath": "data/layouts/MAGM9_StairsCollapsed/border.bin",

@@ -833,6 +833,22 @@ u8 SensePlayerAvatarCollision(u8 direction, u8 (*checkCollisionFunction)(struct 
 //    testX = playerObjEvent->currentCoords.x;
 //    testY = playerObjEvent->currentCoords.y;
 
+    //Disallow certain movement actions on stairs
+    if(MetatileBehavior_IsStairsRight(ObjectEventGetMetatileBehaviorAt(checkX[0], checkY[0])))
+    {
+        switch(direction)
+        {
+            case DIR_NORTH:
+            case DIR_SOUTH:
+            case DIR_SOUTHEAST:
+            case DIR_NORTHEAST:
+            case DIR_SOUTHWEST:
+            case DIR_NORTHWEST:
+                return COLLISION_IMPASSABLE;
+        }
+    }
+
+
     IncrementObjectEventCoords(direction, &checkX[0], &checkY[0]);
 
     switch (direction)
