@@ -1599,7 +1599,7 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
     }
     else if (paletteSlot == PALSLOT_NPC_SPECIAL)
     {
-        //LoadSpecialObjectReflectionPalette(graphicsInfo->paletteTag, paletteSlot); // (AVIRCODE) Not really sure why, but this causes issues where it won't stay the correct blend when respawning, so I just removed it.
+        //LoadSpecialObjectReflectionPalette(graphicsInfo->paletteTag, paletteSlot); // (AVIRCODE) I disabled this as it causes the bug mentioned prior where the blended palette will reset after battle.
     }
     else if (paletteSlot >= 16)
     {
@@ -1782,7 +1782,9 @@ u8 CreateVirtualObject(u8 graphicsId, u8 virtualObjId, s16 x, s16 y, u8 elevatio
         sprite->sVirtualObjId = virtualObjId;
         sprite->sVirtualObjElev = elevation;
         if (graphicsInfo->paletteSlot == PALSLOT_NPC_SPECIAL)
-            LoadSpecialObjectReflectionPalette(graphicsInfo->paletteTag, graphicsInfo->paletteSlot);
+        {
+            //LoadSpecialObjectReflectionPalette(graphicsInfo->paletteTag, graphicsInfo->paletteSlot);
+        }
         else if (graphicsInfo->paletteSlot >= 16)
             _PatchObjectPalette(graphicsInfo->paletteTag, graphicsInfo->paletteSlot | 0xf0);
 
@@ -1881,6 +1883,7 @@ void SpawnObjectEventsOnReturnToField(void)
             SpawnObjectEventOnReturnToField(i);
     }
     CreateReflectionEffectSprites();
+    LoadSpecialObjectReflectionPalette(OBJ_EVENT_PAL_TAG_POOCHYENA, 0xA); // (AVIRCODE) Honestly, I could not figure out how the hell to fix this. Basically the giant's sprite would revert its palette and *not* blend after being spawned. So the best I can do is just load it on map load/object initialization.
 }
 
 static void SpawnObjectEventOnReturnToField(u8 objectEventId)
@@ -1915,7 +1918,7 @@ static void SpawnObjectEventOnReturnToField(u8 objectEventId)
     }
     else if (paletteSlot == PALSLOT_NPC_SPECIAL)
     {
-        LoadSpecialObjectReflectionPalette(graphicsInfo->paletteTag, graphicsInfo->paletteSlot);
+    //    LoadSpecialObjectReflectionPalette(graphicsInfo->paletteTag, graphicsInfo->paletteSlot);
     }
     else if (paletteSlot >= 16)
     {
@@ -1990,7 +1993,7 @@ void ObjectEventSetGraphicsId(struct ObjectEvent *objectEvent, u8 graphicsId)
     }
     else if (paletteSlot == PALSLOT_NPC_SPECIAL)
     {
-        LoadSpecialObjectReflectionPalette(graphicsInfo->paletteTag, graphicsInfo->paletteSlot);
+    //    LoadSpecialObjectReflectionPalette(graphicsInfo->paletteTag, graphicsInfo->paletteSlot);
     }
     else if (paletteSlot >= 16)
     {
