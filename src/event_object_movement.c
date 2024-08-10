@@ -9255,6 +9255,13 @@ static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite
         //Evaluate stair interactions here
         if(MetatileBehavior_IsStairsRight(ObjectEventGetMetatileBehaviorAt(objectEvent->currentCoords.x, objectEvent->currentCoords.y)))
         {
+            if(!FlagGet(FLAG_TEMP_1F)) // (AVIRCODE) Snaps the Y coordinate upon entering the stairs. It currently uses up FLAG_TEMP_1F, but I doubt we'll go as far as to use that anyway.
+            {
+                objectEvent->currentCoords.y /= 256;
+                objectEvent->currentCoords.y *= 256;
+                objectEvent->currentCoords.y += 48;
+                FlagSet(FLAG_TEMP_1F);
+            }
             switch(dir)
             {
                 case DIR_EAST:
@@ -9262,6 +9269,10 @@ static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite
                     objectEvent->currentCoords.y += x;
                     break;
             }
+        }
+        else
+        {
+            FlagClear(FLAG_TEMP_1F);
         }
 
         //Evaluate collisions here
