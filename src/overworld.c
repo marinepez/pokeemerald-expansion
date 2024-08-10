@@ -2306,6 +2306,9 @@ static void InitObjectEventsLocal(void)
     TryRunOnWarpIntoMapScript();
     ObjectEventUpdateElevation(&gObjectEvents[gPlayerAvatar.objectEventId]);
     UpdatePlayerAvatarTileInfo();
+
+    LoadSpecialObjectReflectionPalette(0x111C, 0xA); // (AVIRCODE) Loads the giant palette when the objects are initiated to avoid bugs. 0x111C is undefined, but it's Poochyena's palette (actually the giant's), and 0xA is palette slot 10.
+
 }
 
 static void InitObjectEventsReturnToField(void)
