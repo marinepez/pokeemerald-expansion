@@ -1880,13 +1880,13 @@ static void VBlankCB_Field(void)
 void UpdateFlashScanlines(void)
 {
     u8 flashLevel = GetFlashLevel();
-    if(flashLevel == 0 || flashLevel > 7)
+    if(flashLevel == 0 || flashLevel > 7) // (AVIRCODE) Basically removes the flashlight by lowering the scanline radius to zero manually.
     {
         ScanlineEffect_Clear();
         ScanlineEffect_Stop();
-        InitCurrentFlashLevelScanlineEffect();
+        if(flashLevel == 0)
+            SetGpuReg(REG_OFFSET_BLDY, 0); // Extra command for if the flash level is equal to zero since it wouldn't trigger in InitCurrentFlashLevelScanlineEffect();
     }
-    // (AVIRCODE) Basically removes the flashlight by lowering the scanline radius to zero manually.
     InitCurrentFlashLevelScanlineEffect(); 
 }
 
