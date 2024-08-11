@@ -760,7 +760,7 @@ u8 BattleSetup_GetTerrainId(void)
             return BATTLE_TERRAIN_BUILDING;
         if (MetatileBehavior_IsSurfableWaterOrUnderwater(tileBehavior))
             return BATTLE_TERRAIN_POND;
-        return BATTLE_TERRAIN_CAVE;
+        return BATTLE_TERRAIN_BUILDING; // (AVIRCODE) Made it load this instead of the cave one. Just was easier to deal with.
     case MAP_TYPE_INDOOR:
     case MAP_TYPE_SECRET_BASE:
         return BATTLE_TERRAIN_BUILDING;
