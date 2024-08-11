@@ -1917,9 +1917,6 @@ void SetFlashlightRevealLayer(void)
     {
         switch(VarGet(VAR_FLASH_LAYER))
         {
-            case 0:
-                SetGpuReg(REG_OFFSET_WINOUT, ((WINOUT_WIN01_BG1 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3) | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR));
-                return;
             case 1:
                 SetGpuReg(REG_OFFSET_WINOUT, ((WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3) | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR));
                 return;
