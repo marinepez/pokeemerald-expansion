@@ -4550,6 +4550,26 @@
       "secondary_tileset": "gTileset_Unused1",
       "border_filepath": "data/layouts/MAGM9_GameOver/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_GameOver/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_MALL_MAINTENANCE",
+      "name": "MAGM9_Mall_Maintenance_Layout",
+      "width": 40,
+      "height": 37,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_Unused1",
+      "border_filepath": "data/layouts/MAGM9_Mall_Maintenance/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_Mall_Maintenance/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_MALL_TOP_FLOOR",
+      "name": "MAGM9_Mall_TopFloor_Layout",
+      "width": 90,
+      "height": 83,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_Unused1",
+      "border_filepath": "data/layouts/MAGM9_Mall_TopFloor/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_Mall_TopFloor/map.bin"
     }
   ]
 }

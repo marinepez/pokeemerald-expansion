@@ -441,7 +441,9 @@
     "MAGM9_Mall_Dojo",
     "MAGM9_Mall_Restaurants",
     "MAGM9_StairsCollapsed",
-    "MAGM9_GameOver"
+    "MAGM9_GameOver",
+    "MAGM9_Mall_Maintenance",
+    "MAGM9_Mall_TopFloor"
   ],
   "gMapGroup_IndoorDynamic": [
     "SecretBase_RedCave1",

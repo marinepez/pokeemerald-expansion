@@ -412,6 +412,8 @@
 #define MAP_MAGM9_MALL_RESTAURANTS                   (117 | (24 << 8))
 #define MAP_MAGM9_STAIRS_COLLAPSED                   (118 | (24 << 8))
 #define MAP_MAGM9_GAME_OVER                          (119 | (24 << 8))
+#define MAP_MAGM9_MALL_MAINTENANCE                   (120 | (24 << 8))
+#define MAP_MAGM9_MALL_TOP_FLOOR                     (121 | (24 << 8))
 
 // gMapGroup_IndoorDynamic
 #define MAP_SECRET_BASE_RED_CAVE1    (0 | (25 << 8))

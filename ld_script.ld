@@ -1100,7 +1100,7 @@ SECTIONS {
         sound/songs/midi/mus_mall_dark.o(.rodata);
         sound/songs/midi/mus_giant_battle_1.o(.rodata);
         sound/songs/midi/mus_forest.o(.rodata);
-        sound/songs/midi/mus_trick_house.o(.rodata);
+        sound/songs/midi/mus_end_of_a_giant.o(.rodata);
         sound/songs/midi/mus_encounter_twins.o(.rodata);
         sound/songs/midi/mus_encounter_elite_four.o(.rodata);
         sound/songs/midi/mus_encounter_hiker.o(.rodata);

@@ -1,2 +1,5 @@
 MAGM9_Mall_LowerFloor_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, MAGM9_Mall_MainArea_MapScripts_OnResume
+	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, MAGM9_Mall_MainArea_OnWarp
+	map_script MAP_SCRIPT_ON_TRANSITION, MAGM9_Mall_MainArea_OnTransition
 	.byte 0

@@ -6453,3 +6453,11 @@ DirectSoundWaveData_ambience_forest::
 	.align 2
 DirectSoundWaveData_reset::
 	.incbin "sound/direct_sound_samples/streamed/reset.bin"
+
+	.align 2
+DirectSoundWaveData_mall_final::
+	.incbin "sound/direct_sound_samples/streamed/mall_final.bin"
+
+	.align 2
+DirectSoundWaveData_power_on::
+	.incbin "sound/direct_sound_samples/streamed/power_on.bin"
