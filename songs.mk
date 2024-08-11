@@ -210,9 +210,6 @@ $(MID_SUBDIR)/mus_caught.s: %.s: %.mid
 $(MID_SUBDIR)/mus_encounter_cool.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G063 -V086
 
-$(MID_SUBDIR)/mus_trick_house.s: %.s: %.mid
-	$(MID) $< $@ -E -R$(STD_REVERB) -G094 -V070
-
 $(MID_SUBDIR)/mus_route113.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G064 -V084
 

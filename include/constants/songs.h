@@ -280,7 +280,8 @@
 #define SE_ROLLING                  271
 #define SE_GIANT_CATCH              272
 #define SE_RESET                    273
-#define SE_SOUND_END                274 // Dummy song used to end rolling sounds.
+#define SE_POWER_ON                 274
+#define SE_SOUND_END                275 // Dummy song used to end rolling sounds.
 #define END_SE                      SE_SOUND_END
 
 // Music
@@ -383,7 +384,7 @@
 #define MUS_MALL_DARK              445 // MUS_RUNECITY
 #define MUS_GIANT_BATTLE_1         446 // MUS_CON_K
 #define MUS_FOREST       447 // MUS_EIKOU_R
-#define MUS_TRICK_HOUSE             448 // MUS_KARAKURI
+#define MUS_END_OF_A_GIANT             448 // MUS_KARAKURI
 #define MUS_ENCOUNTER_TWINS         449 // MUS_HUTAGO
 #define MUS_ENCOUNTER_ELITE_FOUR    450 // MUS_SITENNOU
 #define MUS_ENCOUNTER_HIKER         451 // MUS_YAMA_EYE

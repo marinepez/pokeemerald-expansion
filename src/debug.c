@@ -4501,7 +4501,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(MUS_MALL_DARK) \
     X(MUS_GIANT_BATTLE_1) \
     X(MUS_FOREST) \
-    X(MUS_TRICK_HOUSE) \
+    X(MUS_END_OF_A_GIANT) \
     X(MUS_ENCOUNTER_TWINS) \
     X(MUS_ENCOUNTER_ELITE_FOUR) \
     X(MUS_ENCOUNTER_HIKER) \
@@ -4938,6 +4938,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(SE_ROLLING) \
     X(SE_GIANT_CATCH) \
     X(SE_RESET) \
+    X(SE_POWER_ON) \
     X(SE_SOUND_END) \
 
 // Create BGM list
