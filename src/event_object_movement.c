@@ -5499,7 +5499,7 @@ static u8 GetNonPlayerCollisionInDirection(struct ObjectEvent *objectEvent, u8 d
 {
     s16 x = objectEvent->currentCoords.x;
     s16 y = objectEvent->currentCoords.y;
-    MoveObjectEventCoordsForGiant(direction, &x, &y);
+    MoveObjectEventCoords(direction, &x, &y);
 
     u8 collision = GetCollisionAtCoords(objectEvent, x, y, direction);
     if (collision == COLLISION_OBJECT_EVENT)
