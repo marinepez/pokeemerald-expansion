@@ -1,0 +1,48 @@
+{
+  "id": "MAP_MAGM9_MALL_MAINTENANCE",
+  "name": "MAGM9_Mall_Maintenance",
+  "layout": "LAYOUT_MAGM9_MALL_MAINTENANCE",
+  "music": "MUS_END_OF_A_GIANT",
+  "region_map_section": "MAPSEC_NONE",
+  "requires_flash": true,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_NONE",
+  "allow_cycling": false,
+  "allow_escaping": false,
+  "allow_running": false,
+  "show_map_name": false,
+  "battle_scene": "MAP_BATTLE_SCENE_MAGMA",
+  "connections": 0,
+  "object_events": [
+
+  ],
+  "warp_events": [
+    {
+      "x": 3,
+      "y": 2,
+      "elevation": 0,
+      "dest_map": "MAP_MAGM9_MALL_MAINTENANCE",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 39,
+      "y": 35,
+      "elevation": 0,
+      "dest_map": "MAP_MAGM9_MALL_MAINTENANCE",
+      "dest_warp_id": "0"
+    }
+  ],
+  "coord_events": [
+
+  ],
+  "bg_events": [
+    {
+      "type": "sign",
+      "x": 28,
+      "y": 9,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
+      "script": "MAGM9_Mall_Maintenance_Safe"
+    }
+  ]
+}

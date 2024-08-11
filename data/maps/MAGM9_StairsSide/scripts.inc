@@ -53,3 +53,9 @@ MAGM9_StairsSide_FlashlightSound:
 playse SE_CLICK
 setflag FLAG_TEMP_1
 return
+
+Test::
+playse SE_PIN
+releaseall
+end
+

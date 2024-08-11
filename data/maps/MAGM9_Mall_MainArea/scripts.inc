@@ -8,6 +8,7 @@ MAGM9_Mall_MainArea_MapScripts::
 
 MAGM9_Mall_MainArea_MapScripts_OnResume::
 	call_if_set FLAG_SYS_CTRL_OBJ_DELETE, MAGM9_Mall_MainArea_MapScripts_HideRollingGiant
+	goto_if_set FLAG_POWER_ON, MAGM9_Mall_LightsOnSetup
 	return
 
 MAGM9_Mall_MainArea_OnWarp::
@@ -21,6 +22,72 @@ MAGM9_Mall_MainArea_MapScripts_SetInitialVars::
 
 MAGM9_Mall_MainArea_OnTransition::
 	setflashlevel 3
+	end
+
+MAGM9_CheckGiant::
+	lock
+	msgbox MAGM9_CheckGiantMsg, MSGBOX_AUTOCLOSE
+	goto MAGM9_Mall_LightsTurnOnCS
+	end
+
+MAGM9_CheckGiantMsg:
+	.string "It seems to be some kind of uncanny\nstatue of someone.$"
+
+MAGM9_Mall_LightsOnSetup:
+	setflashlevel 0
+	savebgm MUS_MALL
+	return
+
+MAGM9_Mall_LightsTurnOnCS::
+	lockall
+	playse SE_POWER_ON
+	setflashalpha 01
+	special UpdateFlashScanlines
+	delay 2
+	setflashalpha 14
+	special UpdateFlashScanlines
+	delay 2
+	setflashalpha 7
+	special UpdateFlashScanlines
+	delay 4
+	setflashalpha 14
+	special UpdateFlashScanlines
+	delay 3
+	setflashalpha 0
+	special UpdateFlashScanlines
+	delay 2
+	setflashalpha 7
+	special UpdateFlashScanlines
+	delay 4
+	setflashalpha 14
+	special UpdateFlashScanlines
+	delay 3
+	setflashalpha 0
+	special UpdateFlashScanlines
+	delay 8
+	setflashalpha 14
+	special UpdateFlashScanlines
+	delay 6
+	setflashalpha 7
+	special UpdateFlashScanlines
+	delay 12
+	setflashalpha 14
+	special UpdateFlashScanlines
+	delay 12
+	setflashalpha 12
+	delay 2
+	setflashalpha 10
+	delay 2
+	setflashalpha 8
+	delay 2
+	setflashalpha 0
+	special UpdateFlashScanlines
+	setvar VAR_ROLLING_GIANT_AI_STATE, 0
+	savebgm MUS_MALL
+	fadenewbgm MUS_MALL
+	setflag FLAG_POWER_ON
+	call MAGM9_Mall_LightsOnSetup
+	releaseall
 	end
 
 MAGM9_Mall_MainArea_MapScripts_HideRollingGiant:
@@ -80,6 +147,17 @@ Mall_PCTest::
 	call Common_EventScript_SaveGame
 	closemessage
 	end
+
+Save_PC::
+	lockall
+	playse SE_PC_LOGIN
+	msgbox Save_PC_Prompt, MSGBOX_DEFAULT
+	call Common_EventScript_SaveGame
+	releaseall
+	end
+
+Save_PC_Prompt:
+	.string "Somehow, this PC appears to be in\nworking condition.\p{PLAYER} can save their progress\nwith it."
 
 Mall_WarpToLowerFloorLeft::
 	warp MAP_MAGM9_MALL_LOWER_FLOOR, 43, 45

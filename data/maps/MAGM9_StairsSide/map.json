@@ -37,7 +37,7 @@
       "x": 5,
       "y": 6,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken0"
     },
@@ -46,7 +46,7 @@
       "x": 5,
       "y": 7,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken0"
     },
@@ -55,7 +55,7 @@
       "x": 7,
       "y": 8,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken1"
     },
@@ -64,7 +64,7 @@
       "x": 7,
       "y": 9,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken1"
     },
@@ -73,7 +73,7 @@
       "x": 9,
       "y": 10,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken2"
     },
@@ -82,7 +82,7 @@
       "x": 9,
       "y": 11,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken2"
     },
@@ -91,7 +91,7 @@
       "x": 11,
       "y": 12,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken3"
     },
@@ -100,7 +100,7 @@
       "x": 11,
       "y": 13,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken3"
     },
@@ -109,7 +109,7 @@
       "x": 13,
       "y": 14,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken4"
     },
@@ -118,7 +118,7 @@
       "x": 13,
       "y": 15,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken4"
     },
@@ -127,7 +127,7 @@
       "x": 15,
       "y": 16,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken5"
     },
@@ -136,7 +136,7 @@
       "x": 15,
       "y": 17,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken5"
     },
@@ -145,7 +145,7 @@
       "x": 17,
       "y": 18,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken6"
     },
@@ -154,7 +154,7 @@
       "x": 17,
       "y": 19,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken6"
     },
@@ -163,7 +163,7 @@
       "x": 19,
       "y": 20,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken7"
     },
@@ -172,7 +172,7 @@
       "x": 19,
       "y": 21,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken7"
     },
@@ -181,7 +181,7 @@
       "x": 21,
       "y": 22,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken8"
     },
@@ -190,9 +190,27 @@
       "x": 21,
       "y": 23,
       "elevation": 0,
-      "var": "VAR_TEMP_0",
+      "var": "VAR_ALWAYSZERO",
       "var_value": "0",
       "script": "MAGM9_StairsSide_Darken8"
+    },
+    {
+      "type": "trigger",
+      "x": 32,
+      "y": 34,
+      "elevation": 0,
+      "var": "VAR_ALWAYSZERO",
+      "var_value": "0",
+      "script": "Test"
+    },
+    {
+      "type": "trigger",
+      "x": 32,
+      "y": 33,
+      "elevation": 0,
+      "var": "VAR_ALWAYSZERO",
+      "var_value": "0",
+      "script": "Test"
     }
   ],
   "bg_events": [
