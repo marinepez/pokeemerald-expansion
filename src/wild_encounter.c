@@ -791,7 +791,7 @@ static bool8 GetSpawnableTileForGiant(u8 playerDir)
             if(GetSpawnableTileAroundPlayer(playerDir, &x, &y))
             {
                 TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
-                TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
+                TryMoveObjectEventToMapCoordsCenter(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
                 //DebugPrintf("Giant0: %d, %d", x, y);
                 return TRUE;
             }
@@ -801,7 +801,7 @@ static bool8 GetSpawnableTileForGiant(u8 playerDir)
             if(GetSpawnableTileBehindPlayer(playerDir, &x, &y))
             {
                 TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
-                TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
+                TryMoveObjectEventToMapCoordsCenter(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
                 //DebugPrintf("Giant1: %d, %d", x, y);
                 return TRUE;
             }
@@ -811,7 +811,7 @@ static bool8 GetSpawnableTileForGiant(u8 playerDir)
             if(GetSpawnableTileInFrontOfPlayer(playerDir, &x, &y))
             {
                 TrySpawnObjectEvent(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
-                TryMoveObjectEventToMapCoords(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
+                TryMoveObjectEventToMapCoordsCenter(VarGet(VAR_ROLLING_GIANT_LOCALID), gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, x, y);
                 //DebugPrintf("Giant2: %d, %d", x, y);
                 return TRUE;
             }

@@ -2351,6 +2351,38 @@ void TryMoveObjectEventToMapCoords(u8 localId, u8 mapNum, u8 mapGroup, s16 x, s1
     }
 }
 
+void MoveObjectEventToMapCoordsCenter(struct ObjectEvent *objectEvent, s16 x, s16 y)
+{
+    struct Sprite *sprite;
+    const struct ObjectEventGraphicsInfo *graphicsInfo;
+
+    s16 centerX = GRID_TO_COORDS(x) + 128;
+    s16 centerY = GRID_TO_COORDS(y) + 128;
+
+    sprite = &gSprites[objectEvent->spriteId];
+    graphicsInfo = GetObjectEventGraphicsInfo(objectEvent->graphicsId);
+    SetObjectEventCoords(objectEvent, centerX, centerY);
+    SetSpritePosToMapCoords(objectEvent->currentCoords.x, objectEvent->currentCoords.y, &sprite->x, &sprite->y);
+    sprite->centerToCornerVecX = -(graphicsInfo->width >> 1);
+    sprite->centerToCornerVecY = -(graphicsInfo->height >> 1);
+    sprite->x += 8;
+    sprite->y += 16 + sprite->centerToCornerVecY;
+    ResetObjectEventFldEffData(objectEvent);
+    if (objectEvent->trackedByCamera)
+        CameraObjectReset();
+}
+
+void TryMoveObjectEventToMapCoordsCenter(u8 localId, u8 mapNum, u8 mapGroup, s16 x, s16 y)
+{
+    u8 objectEventId;
+    if (!TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
+    {
+        x += MAP_OFFSET;
+        y += MAP_OFFSET;
+        MoveObjectEventToMapCoordsCenter(&gObjectEvents[objectEventId], x, y);
+    }
+}
+
 // TODO: remove this?
 void ShiftStillObjectEventCoords(struct ObjectEvent *objectEvent)
 {
@@ -4896,7 +4928,7 @@ static u8 GetDirectionForRollingGiant(struct ObjectEvent *objectEvent)
     s16 objecty = (objectEvent->currentCoords.y) - GRID_TO_COORDS(7);
     u8 direction;
 
-//  DebugPrintf("px: %d, py: %d, ox: %d, oy: %d", playerx, playery, objectx, objecty);
+    DebugPrintf("Player: %d.%d, %d.%d, Giant: %d.%d, %d.%d", playerx>>8, playerx&255, playery>>8, playery&255, objectx>>8, objectx&255, objecty>>8, objecty&255);
     if(playerx - objectx == 0) //Making sure no divide by zero errors
     {
         if(playery > objecty) direction = DIR_SOUTH;
@@ -5467,11 +5499,12 @@ static u8 GetNonPlayerCollisionInDirection(struct ObjectEvent *objectEvent, u8 d
 {
     s16 x = objectEvent->currentCoords.x;
     s16 y = objectEvent->currentCoords.y;
-    MoveObjectEventCoords(direction, &x, &y);
+    MoveObjectEventCoordsForGiant(direction, &x, &y);
 
     u8 collision = GetCollisionAtCoords(objectEvent, x, y, direction);
     if (collision == COLLISION_OBJECT_EVENT)
     {
+        DebugPrintf("Object Collision at %d.%d,%d.%d", x>>8, x&255, y>>8, y&255);
         if(CheckObjectEventHitboxXY(&gObjectEvents[gPlayerAvatar.objectEventId], x, y)) return COLLISION_NONE;
         else return COLLISION_OBJECT_EVENT;
     }
@@ -5480,7 +5513,8 @@ static u8 GetNonPlayerCollisionInDirection(struct ObjectEvent *objectEvent, u8 d
     {
         return COLLISION_NONE;
     }
-
+    
+    DebugPrintf("Collision at %d.%d,%d.%d", x>>8, x&255, y>>8, y&255);
     return collision;
 }
 
