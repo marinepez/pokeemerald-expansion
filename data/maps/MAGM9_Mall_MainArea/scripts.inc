@@ -153,6 +153,7 @@ Save_PC::
 	playse SE_PC_LOGIN
 	msgbox Save_PC_Prompt, MSGBOX_DEFAULT
 	call Common_EventScript_SaveGame
+	closemessage
 	releaseall
 	end
 

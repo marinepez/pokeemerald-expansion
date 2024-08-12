@@ -4928,7 +4928,7 @@ static u8 GetDirectionForRollingGiant(struct ObjectEvent *objectEvent)
     s16 objecty = (objectEvent->currentCoords.y) - GRID_TO_COORDS(7);
     u8 direction;
 
-    DebugPrintf("Player: %d.%d, %d.%d, Giant: %d.%d, %d.%d", playerx>>8, playerx&255, playery>>8, playery&255, objectx>>8, objectx&255, objecty>>8, objecty&255);
+    //DebugPrintf("Player: %d.%d, %d.%d, Giant: %d.%d, %d.%d", playerx>>8, playerx&255, playery>>8, playery&255, objectx>>8, objectx&255, objecty>>8, objecty&255);
     if(playerx - objectx == 0) //Making sure no divide by zero errors
     {
         if(playery > objecty) direction = DIR_SOUTH;
@@ -5504,7 +5504,7 @@ static u8 GetNonPlayerCollisionInDirection(struct ObjectEvent *objectEvent, u8 d
     u8 collision = GetCollisionAtCoords(objectEvent, x, y, direction);
     if (collision == COLLISION_OBJECT_EVENT)
     {
-        DebugPrintf("Object Collision at %d.%d,%d.%d", x>>8, x&255, y>>8, y&255);
+        //DebugPrintf("Object Collision at %d.%d,%d.%d", x>>8, x&255, y>>8, y&255);
         if(CheckObjectEventHitboxXY(&gObjectEvents[gPlayerAvatar.objectEventId], x, y)) return COLLISION_NONE;
         else return COLLISION_OBJECT_EVENT;
     }
@@ -5514,7 +5514,7 @@ static u8 GetNonPlayerCollisionInDirection(struct ObjectEvent *objectEvent, u8 d
         return COLLISION_NONE;
     }
     
-    DebugPrintf("Collision at %d.%d,%d.%d", x>>8, x&255, y>>8, y&255);
+    //DebugPrintf("Collision at %d.%d,%d.%d", x>>8, x&255, y>>8, y&255);
     return collision;
 }
 

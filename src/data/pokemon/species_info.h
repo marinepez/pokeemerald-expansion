@@ -82,12 +82,12 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
     [SPECIES_ROLLING_GIANT] =
     {
-        .baseHP        = 90,
+        .baseHP        = 70,
         .baseAttack    = 90,
-        .baseDefense   = 90,
-        .baseSpeed     = 90,
+        .baseDefense   = 70,
+        .baseSpeed     = 110,
         .baseSpAttack  = 90,
-        .baseSpDefense = 90,
+        .baseSpDefense = 70,
         .types = MON_TYPES(TYPE_GHOST, TYPE_GRASS),
         .catchRate = 0,
         .expYield = 0,
@@ -127,7 +127,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .iconSprite = gMonIcon_QuestionMark,
         .iconPalIndex = 0,
         FOOTPRINT(QuestionMark)
-        .levelUpLearnset = sNoneLevelUpLearnset,
+        .levelUpLearnset = sRollingGiantLevelUpLearnset,
         .teachableLearnset = sNoneTeachableLearnset,
         //.formSpeciesIdTable = sNoneFormSpeciesIdTable,
         //.formChangeTable = sNoneFormChangeTable,

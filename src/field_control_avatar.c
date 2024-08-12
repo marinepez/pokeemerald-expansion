@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle_setup.h"
+#include "battle.h"
 #include "bike.h"
 #include "coord_event_weather.h"
 #include "daycare.h"
@@ -775,7 +776,9 @@ static bool8 CheckStandardWildEncounter(u8 playerDirection)
     }
     //DebugPrintf("Encounters: %d, AI State: %d", VarGet(VAR_ROLLING_GIANT_NUM_SIGHTINGS), VarGet(VAR_ROLLING_GIANT_AI_STATE));
 
-    if (sGiantEncounterImmunitySteps < 10)
+    //If you ran recently, you get less immunity steps
+    DebugPrintf("Battle Outcome: %d, Steps: %d", gBattleOutcome, sGiantEncounterImmunitySteps);
+    if ((gBattleOutcome == B_OUTCOME_WON && sGiantEncounterImmunitySteps < 50) || (sGiantEncounterImmunitySteps < 20))
     {
         sGiantEncounterImmunitySteps++;
         return FALSE;
@@ -783,6 +786,7 @@ static bool8 CheckStandardWildEncounter(u8 playerDirection)
 
     if (StandardGiantEncounter(playerDirection))
     {
+        DebugPrintf("Giant Spawned");
         fadeOutRollingGiantSound();
         FlagSet(FLAG_GIANT_SPAWNED);
         sGiantEncounterImmunitySteps = 0;
