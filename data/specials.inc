@@ -556,3 +556,5 @@ gSpecials::
 	def_special Script_GetChosenMonDefensiveIVs
 	def_special SetFlashlightRevealLayer
 	def_special UpdateFlashScanlines
+	def_special CapitalizeAndCompareString
+

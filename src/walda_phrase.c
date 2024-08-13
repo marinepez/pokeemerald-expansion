@@ -59,14 +59,14 @@ static void CB2_HandleGivenWaldaPhrase(void)
 
     switch (gSpecialVar_0x8004)
     {
-    case PHRASE_EMPTY:
+    /*case PHRASE_EMPTY:
         // If saved phrase is also empty, set default phrase
         // Otherwise keep saved phrase
         if (IsWaldaPhraseEmpty())
             SetWaldaPhrase(gText_Peekaboo);
         else
             gSpecialVar_0x8004 = PHRASE_NO_CHANGE;
-        break;
+        break;*/
     case PHRASE_CHANGED:
         SetWaldaPhrase(gStringVar2);
         break;
@@ -91,6 +91,21 @@ static u32 GetWaldaPhraseInputCase(u8 *inputPtr)
 
     // Input is new phrase
     return PHRASE_CHANGED;
+}
+
+void CapitalizeAndCompareString(void) // (AVIRCODE) Used to compare a string to another one after capitalizing it.
+{
+    gSpecialVar_Result = FALSE;
+     if(gStringVar1[0] == EOS)
+        return;
+    for(int i = 0; i < 0x100; i++)
+    {
+        if(gStringVar1[i] >= 0xD5 && gStringVar1[i] <= 0xEE) // If the letter is a lowercase one.
+            gStringVar1[i] -= 26; // The uppercase letters are right before the lowercase ones, so subtract by the alphabet.
+    }
+    if (StringCompare(gStringVar1, gStringVar2) == 0)
+        gSpecialVar_Result = TRUE; // I guess the way "StringCompare" works is it checks for the amount of letters that are different, so we're checking for a difference of zero letters.
+    return;
 }
 
 u16 TryGetWallpaperWithWaldaPhrase(void)
