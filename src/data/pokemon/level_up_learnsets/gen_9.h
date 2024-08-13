@@ -6,6 +6,14 @@ static const struct LevelUpMove sNoneLevelUpLearnset[] = {
     LEVEL_UP_END
 };
 
+static const struct LevelUpMove sRollingGiantLevelUpLearnset[] = {
+    LEVEL_UP_MOVE(1, MOVE_ROLLOUT),
+    LEVEL_UP_MOVE(1, MOVE_SLAM),
+    LEVEL_UP_MOVE(1, MOVE_NEEDLE_ARM),
+    LEVEL_UP_MOVE(1, MOVE_SHADOW_CLAW),
+    LEVEL_UP_END
+};
+
 #if P_FAMILY_BULBASAUR
 static const struct LevelUpMove sBulbasaurLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_TACKLE),
