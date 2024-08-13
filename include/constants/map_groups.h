@@ -570,6 +570,7 @@
 #define MAP_TRAINER_HILL_ELEVATOR                           (88 | (26 << 8))
 #define MAP_MAGM9_HILLTOP                                   (89 | (26 << 8))
 #define MAP_MAGM9_PATH_BELOW_HILL                           (90 | (26 << 8))
+#define MAP_MAGM9_MALL_AMC_INTERIOR                         (91 | (26 << 8))
 
 // gMapGroup_IndoorRoute104Prototype
 #define MAP_ROUTE104_PROTOTYPE                          (0 | (27 << 8))

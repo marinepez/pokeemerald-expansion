@@ -556,7 +556,7 @@ const struct Tileset gTileset_DewfordGym =
     .palettes = gTilesetPalettes_DewfordGym,
     .metatiles = gMetatiles_DewfordGym,
     .metatileAttributes = gMetatileAttributes_DewfordGym,
-    .callback = NULL,
+    .callback = InitTilesetAnim_AMC,
 };
 
 const struct Tileset gTileset_MauvilleGym =

@@ -1119,3 +1119,5 @@ EventScript_RollingGiantBattle::
 	.include "data/maps/MAGM9_Mall_Maintenance/scripts.inc"
 
 	.include "data/maps/MAGM9_Mall_TopFloor/scripts.inc"
+
+	.include "data/maps/MAGM9_Mall_AMC_Interior/scripts.inc"

@@ -4570,6 +4570,16 @@
       "secondary_tileset": "gTileset_Unused1",
       "border_filepath": "data/layouts/MAGM9_Mall_TopFloor/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_Mall_TopFloor/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGM9_MALL_AMC_INTERIOR",
+      "name": "MAGM9_Mall_AMC_Interior_Layout",
+      "width": 16,
+      "height": 23,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_DewfordGym",
+      "border_filepath": "data/layouts/MAGM9_Mall_AMC_Interior/border.bin",
+      "blockdata_filepath": "data/layouts/MAGM9_Mall_AMC_Interior/map.bin"
     }
   ]
 }
