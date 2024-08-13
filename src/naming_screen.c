@@ -29,6 +29,7 @@
 #include "main.h"
 #include "constants/event_objects.h"
 #include "constants/rgb.h"
+#include "item_icon.h"
 
 enum {
     INPUT_NONE,
@@ -1422,14 +1423,22 @@ static void NamingScreen_CreateMonIcon(void)
     gSprites[spriteId].oam.priority = 3;
 }
 
+#define TAG_ITEM_ICON 5500
+
 static void NamingScreen_CreateWaldaDadIcon(void)
 {
     u8 spriteId;
 
-    spriteId = CreateObjectGraphicsSprite(OBJ_EVENT_GFX_MAN_1, SpriteCallbackDummy, 56, 37, 0);
+    FreeSpriteTilesByTag(TAG_ITEM_ICON);
+    FreeSpritePaletteByTag(TAG_ITEM_ICON);
+    spriteId = AddItemIconSprite(TAG_ITEM_ICON, TAG_ITEM_ICON, ITEM_NONE);
+    //spriteId = CreateObjectGraphicsSprite(OBJ_EVENT_GFX_MAN_1, SpriteCallbackDummy, 56, 37, 0);
+    gSprites[spriteId].x2 = 60;
+    gSprites[spriteId].y2 = 48;
     gSprites[spriteId].oam.priority = 3;
-    StartSpriteAnim(&gSprites[spriteId], ANIM_STD_GO_SOUTH);
+    //StartSpriteAnim(&gSprites[spriteId], ANIM_STD_GO_SOUTH);
 }
+    
 
 //--------------------------------------------------
 // Keyboard handling
