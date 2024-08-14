@@ -1281,13 +1281,16 @@ static void QueueAnimTiles_AMC_Tiles(u16 timer)
 
     if(FlagGet(FLAG_FORCE_AMC_LIGHTS))
     {
-        if(FlagGet(FLAG_AMC_LIGHTS_ON))
-            i = 1;
-        else
-            i = 0;
+        i = (VarGet(VAR_AMC_LIGHT_LEVEL) != 0);
+        gSaveBlock1Ptr->flashAlpha = VarGet(VAR_AMC_LIGHT_LEVEL);
+
+        if(gSaveBlock1Ptr->flashAlpha > 16) gSaveBlock1Ptr->flashAlpha = 16;
+        else if (gSaveBlock1Ptr->flashAlpha < 0) gSaveBlock1Ptr->flashAlpha = 0;
+    }
+    else {
+        gSaveBlock1Ptr->flashAlpha = i*7;
     }
     //DebugPrintf("Timer:%d: i:%d", timer, i);
-    gSaveBlock1Ptr->flashAlpha = i*7;
     UpdateFlashScanlines();
     AppendTilesetAnimToBuffer(gTilesetAnims_AMC_Tiles[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 64)), 39 * TILE_SIZE_4BPP);
 }

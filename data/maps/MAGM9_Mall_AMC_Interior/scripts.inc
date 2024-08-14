@@ -40,17 +40,14 @@ MAGM9_Mall_AMC_Interior_BeforeBattleCutscene::
 	setflag FLAG_DISABLE_COLLISION
 	hideobjectat OBJ_EVENT_ID_PLAYER, 0
 	delay 32
-	setflag FLAG_FORCE_AMC_LIGHTS
-	setflag FLAG_AMC_LIGHTS_ON
 	applymovement OBJ_EVENT_ID_PLAYER, AMC_Interior_Movement_CameraPanUp
 	call MAGM9_Mall_AMC_Interior_FlickerLights
 	waitmovement 0
 	call MAGM9_Mall_AMC_Interior_ShowPortrait
 	delay 16
-	setflashalpha 16
-	clearflag FLAG_AMC_LIGHTS_ON
+	setvar VAR_AMC_LIGHT_LEVEL, 16
 	playse SE_POWER_ON
-	delay 16
+	delay 24
 	playse SE_ROLLING
 	delay 80
 	setwildbattle SPECIES_ROLLING_GIANT, 80, ITEM_NONE
@@ -61,22 +58,24 @@ MAGM9_Mall_AMC_Interior_BeforeBattleCutscene::
 	end
 
 MAGM9_Mall_AMC_Interior_FlickerLights::
+	setflag FLAG_FORCE_AMC_LIGHTS
+	setvar VAR_AMC_LIGHT_LEVEL, 8
 	delay 18
-	clearflag FLAG_AMC_LIGHTS_ON
+	setvar VAR_AMC_LIGHT_LEVEL, 0
 	delay 4
-	setflag FLAG_AMC_LIGHTS_ON
+	setvar VAR_AMC_LIGHT_LEVEL, 8
 	delay 9
-	clearflag FLAG_AMC_LIGHTS_ON
+	setvar VAR_AMC_LIGHT_LEVEL, 0
 	delay 14
-	setflag FLAG_AMC_LIGHTS_ON
+	setvar VAR_AMC_LIGHT_LEVEL, 8
 	delay 25
-	clearflag FLAG_AMC_LIGHTS_ON
+	setvar VAR_AMC_LIGHT_LEVEL, 0
 	delay 39
-	setflag FLAG_AMC_LIGHTS_ON
+	setvar VAR_AMC_LIGHT_LEVEL, 8
 	delay 7
-	clearflag FLAG_AMC_LIGHTS_ON
+	setvar VAR_AMC_LIGHT_LEVEL, 0
 	delay 11
-	setflag FLAG_AMC_LIGHTS_ON
+	setvar VAR_AMC_LIGHT_LEVEL, 8
 	delay 20
 	return
 
@@ -98,7 +97,7 @@ MAGM9_Mall_AMC_Interior_ShowPortrait::
 	setmetatile 7, 5, METATILE_DewfordGym_Reverchon_15, FALSE
 	setmetatile 8, 5, METATILE_DewfordGym_Reverchon_16, FALSE
 	setmetatile 9, 5, METATILE_DewfordGym_Reverchon_17, FALSE
-	clearflag FLAG_AMC_LIGHTS_ON
+	setvar VAR_AMC_LIGHT_LEVEL, 0
 	special DrawWholeMapView
 	return
 
