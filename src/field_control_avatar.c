@@ -113,6 +113,8 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
                 input->pressedBButton = TRUE;
         }
     }
+    else if (((tileTransitionState == T_TILE_CENTER && forcedMove == FALSE) || tileTransitionState == T_NOT_MOVING) && (newKeys & A_BUTTON))
+        input->pressedAButton = TRUE;
 
     if (heldMoveKeys)
     {
