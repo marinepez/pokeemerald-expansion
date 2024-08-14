@@ -1607,8 +1607,8 @@
 	.byte \alpha
 	.endm
 
-	@ Used only in FireRed/LeafGreen, does nothing in Emerald.
-	.macro unloadhelp
+	@ Used for cutscenes - creates a copy of the player with no collision. Allows for camera movement in light of current code
+	.macro createplayerfacade
 	.byte 0xc9
 	.endm
 

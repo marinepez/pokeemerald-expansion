@@ -2383,6 +2383,37 @@ void TryMoveObjectEventToMapCoordsCenter(u8 localId, u8 mapNum, u8 mapGroup, s16
     }
 }
 
+void MoveObjectEventToPlayer(struct ObjectEvent *objectEvent)
+{
+    struct Sprite *sprite;
+    const struct ObjectEventGraphicsInfo *graphicsInfo;
+    s16 x, y;
+    x = gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x;
+    y = gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y;
+
+    sprite = &gSprites[objectEvent->spriteId];
+    graphicsInfo = GetObjectEventGraphicsInfo(objectEvent->graphicsId);
+    SetObjectEventCoords(objectEvent, x, y);
+    SetSpritePosToMapCoords(objectEvent->currentCoords.x, objectEvent->currentCoords.y, &sprite->x, &sprite->y);
+    sprite->centerToCornerVecX = -(graphicsInfo->width >> 1);
+    sprite->centerToCornerVecY = -(graphicsInfo->height >> 1);
+    sprite->x += 8;
+    sprite->y += 16 + sprite->centerToCornerVecY;
+    ResetObjectEventFldEffData(objectEvent);
+    if (objectEvent->trackedByCamera)
+        CameraObjectReset();
+}
+
+void TryMoveObjectEventToPlayer(u8 localId, u8 mapNum, u8 mapGroup)
+{
+    u8 objectEventId;
+    if (!TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
+    {
+        ObjectEventSetHeldMovement(&gObjectEvents[objectEventId], GetFaceDirectionMovementAction(gObjectEvents[gPlayerAvatar.objectEventId].facingDirection));
+        MoveObjectEventToPlayer(&gObjectEvents[objectEventId]);
+    }
+}
+
 // TODO: remove this?
 void ShiftStillObjectEventCoords(struct ObjectEvent *objectEvent)
 {

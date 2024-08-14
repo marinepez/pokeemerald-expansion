@@ -8,6 +8,7 @@
 #include "fieldmap.h"
 #include "random.h"
 #include "overworld.h"
+#include "event_data.h"
 
 static EWRAM_DATA struct {
     const u16 *src;
@@ -1189,7 +1190,7 @@ static void TilesetAnim_MirageTower(u16 timer)
 
 static void TilesetAnim_AMC(u16 timer)
 {
-    if ((timer % 4 == 0) && (Random() % 4 == 0))
+    if (((timer % 5 == 0) && (Random() % 4 == 0)) || FlagGet(FLAG_FORCE_AMC_LIGHTS))
     {
         QueueAnimTiles_AMC_Tiles(timer / 4);
     }
@@ -1277,7 +1278,15 @@ static void QueueAnimTiles_MirageTower_MediumTiles(u16 timer)
 static void QueueAnimTiles_AMC_Tiles(u16 timer)
 {
     u16 i = timer % ARRAY_COUNT(gTilesetAnims_AMC_Tiles);
-    DebugPrintf("Timer:%d: i:%d", timer, i);
+
+    if(FlagGet(FLAG_FORCE_AMC_LIGHTS))
+    {
+        if(FlagGet(FLAG_AMC_LIGHTS_ON))
+            i = 1;
+        else
+            i = 0;
+    }
+    //DebugPrintf("Timer:%d: i:%d", timer, i);
     gSaveBlock1Ptr->flashAlpha = i*7;
     UpdateFlashScanlines();
     AppendTilesetAnimToBuffer(gTilesetAnims_AMC_Tiles[i], (u16 *)(BG_VRAM + TILE_OFFSET_4BPP(NUM_TILES_IN_PRIMARY + 64)), 39 * TILE_SIZE_4BPP);

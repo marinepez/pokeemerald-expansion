@@ -117,6 +117,7 @@ void LoadPlayerObjectReflectionPalette(u16 tag, u8 slot);
 void LoadSpecialObjectReflectionPalette(u16 tag, u8 slot);
 void TryMoveObjectEventToMapCoords(u8 localId, u8 mapNum, u8 mapGroup, s16 x, s16 y);
 void TryMoveObjectEventToMapCoordsCenter(u8 localId, u8 mapNum, u8 mapGroup, s16 x, s16 y);
+void TryMoveObjectEventToPlayer(u8 localId, u8 mapNum, u8 mapGroup);
 void PatchObjectPalette(u16 paletteTag, u8 paletteSlot);
 void SpawnObjectEventsOnReturnToField(void);
 void OverrideSecretBaseDecorationSpriteScript(u8 localId, u8 mapNum, u8 mapGroup, u8 decorCat);
@@ -146,6 +147,7 @@ void ObjectEventGetLocalIdAndMap(struct ObjectEvent *objectEvent, void *localId,
 void ShiftObjectEventCoords(struct ObjectEvent *, s16 x, s16 y);
 void MoveObjectEventToMapCoords(struct ObjectEvent *, s16 x, s16 y);
 void MoveObjectEventToMapCoordsCenter(struct ObjectEvent *, s16 x, s16 y);
+void MoveObjectEventToPlayer(struct ObjectEvent *);
 void TryOverrideObjectEventTemplateCoords(u8 localId, u8 mapNum, u8 mapGroup);
 void InitObjectEventPalettes(u8 palSlot);
 void UpdateObjectEventCurrentMovement(struct ObjectEvent *, struct Sprite *, bool8(struct ObjectEvent *, struct Sprite *));

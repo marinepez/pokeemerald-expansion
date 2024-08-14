@@ -1163,6 +1163,27 @@ bool8 ScrCmd_resetobjectsubpriority(struct ScriptContext *ctx)
     return FALSE;
 }
 
+bool8 ScrCmd_moveobjecttoplayer(struct ScriptContext *ctx)
+{
+    u16 localId = VarGet(ScriptReadHalfword(ctx));
+
+    TryMoveObjectEventToPlayer(localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+    return FALSE;
+}
+
+bool8 ScrCmd_createplayerfacade(struct ScriptContext *ctx)
+{
+    u8 graphicsId = OBJ_EVENT_GFX_BRENDAN_NORMAL;
+    u8 virtualObjId = 1;
+    u16 x = gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x - GRID_TO_COORDS(MAP_OFFSET);
+    u16 y = gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y - GRID_TO_COORDS(MAP_OFFSET);
+    u8 elevation = 4;
+    u8 direction = gObjectEvents[gPlayerAvatar.objectEventId].facingDirection;
+
+    CreateVirtualObject(graphicsId, virtualObjId, x, y, elevation, direction);
+    return FALSE;
+}
+
 bool8 ScrCmd_faceplayer(struct ScriptContext *ctx)
 {
     if (gObjectEvents[gSelectedObjectEvent].active)

@@ -7,6 +7,7 @@ MAGM9_StairsDown_MapScripts::
 
 MAGM9_StairsDown_OnWarp::
 	map_script_2 VAR_LEVEL_LOSS_SPEED, 0, MAGM9_StairsDown_MapScripts_SetExpLossEffectAndPlayerDir
+	.2byte 0
 
 MAGM9_StairsDown_MapScripts_SetExpLossEffectAndPlayerDir::
 	setvar VAR_LEVEL_LOSS_SPEED, 1

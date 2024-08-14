@@ -167,7 +167,7 @@ research_julienreverchon:
 	.string "Julien was fairly instrumental to the\ncreation of the city of Dallas,\lcontributing via his research and\lteachings involving many new species\lof plants within the area.\pOne Dallas artist, a man named\nKevin Obregón (EMAIL: KevGon123),\lcreated a puppet for an event known as\lthe Parade of Giants.\pHere is a picture of that puppet:$"
 
 research_julienreverchon2:
-	.string "The puppet has been nicknamed as\nthe rolling giant by its fans, and could\lbe seen in Obregón's studio during\l2013-2016.\pUnfortunately, in recent times, the\npuppet has been demolished alongside\lmuch of the mall mall due to\lredevelopment plans.\pIt's unfortunate such an art piece\nhad to be lost.$"
+	.string "The puppet has been nicknamed as\nthe rolling giant by its fans, and could\lbe seen in Obregón's studio during\l2013-2016.\pUnfortunately, in recent times, the\npuppet has been demolished alongside\lmuch of the mall due to\lredevelopment plans.\pIt's unfortunate such an art piece\nhad to be lost.$"
 
 query_kevgon123:
 	.string "KEVGON123$"

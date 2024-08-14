@@ -147,6 +147,25 @@
 #define METATILE_Dewford_Door              0x225
 #define METATILE_Dewford_Door_BattleTower  0x25D
 
+// gTileset_DewfordGym
+#define METATILE_DewfordGym_Reverchon_1   0x235
+#define METATILE_DewfordGym_Reverchon_10  0x24C
+#define METATILE_DewfordGym_Reverchon_11  0x24D
+#define METATILE_DewfordGym_Reverchon_12  0x24E
+#define METATILE_DewfordGym_Reverchon_13  0x24F
+#define METATILE_DewfordGym_Reverchon_14  0x254
+#define METATILE_DewfordGym_Reverchon_15  0x255
+#define METATILE_DewfordGym_Reverchon_16  0x256
+#define METATILE_DewfordGym_Reverchon_17  0x257
+#define METATILE_DewfordGym_Reverchon_2   0x236
+#define METATILE_DewfordGym_Reverchon_3   0x237
+#define METATILE_DewfordGym_Reverchon_4   0x23D
+#define METATILE_DewfordGym_Reverchon_5   0x23E
+#define METATILE_DewfordGym_Reverchon_6   0x23F
+#define METATILE_DewfordGym_Reverchon_7   0x245
+#define METATILE_DewfordGym_Reverchon_8   0x246
+#define METATILE_DewfordGym_Reverchon_9   0x247
+
 // gTileset_EliteFour
 #define METATILE_EliteFour_EntryDoor_ClosedBottom    0x20E
 #define METATILE_EliteFour_EntryDoor_ClosedTop       0x206
