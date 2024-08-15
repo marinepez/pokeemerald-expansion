@@ -94,6 +94,45 @@ MAGM9_Mall_MainArea_MapScripts_HideRollingGiant:
 	removeobject LOCALID_GIANT
 	return
 
+Mall_FridgeForRotom::
+	lockall
+	msgbox Mall_FridgeForRotom_Text1, MSGBOX_DEFAULT
+	waitmessage
+	playmoncry SPECIES_ROTOM, CRY_MODE_NORMAL
+	waitmoncry
+	msgbox Mall_FridgeForRotom_Text2, MSGBOX_YESNO
+	switch VAR_RESULT
+	case YES, Mall_FridgeForRotom_RotomPossessedFridge
+	case NO, Mall_FridgeForRotom_NoFridge
+	case MULTI_B_PRESSED, Mall_FridgeForRotom_NoFridge
+Mall_FridgeForRotom_RotomPossessedFridge::
+	fadescreen FADE_TO_BLACK
+	call Mall_FridgeForRotom_RemoveFridge
+	special TryRotomFormChangeInParty
+	setflag FLAG_HAS_ROTOM_FROST
+	releaseall
+	end
+
+Mall_FridgeForRotom_NoFridge::
+	msgbox Mall_FridgeForRotom_Text_NoFridge, MSGBOX_DEFAULT
+	releaseall
+	end
+
+Mall_FridgeForRotom_RemoveFridge::
+	setmetatile 84, 70, METATILE_PokemonFanClub_Floor, FALSE
+	setmetatile 84, 69, METATILE_PokemonFanClub_Wall_Bottom, TRUE
+	return
+
+Mall_FridgeForRotom_Text1::
+	.string "This fridge is still here?$"
+
+Mall_FridgeForRotom_Text2::
+	.string "Rotom seems to want to possess the\n"
+	.string "fridge! Let Rotom in?$"
+
+Mall_FridgeForRotom_Text_NoFridge::
+	.string "You left the fridge alone.$"
+
 Mall_ShopsToMall::
 	setmaplayoutindex LAYOUT_MAGM9_MALL_MAIN_AREA
 	setvar VAR_FLASH_LAYER 4
@@ -104,6 +143,25 @@ Mall_ShopsToMall::
 
 Mall_MallToShops1::
 	setmaplayoutindex LAYOUT_MAGM9_MALL_SHOPS1
+	setvar VAR_FLASH_LAYER 2
+	special SetFlashlightRevealLayer
+	special DrawWholeMapView
+	releaseall
+	end
+
+Mall_ArcadeToSecretRoom::
+	setmaplayoutindex LAYOUT_MAGM9_MALL_SHOPS1
+	setflag FLAG_DISABLE_GIANT_ENCOUNTERS
+	setvar VAR_FLASH_LAYER 2
+	special SetFlashlightRevealLayer
+	call_if_set FLAG_HAS_ROTOM_FROST Mall_FridgeForRotom_RemoveFridge
+	special DrawWholeMapView
+	releaseall
+	end
+
+Mall_SecretRoomToArcade::
+	setmaplayoutindex LAYOUT_MAGM9_MALL_ARCADE
+	clearflag FLAG_DISABLE_GIANT_ENCOUNTERS
 	setvar VAR_FLASH_LAYER 2
 	special SetFlashlightRevealLayer
 	special DrawWholeMapView

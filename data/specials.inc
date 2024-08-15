@@ -557,4 +557,5 @@ gSpecials::
 	def_special SetFlashlightRevealLayer
 	def_special UpdateFlashScanlines
 	def_special CapitalizeAndCompareString
+	def_special TryRotomFormChangeInParty
 

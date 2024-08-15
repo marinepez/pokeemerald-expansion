@@ -1324,6 +1324,7 @@ extern const u8 CableClub_Text_CanMixRecords[];
 extern const u8 CableClub_Text_CanMakeBerryPowder[];
 
 // Rotom Catalog text
+extern const u8 gText_RevertForm[];
 extern const u8 gText_LightBulb[];
 extern const u8 gText_MicrowaveOven[];
 extern const u8 gText_WashingMachine[];

@@ -1759,6 +1759,7 @@ const u8 gText_TrainerHill1F[] = _("1F");
 const u8 gText_TrainerHill2F[] = _("2F");
 const u8 gText_TrainerHill3F[] = _("3F");
 const u8 gText_TrainerHill4F[] = _("4F");
+const u8 gText_RevertForm[] = _("REVERT FORM");
 const u8 gText_LightBulb[] = _("Light bulb");
 const u8 gText_MicrowaveOven[] = _("Microwave oven");
 const u8 gText_WashingMachine[] = _("Washing machine");

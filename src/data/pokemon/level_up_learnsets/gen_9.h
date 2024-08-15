@@ -11321,6 +11321,13 @@ static const struct LevelUpMove sAbomasnowLevelUpLearnset[] = {
 
 #if P_FAMILY_ROTOM
 static const struct LevelUpMove sRotomLevelUpLearnset[] = {
+    //Added form moves so that rotom does not forget the moves when leveling down
+    LEVEL_UP_MOVE( 0, MOVE_BLIZZARD),
+    LEVEL_UP_MOVE( 0, MOVE_AIR_SLASH),
+    LEVEL_UP_MOVE( 0, MOVE_LEAF_STORM),
+    LEVEL_UP_MOVE( 0, MOVE_OVERHEAT),
+    LEVEL_UP_MOVE( 0, MOVE_HYDRO_PUMP),
+    LEVEL_UP_MOVE( 0, MOVE_THUNDER_SHOCK),
     LEVEL_UP_MOVE( 1, MOVE_DOUBLE_TEAM),
     LEVEL_UP_MOVE( 1, MOVE_ASTONISH),
     LEVEL_UP_MOVE( 5, MOVE_THUNDER_SHOCK),

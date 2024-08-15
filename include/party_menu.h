@@ -102,5 +102,6 @@ void ForgetOrReplaceMove(struct Pokemon *mon, u8 slot);
 void BufferMoveDeleterNicknameAndMove(void);
 void GetNumMovesSelectedMonHas(void);
 void MoveDeleterChooseMoveToForget(void);
+void TryRotomFormChangeInParty(void);
 
 #endif // GUARD_PARTY_MENU_H

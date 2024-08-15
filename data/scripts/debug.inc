@@ -138,10 +138,22 @@ Debug_EventScript_Text_DefensiveIVs:
 	.string "HP IVs: {STR_VAR_1}, DEF IVs: {STR_VAR_2}, SPDEF IVs: {STR_VAR_3}$"
 
 Debug_EventScript_Script_1::
-	setflashlevel 3
+	call Common_EventScript_SaveGame
+	closemessage
 	end
 
 Debug_EventScript_Script_2::
+	fadescreen FADE_TO_BLACK
+	special TryRotomFormChangeInParty
+	goto Debug_ToggleRotomForm
+	end
+
+Debug_ToggleRotomForm::
+	goto_if_set FLAG_HAS_ROTOM_FROST Debug_ToggleRotomForm_ClearFlag
+	setflag FLAG_HAS_ROTOM_FROST
+	end
+Debug_ToggleRotomForm_ClearFlag::
+	clearflag FLAG_HAS_ROTOM_FROST
 	end
 
 Debug_EventScript_Script_3::

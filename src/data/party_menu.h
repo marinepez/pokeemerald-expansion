@@ -711,6 +711,7 @@ struct
     [MENU_TRADE1] = {gText_Trade4, CursorCb_Trade1},
     [MENU_TRADE2] = {gText_Trade4, CursorCb_Trade2},
     [MENU_TOSS] = {gMenuText_Toss, CursorCb_Toss},
+    [MENU_REVERT_ROTOM_FORM] = {gText_RevertForm, CursorCb_RevertRotomForm},
     [MENU_CATALOG_BULB] = {gText_LightBulb, CursorCb_CatalogBulb},
     [MENU_CATALOG_OVEN] = {gText_MicrowaveOven, CursorCb_CatalogOven},
     [MENU_CATALOG_WASHING] = {gText_WashingMachine, CursorCb_CatalogWashing},
@@ -736,7 +737,6 @@ static const u8 sPartyMenuAction_TradeSummaryCancel2[] = {MENU_TRADE2, MENU_SUMM
 static const u8 sPartyMenuAction_TakeItemTossCancel[] = {MENU_TAKE_ITEM, MENU_TOSS, MENU_CANCEL1};
 static const u8 sPartyMenuAction_RotomCatalog[] = {MENU_CATALOG_BULB, MENU_CATALOG_OVEN, MENU_CATALOG_WASHING, MENU_CATALOG_FRIDGE, MENU_CATALOG_FAN, MENU_CATALOG_MOWER, MENU_CANCEL1};
 static const u8 sPartyMenuAction_ZygardeCube[] = {MENU_CHANGE_FORM, MENU_CHANGE_ABILITY, MENU_CANCEL1};
-
 
 
 static const u8 *const sPartyMenuActions[] =

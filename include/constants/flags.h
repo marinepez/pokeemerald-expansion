@@ -512,9 +512,9 @@
 #define FLAG_DEFEATED_HO_OH                  0x1DC
 #define FLAG_DEFEATED_LUGIA                  0x1DD
 
-#define FLAG_DISABLE_COLLISION               0x1DE // Unused Flag
-#define FLAG_FORCE_AMC_LIGHTS                0x1DF // Unused Flag
-#define FLAG_UNUSED_0x1E0                    0x1E0 // Unused Flag
+#define FLAG_DISABLE_COLLISION               0x1DE
+#define FLAG_FORCE_AMC_LIGHTS                0x1DF
+#define FLAG_HAS_ROTOM_FROST                 0x1E0
 #define FLAG_UNUSED_0x1E1                    0x1E1 // Unused Flag
 #define FLAG_UNUSED_0x1E2                    0x1E2 // Unused Flag
 #define FLAG_UNUSED_0x1E3                    0x1E3 // Unused Flag

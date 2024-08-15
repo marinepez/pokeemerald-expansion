@@ -40,7 +40,7 @@
 #include "constants/metatile_behaviors.h"
 
 static EWRAM_DATA u8 sGiantEncounterImmunitySteps = 0;
-static EWRAM_DATA u16 sPrevMetatileBehavior = 0;
+//static EWRAM_DATA u16 sPrevMetatileBehavior = 0;
 
 u8 gSelectedObjectEvent;
 
