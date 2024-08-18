@@ -98,7 +98,7 @@ static bool8 WaitForMovementDelay(struct Sprite *);
 static u8 GetCollisionInDirection(struct ObjectEvent *, u8);
 static u8 GetCollisionInAngle(struct ObjectEvent *, int);
 static u8 GetCollisionInAngleWithDistance(struct ObjectEvent *, int, int);
-static u8 GetNonPlayerCollisionInDirection(struct ObjectEvent *objectEvent, u8 direction);
+static u8 GetGiantCollisionInDirection(struct ObjectEvent *objectEvent, u8 direction, bool8 ignorePlayer);
 static bool8 DoesObjectCollideWithPlayerInDirection(struct ObjectEvent *objectEvent, u8 direction);
 static void DoObjectEventMovementByAngle(struct ObjectEvent *objectEvent, struct Sprite *sprite, u16 speed, u16 angle);
 static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite *sprite, u16 speed, u8 dir);
@@ -4994,151 +4994,151 @@ static u8 GetDirectionForRollingGiant(struct ObjectEvent *objectEvent)
         }
     }
 
-    if(!GetNonPlayerCollisionInDirection(objectEvent, direction)) return direction;
+    if(!GetGiantCollisionInDirection(objectEvent, direction, TRUE)) return direction;
     else { //Find next best tile
         switch(direction)
         {
             case DIR_SOUTH:
                 if (playerx > objectx)
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHEAST, TRUE)) return DIR_SOUTHEAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHWEST, TRUE)) return DIR_SOUTHWEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_EAST, TRUE)) return DIR_EAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_WEST, TRUE)) return DIR_WEST;
                     else return DIR_SOUTH;
                 }
                 else
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHWEST, TRUE)) return DIR_SOUTHWEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHEAST, TRUE)) return DIR_SOUTHEAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_WEST, TRUE)) return DIR_WEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_EAST, TRUE)) return DIR_EAST;
                     else return DIR_SOUTH;
                 }
                 break;
             case DIR_NORTH:
                 if (playerx > objectx)
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHEAST, TRUE)) return DIR_NORTHEAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHWEST, TRUE)) return DIR_NORTHWEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_EAST, TRUE)) return DIR_EAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_WEST, TRUE)) return DIR_WEST;
                     else return DIR_NORTH;   
                 }
                 else
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHWEST, TRUE)) return DIR_NORTHWEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHEAST, TRUE)) return DIR_NORTHEAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_WEST, TRUE)) return DIR_WEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_EAST, TRUE)) return DIR_EAST;
                     else return DIR_NORTH;
                 }
                 break;
             case DIR_WEST:
                 if (playery > objecty)
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHWEST, TRUE)) return DIR_SOUTHWEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHWEST, TRUE)) return DIR_NORTHWEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTH, TRUE)) return DIR_SOUTH;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTH, TRUE)) return DIR_NORTH;
                     else return DIR_WEST;
                 }
                 else
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHWEST, TRUE)) return DIR_NORTHWEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHWEST, TRUE)) return DIR_SOUTHWEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTH, TRUE)) return DIR_NORTH;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTH, TRUE)) return DIR_SOUTH;
                     else return DIR_WEST;
                 }
                 break;
             case DIR_EAST:
                 if (playery > objecty)
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHEAST, TRUE)) return DIR_SOUTHEAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHEAST, TRUE)) return DIR_NORTHEAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTH, TRUE)) return DIR_SOUTH;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTH, TRUE)) return DIR_NORTH;
                     else return DIR_EAST;                    
                 }
                 else
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHEAST, TRUE)) return DIR_NORTHEAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHEAST, TRUE)) return DIR_SOUTHEAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTH, TRUE)) return DIR_NORTH;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTH, TRUE)) return DIR_SOUTH;
                     else return DIR_EAST;
                 }
                 break;
             case DIR_SOUTHWEST:
                 if (abs(slope) > 1)
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTH, TRUE)) return DIR_SOUTH;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_WEST, TRUE)) return DIR_WEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHEAST, TRUE)) return DIR_SOUTHEAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHWEST, TRUE)) return DIR_NORTHWEST;
                     else return DIR_SOUTHWEST;
                 }
                 else
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_WEST, TRUE)) return DIR_WEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTH, TRUE)) return DIR_SOUTH;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHWEST, TRUE)) return DIR_NORTHWEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHEAST, TRUE)) return DIR_SOUTHEAST;
                     else return DIR_SOUTHWEST;
                 }
                 break;
             case DIR_SOUTHEAST:
                 if (abs(slope) > 1)
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTH, TRUE)) return DIR_SOUTH;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_EAST, TRUE)) return DIR_EAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHWEST, TRUE)) return DIR_SOUTHWEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHEAST, TRUE)) return DIR_NORTHEAST;
                     else return DIR_SOUTHEAST;
                 }
                 else
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTH)) return DIR_SOUTH;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_EAST, TRUE)) return DIR_EAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTH, TRUE)) return DIR_SOUTH;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHEAST, TRUE)) return DIR_NORTHEAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHWEST, TRUE)) return DIR_SOUTHWEST;
                     else return DIR_SOUTHEAST;
                 }
                 break;
             case DIR_NORTHWEST:
                 if (abs(slope) > 1)
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTH, TRUE)) return DIR_NORTH;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_WEST, TRUE)) return DIR_WEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHEAST, TRUE)) return DIR_NORTHEAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHWEST, TRUE)) return DIR_SOUTHWEST;
                     else return DIR_NORTHWEST;
                 }
                 else
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_WEST)) return DIR_WEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHWEST)) return DIR_SOUTHWEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHEAST)) return DIR_NORTHEAST;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_WEST, TRUE)) return DIR_WEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTH, TRUE)) return DIR_NORTH;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHWEST, TRUE)) return DIR_SOUTHWEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHEAST, TRUE)) return DIR_NORTHEAST;
                     else return DIR_NORTHWEST;
                 }
                 break;
             case DIR_NORTHEAST:
                 if (abs(slope) > 1)
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTH, TRUE)) return DIR_NORTH;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_EAST, TRUE)) return DIR_EAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHWEST, TRUE)) return DIR_NORTHWEST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHEAST, TRUE)) return DIR_SOUTHEAST;
                     else return DIR_NORTHEAST;
                 }
                 else
                 {
-                    if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_EAST)) return DIR_EAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTH)) return DIR_NORTH;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_SOUTHEAST)) return DIR_SOUTHEAST;
-                    else if(!GetNonPlayerCollisionInDirection(objectEvent, DIR_NORTHWEST)) return DIR_NORTHWEST;
+                    if(!GetGiantCollisionInDirection(objectEvent, DIR_EAST, TRUE)) return DIR_EAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTH, TRUE)) return DIR_NORTH;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_SOUTHEAST, TRUE)) return DIR_SOUTHEAST;
+                    else if(!GetGiantCollisionInDirection(objectEvent, DIR_NORTHWEST, TRUE)) return DIR_NORTHWEST;
                     else return DIR_NORTHEAST;
                 }
                 break;
@@ -5164,14 +5164,11 @@ bool8 MovementType_Chase_Step4(struct ObjectEvent *objectEvent, struct Sprite *s
     SetObjectEventDirection(objectEvent, chosenDirection);
     sprite->sTypeFuncId = 5;
 
-    collision = GetCollisionInDirection(objectEvent, chosenDirection);
+    collision = GetGiantCollisionInDirection(objectEvent, chosenDirection, TRUE);
+    DebugPrintf("Collision on step 4: %d", collision);
 
     if (collision && collision != COLLISION_ELEVATION_MISMATCH)
     {
-        if(DoesObjectCollideWithPlayerInDirection(objectEvent, chosenDirection))
-        {
-            ScriptContext_SetupScript(EventScript_RollingGiantBattle);
-        }
         sprite->sPrevDir = DIR_NONE;
         sprite->sPrevSpeed = 0;
         sprite->sTypeFuncId = 1;
@@ -5525,28 +5522,93 @@ UNUSED u8 GetCollisionInAngleWithDistance(struct ObjectEvent *objectEvent, int a
     return GetCollisionAtCoords(objectEvent, x, y, objectEvent->movementDirection);
 }
 
-//Don't detect collisions with that player: We want it to collide with the player.
-static u8 GetNonPlayerCollisionInDirection(struct ObjectEvent *objectEvent, u8 direction)
+//When ignorePlayer is active, don't detect collisions with that player: We want it to collide with the player.
+static u8 GetGiantCollisionInDirection(struct ObjectEvent *objectEvent, u8 direction, bool8 ignorePlayer)
 {
+    s16 checkX[3], checkY[3];
+    u8 numChecks, i, collision;
     s16 x = objectEvent->currentCoords.x;
     s16 y = objectEvent->currentCoords.y;
     MoveObjectEventCoords(direction, &x, &y);
 
-    u8 collision = GetCollisionAtCoords(objectEvent, x, y, direction);
-    if (collision == COLLISION_OBJECT_EVENT)
+    switch (direction)
     {
-        //DebugPrintf("Object Collision at %d.%d,%d.%d", x>>8, x&255, y>>8, y&255);
-        if(CheckObjectEventHitboxXY(&gObjectEvents[gPlayerAvatar.objectEventId], x, y)) return COLLISION_NONE;
-        else return COLLISION_OBJECT_EVENT;
+    case DIR_SOUTH:
+        checkX[0] = x + GIANT_HITBOX_RIGHT;
+        checkY[0] = y + GIANT_HITBOX_BOTTOM;
+        checkX[1] = x + GIANT_HITBOX_LEFT;
+        checkY[1] = y + GIANT_HITBOX_BOTTOM;
+        numChecks = 2;
+        break;
+    case DIR_NORTH:
+        checkX[0] = x + GIANT_HITBOX_RIGHT;
+        checkY[0] = y + GIANT_HITBOX_TOP;
+        checkX[1] = x + GIANT_HITBOX_LEFT;
+        checkY[1] = y + GIANT_HITBOX_TOP;
+        numChecks = 2;
+        break;
+    case DIR_EAST:
+        checkX[0] = x + GIANT_HITBOX_RIGHT;
+        checkY[0] = y + GIANT_HITBOX_TOP;
+        checkX[1] = x + GIANT_HITBOX_RIGHT;
+        checkY[1] = y + GIANT_HITBOX_BOTTOM;
+        numChecks = 2;
+        break;
+    case DIR_WEST:
+        checkX[0] = x + GIANT_HITBOX_LEFT;
+        checkY[0] = y + GIANT_HITBOX_TOP;
+        checkX[1] = x + GIANT_HITBOX_LEFT;
+        checkY[1] = y + GIANT_HITBOX_BOTTOM;
+        numChecks = 2;
+        break;
+    case DIR_SOUTHWEST:
+        checkX[0] = x + GIANT_HITBOX_LEFT;
+        checkY[0] = y + GIANT_HITBOX_BOTTOM;
+        numChecks = 1;
+        break;
+    case DIR_SOUTHEAST:
+        checkX[0] = x + GIANT_HITBOX_RIGHT;
+        checkY[0] = y + GIANT_HITBOX_BOTTOM;
+        numChecks = 1;
+        break;
+    case DIR_NORTHWEST:
+        checkX[0] = x + GIANT_HITBOX_LEFT;
+        checkY[0] = y + GIANT_HITBOX_TOP;
+        numChecks = 1;
+        break;
+    case DIR_NORTHEAST:
+        checkX[0] = x + GIANT_HITBOX_RIGHT;
+        checkY[0] = y + GIANT_HITBOX_TOP;
+        numChecks = 1;
+        break;
+    default:
+        checkX[0] = x;
+        checkY[0] = y;
+        numChecks = 1;
     }
-    //Giant doesn't care about elevation differences
-    else if(collision == COLLISION_ELEVATION_MISMATCH)
+
+    for (i = 0; i < numChecks; i++)
     {
-        return COLLISION_NONE;
+        collision = GetCollisionAtCoords(objectEvent, checkX[i], checkY[i], direction);
+
+        //Ignore collisions with the player - for determining direction
+        if (ignorePlayer && collision == COLLISION_OBJECT_EVENT)
+        {
+            if(!CheckObjectEventHitboxXY(&gObjectEvents[gPlayerAvatar.objectEventId], checkX[i], checkY[i]))
+            {
+                return collision;
+            }
+        }
+        //Giant doesn't care about elevation differences
+        else if(collision != COLLISION_ELEVATION_MISMATCH && collision != COLLISION_NONE)
+        {
+            DebugPrintf("ignorePlayer: %d, Dir: %d, Collision %d at %d.%d,%d.%d", ignorePlayer, direction, collision, x>>8, x&255, y>>8, y&255);
+            return collision;
+        }
     }
     
-    //DebugPrintf("Collision at %d.%d,%d.%d", x>>8, x&255, y>>8, y&255);
-    return collision;
+    DebugPrintf("Broke for loop; ignorePlayer: %d, Collision %d at %d.%d,%d.%d", ignorePlayer, collision, x>>8, x&255, y>>8, y&255);
+    return COLLISION_NONE;
 }
 
 static bool8 DoesObjectCollideWithPlayerInDirection(struct ObjectEvent *objectEvent, u8 direction)
@@ -5670,7 +5732,8 @@ static bool8 DoesObjectCollideWithObjectAt(struct ObjectEvent *objectEvent, s16 
             // TODO: this works, but could be better
             if (CheckObjectEventHitboxXY(curObject, x, y))
             {
-                if (AreElevationsCompatible(objectEvent->currentElevation, curObject->currentElevation))
+                //Because giant ignores elevations, elevations are always compatible when giant finds player
+                if (AreElevationsCompatible(objectEvent->currentElevation, curObject->currentElevation) || (objectEvent->graphicsId == OBJ_EVENT_GFX_POOCHYENA && curObject->isPlayer))
                     return TRUE;
             }
         }
@@ -5970,11 +6033,24 @@ const u8 gAdjacentDirections[][2] =
     [DIR_SOUTH] = { DIR_SOUTHEAST, DIR_SOUTHWEST },
     [DIR_NORTH] = { DIR_NORTHEAST, DIR_NORTHWEST },
     [DIR_WEST] = { DIR_SOUTHWEST, DIR_NORTHWEST },
-    [DIR_EAST] = { DIR_EAST, DIR_EAST },
+    [DIR_EAST] = { DIR_SOUTHEAST, DIR_NORTHEAST },
     [DIR_SOUTHWEST] = { DIR_SOUTH, DIR_WEST },
     [DIR_SOUTHEAST] = { DIR_SOUTH, DIR_EAST },
     [DIR_NORTHWEST] = { DIR_NORTH, DIR_WEST },
     [DIR_NORTHEAST] = { DIR_NORTH, DIR_EAST },
+};
+
+const u8 gPerpendicularDirections[][2] =
+{
+    [DIR_NONE] = { DIR_NONE, DIR_NONE },
+    [DIR_SOUTH] = { DIR_EAST, DIR_WEST },
+    [DIR_NORTH] = { DIR_EAST, DIR_WEST },
+    [DIR_WEST] = { DIR_SOUTH, DIR_NORTH },
+    [DIR_EAST] = { DIR_SOUTH, DIR_NORTH },
+    [DIR_SOUTHWEST] = { DIR_SOUTHEAST, DIR_NORTHWEST },
+    [DIR_SOUTHEAST] = { DIR_SOUTHWEST, DIR_NORTHEAST },
+    [DIR_NORTHWEST] = { DIR_NORTHEAST, DIR_SOUTHWEST },
+    [DIR_NORTHEAST] = { DIR_NORTHWEST, DIR_SOUTHEAST },
 };
 
 bool8 IsDirectionDiagonal(u8 direction)
@@ -9276,13 +9352,26 @@ static void DoObjectEventMovementByAngle(struct ObjectEvent *objectEvent, struct
     UpdateObjectEventTookStep(objectEvent, x, y);
 }
 
-static u8 CheckForPlayerCollision(struct ObjectEvent *objectEvent, s16 xOffset, s16 yOffset, u8 dir)
+static u8 CheckCollisionForWallSliding(struct ObjectEvent *objectEvent, s16 xOffset, s16 yOffset, u8 dir)
 {
     u32 collision = CheckForObjectEventCollision(objectEvent, objectEvent->currentCoords.x+xOffset, objectEvent->currentCoords.y+yOffset, dir, ObjectEventGetMetatileBehaviorAt(objectEvent->currentCoords.x, objectEvent->currentCoords.y));
     if(collision == COLLISION_OBJECT_EVENT) 
     {
-        objectEvent->currentCoords.x = objectEvent->previousCoords.x;
-        objectEvent->currentCoords.y = objectEvent->previousCoords.y;
+        if(objectEvent->isPlayer)
+        {
+            objectEvent->currentCoords.x = objectEvent->previousCoords.x;
+            objectEvent->currentCoords.y = objectEvent->previousCoords.y;
+        }
+        //Assume all giant object event collisions are with player (dangerous)
+        else if(objectEvent->graphicsId == OBJ_EVENT_GFX_POOCHYENA)
+        {
+            ScriptContext_SetupScript(EventScript_RollingGiantBattle);
+        }
+        return COLLISION_NONE;
+    }
+    //Giant ignores elevation mismatch collisions
+    else if(collision == COLLISION_ELEVATION_MISMATCH && objectEvent->graphicsId == OBJ_EVENT_GFX_POOCHYENA)
+    {
         return COLLISION_NONE;
     }
     else if(isDiagonalMetatile(objectEvent->currentCoords.x+xOffset, objectEvent->currentCoords.y+yOffset)) return COLLISION_NONE;
@@ -9307,172 +9396,166 @@ static void DoObjectEventMovement(struct ObjectEvent *objectEvent, struct Sprite
     objectEvent->currentCoords.x += x;
     objectEvent->currentCoords.y += y;
 
-    //EVALUATE COLLISIONS HERE FOR PLAYER BECAUSE WHOOP DEE DOO
-    //If the object is the player...
-    //AND if current coords are a collision...
-    //AND if it's possible to still move in some direction... (it will be because we sensed player avatar collision earlier)
-    //Move in that direction as far as you can
-    if(objectEvent->isPlayer)
+
+    //DebugPrintf("PrevCoords: x:%d.%d, y:%d.%d", objectEvent->previousCoords.x>>8, objectEvent->previousCoords.x&255, objectEvent->previousCoords.y>>8, objectEvent->previousCoords.y&255);
+    //DebugPrintf("CurrCoords: x:%d.%d, y:%d.%d", objectEvent->currentCoords.x>>8, objectEvent->currentCoords.x&255, objectEvent->currentCoords.y>>8, objectEvent->currentCoords.y&255);
+
+    //Evaluate stair interactions here
+    if(MetatileBehavior_IsStairsRight(ObjectEventGetMetatileBehaviorAt(objectEvent->currentCoords.x, objectEvent->currentCoords.y)))
     {
-//        DebugPrintf("PrevCoords: x:%d.%d, y:%d.%d", objectEvent->previousCoords.x>>8, objectEvent->previousCoords.x&255, objectEvent->previousCoords.y>>8, objectEvent->previousCoords.y&255);
-//        DebugPrintf("CurrCoords: x:%d.%d, y:%d.%d", objectEvent->currentCoords.x>>8, objectEvent->currentCoords.x&255, objectEvent->currentCoords.y>>8, objectEvent->currentCoords.y&255);
-
-        //Evaluate stair interactions here
-        if(MetatileBehavior_IsStairsRight(ObjectEventGetMetatileBehaviorAt(objectEvent->currentCoords.x, objectEvent->currentCoords.y)))
+        if(!FlagGet(FLAG_TEMP_1F)) // (AVIRCODE) Snaps the Y coordinate upon entering the stairs. It currently uses up FLAG_TEMP_1F, but I doubt we'll go as far as to use that anyway.
         {
-            if(!FlagGet(FLAG_TEMP_1F)) // (AVIRCODE) Snaps the Y coordinate upon entering the stairs. It currently uses up FLAG_TEMP_1F, but I doubt we'll go as far as to use that anyway.
-            {
-                objectEvent->currentCoords.y /= 256;
-                objectEvent->currentCoords.y *= 256;
-                objectEvent->currentCoords.y += 48;
-                FlagSet(FLAG_TEMP_1F);
-            }
-            switch(dir)
-            {
-                case DIR_EAST:
-                case DIR_WEST:
-                    objectEvent->currentCoords.y += x;
-                    break;
-            }
+            objectEvent->currentCoords.y /= 256;
+            objectEvent->currentCoords.y *= 256;
+            objectEvent->currentCoords.y += 48;
+            FlagSet(FLAG_TEMP_1F);
         }
-        else
-        {
-            FlagClear(FLAG_TEMP_1F);
-        }
-
-        //Evaluate collisions here
         switch(dir)
         {
-            case DIR_SOUTH:
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir)
-                || CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
-                 {
-                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
-                    objectEvent->currentCoords.y |= 0x7F;
-                 }
-                break;
-            case DIR_NORTH:
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir)
-                || CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
-                {
-                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
-                }
-                break;
             case DIR_EAST:
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir)
-                || CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir))
-                {
-                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
-                    objectEvent->currentCoords.x |= 0x90;
-                }
-                break;
             case DIR_WEST:
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir)
-                || CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
-                {
-                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
-                    objectEvent->currentCoords.x |= 0x70;
-                }
-                break;
-            case DIR_SOUTHEAST:
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
-                {
-                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
-                    objectEvent->currentCoords.y |= 0x7F;
-                }
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir))
-                {
-                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
-                    objectEvent->currentCoords.x |= 0x90;
-                }
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir))
-                {
-                    if(COORDS_TO_GRID(objectEvent->currentCoords.x+PLAYER_HITBOX_RIGHT) > COORDS_TO_GRID(objectEvent->previousCoords.x+PLAYER_HITBOX_RIGHT))
-                    {
-                        objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
-                        objectEvent->currentCoords.x |= 0x90;
-                    }
-                    if(COORDS_TO_GRID(objectEvent->currentCoords.y+PLAYER_HITBOX_BOTTOM) > COORDS_TO_GRID(objectEvent->previousCoords.y+PLAYER_HITBOX_BOTTOM))
-                    {
-                        objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
-                        objectEvent->currentCoords.y |= 0x7F;
-                    }
-                }
-                break;
-            case DIR_SOUTHWEST:
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir))
-                {
-                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
-                    objectEvent->currentCoords.y |= 0x7F;
-                }
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
-                {
-                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
-                    objectEvent->currentCoords.x |= 0x70;
-                }
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
-                {
-                    if(COORDS_TO_GRID(objectEvent->currentCoords.x+PLAYER_HITBOX_LEFT) < COORDS_TO_GRID(objectEvent->previousCoords.x+PLAYER_HITBOX_LEFT))
-                    {
-                        objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
-                        objectEvent->currentCoords.x |= 0x70;
-                    }
-                    if(COORDS_TO_GRID(objectEvent->currentCoords.y+PLAYER_HITBOX_BOTTOM) > COORDS_TO_GRID(objectEvent->previousCoords.y+PLAYER_HITBOX_BOTTOM))
-                    {
-                        objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
-                        objectEvent->currentCoords.y |= 0x7F;
-                    }
-                }
-                break;
-            case DIR_NORTHEAST:
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
-                {
-                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
-                }
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir))
-                {
-                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
-                    objectEvent->currentCoords.x |= 0x90;
-                }
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir))
-                {
-                    if(COORDS_TO_GRID(objectEvent->currentCoords.x+PLAYER_HITBOX_RIGHT) > COORDS_TO_GRID(objectEvent->previousCoords.x+PLAYER_HITBOX_RIGHT))
-                    {
-                        objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
-                        objectEvent->currentCoords.x |= 0x90;
-                    }
-                    if(COORDS_TO_GRID(objectEvent->currentCoords.y-PLAYER_HITBOX_TOP) < COORDS_TO_GRID(objectEvent->previousCoords.y-PLAYER_HITBOX_TOP))
-                    {
-                        objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
-                    }
-                }
-                break;
-            case DIR_NORTHWEST:
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir))
-                {
-                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
-                }
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
-                {
-                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
-                    objectEvent->currentCoords.x |= 0x70;
-                }
-                if(CheckForPlayerCollision(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
-                {
-                    if(COORDS_TO_GRID(objectEvent->currentCoords.x+PLAYER_HITBOX_LEFT) < COORDS_TO_GRID(objectEvent->previousCoords.x+PLAYER_HITBOX_LEFT))
-                    {
-                        objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
-                        objectEvent->currentCoords.x |= 0x70;
-                    }
-                    if(COORDS_TO_GRID(objectEvent->currentCoords.y-PLAYER_HITBOX_TOP) < COORDS_TO_GRID(objectEvent->previousCoords.y-PLAYER_HITBOX_TOP))
-                    {
-                        objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
-                    }
-                }
+                objectEvent->currentCoords.y += x;
                 break;
         }
     }
+    else
+    {
+        FlagClear(FLAG_TEMP_1F);
+    }
 
+    //If current coords could cause a collision, but it's still possible to move incrimentally forward or slide on walls, do so
+    //Incremental movement will be possible for player due to sense player avatar collision not returning a collision
+    switch(dir)
+    {
+        case DIR_SOUTH:
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir)
+            || CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
+                {
+                objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                objectEvent->currentCoords.y |= 0x7F;
+                }
+            break;
+        case DIR_NORTH:
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir)
+            || CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
+            {
+                objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+            }
+            break;
+        case DIR_EAST:
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir)
+            || CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir))
+            {
+                objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                objectEvent->currentCoords.x |= 0x90;
+            }
+            break;
+        case DIR_WEST:
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir)
+            || CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
+            {
+                objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                objectEvent->currentCoords.x |= 0x70;
+            }
+            break;
+        case DIR_SOUTHEAST:
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
+            {
+                objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                objectEvent->currentCoords.y |= 0x7F;
+            }
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir))
+            {
+                objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                objectEvent->currentCoords.x |= 0x90;
+            }
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir))
+            {
+                if(COORDS_TO_GRID(objectEvent->currentCoords.x+PLAYER_HITBOX_RIGHT) > COORDS_TO_GRID(objectEvent->previousCoords.x+PLAYER_HITBOX_RIGHT))
+                {
+                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                    objectEvent->currentCoords.x |= 0x90;
+                }
+                if(COORDS_TO_GRID(objectEvent->currentCoords.y+PLAYER_HITBOX_BOTTOM) > COORDS_TO_GRID(objectEvent->previousCoords.y+PLAYER_HITBOX_BOTTOM))
+                {
+                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                    objectEvent->currentCoords.y |= 0x7F;
+                }
+            }
+            break;
+        case DIR_SOUTHWEST:
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir))
+            {
+                objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                objectEvent->currentCoords.y |= 0x7F;
+            }
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
+            {
+                objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                objectEvent->currentCoords.x |= 0x70;
+            }
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
+            {
+                if(COORDS_TO_GRID(objectEvent->currentCoords.x+PLAYER_HITBOX_LEFT) < COORDS_TO_GRID(objectEvent->previousCoords.x+PLAYER_HITBOX_LEFT))
+                {
+                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                    objectEvent->currentCoords.x |= 0x70;
+                }
+                if(COORDS_TO_GRID(objectEvent->currentCoords.y+PLAYER_HITBOX_BOTTOM) > COORDS_TO_GRID(objectEvent->previousCoords.y+PLAYER_HITBOX_BOTTOM))
+                {
+                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                    objectEvent->currentCoords.y |= 0x7F;
+                }
+            }
+            break;
+        case DIR_NORTHEAST:
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
+            {
+                objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+            }
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_BOTTOM, dir))
+            {
+                objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                objectEvent->currentCoords.x |= 0x90;
+            }
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir))
+            {
+                if(COORDS_TO_GRID(objectEvent->currentCoords.x+PLAYER_HITBOX_RIGHT) > COORDS_TO_GRID(objectEvent->previousCoords.x+PLAYER_HITBOX_RIGHT))
+                {
+                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                    objectEvent->currentCoords.x |= 0x90;
+                }
+                if(COORDS_TO_GRID(objectEvent->currentCoords.y-PLAYER_HITBOX_TOP) < COORDS_TO_GRID(objectEvent->previousCoords.y-PLAYER_HITBOX_TOP))
+                {
+                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                }
+            }
+            break;
+        case DIR_NORTHWEST:
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_RIGHT, PLAYER_HITBOX_TOP, dir))
+            {
+                objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+            }
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_BOTTOM, dir))
+            {
+                objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                objectEvent->currentCoords.x |= 0x70;
+            }
+            if(CheckCollisionForWallSliding(objectEvent, PLAYER_HITBOX_LEFT, PLAYER_HITBOX_TOP, dir))
+            {
+                if(COORDS_TO_GRID(objectEvent->currentCoords.x+PLAYER_HITBOX_LEFT) < COORDS_TO_GRID(objectEvent->previousCoords.x+PLAYER_HITBOX_LEFT))
+                {
+                    objectEvent->currentCoords.x = objectEvent->previousCoords.x & ~0xFF;
+                    objectEvent->currentCoords.x |= 0x70;
+                }
+                if(COORDS_TO_GRID(objectEvent->currentCoords.y-PLAYER_HITBOX_TOP) < COORDS_TO_GRID(objectEvent->previousCoords.y-PLAYER_HITBOX_TOP))
+                {
+                    objectEvent->currentCoords.y = objectEvent->previousCoords.y & ~0xFF;
+                }
+            }
+            break;
+    }
+ 
     UpdateObjectEventTookStep(objectEvent, x, y);
 }
 

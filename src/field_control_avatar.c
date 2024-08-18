@@ -779,7 +779,7 @@ static bool8 CheckStandardWildEncounter(u8 playerDirection)
     //DebugPrintf("Encounters: %d, AI State: %d", VarGet(VAR_ROLLING_GIANT_NUM_SIGHTINGS), VarGet(VAR_ROLLING_GIANT_AI_STATE));
 
     //If you ran recently, you get less immunity steps
-    DebugPrintf("Battle Outcome: %d, Steps: %d", gBattleOutcome, sGiantEncounterImmunitySteps);
+    //DebugPrintf("Battle Outcome: %d, Steps: %d", gBattleOutcome, sGiantEncounterImmunitySteps);
     if ((gBattleOutcome == B_OUTCOME_WON && sGiantEncounterImmunitySteps < 50) || (sGiantEncounterImmunitySteps < 20))
     {
         sGiantEncounterImmunitySteps++;
@@ -788,7 +788,7 @@ static bool8 CheckStandardWildEncounter(u8 playerDirection)
 
     if (StandardGiantEncounter(playerDirection))
     {
-        DebugPrintf("Giant Spawned");
+        //DebugPrintf("Giant Spawned");
         fadeOutRollingGiantSound();
         FlagSet(FLAG_GIANT_SPAWNED);
         sGiantEncounterImmunitySteps = 0;
