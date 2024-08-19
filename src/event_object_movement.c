@@ -5165,7 +5165,6 @@ bool8 MovementType_Chase_Step4(struct ObjectEvent *objectEvent, struct Sprite *s
     sprite->sTypeFuncId = 5;
 
     collision = GetGiantCollisionInDirection(objectEvent, chosenDirection, TRUE);
-    DebugPrintf("Collision on step 4: %d", collision);
 
     if (collision && collision != COLLISION_ELEVATION_MISMATCH)
     {
@@ -5602,12 +5601,12 @@ static u8 GetGiantCollisionInDirection(struct ObjectEvent *objectEvent, u8 direc
         //Giant doesn't care about elevation differences
         else if(collision != COLLISION_ELEVATION_MISMATCH && collision != COLLISION_NONE)
         {
-            DebugPrintf("ignorePlayer: %d, Dir: %d, Collision %d at %d.%d,%d.%d", ignorePlayer, direction, collision, x>>8, x&255, y>>8, y&255);
+            //DebugPrintf("ignorePlayer: %d, Dir: %d, Collision %d at %d.%d,%d.%d", ignorePlayer, direction, collision, x>>8, x&255, y>>8, y&255);
             return collision;
         }
     }
     
-    DebugPrintf("Broke for loop; ignorePlayer: %d, Collision %d at %d.%d,%d.%d", ignorePlayer, collision, x>>8, x&255, y>>8, y&255);
+    //DebugPrintf("Broke for loop; ignorePlayer: %d, Collision %d at %d.%d,%d.%d", ignorePlayer, collision, x>>8, x&255, y>>8, y&255);
     return COLLISION_NONE;
 }
 
