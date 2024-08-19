@@ -1820,8 +1820,8 @@ static bool8 TryShowWarpArrow(struct ObjectEvent *objectEvent, u8 direction, u8 
 
 static void HideShowWarpArrow(struct ObjectEvent *objectEvent)
 {
-    s16 x;
-    s16 y;
+//    s16 x;
+//    s16 y;
     u8 direction = objectEvent->movementDirection;
     u8 metatileBehavior = objectEvent->currentMetatileBehavior;
 
