@@ -145,7 +145,7 @@ MAGM9_Mall_Maintenance_MidtownDallasRender::
 	end
 
 MAGM9_Mall_Maintenance_MidtownDallasRenderMsg:
-	.string "It's a rendering of a fancy\nbuilding on a corner.\pThe label says “Midtown Dallas”.$"
+	.string "It's a rendering of a fancy\nbuilding on a corner.\pThe label says “Dallas Midtown”.$"
 
 MAGM9_Mall_Maintenance_ParadeOfGiantsPhoto::
 	lock
@@ -190,7 +190,8 @@ MAGM9_Mall_Maintenance_PCs::
 	bufferstring STR_VAR_2, query_paradeofgiants5
 	special CapitalizeAndCompareString
 	goto_if_eq VAR_RESULT, TRUE, MAGM9_Mall_Maintenance_PCs_ParadeOfGiants
-	bufferstring STR_VAR_2, query_julienreverchon
+
+	bufferstring STR_VAR_2, query_julienreverchon1
 	special CapitalizeAndCompareString
 	goto_if_eq VAR_RESULT, TRUE, MAGM9_Mall_Maintenance_PCs_JulienReverchon
 	bufferstring STR_VAR_2, query_julienreverchon2
@@ -199,6 +200,16 @@ MAGM9_Mall_Maintenance_PCs::
 	bufferstring STR_VAR_2, query_julienreverchon3
 	special CapitalizeAndCompareString
 	goto_if_eq VAR_RESULT, TRUE, MAGM9_Mall_Maintenance_PCs_JulienReverchon
+	bufferstring STR_VAR_2, query_julienreverchon4
+	special CapitalizeAndCompareString
+	goto_if_eq VAR_RESULT, TRUE, MAGM9_Mall_Maintenance_PCs_JulienReverchon
+	bufferstring STR_VAR_2, query_julienreverchon5
+	special CapitalizeAndCompareString
+	goto_if_eq VAR_RESULT, TRUE, MAGM9_Mall_Maintenance_PCs_JulienReverchon
+	bufferstring STR_VAR_2, query_julienreverchon6
+	special CapitalizeAndCompareString
+	goto_if_eq VAR_RESULT, TRUE, MAGM9_Mall_Maintenance_PCs_JulienReverchon
+
 	bufferstring STR_VAR_2, query_kevgon123
 	special CapitalizeAndCompareString
 	goto_if_eq VAR_RESULT, TRUE, MAGM9_Mall_Maintenance_PCs_KevGon123
@@ -302,7 +313,7 @@ research_paradeofgiants:
 	.string "The Parade of Giants is an annual event\ndisplaying music, puppets, floats,\land expressions of their culture!\p"
 	.string "The puppets, known as the rolling giants,\nfeature historical figures who were\limportant to the history of Dallas.\pOne depiction is of “JulienReverchon”,\na famous botanist.\pAlthough he passed in the\nearly 1900s, he will forever be\limmortalized in his puppet.$"
 
-query_julienreverchon:
+query_julienreverchon1:
 	.string "JULIENREVERCHON$"
 
 query_julienreverchon2:
@@ -311,8 +322,17 @@ query_julienreverchon2:
 query_julienreverchon3:
 	.string "JULIEN$"
 
+query_julienreverchon4:
+	.string "JULIANREVERCHON$"
+
+query_julienreverchon5:
+	.string "JULIAN REVERCHO$"
+
+query_julienreverchon6:
+	.string "JULIAN$"
+
 research_julienreverchon:
-	.string "(Assuming you meant “JULIEN REVERCHON”)\n" 
+	.string "(Assumed you meant “JULIEN REVERCHON”)\n" 
 	.string "Julien Reverchon - French Botanist.\p" 
 	.string "A man from the 19th century.\p"
 	.string "Julien was fairly instrumental to the\ncreation of the city of Dallas,\lcontributing via his research and\lteachings involving many new species\lof plants within the area.\pOne Dallas artist, a man named\nKevin Obregón (EMAIL: KevGon123),\lcreated a puppet for an event known as\lthe Parade of Giants.\pHere is a picture of that puppet:$"
@@ -324,13 +344,13 @@ query_kevgon123:
 	.string "KEVGON123$"
 
 research_kevgon123:
-	.string "Email Database: KEVGON123\nRE: Acceptance\pThank you for accepting my request\nto open my studio in ValleyView!\pEver since I moved to Dallas,\nI've always dreamed of having my own\lstudio!\pAs we discussed earlier, I'll move\nmy stuff into the mall tomorrow, so\lplease have a safe ready for me to store\lwhat we talked about.\pAnyways, I am excited to contribute to\nthe evergrowing art community here\land maybe teach some history!$"
+	.string "Email Database: KEVGON123\nRE: Acceptance\pThank you for accepting my request\nto open my studio in ValleyView!\pEver since I moved to Dallas,\nI've always dreamed of having my own\lstudio!\pAs we discussed earlier, I'll move\nmy stuff into the mall tomorrow, so\lplease have a safe ready for me to\lstore what we talked about.\pAnyways, I am excited to contribute to\nthe evergrowing art community here\land maybe teach some history!$"
 
 query_midtowndallas:
-	.string "MIDTOWN DALLAS$"
+	.string "DALLAS MIDTOWN$"
 
 research_midtowndallas:
-	.string "Midtown Dallas - The ambitious revamp\nfor the ValleyView Center.\pThe revamp has been in the works\nfor many years now, however, it's\lbeen delayed numerous times due to\lfinancial, communal, and complexity\nrelated issues.\pThe mall's current owner, “Beck\nVentures”, has revealed their plans to\lfinally begin demolition on the mall to\lmake room for new developments.\pThis is in part due to online shopping\nmaking many malls across the country\lobsolete, and ValleyView Mall is\lunfortunately no exception.$"
+	.string "Dallas Midtown - The ambitious revamp\nfor the ValleyView Center.\pThe revamp has been in the works\nfor many years now, however, it's\lbeen delayed numerous times due to\lfinancial, communal, and complexity\lrelated issues.\pThe mall's current owner, “Beck\nVentures”, has revealed their plans to\lfinally begin demolition on the mall to\lmake room for new developments.\pThis is in part due to online shopping\nmaking many malls across the country\lobsolete, and ValleyView Mall is\lunfortunately no exception.$"
 
 query_ValleyViewCenter:
 	.string "VALLEYVIEW CENTER$"
@@ -360,7 +380,7 @@ query_beckventures2:
 	.string "OWNER"
 
 research_beckventures:
-	.string "Beck Ventures - A Dallas realestate firm.\pJeffrey Beck founded the company 40\nyears ago, but in 2001, left the keys\lto the company to his son, Scott Beck.\pTheir most notorious project,\nknown as Dallas Midtown, has been in\lfairly early stages of development\lfor over a decade.$"
+	.string "Beck Ventures - A Dallas realestate\nfirm.\pJeffrey Beck founded the company 40\nyears ago, but in 2001, left the keys\lto the company to his son, Scott Beck.\pTheir most notorious project,\nknown as Dallas Midtown, has been in\lfairly early stages of development\lfor over a decade.$"
 
 
 query_error:
