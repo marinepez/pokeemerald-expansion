@@ -2,7 +2,7 @@
   "id": "MAP_MAGM9_MALL_DECAYED",
   "name": "MAGM9_Mall_Decayed",
   "layout": "LAYOUT_MAGM9_MALL_DECAYED",
-  "music": "MUS_MALL",
+  "music": "MUS_END_OF_A_GIANT",
   "region_map_section": "MAPSEC_NONE",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -17,7 +17,13 @@
 
   ],
   "warp_events": [
-
+    {
+      "x": 46,
+      "y": 20,
+      "elevation": 0,
+      "dest_map": "MAP_MAGM9_MALL_DECAYED",
+      "dest_warp_id": "0"
+    }
   ],
   "coord_events": [
 
