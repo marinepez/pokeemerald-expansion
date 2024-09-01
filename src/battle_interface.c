@@ -2582,8 +2582,7 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
     }
     else
     {
-        if (elementId == HEALTHBOX_LEVEL || elementId == HEALTHBOX_ALL)
-            UpdateLvlInHealthbox(healthboxSpriteId, GetMonData(mon, MON_DATA_LEVEL));
+        //Never display opposing mon's level
         if (gBattleSpritesDataPtr->battlerData[battlerId].hpNumbersNoBars)
         {
             if (elementId == HEALTHBOX_ALL)
