@@ -18,11 +18,18 @@
   ],
   "warp_events": [
     {
-      "x": 46,
-      "y": 20,
+      "x": 85,
+      "y": 61,
       "elevation": 0,
-      "dest_map": "MAP_MAGM9_MALL_DECAYED",
+      "dest_map": "MAP_MAGM9_MALL_MAINTENANCE",
       "dest_warp_id": "0"
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "elevation": 0,
+      "dest_map": "MAP_MAGM9_MALL_MAIN_AREA",
+      "dest_warp_id": "1"
     }
   ],
   "coord_events": [

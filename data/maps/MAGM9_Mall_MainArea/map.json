@@ -37,8 +37,8 @@
       "dest_warp_id": "0"
     },
     {
-      "x": 17,
-      "y": 31,
+      "x": 85,
+      "y": 61,
       "elevation": 0,
       "dest_map": "MAP_MAGM9_MALL_MAINTENANCE",
       "dest_warp_id": "0"
@@ -120,7 +120,7 @@
     {
       "type": "trigger",
       "x": 43,
-      "y": 44,
+      "y": 48,
       "elevation": 0,
       "var": "VAR_ALWAYSZERO",
       "var_value": "0",
@@ -129,7 +129,7 @@
     {
       "type": "trigger",
       "x": 49,
-      "y": 44,
+      "y": 48,
       "elevation": 0,
       "var": "VAR_ALWAYSZERO",
       "var_value": "0",

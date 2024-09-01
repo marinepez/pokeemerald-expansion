@@ -219,12 +219,12 @@ Save_PC_Prompt:
 	.string "Somehow, this PC appears to be in\nworking condition.\p{PLAYER} can save their progress\nwith it."
 
 Mall_WarpToLowerFloorLeft::
-	warp MAP_MAGM9_MALL_LOWER_FLOOR, 43, 45
+	warp MAP_MAGM9_MALL_TOP_FLOOR, 43, 44
 	waitstate
 	end
 
 Mall_WarpToLowerFloorRight::
-	warp MAP_MAGM9_MALL_LOWER_FLOOR, 49, 45
+	warp MAP_MAGM9_MALL_TOP_FLOOR, 49, 44
 	waitstate
 	end
 

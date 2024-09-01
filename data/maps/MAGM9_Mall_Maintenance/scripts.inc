@@ -371,7 +371,7 @@ query_ValleyViewCenter6:
 	.string "WHERE AM I?$"
 
 research_valleyviewmall:
-	.string "Valley View Center is a former mall\nlocated at Interstate 635 and Preston Road\lin north Dallas, Texas, U.S.\pOwned and managed by “Beck Ventures”,\nthe demolition of the mall was\lcompleted in May 2023.\pPrior to it's demolition, the mall\nwas home to an annual event\lknown as the “Giant's Parade”.$"
+	.string "Valley View Center is a former mall\nlocated at Interstate 635 and\lPreston Road in north Dallas, Texas.\pOwned and managed by “Beck Ventures,”\nthe demolition of the mall was\lcompleted in May 2023.\pPrior to it's demolition, the mall\nwas home to an annual event\lknown as the “Giant's Parade”.$"
 
 query_beckventures:
 	.string "BECK VENTURES$"

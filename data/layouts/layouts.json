@@ -2417,7 +2417,7 @@
       "width": 58,
       "height": 26,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "0",
+      "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/UnusedOutdoorArea/border.bin",
       "blockdata_filepath": "data/layouts/UnusedOutdoorArea/map.bin"
     },
@@ -4555,7 +4555,7 @@
       "id": "LAYOUT_MAGM9_MALL_MAINTENANCE",
       "name": "MAGM9_Mall_Maintenance_Layout",
       "width": 40,
-      "height": 37,
+      "height": 31,
       "primary_tileset": "gTileset_Building",
       "secondary_tileset": "gTileset_Unused1",
       "border_filepath": "data/layouts/MAGM9_Mall_Maintenance/border.bin",
@@ -4567,7 +4567,7 @@
       "width": 90,
       "height": 83,
       "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_Unused1",
+      "secondary_tileset": "gTileset_Fortree",
       "border_filepath": "data/layouts/MAGM9_Mall_TopFloor/border.bin",
       "blockdata_filepath": "data/layouts/MAGM9_Mall_TopFloor/map.bin"
     },
