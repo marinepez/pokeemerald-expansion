@@ -297,7 +297,7 @@ static bool8 TryStartInteractionScript(struct MapPosition *position, u16 metatil
     const u8 *script = GetInteractionScript(position, metatileBehavior, direction);
     if (script == NULL)
     {
-        DebugPrintf("No script at pos %d.%d, %d.%d", position->x>>8, position->x&255, position->y>>8, position->y&255);
+        //DebugPrintf("No script at pos %d.%d, %d.%d", position->x>>8, position->x&255, position->y>>8, position->y&255);
         return FALSE;
     }
 
@@ -394,10 +394,6 @@ static const u8 *GetInteractedObjectEventScript(struct MapPosition *position, u8
 static const u8 *GetInteractedBackgroundEventScript(struct MapPosition *position, u8 metatileBehavior, u8 direction)
 {
     const struct BgEvent *bgEvent = GetBackgroundEventAtPosition(&gMapHeader, position->x - GRID_TO_COORDS(MAP_OFFSET), position->y - GRID_TO_COORDS(MAP_OFFSET), position->elevation);
-    if(bgEvent == NULL)
-    {
-        DebugPrintf("Null event");
-    }
 
     if (bgEvent == NULL)
         return NULL;

@@ -348,7 +348,7 @@ static const u8 sText_WildFled[] = _("{PLAY_SE SE_FLEE}{B_LINK_OPPONENT1_NAME} f
 static const u8 sText_TwoWildFled[] = _("{PLAY_SE SE_FLEE}{B_LINK_OPPONENT1_NAME} and\n{B_LINK_OPPONENT2_NAME} fled!");
 static const u8 sText_NoRunningFromTrainers[] = _("No! There's no running\nfrom a TRAINER battle!\p");
 static const u8 sText_CantEscape[] = _("Can't escape!\p");
-static const u8 sText_DontLeaveBirch[] = _("PROF. BIRCH: Don't leave me like this!\p");
+static const u8 sText_DontLeaveBirch[] = _("Can't run.\p");
 static const u8 sText_ButNothingHappened[] = _("But nothing happened!");
 static const u8 sText_ButItFailed[] = _("But it failed!");
 static const u8 sText_ItHurtConfusion[] = _("It hurt itself in its\nconfusion!");
@@ -844,6 +844,11 @@ static const u8 sText_AttackerLostItsType[] = _("{B_ATK_NAME_WITH_PREFIX} lost\n
 static const u8 sText_ShedItsTail[] = _("{B_ATK_NAME_WITH_PREFIX} shed its tail\nto create a decoy!");
 static const u8 sText_SupersweetAromaWafts[] = _("A supersweet aroma is wafting from\nthe syrup covering {B_ATK_NAME_WITH_PREFIX}!");
 static const u8 sText_TidyingUpComplete[] = _("Tidying up complete!");
+static const u8 sText_LastWords5[] = _("...");
+static const u8 sText_LastWords4[] = _(".eem koew eigth tub nog zuhw\neye");
+static const u8 sText_LastWords3[] = _(".reeh died oo-yuh .mud-eerf\noo-yuh vig taun lihw eye");
+static const u8 sText_LastWords2[] = _(".eem reb-mem-ear meth came nack\noo-yuh tub");
+static const u8 sText_LastWords1[] = _(".veal .tnem-noep-tsoep uh zih\nsith");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
@@ -1543,6 +1548,11 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_ITEMWASUSEDUP - BATTLESTRINGS_TABLE_START] = sText_ItemWasUsedUp,
     [STRINGID_ATTACKERLOSTITSTYPE - BATTLESTRINGS_TABLE_START] = sText_AttackerLostItsType,
     [STRINGID_CLOAKEDINAHARSHLIGHT - BATTLESTRINGS_TABLE_START] = sText_PkmnIsCloakedInAHarshLight,
+    [STRINGID_LASTWORDS5 - BATTLESTRINGS_TABLE_START] = sText_LastWords5,
+    [STRINGID_LASTWORDS4 - BATTLESTRINGS_TABLE_START] = sText_LastWords4,
+    [STRINGID_LASTWORDS3 - BATTLESTRINGS_TABLE_START] = sText_LastWords3,
+    [STRINGID_LASTWORDS2 - BATTLESTRINGS_TABLE_START] = sText_LastWords2,
+    [STRINGID_LASTWORDS1 - BATTLESTRINGS_TABLE_START] = sText_LastWords1,
 };
 
 const u16 gTrainerUsedItemStringIds[] =

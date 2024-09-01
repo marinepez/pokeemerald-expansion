@@ -19817,6 +19817,32 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         }),
     },
 
+    [MOVE_FINAL_WORDS] =
+    {
+        .name = COMPOUND_STRING("Final Words"),
+        .description = COMPOUND_STRING(
+            "It's too late for\n"
+            "you. I'm sorry."),
+        .effect = EFFECT_FINAL_WORDS,
+        .power = 0,
+        .type = TYPE_NORMAL,
+        .accuracy = 0,
+        .pp = 5,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .category = DAMAGE_CATEGORY_STATUS,
+        .meFirstBanned = TRUE,
+        .mimicBanned = TRUE,
+        .metronomeBanned = TRUE,
+        .sleepTalkBanned = TRUE,
+        .copycatBanned = TRUE,
+        .instructBanned = TRUE,
+        .encoreBanned = TRUE,
+        .assistBanned = TRUE,
+        .sketchBanned = TRUE,
+
+    },
+
     // Z-Moves
     [MOVE_BREAKNECK_BLITZ] =
     {

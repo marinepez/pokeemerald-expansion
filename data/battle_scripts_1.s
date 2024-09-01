@@ -9925,3 +9925,9 @@ BattleScript_EffectSnow::
 	call BattleScript_CheckPrimalWeather
 	setsnow
 	goto BattleScript_MoveWeatherChange
+
+BattleScript_EffectFinalWords::
+	ppreduce
+	printlastwords
+	lastwordsdamage
+	goto BattleScript_HitFromAtkAnimation

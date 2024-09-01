@@ -36,6 +36,7 @@ MAGM9_Mall_AMC_Interior_SetGiantXY::
 
 MAGM9_Mall_AMC_Interior_BeforeBattleCutscene::
 	lockall
+	setvar VAR_TEMP_0, 1
 	createplayerfacade
 	setflag FLAG_DISABLE_COLLISION
 	hideobjectat OBJ_EVENT_ID_PLAYER, 0
@@ -52,8 +53,13 @@ MAGM9_Mall_AMC_Interior_BeforeBattleCutscene::
 	delay 80
 	setwildbattle SPECIES_ROLLING_GIANT, 80, ITEM_NONE
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	setflag FLAG_FINAL_BATTLE
 	dowildbattle
+	clearflag FLAG_DISABLE_COLLISION
+	showobjectat OBJ_EVENT_ID_PLAYER, 0
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	setobjectxy OBJ_EVENT_ID_PLAYER, 8, 8
+	call MAGM9_Mall_AMC_Interior_SetAfterBattleTiles
 	releaseall
 	end
 
@@ -100,6 +106,80 @@ MAGM9_Mall_AMC_Interior_ShowPortrait::
 	setvar VAR_AMC_LIGHT_LEVEL, 0
 	special DrawWholeMapView
 	return
+
+MAGM9_Mall_AMC_Interior_SetAfterBattleTiles::
+	//Replace screen tiles
+	setmetatile  3, 1, METATILE_DewfordGym_Broken_Screen_1, TRUE
+	setmetatile  3, 2, METATILE_DewfordGym_Broken_Screen_1, TRUE
+	setmetatile  3, 3, METATILE_DewfordGym_Broken_Screen_1, TRUE
+	setmetatile  3, 4, METATILE_DewfordGym_Broken_Screen_1, TRUE
+	setmetatile  3, 5, METATILE_DewfordGym_Broken_Screen_1, TRUE
+	setmetatile  4, 1, METATILE_DewfordGym_Broken_Screen_2, TRUE
+	setmetatile  4, 2, METATILE_DewfordGym_Broken_Screen_2, TRUE
+	setmetatile  4, 3, METATILE_DewfordGym_Broken_Screen_2, TRUE
+	setmetatile  4, 4, METATILE_DewfordGym_Broken_Screen_2, TRUE
+	setmetatile  4, 5, METATILE_DewfordGym_Broken_Screen_2, TRUE
+	setmetatile  5, 1, METATILE_DewfordGym_Broken_Screen_3A, TRUE
+	setmetatile  5, 2, METATILE_DewfordGym_Broken_Screen_3B, TRUE
+	setmetatile  5, 3, METATILE_DewfordGym_Broken_Screen_3C, TRUE
+	setmetatile  5, 4, METATILE_DewfordGym_Broken_Screen_3D, TRUE
+	setmetatile  5, 5, METATILE_DewfordGym_Broken_Screen_3D, TRUE
+	setmetatile  6, 1, METATILE_DewfordGym_Broken_Screen_4A, TRUE
+	setmetatile  6, 2, METATILE_DewfordGym_Broken_Screen_4B, TRUE
+	setmetatile  6, 3, METATILE_DewfordGym_Broken_Screen_4C, TRUE
+	setmetatile  6, 4, METATILE_DewfordGym_Broken_Screen_4D, TRUE
+	setmetatile  6, 5, METATILE_DewfordGym_Broken_Screen_4E, TRUE
+	setmetatile  7, 1, METATILE_DewfordGym_Broken_Screen_5A, TRUE
+	setmetatile  7, 2, METATILE_DewfordGym_Broken_Screen_5B, TRUE
+	setmetatile  7, 3, METATILE_DewfordGym_Broken_Screen_5C, TRUE
+	setmetatile  7, 4, METATILE_DewfordGym_Broken_Screen_5D, TRUE
+	setmetatile  8, 1, METATILE_DewfordGym_Broken_Screen_6A, TRUE
+	setmetatile  8, 2, METATILE_DewfordGym_Broken_Screen_6B, TRUE
+	setmetatile  8, 3, METATILE_DewfordGym_Broken_Screen_6C, TRUE
+	setmetatile  8, 4, METATILE_DewfordGym_Broken_Screen_6D, TRUE
+	setmetatile  9, 1, METATILE_DewfordGym_Broken_Screen_6A, TRUE
+	setmetatile  9, 2, METATILE_DewfordGym_Broken_Screen_6B, TRUE
+	setmetatile  9, 3, METATILE_DewfordGym_Broken_Screen_6C, TRUE
+	setmetatile  9, 4, METATILE_DewfordGym_Broken_Screen_6D, TRUE
+	setmetatile  9, 5, METATILE_DewfordGym_Broken_Screen_6E, TRUE
+	setmetatile 10, 1, METATILE_DewfordGym_Broken_Screen_6A, TRUE
+	setmetatile 10, 2, METATILE_DewfordGym_Broken_Screen_6B, TRUE
+	setmetatile 10, 3, METATILE_DewfordGym_Broken_Screen_6C, TRUE
+	setmetatile 10, 4, METATILE_DewfordGym_Broken_Screen_6D, TRUE
+	setmetatile 10, 5, METATILE_DewfordGym_Broken_Screen_6E, TRUE
+	setmetatile 11, 1, METATILE_DewfordGym_Broken_Screen_6A, TRUE
+	setmetatile 11, 2, METATILE_DewfordGym_Broken_Screen_6B, TRUE
+	setmetatile 11, 3, METATILE_DewfordGym_Broken_Screen_6C, TRUE
+	setmetatile 11, 4, METATILE_DewfordGym_Broken_Screen_6D, TRUE
+	setmetatile 11, 5, METATILE_DewfordGym_Broken_Screen_6E, TRUE
+	setmetatile 12, 1, METATILE_DewfordGym_Broken_Screen_6A, TRUE
+	setmetatile 12, 2, METATILE_DewfordGym_Broken_Screen_6B, TRUE
+	setmetatile 12, 3, METATILE_DewfordGym_Broken_Screen_6C, TRUE
+	setmetatile 12, 4, METATILE_DewfordGym_Broken_Screen_6D, TRUE
+	setmetatile 12, 5, METATILE_DewfordGym_Broken_Screen_6E, TRUE
+
+	//Fix floor tiles 
+	setmetatile 7,  8, METATILE_DewfordGym_Carpet, FALSE
+	setmetatile 7,  9, METATILE_DewfordGym_Carpet, FALSE
+	setmetatile 7, 10, METATILE_DewfordGym_Carpet, FALSE
+	setmetatile 7, 11, METATILE_DewfordGym_Carpet, FALSE
+	setmetatile 8,  8, METATILE_DewfordGym_Carpet, FALSE
+	setmetatile 8,  9, METATILE_DewfordGym_Carpet, FALSE
+	setmetatile 8, 10, METATILE_DewfordGym_Carpet, FALSE
+	setmetatile 8, 11, METATILE_DewfordGym_Carpet, FALSE
+
+	//Create the "door" out 
+	setmetatile 7, 5, METATILE_DewfordGym_Exit_1, TRUE
+	setmetatile 8, 5, METATILE_DewfordGym_Exit_1, TRUE
+	setmetatile 6, 6, METATILE_DewfordGym_Exit_2, TRUE
+	setmetatile 7, 6, METATILE_DewfordGym_Exit_3, FALSE
+	setmetatile 8, 6, METATILE_DewfordGym_Exit_4, FALSE
+	setmetatile 9, 6, METATILE_DewfordGym_Exit_5, TRUE
+	setmetatile 7, 7, METATILE_DewfordGym_Exit_6, FALSE
+	setmetatile 8, 7, METATILE_DewfordGym_Exit_7, FALSE
+
+	setvar VAR_AMC_LIGHT_LEVEL, 0
+	special DrawWholeMapView
 
 MAGM9_Mall_AMC_Interior_FlashlightDied::
 	goto_if_ne VAR_TEMP_3, 0, MAGM9_Mall_AMC_Interior_DoNothing

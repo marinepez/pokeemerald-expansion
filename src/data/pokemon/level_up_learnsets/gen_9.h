@@ -11,6 +11,7 @@ static const struct LevelUpMove sRollingGiantLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_SLAM),
     LEVEL_UP_MOVE(1, MOVE_NEEDLE_ARM),
     LEVEL_UP_MOVE(1, MOVE_SHADOW_CLAW),
+    LEVEL_UP_MOVE(60, MOVE_FINAL_WORDS),
     LEVEL_UP_END
 };
 

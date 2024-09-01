@@ -829,6 +829,10 @@ static void CB2_InitBattleInternal(void)
     {
         gBattleTypeFlags |= (IsTrainerDoubleBattle(gTrainerBattleOpponent_A) ? BATTLE_TYPE_DOUBLE : 0);
     }
+    if (FlagGet(FLAG_FINAL_BATTLE))
+    {
+        gBattleTypeFlags |= BATTLE_TYPE_FINAL_BATTLE;
+    }
 
     InitBattleBgsVideo();
     LoadBattleTextboxAndBackground();
@@ -4289,7 +4293,7 @@ u8 IsRunningFromBattleImpossible(u32 battler)
 
     gPotentialItemEffectBattler = battler;
 
-    if (gBattleTypeFlags & BATTLE_TYPE_FIRST_BATTLE) // Cannot ever run from saving Birch's battle.
+    if ((gBattleTypeFlags & BATTLE_TYPE_FIRST_BATTLE) || (gBattleTypeFlags & BATTLE_TYPE_FINAL_BATTLE)) // Cannot ever run from these battles.
     {
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_DONT_LEAVE_BIRCH;
         return BATTLE_RUN_FORBIDDEN;
@@ -5705,7 +5709,8 @@ static void HandleEndTurn_FinishBattle(void)
                                   | BATTLE_TYPE_SAFARI
                                   | BATTLE_TYPE_EREADER_TRAINER
                                   | BATTLE_TYPE_WALLY_TUTORIAL
-                                  | BATTLE_TYPE_FRONTIER)))
+                                  | BATTLE_TYPE_FRONTIER
+                                  | BATTLE_TYPE_FINAL_BATTLE)))
         {
             for (battler = 0; battler < gBattlersCount; battler++)
             {
@@ -5733,7 +5738,8 @@ static void HandleEndTurn_FinishBattle(void)
                                   | BATTLE_TYPE_SAFARI
                                   | BATTLE_TYPE_FRONTIER
                                   | BATTLE_TYPE_EREADER_TRAINER
-                                  | BATTLE_TYPE_WALLY_TUTORIAL))
+                                  | BATTLE_TYPE_WALLY_TUTORIAL
+                                  | BATTLE_TYPE_FINAL_BATTLE))
             && gBattleResults.shinyWildMon)
         {
             TryPutBreakingNewsOnAir();

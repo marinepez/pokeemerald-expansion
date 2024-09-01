@@ -597,8 +597,8 @@ static void Cmd_switchoutabilities(void);
 static void Cmd_jumpifhasnohp(void);
 static void Cmd_jumpifnotcurrentmoveargtype(void);
 static void Cmd_pickup(void);
-static void Cmd_unused3(void);
-static void Cmd_unused4(void);
+static void Cmd_lastwordsdamage(void);
+static void Cmd_printlastwords(void);
 static void Cmd_settypebasedhalvers(void);
 static void Cmd_jumpifsubstituteblocks(void);
 static void Cmd_tryrecycleitem(void);
@@ -856,8 +856,8 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_jumpifhasnohp,                           //0xE3
     Cmd_jumpifnotcurrentmoveargtype,             //0xE4
     Cmd_pickup,                                  //0xE5
-    Cmd_unused3,                                 //0xE6
-    Cmd_unused4,                                 //0xE7
+    Cmd_lastwordsdamage,                         //0xE6
+    Cmd_printlastwords,                          //0xE7
     Cmd_settypebasedhalvers,                     //0xE8
     Cmd_jumpifsubstituteblocks,                  //0xE9
     Cmd_tryrecycleitem,                          //0xEA
@@ -14758,12 +14758,30 @@ static void Cmd_pickup(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static void Cmd_unused3(void)
+static void Cmd_lastwordsdamage(void)
 {
+    CMD_ARGS();
+
+    gBattleMoveDamage = GetNonDynamaxHP(gBattlerTarget) / 2;
+    if (gBattleMoveDamage == 0)
+        gBattleMoveDamage = 1;
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static void Cmd_unused4(void)
+static void Cmd_printlastwords(void)
 {
+    CMD_ARGS();
+
+    if (gBattleControllerExecFlags == 0)
+    {
+        int stringId = STRINGID_LASTWORDS1 - gBattleMons[gBattlerAttacker].pp[gCurrMovePos];
+        if (stringId < STRINGID_LASTWORDS5)         stringId = STRINGID_LASTWORDS5;
+        else if (stringId > STRINGID_LASTWORDS1)    stringId = STRINGID_LASTWORDS1;
+        gBattlescriptCurrInstr = cmd->nextInstr;
+        PrepareStringBattle(stringId, gBattlerAttacker);
+        gBattleCommunication[MSG_DISPLAY] = 1;
+    }
 }
 
 // Water and Mud Sport

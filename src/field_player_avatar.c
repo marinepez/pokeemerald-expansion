@@ -344,7 +344,7 @@ static bool8 PlayerCanRun(void)
 {
     if (!FlagGet(FLAG_SYS_B_DASH))
         return FALSE;
-    if (IsRunningDisallowed(gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior))
+    if (!gMapHeader.allowRunning || IsRunningDisallowed(gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior))
         return FALSE;
     if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_UNDERWATER | PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE)) // Can't run while on a bike, silly.
         return FALSE;

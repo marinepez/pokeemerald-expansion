@@ -1231,11 +1231,11 @@
 	.byte 0xe5
 	.endm
 
-	.macro unused3
+	.macro lastwordsdamage
 	.byte 0xe6
 	.endm
 
-	.macro unused4
+	.macro printlastwords
 	.byte 0xe7
 	.endm
 

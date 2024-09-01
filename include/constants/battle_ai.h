@@ -50,6 +50,7 @@
 #define AI_FLAG_COUNT                       19
 
 // 'other' ai logic flags
+#define AI_FLAG_FINAL_BATTLE          (1 << 28)
 #define AI_FLAG_ROAMING               (1 << 29)
 #define AI_FLAG_SAFARI                (1 << 30)
 #define AI_FLAG_FIRST_BATTLE          (1 << 31)

@@ -53,7 +53,7 @@ static s32 AI_Safari(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
 static s32 AI_FirstBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
 static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
 static s32 AI_PowerfulStatus(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
-
+static s32 AI_FinalBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
 
 static s32 (*const sBattleAiFuncTable[])(u32, u32, u32, s32) =
 {
@@ -85,7 +85,7 @@ static s32 (*const sBattleAiFuncTable[])(u32, u32, u32, s32) =
     [25] = NULL,                     // Unused
     [26] = NULL,                     // Unused
     [27] = NULL,                     // Unused
-    [28] = NULL,                     // Unused
+    [28] = AI_FinalBattle,          // AI_FLAG_FINAL_BATTLE
     [29] = AI_Roaming,              // AI_FLAG_ROAMING
     [30] = AI_Safari,               // AI_FLAG_SAFARI
     [31] = AI_FirstBattle,          // AI_FLAG_FIRST_BATTLE
@@ -162,6 +162,8 @@ static u32 GetAiFlags(u16 trainerId)
             flags = AI_FLAG_ROAMING;
         else if (gBattleTypeFlags & BATTLE_TYPE_FIRST_BATTLE)
             flags = AI_FLAG_FIRST_BATTLE;
+        else if (gBattleTypeFlags & BATTLE_TYPE_FINAL_BATTLE)
+            flags = AI_FLAG_FINAL_BATTLE;
         else if (gBattleTypeFlags & BATTLE_TYPE_FACTORY)
             flags = GetAiScriptsInBattleFactory();
         else if (gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_TRAINER_HILL | BATTLE_TYPE_SECRET_BASE))
@@ -5296,6 +5298,33 @@ static s32 AI_FirstBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 {
     if (AI_DATA->hpPercents[battlerDef] <= 20)
         AI_Flee();
+
+    return score;
+}
+
+//Final battle logic
+static s32 AI_FinalBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
+{
+    u8 moveIndex = MAX_MON_MOVES;
+    u8 i;
+
+    if(move == MOVE_FINAL_WORDS) 
+    {
+        score += 1000;
+    }
+
+    for(i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if(gBattleMons[battlerAtk].moves[i] == MOVE_FINAL_WORDS)
+        {
+            moveIndex = i;
+            break;
+        }
+    }
+    if(moveIndex != MAX_MON_MOVES && gBattleMons[battlerAtk].pp[moveIndex] == 0)
+    {
+        AI_Flee();
+    }
 
     return score;
 }

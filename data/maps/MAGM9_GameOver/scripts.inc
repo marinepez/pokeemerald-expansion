@@ -7,6 +7,7 @@ MAGM9_GameOver_MapScripts::
 MAGM9_GameOver_OnLoad:
 	setflag FLAG_USE_FOREST_PAL
 	setflag FLAG_GRAYSCALE
+	clearflag FLAG_FINAL_BATTLE
 	end
 
 MAGM9_GameOver_OnWarp:
