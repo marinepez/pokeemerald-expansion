@@ -1032,6 +1032,27 @@ EventScript_RollingGiantBattle::
 	releaseall
 	return
 
+EventScript_GumballMachine::
+	lockall
+	checkitem ITEM_STAR_PIECE
+	goto_if_eq VAR_RESULT, TRUE, EventScript_GumballMachine_GiveRareCandy
+	msgbox EventScript_GumballMachine_Text_AGumballMachine
+	releaseall
+	end
+
+EventScript_GumballMachine_GiveRareCandy::
+	removeitem ITEM_STAR_PIECE
+	msgbox EventScript_GumballMachine_Text_GaveQuarterToGumballMachine
+	giveitem ITEM_RARE_CANDY
+	releaseall
+	end
+
+EventScript_GumballMachine_Text_AGumballMachine::
+	.string "It's a gumball machine.$"
+
+EventScript_GumballMachine_Text_GaveQuarterToGumballMachine::
+	.string "You put a quarter in the\ngumball machine.$"
+
 	.include "data/scripts/pc_transfer.inc"
 	.include "data/scripts/questionnaire.inc"
 	.include "data/scripts/abnormal_weather.inc"

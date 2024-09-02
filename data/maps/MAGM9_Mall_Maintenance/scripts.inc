@@ -4,7 +4,17 @@ MAGM9_Mall_Maintenance_MapScripts::
 
 MAGM9_Mall_Maintenance_OnTransition:
 	setflashlevel 3
+	end
+
+MAGM9_Mall_Maintenance_SetFlashAlpha::
+	setvar VAR_TEMP_1, 1
 	setvar VAR_FLASH_LAYER 1
+	special SetFlashlightRevealLayer
+	end
+
+MAGM9_Mall_Maintenance_RestoreFlashAlpha::
+	setvar VAR_TEMP_1, 0
+	setvar VAR_FLASH_LAYER 4
 	special SetFlashlightRevealLayer
 	end
 
@@ -99,7 +109,7 @@ MAGM9_Mall_Maintenance_FlickerLights::
 	setflashalpha 5
 	special UpdateFlashScanlines
 	delay 5
-	setflashalpha 14
+	setflashalpha 13
 	special UpdateFlashScanlines
 	waitse 
 	releaseall

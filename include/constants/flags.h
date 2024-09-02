@@ -42,20 +42,20 @@
 #define TEMP_FLAGS_END   FLAG_TEMP_1F
 #define NUM_TEMP_FLAGS   (TEMP_FLAGS_END - TEMP_FLAGS_START + 1)
 
-#define FLAG_USE_FOREST_PAL 0x20
-#define FLAG_GRAYSCALE    0x21 // Unused Flag
-#define FLAG_UNUSED_0x022    0x22 // Unused Flag
-#define FLAG_UNUSED_0x023    0x23 // Unused Flag
-#define FLAG_UNUSED_0x024    0x24 // Unused Flag
-#define FLAG_UNUSED_0x025    0x25 // Unused Flag
-#define FLAG_UNUSED_0x026    0x26 // Unused Flag
-#define FLAG_UNUSED_0x027    0x27 // Unused Flag
-#define FLAG_UNUSED_0x028    0x28 // Unused Flag
-#define FLAG_UNUSED_0x029    0x29 // Unused Flag
-#define FLAG_UNUSED_0x02A    0x2A // Unused Flag
-#define FLAG_UNUSED_0x02B    0x2B // Unused Flag
-#define FLAG_UNUSED_0x02C    0x2C // Unused Flag
-#define FLAG_UNUSED_0x02D    0x2D // Unused Flag
+#define FLAG_USE_FOREST_PAL  0x20
+#define FLAG_GRAYSCALE       0x21
+#define FLAG_REGISTER1_USED  0x22
+#define FLAG_REGISTER2_USED  0x23
+#define FLAG_REGISTER3_USED  0x24
+#define FLAG_MART_HIDDENITEM_1    0x25
+#define FLAG_MART_HIDDENITEM_2    0x26
+#define FLAG_MART_HIDDENITEM_3    0x27
+#define FLAG_MART_HIDDENITEM_4    0x28
+#define FLAG_MART_HIDDENITEM_5    0x29
+#define FLAG_MART_SHELF_1    0x2A
+#define FLAG_MART_SHELF_2    0x2B
+#define FLAG_MART_SHELF_3    0x2C
+#define FLAG_MART_SHELF_4    0x2D
 #define FLAG_UNUSED_0x02E    0x2E // Unused Flag
 #define FLAG_UNUSED_0x02F    0x2F // Unused Flag
 #define FLAG_UNUSED_0x030    0x30 // Unused Flag

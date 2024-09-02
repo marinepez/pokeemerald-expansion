@@ -2385,12 +2385,12 @@ const struct Item gItemsInfo[] =
 
     [ITEM_STAR_PIECE] =
     {
-        .name = _("Star Piece"),
+        .name = _("Quarter"),
         .price = (I_PRICE >= GEN_7) ? 12000 * TREASURE_FACTOR: 9800,
         .description = COMPOUND_STRING(
-            "A red gem shard.\n"
-            "It would sell for a\n"
-            "very high price."),
+            "An old quarter.\n"
+            "It's a little\n"
+            "grimey."),
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,

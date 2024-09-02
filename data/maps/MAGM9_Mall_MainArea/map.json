@@ -589,8 +589,8 @@
   "bg_events": [
     {
       "type": "sign",
-      "x": 42,
-      "y": 7,
+      "x": 49,
+      "y": 8,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Save_PC"
@@ -610,6 +610,174 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "Mall_FridgeForRotom"
+    },
+    {
+      "type": "sign",
+      "x": 78,
+      "y": 77,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_Register1"
+    },
+    {
+      "type": "sign",
+      "x": 68,
+      "y": 35,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_HiddenItem_Mart_1"
+    },
+    {
+      "type": "sign",
+      "x": 60,
+      "y": 22,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_HiddenItem_Mart_2"
+    },
+    {
+      "type": "sign",
+      "x": 72,
+      "y": 34,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_HiddenItem_Mart_3"
+    },
+    {
+      "type": "sign",
+      "x": 79,
+      "y": 21,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_HiddenItem_Mart_4"
+    },
+    {
+      "type": "sign",
+      "x": 82,
+      "y": 36,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_HiddenItem_Mart_5"
+    },
+    {
+      "type": "sign",
+      "x": 72,
+      "y": 37,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_Register2"
+    },
+    {
+      "type": "sign",
+      "x": 75,
+      "y": 37,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_Register2"
+    },
+    {
+      "type": "sign",
+      "x": 78,
+      "y": 37,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_Register2"
+    },
+    {
+      "type": "sign",
+      "x": 81,
+      "y": 37,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_Register2"
+    },
+    {
+      "type": "sign",
+      "x": 75,
+      "y": 22,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_Register2"
+    },
+    {
+      "type": "sign",
+      "x": 44,
+      "y": 10,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_Register3"
+    },
+    {
+      "type": "sign",
+      "x": 57,
+      "y": 33,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_StockedShelf_1"
+    },
+    {
+      "type": "sign",
+      "x": 57,
+      "y": 34,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_StockedShelf_1"
+    },
+    {
+      "type": "sign",
+      "x": 59,
+      "y": 24,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_StockedShelf_2"
+    },
+    {
+      "type": "sign",
+      "x": 60,
+      "y": 24,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_StockedShelf_2"
+    },
+    {
+      "type": "sign",
+      "x": 71,
+      "y": 22,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_StockedShelf_3"
+    },
+    {
+      "type": "sign",
+      "x": 82,
+      "y": 27,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_StockedShelf_4"
+    },
+    {
+      "type": "sign",
+      "x": 82,
+      "y": 28,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_StockedShelf_4"
+    },
+    {
+      "type": "sign",
+      "x": 81,
+      "y": 20,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "Mall_Mart_CreepyThing"
+    },
+    {
+      "type": "sign",
+      "x": 43,
+      "y": 59,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "EventScript_GumballMachine"
     }
   ]
 }

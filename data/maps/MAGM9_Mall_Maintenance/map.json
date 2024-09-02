@@ -68,6 +68,42 @@
       "var": "VAR_TEMP_0",
       "var_value": "0",
       "script": "MAGM9_Mall_Maintenance_FlickerLights"
+    },
+    {
+      "type": "trigger",
+      "x": 5,
+      "y": 4,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "1",
+      "script": "MAGM9_Mall_Maintenance_RestoreFlashAlpha"
+    },
+    {
+      "type": "trigger",
+      "x": 5,
+      "y": 5,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "1",
+      "script": "MAGM9_Mall_Maintenance_RestoreFlashAlpha"
+    },
+    {
+      "type": "trigger",
+      "x": 6,
+      "y": 4,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "MAGM9_Mall_Maintenance_SetFlashAlpha"
+    },
+    {
+      "type": "trigger",
+      "x": 6,
+      "y": 5,
+      "elevation": 0,
+      "var": "VAR_TEMP_1",
+      "var_value": "0",
+      "script": "MAGM9_Mall_Maintenance_SetFlashAlpha"
     }
   ],
   "bg_events": [
@@ -182,6 +218,14 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "MAGM9_Mall_Maintenance_Shelf"
+    },
+    {
+      "type": "sign",
+      "x": 27,
+      "y": 19,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "EventScript_GumballMachine"
     }
   ]
 }

@@ -776,11 +776,23 @@
 #define METATILE_SecretBase_YellowBrick_Top             0x226
 
 // gTileset_Shop
-#define METATILE_Shop_Door_Elevator   0x285
-#define METATILE_Shop_Laptop1_Flash   0x258
-#define METATILE_Shop_Laptop1_Normal  0x29D
-#define METATILE_Shop_Laptop2_Flash   0x260
-#define METATILE_Shop_Laptop2_Normal  0x2A5
+#define METATILE_Shop_Door_Elevator        0x285
+#define METATILE_Shop_Empty_Shelf_H1       0x256
+#define METATILE_Shop_Empty_Shelf_H2       0x257
+#define METATILE_Shop_Empty_Shelf_V1       0x26D
+#define METATILE_Shop_Empty_Shelf_V1_Left  0x26C
+#define METATILE_Shop_Empty_Shelf_V2       0x265
+#define METATILE_Shop_Empty_Shelf_V2_Left  0x264
+#define METATILE_Shop_Empty_Shelf_V3       0x25F
+#define METATILE_Shop_Empty_Shelf_V3_Left  0x25E
+#define METATILE_Shop_Empty_Shelf_V4       0x25D
+#define METATILE_Shop_Empty_Shelf_V4_Left  0x25C
+#define METATILE_Shop_Empty_Tile           0x201
+#define METATILE_Shop_Item_Ball            0x266
+#define METATILE_Shop_Laptop1_Flash        0x258
+#define METATILE_Shop_Laptop1_Normal       0x29D
+#define METATILE_Shop_Laptop2_Flash        0x260
+#define METATILE_Shop_Laptop2_Normal       0x2A5
 
 // gTileset_Slateport
 #define METATILE_Slateport_Door             0x2DC

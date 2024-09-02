@@ -41,7 +41,7 @@ setflashalpha 12
 goto MAGM9_StairsSide_UpdateFlash
 
 MAGM9_StairsSide_Darken8::
-setflashalpha 14
+setflashalpha 13
 goto MAGM9_StairsSide_UpdateFlash
 
 MAGM9_StairsSide_UpdateFlash:

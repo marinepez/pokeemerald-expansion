@@ -40,17 +40,18 @@ MAGM9_Mall_LightsOnSetup:
 
 MAGM9_Mall_LightsTurnOnCS::
 	lockall
+	applymovement LOCALID_GIANT, Common_Movement_FacePlayer
 	playse SE_POWER_ON
 	setflashalpha 01
 	special UpdateFlashScanlines
 	delay 2
-	setflashalpha 14
+	setflashalpha 13
 	special UpdateFlashScanlines
 	delay 2
 	setflashalpha 7
 	special UpdateFlashScanlines
 	delay 4
-	setflashalpha 14
+	setflashalpha 13
 	special UpdateFlashScanlines
 	delay 3
 	setflashalpha 0
@@ -59,40 +60,165 @@ MAGM9_Mall_LightsTurnOnCS::
 	setflashalpha 7
 	special UpdateFlashScanlines
 	delay 4
-	setflashalpha 14
+	setflashalpha 13
 	special UpdateFlashScanlines
 	delay 3
 	setflashalpha 0
 	special UpdateFlashScanlines
 	delay 8
-	setflashalpha 14
+	setflashalpha 13
 	special UpdateFlashScanlines
 	delay 6
 	setflashalpha 7
 	special UpdateFlashScanlines
 	delay 12
-	setflashalpha 14
+	setflashalpha 13
 	special UpdateFlashScanlines
 	delay 12
 	setflashalpha 12
+	special UpdateFlashScanlines
 	delay 2
 	setflashalpha 10
+	special UpdateFlashScanlines
 	delay 2
 	setflashalpha 8
+	special UpdateFlashScanlines
 	delay 2
 	setflashalpha 0
 	special UpdateFlashScanlines
-	setvar VAR_ROLLING_GIANT_AI_STATE, 0
-	savebgm MUS_MALL
-	fadenewbgm MUS_MALL
-	setflag FLAG_POWER_ON
-	call MAGM9_Mall_LightsOnSetup
+	setvar VAR_ROLLING_GIANT_AI_STATE, 1
+	setwildbattle SPECIES_ROLLING_GIANT, 50, ITEM_NONE
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	dowildbattle
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	releaseall
 	end
 
 MAGM9_Mall_MainArea_MapScripts_HideRollingGiant:
 	removeobject LOCALID_GIANT
+	setflashalpha 13
+	special UpdateFlashScanlines
 	return
+
+Mall_HiddenItem_Mart_1::
+	call_if_set FLAG_MART_HIDDENITEM_1, Mall_Nothing
+	setflag FLAG_MART_HIDDENITEM_1
+	setmetatile 68, 35,	METATILE_Shop_Empty_Tile, FALSE
+	special DrawWholeMapView
+	giveitem ITEM_POTION
+	closemessage
+	end
+Mall_HiddenItem_Mart_2::
+	call_if_set FLAG_MART_HIDDENITEM_2, Mall_Nothing
+	setflag FLAG_MART_HIDDENITEM_2
+	setmetatile 60, 22,	METATILE_Shop_Empty_Tile, FALSE
+	special DrawWholeMapView
+	giveitem ITEM_POTION
+	closemessage
+	end
+Mall_HiddenItem_Mart_3::
+	call_if_set FLAG_MART_HIDDENITEM_3, Mall_Nothing
+	setflag FLAG_MART_HIDDENITEM_3
+	setmetatile 72, 34, METATILE_Shop_Empty_Tile, FALSE
+	special DrawWholeMapView
+	giveitem ITEM_POTION
+	closemessage
+	end
+Mall_HiddenItem_Mart_4::
+	call_if_set FLAG_MART_HIDDENITEM_4, Mall_Nothing
+	setflag FLAG_MART_HIDDENITEM_4
+	setmetatile 79, 21, METATILE_Shop_Empty_Tile, FALSE
+	special DrawWholeMapView
+	giveitem ITEM_POTION
+	closemessage
+	end
+Mall_HiddenItem_Mart_5::
+	call_if_set FLAG_MART_HIDDENITEM_5, Mall_Nothing
+	setflag FLAG_MART_HIDDENITEM_5
+	setmetatile 82, 36, METATILE_Shop_Empty_Tile, FALSE
+	special DrawWholeMapView
+	giveitem ITEM_POTION
+	closemessage
+	end
+Mall_Nothing::
+	end
+
+Mall_Mart_CreepyThing::
+	end
+
+Mall_StockedShelf_1::
+	call_if_set FLAG_MART_SHELF_1, Mall_Nothing
+	setflag FLAG_MART_SHELF_1
+	setmetatile 57, 33, METATILE_Shop_Empty_Shelf_V2, TRUE
+	setmetatile 57, 34, METATILE_Shop_Empty_Shelf_V1, TRUE
+	special DrawWholeMapView
+	giveitem ITEM_ETHER
+	closemessage
+	end
+Mall_StockedShelf_2::
+	call_if_set FLAG_MART_SHELF_2, Mall_Nothing
+	setflag FLAG_MART_SHELF_2
+	setmetatile 59, 24, METATILE_Shop_Empty_Shelf_H1, TRUE
+	setmetatile 60, 24, METATILE_Shop_Empty_Shelf_H2, TRUE
+	special DrawWholeMapView
+	giveitem ITEM_ETHER
+	closemessage
+	end
+Mall_StockedShelf_3::
+	call_if_set FLAG_MART_SHELF_3, Mall_Nothing
+	setflag FLAG_MART_SHELF_3
+	setmetatile 71, 22, METATILE_Shop_Empty_Shelf_V4_Left, TRUE
+	special DrawWholeMapView
+	giveitem ITEM_ETHER
+	closemessage
+	end
+Mall_StockedShelf_4::
+	call_if_set FLAG_MART_SHELF_4, Mall_Nothing
+	setflag FLAG_MART_SHELF_4
+	setmetatile 82, 27, METATILE_Shop_Empty_Shelf_V2_Left, TRUE
+	setmetatile 82, 28, METATILE_Shop_Empty_Shelf_V1_Left, TRUE
+	special DrawWholeMapView
+	giveitem ITEM_ETHER
+	closemessage
+	end
+
+Mall_Register1::
+	lockall
+	goto_if_set FLAG_REGISTER1_USED, Mall_Register_Empty
+	setflag FLAG_REGISTER1_USED
+	goto Mall_Register_GiveCoin
+	end
+
+Mall_Register2::
+	lockall
+	goto_if_set FLAG_REGISTER2_USED, Mall_Register_Empty
+	setflag FLAG_REGISTER2_USED
+	goto Mall_Register_GiveCoin
+	end
+
+Mall_Register3::
+	lockall
+	goto_if_set FLAG_REGISTER3_USED, Mall_Register_Empty
+	setflag FLAG_REGISTER3_USED
+	goto Mall_Register_GiveCoin
+	end
+
+Mall_Register_GiveCoin::
+	msgbox Mall_Text_CoinInRegister, MSGBOX_DEFAULT
+	giveitem ITEM_STAR_PIECE
+	releaseall
+	end
+
+Mall_Register_Empty::
+	msgbox Mall_Text_RegisterIsEmpty, MSGBOX_DEFAULT
+	releaseall
+	end
+
+Mall_Text_CoinInRegister:
+	.string "An old register. There's a coin inside.$"
+
+Mall_Text_RegisterIsEmpty:
+	.string "The register is empty.$"
 
 Mall_FridgeForRotom::
 	lockall
@@ -179,10 +305,55 @@ Mall_MallToArcade::
 Mall_MallToGroceryStore::
 	setmaplayoutindex LAYOUT_MAGM_MALL_SHOPS2
 	setvar VAR_FLASH_LAYER 2
+	call Mall_MallToGroceryStore_SetTiles
 	special SetFlashlightRevealLayer
 	special DrawWholeMapView
 	releaseall
 	end
+
+Mall_MallToGroceryStore_SetTiles::
+	call_if_unset FLAG_MART_HIDDENITEM_1, Mall_MallToGroceryStore_SetItemBalls_1
+	call_if_unset FLAG_MART_HIDDENITEM_2, Mall_MallToGroceryStore_SetItemBalls_2
+	call_if_unset FLAG_MART_HIDDENITEM_3, Mall_MallToGroceryStore_SetItemBalls_3
+	call_if_unset FLAG_MART_HIDDENITEM_4, Mall_MallToGroceryStore_SetItemBalls_4
+	call_if_unset FLAG_MART_HIDDENITEM_5, Mall_MallToGroceryStore_SetItemBalls_5
+	call_if_set FLAG_MART_SHELF_1, Mall_MallToGroceryStore_SetEmptyShelf_1
+	call_if_set FLAG_MART_SHELF_2, Mall_MallToGroceryStore_SetEmptyShelf_2
+	call_if_set FLAG_MART_SHELF_3, Mall_MallToGroceryStore_SetEmptyShelf_3
+	call_if_set FLAG_MART_SHELF_4, Mall_MallToGroceryStore_SetEmptyShelf_4
+	return
+
+Mall_MallToGroceryStore_SetItemBalls_1::
+	setmetatile 68, 35,	METATILE_Shop_Item_Ball, TRUE
+	return
+Mall_MallToGroceryStore_SetItemBalls_2::
+	setmetatile 60, 22,	METATILE_Shop_Item_Ball, TRUE
+	return
+Mall_MallToGroceryStore_SetItemBalls_3::
+	setmetatile 72, 34, METATILE_Shop_Item_Ball, TRUE
+	return
+Mall_MallToGroceryStore_SetItemBalls_4::
+	setmetatile 79, 21, METATILE_Shop_Item_Ball, TRUE
+	return
+Mall_MallToGroceryStore_SetItemBalls_5::
+	setmetatile 82, 36, METATILE_Shop_Item_Ball, TRUE
+	return
+
+Mall_MallToGroceryStore_SetEmptyShelf_1::
+	setmetatile 57, 33, METATILE_Shop_Empty_Shelf_V2, TRUE
+	setmetatile 57, 34, METATILE_Shop_Empty_Shelf_V1, TRUE
+	return
+Mall_MallToGroceryStore_SetEmptyShelf_2::
+	setmetatile 59, 24, METATILE_Shop_Empty_Shelf_H1, TRUE
+	setmetatile 60, 24, METATILE_Shop_Empty_Shelf_H2, TRUE
+	return
+Mall_MallToGroceryStore_SetEmptyShelf_3::
+	setmetatile 71, 22, METATILE_Shop_Empty_Shelf_V4_Left, TRUE
+	return
+Mall_MallToGroceryStore_SetEmptyShelf_4::
+	setmetatile 82, 27, METATILE_Shop_Empty_Shelf_V2_Left, TRUE
+	setmetatile 82, 28, METATILE_Shop_Empty_Shelf_V1_Left, TRUE
+	return
 
 Mall_MallToDojo::
 	setmaplayoutindex LAYOUT_MAGM9_MALL_DOJO
@@ -216,7 +387,7 @@ Save_PC::
 	end
 
 Save_PC_Prompt:
-	.string "Somehow, this PC appears to be in\nworking condition.\p{PLAYER} can save their progress\nwith it."
+	.string "Somehow, this PC appears to be in\nworking condition.\p{PLAYER} can save their progress\nwith it.$"
 
 Mall_WarpToLowerFloorLeft::
 	warp MAP_MAGM9_MALL_TOP_FLOOR, 43, 44
