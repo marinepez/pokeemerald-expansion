@@ -45,7 +45,7 @@
 /*
  * Some general resources you should bookmark:
  * TONC GBA tutorial: https://www.coranac.com/tonc/text/toc.htm
- * Computer systems course with focus on GBA: https://ianfinlayson.net/class/cpsc305/
+ * Computer systems course with focus on GBA: https://ianfinlayson.net/class/cpsc305/notes
  * GBATEK reference docs: https://problemkaputt.de/gbatek.htm
  * Copetti GBA Architecture: https://www.copetti.org/writings/consoles/game-boy-advance/
  */
@@ -74,12 +74,12 @@
  *
  * GBA graphics basics:
  *     + https://www.coranac.com/tonc/text/video.htm
- *     + https://ianfinlayson.net/class/cpsc305/notes/06-gba1
+ *     + https://ianfinlayson.net/class/cpsc305/notes/07-gba1
  *
  * Tiles, tilemaps, charblocks, screenblocks:
  *     + https://www.coranac.com/tonc/text/objbg.htm
  *     + https://www.coranac.com/tonc/text/regbg.htm
- *     + https://ianfinlayson.net/class/cpsc305/notes/13-tiles <--- this is a highly recommended resource
+ *     + https://ianfinlayson.net/class/cpsc305/notes/14-tiles <--- this is a highly recommended resource
  *
  * Callbacks and Tasks:
  *     + https://github.com/pret/pokeemerald/wiki/Overview%E2%88%B6-The-Game-Loop
@@ -91,7 +91,7 @@
  *
  * DMA:
  *     + https://www.coranac.com/tonc/text/dma.htm
- *     + https://ianfinlayson.net/class/cpsc305/notes/14-memory
+ *     + https://ianfinlayson.net/class/cpsc305/notes/13-memory
  */
 
 /*
