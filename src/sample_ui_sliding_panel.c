@@ -668,10 +668,11 @@ static void SampleUi_Init(MainCallback callback)
     SetMainCallback2(SampleUi_SetupCB);
 }
 
+// Credit: Jaizu, pret
 static void SampleUi_ResetGpuRegsAndBgs(void)
 {
-    // Credit: Jaizu
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
+    SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON);
     SetGpuReg(REG_OFFSET_BG3CNT, 0);
     SetGpuReg(REG_OFFSET_BG2CNT, 0);
     SetGpuReg(REG_OFFSET_BG1CNT, 0);

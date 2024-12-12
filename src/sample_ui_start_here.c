@@ -435,10 +435,20 @@ void SampleUi_Init(MainCallback callback)
     SetMainCallback2(SampleUi_SetupCB);
 }
 
+// Credit: Jaizu, pret
 static void SampleUi_ResetGpuRegsAndBgs(void)
 {
-    // Credit: Jaizu
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
+
+    /*
+     * Explicitly re-enable sprites. This isn't actually necessary if you aren't displaying sprites. However, let's do
+     * this here anyway, otherwise you might be confused wondering why your sprites aren't showing up!
+     *
+     * For more information, see GBATEK's documentation on the Display Control register:
+     *     https://problemkaputt.de/gbatek.htm#lcdiodisplaycontrol
+     */
+    SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON);
+
     SetGpuReg(REG_OFFSET_BG3CNT, 0);
     SetGpuReg(REG_OFFSET_BG2CNT, 0);
     SetGpuReg(REG_OFFSET_BG1CNT, 0);
