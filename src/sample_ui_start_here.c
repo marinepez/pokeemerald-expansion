@@ -438,7 +438,17 @@ void SampleUi_Init(MainCallback callback)
 // Credit: Jaizu, pret
 static void SampleUi_ResetGpuRegsAndBgs(void)
 {
-    SetGpuReg(REG_OFFSET_DISPCNT, 0);
+    /*
+     * TODO : these settings are overkill, and seem to be clearing some
+     * important values. I need to come back and investigate this. For now, they
+     * are disabled. Note: by not resetting the various BG and GPU regs, we are
+     * effectively assuming that the user of this UI is entering from the
+     * overworld. If this UI is entered from a different screen, it's possible
+     * some regs won't be set correctly. In that case, you'll need to figure
+     * out which ones you need.
+     */
+
+    // SetGpuReg(REG_OFFSET_DISPCNT, 0);
 
     /*
      * Explicitly re-enable sprites. This isn't actually necessary if you aren't displaying sprites. However, let's do
@@ -447,31 +457,31 @@ static void SampleUi_ResetGpuRegsAndBgs(void)
      * For more information, see GBATEK's documentation on the Display Control register:
      *     https://problemkaputt.de/gbatek.htm#lcdiodisplaycontrol
      */
-    SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON);
+    // SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON);
 
-    SetGpuReg(REG_OFFSET_BG3CNT, 0);
-    SetGpuReg(REG_OFFSET_BG2CNT, 0);
-    SetGpuReg(REG_OFFSET_BG1CNT, 0);
-    SetGpuReg(REG_OFFSET_BG0CNT, 0);
-    ChangeBgX(0, 0, BG_COORD_SET);
-    ChangeBgY(0, 0, BG_COORD_SET);
-    ChangeBgX(1, 0, BG_COORD_SET);
-    ChangeBgY(1, 0, BG_COORD_SET);
-    ChangeBgX(2, 0, BG_COORD_SET);
-    ChangeBgY(2, 0, BG_COORD_SET);
-    ChangeBgX(3, 0, BG_COORD_SET);
-    ChangeBgY(3, 0, BG_COORD_SET);
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDY, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-    SetGpuReg(REG_OFFSET_WIN0H, 0);
-    SetGpuReg(REG_OFFSET_WIN0V, 0);
-    SetGpuReg(REG_OFFSET_WIN1H, 0);
-    SetGpuReg(REG_OFFSET_WIN1V, 0);
-    SetGpuReg(REG_OFFSET_WININ, 0);
-    SetGpuReg(REG_OFFSET_WINOUT, 0);
-    CpuFill16(0, (void *)VRAM, VRAM_SIZE);
-    CpuFill32(0, (void *)OAM, OAM_SIZE);
+    // SetGpuReg(REG_OFFSET_BG3CNT, 0);
+    // SetGpuReg(REG_OFFSET_BG2CNT, 0);
+    // SetGpuReg(REG_OFFSET_BG1CNT, 0);
+    // SetGpuReg(REG_OFFSET_BG0CNT, 0);
+    // ChangeBgX(0, 0, BG_COORD_SET);
+    // ChangeBgY(0, 0, BG_COORD_SET);
+    // ChangeBgX(1, 0, BG_COORD_SET);
+    // ChangeBgY(1, 0, BG_COORD_SET);
+    // ChangeBgX(2, 0, BG_COORD_SET);
+    // ChangeBgY(2, 0, BG_COORD_SET);
+    // ChangeBgX(3, 0, BG_COORD_SET);
+    // ChangeBgY(3, 0, BG_COORD_SET);
+    // SetGpuReg(REG_OFFSET_BLDCNT, 0);
+    // SetGpuReg(REG_OFFSET_BLDY, 0);
+    // SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+    // SetGpuReg(REG_OFFSET_WIN0H, 0);
+    // SetGpuReg(REG_OFFSET_WIN0V, 0);
+    // SetGpuReg(REG_OFFSET_WIN1H, 0);
+    // SetGpuReg(REG_OFFSET_WIN1V, 0);
+    // SetGpuReg(REG_OFFSET_WININ, 0);
+    // SetGpuReg(REG_OFFSET_WINOUT, 0);
+    // CpuFill16(0, (void *)VRAM, VRAM_SIZE);
+    // CpuFill32(0, (void *)OAM, OAM_SIZE);
 }
 
 static void SampleUi_SetupCB(void)
