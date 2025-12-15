@@ -17,6 +17,7 @@
 #include "field_screen_effect.h"
 #include "field_specials.h"
 #include "field_weather.h"
+#include "gpu_regs.h"
 #include "graphics.h"
 #include "international_string_util.h"
 #include "item.h"
@@ -4369,3 +4370,23 @@ void SetHiddenNature(void)
     SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_HIDDEN_NATURE, &hiddenNature);
     CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
 }
+
+//Blends the middle and bottom layer at value specified in BLDALPHA
+//This has issues with blending the shadows
+void SetBlendLayer(void)
+{
+    SetGpuReg(REG_OFFSET_WININ, (WININ_WIN1_BG_ALL | WININ_WIN1_OBJ) | (WININ_WIN0_ALL | WININ_WIN0_OBJ));
+    SetGpuReg(REG_OFFSET_BLDCNT, (BLDCNT_TGT1_BG2 | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_OBJ | BLDCNT_EFFECT_BLEND));
+    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(8, 8));
+}
+
+/*
+//Places the bottom layer on the top and has it blend with all other layers and objects. Good for lighting effects.
+void SetBlendLayer(void)
+{
+    SetBgAttribute(3, BG_ATTR_PRIORITY, 0);
+    ShowBg(3);
+    SetGpuReg(REG_OFFSET_WININ, (WININ_WIN1_BG_ALL | WININ_WIN1_OBJ) | (WININ_WIN0_ALL | WININ_WIN0_OBJ));
+    SetGpuReg(REG_OFFSET_BLDCNT, (BLDCNT_TGT1_BG3 | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG2 | BLDCNT_TGT2_OBJ | BLDCNT_EFFECT_BLEND));
+    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(8, 8));
+}*/
