@@ -538,6 +538,7 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
         {
             // Time-blend
             u32 palettes = ((1 << numPalettes) - 1) << startPalIndex;
+            UpdateSandStormPalettes();
             UpdateAltBgPalettes(palettes & PALETTES_BG);
             UpdatePalettesWithTime(palettes);
         }
@@ -791,6 +792,7 @@ void FadeScreen(u8 mode, s8 delay)
         }
         else if (MapHasNaturalLight(gMapHeader.mapType))
         {
+            UpdateSandStormPalettes();
             UpdateAltBgPalettes(PALETTES_BG);
             BeginTimeOfDayPaletteFade(PALETTES_ALL, delay, 16, 0, &gTimeBlend.startBlend, &gTimeBlend.endBlend, gTimeBlend.weight, fadeColor);
         }

@@ -63,6 +63,7 @@
 #include "time_events.h"
 #include "trainer_hill.h"
 #include "trainer_pokemon_sprites.h"
+#include "trig.h"
 #include "tv.h"
 #include "scanline_effect.h"
 #include "wild_encounter.h"
@@ -204,6 +205,7 @@ COMMON_DATA u8 gFieldLinkPlayerCount = 0;
 u8 gTimeOfDay;
 struct TimeBlendSettings gTimeBlend;
 s16 gTimeUpdateCounter; // playTimeVBlanks will eventually overflow, so this is used to update TOD
+s16 gPaletteMixUpdateCounter; //For use in blending snow / sandstorm tiles
 
 // EWRAM vars
 EWRAM_DATA static u8 sObjectEventLoadFlag = 0;
@@ -1637,6 +1639,28 @@ bool32 CurrentMapHasShadows(void)
     return (gMapHeader.mapType != MAP_TYPE_UNDERGROUND);
 }
 
+#define SIN_FUNCTION_MAX 255
+#define SANDSTORM_PAL 6
+
+void UpdateSandStormPalettes(void)
+{
+    const struct Tileset *secondary = gMapHeader.mapLayout->secondaryTileset;
+    if (!MapHasNaturalLight(gMapHeader.mapType))
+        return; 
+
+    gPaletteMixUpdateCounter++;
+    if(gPaletteMixUpdateCounter > SIN_FUNCTION_MAX) gPaletteMixUpdateCounter = 0;
+    s16 weight = (Sin(gPaletteMixUpdateCounter, 128) + 128);
+
+    if(weight > 255) weight = 255;
+    else if (weight < 0) weight = 0;
+    DebugPrintf("Timer: %d, \tWeight: %d", gPaletteMixUpdateCounter, weight);
+    AvgPaletteWeighted(&((u16 *)secondary->palettes)[SANDSTORM_PAL * 16], &((u16 *)secondary->palettes)[((SANDSTORM_PAL + 1) % 16) * 16], gPlttBufferUnfaded + SANDSTORM_PAL * 16, weight);
+}
+
+#undef SIN_FUNCTION_MAX
+#undef SANDSTORM_PAL
+
 // Update & mix day / night bg palettes (into unfaded)
 void UpdateAltBgPalettes(u16 palettes)
 {
@@ -1703,20 +1727,28 @@ static void OverworldBasic(void)
     UpdatePaletteFade();
     UpdateTilesetAnimations();
     DoScheduledBgTilemapCopiesToVram();
-    // Every minute if no palette fade is active, update TOD blending as needed
-    if (!gPaletteFade.active && --gTimeUpdateCounter <= 0)
+    if (!gPaletteFade.active)
     {
-        struct TimeBlendSettings cachedBlend = gTimeBlend;
-        u32 *bld0 = (u32*)&cachedBlend;
-        u32 *bld1 = (u32*)&gTimeBlend;
-        gTimeUpdateCounter = (SECONDS_PER_MINUTE * 60 / FakeRtc_GetSecondsRatio());
-        UpdateTimeOfDay();
-        FormChangeTimeUpdate();
-        if (bld0[0] != bld1[0]
-         || bld0[1] != bld1[1]
-         || bld0[2] != bld1[2])
+        //Every third of a second if no palette fade is active, update sandstorm blending
+        if(!(gTimeUpdateCounter % 20))
         {
-           ApplyWeatherColorMapIfIdle(gWeatherPtr->colorMapIndex);
+            UpdateSandStormPalettes();
+            ApplyWeatherColorMapIfIdle(gWeatherPtr->colorMapIndex);
+        }
+        // Every minute if no palette fade is active, update TOD blending as needed
+        if(--gTimeUpdateCounter <= 0) {
+            struct TimeBlendSettings cachedBlend = gTimeBlend;
+            u32 *bld0 = (u32*)&cachedBlend;
+            u32 *bld1 = (u32*)&gTimeBlend;
+            gTimeUpdateCounter = (SECONDS_PER_MINUTE * 60 / FakeRtc_GetSecondsRatio());
+            UpdateTimeOfDay();
+            FormChangeTimeUpdate();
+            if (bld0[0] != bld1[0]
+            || bld0[1] != bld1[1]
+            || bld0[2] != bld1[2])
+            {
+            ApplyWeatherColorMapIfIdle(gWeatherPtr->colorMapIndex);
+            }
         }
     }
 }

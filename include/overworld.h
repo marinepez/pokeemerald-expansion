@@ -146,6 +146,7 @@ void UpdateTimeOfDay(void);
 bool32 MapHasNaturalLight(u8 mapType);
 bool32 CurrentMapHasShadows(void);
 void UpdateAltBgPalettes(u16 palettes);
+void UpdateSandStormPalettes(void);
 void UpdatePalettesWithTime(u32);
 void CB2_Overworld(void);
 void SetMainCallback1(void (*cb)(void));
